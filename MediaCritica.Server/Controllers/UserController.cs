@@ -1,10 +1,9 @@
 ﻿using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
-using MediaCritica.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleCatalog.Internal_Server.Controllers
+namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -22,7 +21,7 @@ namespace ConsoleCatalog.Internal_Server.Controllers
         public async Task<UserModel> GetUser(string email)
         {
             var user = await _databaseContext.Users.SingleAsync(user => user.Email == email);
-            
+
             return new UserModel { Email = user.Email, Password = user.Password };
         }
 
@@ -31,7 +30,7 @@ namespace ConsoleCatalog.Internal_Server.Controllers
         public async Task<UserModel> PostUser([FromBody] UserModel userModel)
         {
             var user = new User { Email = userModel.Email!, Password = userModel.Password! };
-            
+
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
 
