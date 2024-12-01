@@ -7,17 +7,18 @@ namespace MediaCritica.Server.Controllers
     [Route("[controller]")]
     public class ConfigController : ControllerBase
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly IConfiguration _configuration;
 
-        public ConfigController(DatabaseContext databaseContext)
+        public ConfigController(IConfiguration configuration)
         {
-            _databaseContext = databaseContext;
+            _configuration = configuration;
         }
 
         [HttpGet(Name = "GetConfig")]
         [Route("[action]")]
-        public async Task<ConfigModel> GetGonfig()
+        public ConfigModel GetConfig()
         {
-            var configModel = new ConfigModel() { MEDIA_API_KEY = };
+            return new ConfigModel() { MediaServiceApiKey = _configuration["Media:ServiceApiKey"]! };
         }
+    }
 }

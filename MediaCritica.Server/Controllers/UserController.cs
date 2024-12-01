@@ -20,9 +20,9 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]/{email}")]
         public async Task<UserModel> GetUser(string email)
         {
-            var user = await _databaseContext.Users.SingleAsync(user => user.Email == email);
+            var user = await _databaseContext.Users.SingleOrDefaultAsync(user => user.Email == email);
 
-            return new UserModel { Email = user.Email, Password = user.Password };
+            return new UserModel { Email = user?.Email, Password = user?.Password };
         }
 
         [HttpPost(Name = "PostUser")]

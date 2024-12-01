@@ -2,6 +2,6 @@
 {
     public class ConfigModel
     {
-        public required string MEDIA_API_KEY { get; set; }
+        public required string MediaServiceApiKey { get; set; }
     }
 }

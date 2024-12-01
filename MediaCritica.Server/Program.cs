@@ -15,6 +15,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 var app = builder.Build();
 
+app.UseCors(s => s.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
