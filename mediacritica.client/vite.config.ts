@@ -43,6 +43,10 @@ export default defineConfig({
     },
     server: {
         proxy: {
+            '^/Config': {
+                target,
+                secure: false
+            },
             '^/User': {
                 target,
                 secure: false
