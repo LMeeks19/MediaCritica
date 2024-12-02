@@ -1,10 +1,10 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './Main.scss'
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+import "./Main.scss";
+import { RecoilRoot } from "recoil";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+createRoot(document.getElementById("root")!).render(
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+);

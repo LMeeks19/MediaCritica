@@ -9,6 +9,10 @@ import { BeatLoader } from "react-spinners";
 import $ from "jquery";
 import { AutoTextSize } from "auto-text-size";
 import "../Style/HomePage.scss";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
+import { UserModel } from "../Interfaces/UserModel";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const mediaServiceApiKey = import.meta.env.VITE_SERVICE_API_KEY;
@@ -17,6 +21,18 @@ function HomePage() {
   const [mediaSearchResults, setMediaSearchResults] = useState<
     MediaSearchModel[]
   >([] as MediaSearchModel[]);
+  const [user, setUser] = useRecoilState<UserModel>(userState);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function FetchUser() {
+      const userData = (await fetch(`/User/GetUser/${user.Email}`).then(
+        (response) => response.json()
+      )) as UserModel;
+      setUser(userData);
+    }
+    FetchUser();
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,6 +64,23 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
+      <div
+        className="homepage-account"
+        onClick={() => {
+          if (user.Email === undefined) {
+            navigate("/login");
+          } else {
+            navigate("/account");
+          }
+        }}
+      >
+        {user.Email === undefined ? (
+          <div className="account-text">SIGN IN</div>
+        ) : (
+          <div className="account-text">ACCOUNT</div>
+        )}
+        <i className="fa-regular fa-circle-user"></i>
+      </div>
       <div className="homepage-title">
         <AutoTextSize mode="multiline">MEDIA CRITICA</AutoTextSize>
       </div>
@@ -83,6 +116,7 @@ function HomePage() {
                 onMouseOut={() =>
                   unscrollTitleIfOverflowing(mediaSearchResult.imdbID)
                 }
+                onClick={() => navigate(`/media/${mediaSearchResult.imdbID}`)}
               >
                 {mediaSearchResult.Poster !== "N/A" ? (
                   <img
@@ -121,7 +155,9 @@ function HomePage() {
               speedMultiplier={0.5}
             />
           ) : (
-            "No Results Found"
+            <div>
+              {searchTerm.length > 0 ? "No Results Found" : "Type To Begin Search"}
+            </div>
           )}
         </div>
       )}
