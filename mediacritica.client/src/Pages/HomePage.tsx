@@ -37,11 +37,16 @@ function HomePage() {
   useEffect(() => {
     setIsLoading(true);
     const timeout = setTimeout(async () => {
-      var mediaSearchResponse = (await fetch(
-        `https://www.omdbapi.com/?s=${searchTerm}&apikey=${mediaServiceApiKey}`
-      ).then((response) => response.json())) as MediaSearchResponse;
-      setMediaSearchResults(mediaSearchResponse.Search ?? []);
-      setIsLoading(false);
+      if (searchTerm.length > 0) {
+        var mediaSearchResponse = (await fetch(
+          `https://www.omdbapi.com/?s=${searchTerm}&apikey=${mediaServiceApiKey}`
+        ).then((response) => response.json())) as MediaSearchResponse;
+        setMediaSearchResults(mediaSearchResponse.Search ?? []);
+        setIsLoading(false);
+      }
+      else {
+        setMediaSearchResults([]);
+      }
     }, 1000);
     return () => clearTimeout(timeout);
   }, [searchTerm]);
@@ -156,7 +161,9 @@ function HomePage() {
             />
           ) : (
             <div>
-              {searchTerm.length > 0 ? "No Results Found" : "Type To Begin Search"}
+              {searchTerm.length > 0
+                ? "No Results Found"
+                : "Type To Begin Search"}
             </div>
           )}
         </div>
