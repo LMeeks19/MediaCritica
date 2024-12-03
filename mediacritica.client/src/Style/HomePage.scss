@@ -1,0 +1,177 @@
+.homepage-container {
+  width: calc(100% - 8rem);
+  height: calc(100% - 8rem);
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  scroll-padding: 4rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  gap: 40px;
+
+  .homepage-account {
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    right: 0%;
+    padding: 30px 30px 0 0;
+    height: 50px;
+    display: flex;
+    transition: color 0.5s ease-in-out;
+    font-size: 3rem;
+    cursor: pointer;
+
+    .account-text {
+      font-size: 1.75rem;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-right: 15px;
+    }
+  }
+
+  .homepage-account:hover {
+    color: rgba(151, 18, 18, 1);
+  }
+
+  .homepage-title {
+    margin-top: 60px;
+    user-select: none;
+    width: 100%;
+    max-width: 48rem;
+    text-align: center;
+    line-height: 1;
+    text-align: center;
+    color: light-dark(#242424, beige);
+    text-shadow: 0 6px 0 rgba(151, 18, 18, 1), 0 7px 0 rgba(151, 18, 18, 1),
+      0 8px 0 rgba(151, 18, 18, 1), 0 9px 0 rgba(151, 18, 18, 1),
+      0 10px 0 rgba(151, 18, 18, 1), 0 6px 1px rgba(0, 0, 0, 0.1),
+      0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
+      0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
+      0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .homepage-searchbar {
+    border: 2px solid rgba(151, 18, 18, 1);
+    border-radius: 25px;
+    width: 100%;
+    max-width: 48rem;
+    height: 4rem;
+    display: flex;
+    padding: 0 20px 0 20px;
+    transition: all 0.5s ease-in-out;
+
+    .homepage-input {
+      background-color: transparent;
+      border: none;
+      border-radius: 25px;
+      height: 4rem;
+      width: 85%;
+      font-size: 30px;
+      font-family: inherit;
+    }
+
+    .homepage-input:focus-visible {
+      outline: none;
+    }
+
+    .homepage-icons {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      width: 15%;
+      gap: 20px;
+
+      .homepage-clear {
+        cursor: pointer;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .homepage-clear:hover {
+        color: light-dark(beige, #242424);
+      }
+    }
+  }
+
+  .homepage-searchbar:focus-within,
+  .homepage-searchbar:hover {
+    border-color: light-dark(#242424, beige);
+    background-color: rgba(151, 18, 18, 1);
+  }
+
+  .homepage-results {
+    display: flex;
+    gap: 25px;
+    width: 100%;
+    max-width: 60rem;
+    overflow-y: hidden;
+    overflow-x: auto;
+    padding: 12.5px;
+    scroll-snap-type: x mandatory;
+
+    &.empty {
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      text-align: center;
+      min-height: 423px;
+    }
+
+    .homepage-result {
+      border: 2px solid rgba(151, 18, 18, 1);
+      outline: 2px solid transparent;
+      transition: all 0.5s ease-in-out;
+      border-radius: 25px;
+      cursor: pointer;
+      width: 300px;
+      height: 405px;
+      background-color: rgba(151, 18, 18, 1);
+      scroll-snap-align: start;
+
+      .homepage-result-image {
+        border-radius: 25px 25px 0 0;
+        width: 300px;
+        height: 300px;
+
+        &.empty {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 10rem;
+        }
+      }
+
+      .homepage-result-details {
+        user-select: none;
+        width: 270px;
+        padding: 0 15px 15px 15px;
+        display: flex;
+        flex-direction: column;
+
+        .result-details-title {
+          font-size: 35px;
+          text-wrap: nowrap;
+          overflow: hidden;
+        }
+
+        .result-sub-details {
+          display: flex;
+          justify-content: space-between;
+
+          .result-details-type {
+            font-size: 20px;
+          }
+
+          .result-details-year {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
+    .homepage-result:hover {
+      border-color: light-dark(#242424, beige);
+    }
+  }
+}
