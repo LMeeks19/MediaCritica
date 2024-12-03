@@ -16,7 +16,7 @@
     top: 0%;
     bottom: 0%;
     right: 0%;
-    padding: 30px 30px 0 0;
+    padding: 20px 20px 0 0;
     height: 50px;
     display: flex;
     transition: color 0.5s ease-in-out;
@@ -24,7 +24,7 @@
     cursor: pointer;
 
     .account-text {
-      font-size: 1.75rem;
+      font-size: 2rem;
       margin-top: auto;
       margin-bottom: auto;
       margin-right: 15px;
@@ -43,7 +43,7 @@
     text-align: center;
     line-height: 1;
     text-align: center;
-    color: light-dark(#242424, beige);
+    color: light-dark(#242424, smokewhite);
     text-shadow: 0 6px 0 rgba(151, 18, 18, 1), 0 7px 0 rgba(151, 18, 18, 1),
       0 8px 0 rgba(151, 18, 18, 1), 0 9px 0 rgba(151, 18, 18, 1),
       0 10px 0 rgba(151, 18, 18, 1), 0 6px 1px rgba(0, 0, 0, 0.1),
@@ -89,14 +89,14 @@
       }
 
       .homepage-clear:hover {
-        color: light-dark(beige, #242424);
+        color: light-dark(smokewhite, #242424);
       }
     }
   }
 
   .homepage-searchbar:focus-within,
   .homepage-searchbar:hover {
-    border-color: light-dark(#242424, beige);
+    border-color: light-dark(#242424, smokewhite);
     background-color: rgba(151, 18, 18, 1);
   }
 
@@ -104,7 +104,7 @@
     display: flex;
     gap: 25px;
     width: 100%;
-    max-width: 60rem;
+    max-width: 80rem;
     overflow-y: hidden;
     overflow-x: auto;
     padding: 12.5px;
@@ -171,7 +171,7 @@
     }
 
     .homepage-result:hover {
-      border-color: light-dark(#242424, beige);
+      border-color: light-dark(#242424, smokewhite);
     }
   }
 }

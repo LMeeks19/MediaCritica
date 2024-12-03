@@ -1,0 +1,65 @@
+.mediapage-container {
+  width: calc(100% - 8rem);
+  height: calc(100% - 8rem);
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  scroll-padding: 4rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .mediapage-return {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 20px 0 0 20px;
+    height: 50px;
+    display: flex;
+    transition: color 0.5s ease-in-out;
+    font-size: 3rem;
+    cursor: pointer;
+
+    .return-text {
+      font-size: 2rem;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 15px;
+    }
+  }
+
+  .mediapage-account {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 20px 20px 0 0;
+    height: 50px;
+    display: flex;
+    transition: color 0.5s ease-in-out;
+    font-size: 3rem;
+    cursor: pointer;
+
+    .account-text {
+      font-size: 2rem;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-right: 15px;
+    }
+  }
+
+  .mediapage-return:hover,
+  .mediapage-account:hover {
+    color: rgba(151, 18, 18, 1);
+  }
+
+  .media-details {
+    display: flex;
+    flex-direction: column;
+    padding-left: 42.5%;
+    padding-top: 2%;
+    height: 100%;
+  }
+}

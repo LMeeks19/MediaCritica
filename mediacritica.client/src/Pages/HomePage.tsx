@@ -9,13 +9,13 @@ import { BeatLoader } from "react-spinners";
 import $ from "jquery";
 import { AutoTextSize } from "auto-text-size";
 import "../Style/HomePage.scss";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { serviceApiKeyState, userState } from "../State/GlobalState";
 import { UserModel } from "../Interfaces/UserModel";
 import { useNavigate } from "react-router-dom";
 
 function HomePage() {
-  const mediaServiceApiKey = import.meta.env.VITE_SERVICE_API_KEY;
+  const mediaServiceApiKey = useRecoilValue(serviceApiKeyState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSerarchTerm] = useState<string>("");
   const [mediaSearchResults, setMediaSearchResults] = useState<
@@ -42,11 +42,10 @@ function HomePage() {
           `https://www.omdbapi.com/?s=${searchTerm}&apikey=${mediaServiceApiKey}`
         ).then((response) => response.json())) as MediaSearchResponse;
         setMediaSearchResults(mediaSearchResponse.Search ?? []);
-        setIsLoading(false);
-      }
-      else {
+      } else {
         setMediaSearchResults([]);
       }
+      setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timeout);
   }, [searchTerm]);
@@ -121,7 +120,13 @@ function HomePage() {
                 onMouseOut={() =>
                   unscrollTitleIfOverflowing(mediaSearchResult.imdbID)
                 }
-                onClick={() => navigate(`/media/${mediaSearchResult.imdbID}`)}
+                onClick={() =>
+                  navigate(`/media/${mediaSearchResult.imdbID}`, {
+                    state: {
+                      mediaId: mediaSearchResult.imdbID,
+                    },
+                  })
+                }
               >
                 {mediaSearchResult.Poster !== "N/A" ? (
                   <img
