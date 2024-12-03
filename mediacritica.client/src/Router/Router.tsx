@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MediaPage from "../Pages/MediaPage";
 import LoginPage from "../Pages/LoginPage";
 import AccountPage from "../Pages/AccountPage";
+import EpisodePage from "../Pages/EpisodePage";
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
   {
     path: "/media/:id",
     element: <MediaPage />,
+  },
+  {
+    path: "/media/:id/seasons/:seasonId/episodes/:episodeId",
+    element: <EpisodePage />
   },
   {
     path: "/login",

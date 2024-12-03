@@ -8,14 +8,19 @@ import {
 import { BeatLoader } from "react-spinners";
 import $ from "jquery";
 import { AutoTextSize } from "auto-text-size";
-import "../Style/HomePage.scss";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { serviceApiKeyState, userState } from "../State/GlobalState";
 import { UserModel } from "../Interfaces/UserModel";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
+import IconButton from "@mui/material/IconButton";
+import { CustomTooltip } from "../Components/Tooltip";
+import "../Style/HomePage.scss";
 
 function HomePage() {
-  const mediaServiceApiKey = import.meta.env.VITE_SERVICE_API_KEY;
+  const mediaServiceApiKey = useRecoilValue(serviceApiKeyState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSerarchTerm] = useState<string>("");
   const [mediaSearchResults, setMediaSearchResults] = useState<
@@ -42,11 +47,10 @@ function HomePage() {
           `https://www.omdbapi.com/?s=${searchTerm}&apikey=${mediaServiceApiKey}`
         ).then((response) => response.json())) as MediaSearchResponse;
         setMediaSearchResults(mediaSearchResponse.Search ?? []);
-        setIsLoading(false);
-      }
-      else {
+      } else {
         setMediaSearchResults([]);
       }
+      setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timeout);
   }, [searchTerm]);
@@ -79,32 +83,42 @@ function HomePage() {
           }
         }}
       >
-        {user.Email === undefined ? (
-          <div className="account-text">SIGN IN</div>
-        ) : (
-          <div className="account-text">ACCOUNT</div>
-        )}
-        <i className="fa-regular fa-circle-user"></i>
+        <div className="account-text">
+          {user.Email === undefined ? "SIGN IN" : "ACCOUNT"}
+        </div>
       </div>
       <div className="homepage-title">
-        <AutoTextSize mode="multiline">MEDIA CRITICA</AutoTextSize>
+        <AutoTextSize mode="oneline" minFontSizePx={30} maxFontSizePx={124}>
+          MEDIA CRITICA
+        </AutoTextSize>
       </div>
       <div className="homepage-searchbar">
+        <div className="homepage-icon">
+          <IconButton color="inherit" style={{ pointerEvents: "none" }}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} flip="horizontal" />
+          </IconButton>
+        </div>
         <input
           className="homepage-input"
           value={searchTerm}
           onChange={(e) => setSerarchTerm(e.target.value)}
+          placeholder="Search for media..."
         />
-        <div className="homepage-icons">
+        <div className="homepage-icon">
           {searchTerm.length > 0 ? (
-            <i
-              className="homepage-clear fa-solid fa-times fa-2xl"
-              onClick={() => setSerarchTerm("")}
-            />
+            <IconButton color="inherit" size="large">
+              <CustomTooltip title="Clear Search" arrow>
+                <FontAwesomeIcon
+                  className="icon-clear"
+                  icon={faTimes}
+                  flip="horizontal"
+                  onClick={() => setSerarchTerm("")}
+                />
+              </CustomTooltip>
+            </IconButton>
           ) : (
             <></>
           )}
-          <i className="fa-solid fa-magnifying-glass fa-xl fa-flip-horizontal" />
         </div>
       </div>
       {mediaSearchResults.length > 0 ? (
@@ -121,7 +135,13 @@ function HomePage() {
                 onMouseOut={() =>
                   unscrollTitleIfOverflowing(mediaSearchResult.imdbID)
                 }
-                onClick={() => navigate(`/media/${mediaSearchResult.imdbID}`)}
+                onClick={() =>
+                  navigate(`/media/${mediaSearchResult.imdbID}`, {
+                    state: {
+                      mediaId: mediaSearchResult.imdbID,
+                    },
+                  })
+                }
               >
                 {mediaSearchResult.Poster !== "N/A" ? (
                   <img
@@ -131,7 +151,7 @@ function HomePage() {
                   ></img>
                 ) : (
                   <div className="homepage-result-image empty">
-                    <i className="fa-regular fa-image"></i>
+                    <FontAwesomeIcon icon={faImage} />
                   </div>
                 )}
                 <div className="homepage-result-details">
@@ -162,7 +182,7 @@ function HomePage() {
           ) : (
             <div>
               {searchTerm.length > 0
-                ? "No Results Found"
+                ? "No Media Found"
                 : "Type To Begin Search"}
             </div>
           )}

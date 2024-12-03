@@ -2,29 +2,28 @@
   width: calc(100% - 8rem);
   height: calc(100% - 8rem);
   padding: 4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  display: grid;
+  gap: 40px;
+  justify-items: center;
   scroll-padding: 4rem;
   overflow-y: auto;
   overflow-x: hidden;
-  gap: 40px;
 
   .homepage-account {
     position: absolute;
     top: 0%;
     bottom: 0%;
     right: 0%;
-    padding: 30px 30px 0 0;
-    height: 50px;
+    padding: 20px 20px 0 0;
+    height: 40px;
     display: flex;
-    transition: color 0.5s ease-in-out;
-    font-size: 3rem;
+    font-size: 2.5rem;
     cursor: pointer;
+    text-wrap: nowrap;
+    transition: all .5s ease-in-out;
 
     .account-text {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       margin-top: auto;
       margin-bottom: auto;
       margin-right: 15px;
@@ -36,14 +35,14 @@
   }
 
   .homepage-title {
-    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
     user-select: none;
-    width: 100%;
-    max-width: 48rem;
-    text-align: center;
+    width: 70%;
     line-height: 1;
-    text-align: center;
-    color: light-dark(#242424, beige);
+    color: light-dark(#242424, whitesmoke);
     text-shadow: 0 6px 0 rgba(151, 18, 18, 1), 0 7px 0 rgba(151, 18, 18, 1),
       0 8px 0 rgba(151, 18, 18, 1), 0 9px 0 rgba(151, 18, 18, 1),
       0 10px 0 rgba(151, 18, 18, 1), 0 6px 1px rgba(0, 0, 0, 0.1),
@@ -54,21 +53,21 @@
 
   .homepage-searchbar {
     border: 2px solid rgba(151, 18, 18, 1);
-    border-radius: 25px;
+    border-radius: 10px;
     width: 100%;
-    max-width: 48rem;
+    max-width: 60rem;
     height: 4rem;
     display: flex;
-    padding: 0 20px 0 20px;
+    align-items: center;
     transition: all 0.5s ease-in-out;
 
     .homepage-input {
       background-color: transparent;
       border: none;
-      border-radius: 25px;
+      border-radius: 10px;
       height: 4rem;
       width: 85%;
-      font-size: 30px;
+      font-size: 20px;
       font-family: inherit;
     }
 
@@ -76,53 +75,51 @@
       outline: none;
     }
 
-    .homepage-icons {
+    .homepage-icon {
       display: flex;
-      justify-content: end;
       align-items: center;
-      width: 15%;
-      gap: 20px;
+      justify-content: center;
+      width: 7.5%;
 
-      .homepage-clear {
+      .icon-clear {
         cursor: pointer;
         transition: all 0.5s ease-in-out;
       }
+    }
 
-      .homepage-clear:hover {
-        color: light-dark(beige, #242424);
-      }
+    .homepage-icon:hover .icon-clear {
+      color: light-dark(whitesmoke, #242424);
     }
   }
 
   .homepage-searchbar:focus-within,
   .homepage-searchbar:hover {
-    border-color: light-dark(#242424, beige);
+    border-color: light-dark(#242424, whitesmoke);
     background-color: rgba(151, 18, 18, 1);
   }
 
   .homepage-results {
     display: flex;
-    gap: 25px;
+    gap: 15px;
     width: 100%;
-    max-width: 60rem;
+    max-width: 80rem;
     overflow-y: hidden;
     overflow-x: auto;
     padding: 12.5px;
     scroll-snap-type: x mandatory;
+    height: 423px;
 
     &.empty {
       justify-content: center;
       align-items: center;
-      font-size: 40px;
+      font-size: 30px;
       text-align: center;
-      min-height: 423px;
     }
 
     .homepage-result {
       border: 2px solid rgba(151, 18, 18, 1);
-      outline: 2px solid transparent;
       transition: all 0.5s ease-in-out;
-      border-radius: 25px;
+      border-radius: 10px;
       cursor: pointer;
       width: 300px;
       height: 405px;
@@ -130,7 +127,7 @@
       scroll-snap-align: start;
 
       .homepage-result-image {
-        border-radius: 25px 25px 0 0;
+        border-radius: 10px 10px 0 0;
         width: 300px;
         height: 300px;
 
@@ -138,7 +135,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          font-size: 10rem;
+          font-size: 8rem;
         }
       }
 
@@ -148,6 +145,8 @@
         padding: 0 15px 15px 15px;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        height: 90px;
 
         .result-details-title {
           font-size: 35px;
@@ -160,18 +159,18 @@
           justify-content: space-between;
 
           .result-details-type {
-            font-size: 20px;
+            font-size: 15px;
           }
 
           .result-details-year {
-            font-size: 20px;
+            font-size: 15px;
           }
         }
       }
     }
 
     .homepage-result:hover {
-      border-color: light-dark(#242424, beige);
+      border-color: light-dark(#242424, whitesmoke);
     }
   }
 }
