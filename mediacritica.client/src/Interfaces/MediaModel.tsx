@@ -23,7 +23,7 @@ export interface MediaModel {
     imdbVotes: string;
 
     totalSeasons?: string;
-    seasons?: SeasonModel;
+    seasons?: SeasonModel[];
 
     BoxOffice?: string;
     DVD?: string;

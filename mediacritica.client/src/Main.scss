@@ -1,17 +1,18 @@
+@import url(https://fonts.googleapis.com/css?family=Poiret+One|Lobster|Anton|Shadows+Into+Light|Open+Sans|Roboto|Orbitron|Oswald|Raleway|Montserrat|Roboto+Slab|Indie+Flower|Fjalla+One|Bree+Serif|Pacifico|Abril+Fatface);
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: light-dark(#242424, smokewhite);
-  background-color: light-dark(smokewhite, #242424);
+  color: light-dark(#242424, whitesmoke);
+  background-color: light-dark(whitesmoke, #242424);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Bubblegum Sans";
+  font-family: "orbitron";
 }
 
 ::-webkit-scrollbar {
@@ -27,11 +28,123 @@
   cursor: grab;
 }
 
+::placeholder {
+  color: light-dark(#242424, whitesmoke);
+}
+
+.flex {
+  display: flex;
+
+  &.between {
+    justify-content: space-between;
+  }
+
+  &.row {
+    flex-direction: row;
+  }
+
+  &.column {
+    flex-direction: column;
+  }
+
+  &.gap-20 {
+    gap: 20px;
+  }
+}
+
+.width-50 {
+  width: 50%;
+}
+
 .loader {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: transparent !important;
+  transition: all 0.5s ease-in-out !important;
+}
+
+.MuiOutlinedInput-notchedOutline:hover,
+.MuiOutlinedInput-notchedOutline:focus {
+  border-color: light-dark(#242424, whitesmoke) !important;
+}
+
+.MuiSvgIcon-root {
+  color: light-dark(#242424, whitesmoke) !important;
+}
+
+.MuiSelect-select {
+  padding: 10px !important;
+  color: light-dark(#242424, whitesmoke) !important;
+  transition: all 0.5s ease-in-out !important;
+  font-family: "orbitron" !important;
+}
+
+.MuiTableHead-root {
+  background-color: rgba(151, 18, 18, 1) !important;
+}
+
+.MuiTableCell-root {
+  color: light-dark(#242424, whitesmoke) !important;
+  font-family: "orbitron" !important;
+  text-wrap: nowrap !important;
+  transition: all .5s ease-in-out !important;
+}
+
+.MuiTableHead-root {
+  .MuiTableRow-root:first-child {
+    .MuiTableCell-root:first-child {
+      border-top-left-radius: 10px !important ;
+    }
+
+    .MuiTableCell-root:last-child {
+      border-top-right-radius: 10px !important ;
+    }
+  }
+}
+
+.MuiTableCell-root {
+  border-bottom-color: light-dark(#242424, whitesmoke) !important;
+}
+
+.MuiTableBody-root {
+  .MuiTableRow-root:hover {
+    .MuiTableCell-root {
+      background-color: rgba(151, 18, 18, 1) !important;
+      cursor: pointer;
+    }
+  }
+
+  .MuiTableRow-root:first-child {
+    .MuiTableCell-root:first-child {
+      border-bottom-left-radius: 10px !important ;
+    }
+
+    .MuiTableCell-root:last-child {
+      border-bottom-right-radius: 10px !important ;
+    }
+  }
+}
+
+.MuiPaper-root {
+  background-color: light-dark(whitesmoke, #242424) !important;
+  color: light-dark(#242424, whitesmoke) !important;
+
+  .MuiList-root {
+    padding: 0 !important;
+
+    .MuiMenuItem-root {
+      font-family: "orbitron" !important;
+    }
+
+    .MuiMenuItem-root[aria-selected="true"] {
+      background-color: rgba(151, 18, 18, 1) !important;
+    }
+  }
 }
 
 body {
