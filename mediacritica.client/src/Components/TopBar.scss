@@ -1,0 +1,61 @@
+@import "../Style/Colours.scss";
+
+.topbar {
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    height: 4rem;
+    text-wrap: nowrap;
+
+    .return {
+      height: 4rem;
+      width: calc(40% - 15px);
+      display: flex;
+      font-size: 2.5rem;
+      margin-left: 15px;
+
+      .text {
+        font-size: 1.5rem;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 15px;
+        cursor: pointer;
+        transition: color 0.5s ease-in-out;
+      }
+
+      .text:hover {
+        color: $primary-red;
+      }
+    }
+
+    .account {
+      width: calc(60% - 15px);
+      display: flex;
+      justify-content: end;
+      font-size: 2.5rem;
+      height: 4rem;
+      background-color: $dark-light;
+      margin-right: 15px;
+
+      &.blank {
+        background-color: transparent !important;
+      }
+
+      .text {
+        font-size: 1.5rem;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-right: 15px;
+        cursor: pointer;
+        transition: color 0.5s ease-in-out;
+      }
+
+      .text:hover {
+        color: $primary-red;
+      }
+    }
+  }

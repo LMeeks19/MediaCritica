@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
-import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import {
   CapitaliseFirstLetter,
   MediaYearFormatter,
@@ -8,8 +7,8 @@ import {
 import { BeatLoader } from "react-spinners";
 import $ from "jquery";
 import { AutoTextSize } from "auto-text-size";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { serviceApiKeyState, userState } from "../State/GlobalState";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
 import { UserModel } from "../Interfaces/UserModel";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,9 +17,9 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
 import "../Style/HomePage.scss";
+import { GetSearchResults, GetUser } from "../Server/Server";
 
 function HomePage() {
-  const mediaServiceApiKey = useRecoilValue(serviceApiKeyState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSerarchTerm] = useState<string>("");
   const [mediaSearchResults, setMediaSearchResults] = useState<
@@ -31,9 +30,7 @@ function HomePage() {
 
   useEffect(() => {
     async function FetchUser() {
-      const userData = (await fetch(`/User/GetUser/${user.Email}`).then(
-        (response) => response.json()
-      )) as UserModel;
+      const userData = await GetUser(user.Email);
       setUser(userData);
     }
     FetchUser();
@@ -43,9 +40,7 @@ function HomePage() {
     setIsLoading(true);
     const timeout = setTimeout(async () => {
       if (searchTerm.length > 0) {
-        var mediaSearchResponse = (await fetch(
-          `https://www.omdbapi.com/?s=${searchTerm}&apikey=${mediaServiceApiKey}`
-        ).then((response) => response.json())) as MediaSearchResponse;
+        var mediaSearchResponse = await GetSearchResults(searchTerm)
         setMediaSearchResults(mediaSearchResponse.Search ?? []);
       } else {
         setMediaSearchResults([]);

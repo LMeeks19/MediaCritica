@@ -1,0 +1,46 @@
+@import "./Colours.scss";
+
+.episodepage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .episode {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.empty {
+      justify-content: center;
+      align-items: center;
+    }
+
+    .episode-poster {
+      height: 40%;
+      width: 100%;
+
+      .episode-title {
+        height: calc(100% - 8rem);
+        width: calc(100% - 8rem);
+        padding: 4rem;
+        display: flex;
+        justify-content: center;
+        -webkit-text-stroke: 4px $primary-red;
+        color: $light-dark;
+        backdrop-filter: blur(8px);
+      }
+    }
+  }
+
+  .episode-details {
+    border-top: 4px solid $primary-red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    width: calc(100% - 8rem);
+    height: calc(60% - 8rem);
+    z-index: 1;
+  }
+}

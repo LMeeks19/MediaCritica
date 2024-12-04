@@ -1,11 +1,10 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { serviceApiKeyState, userState } from "../State/GlobalState";
 import { MediaModel } from "../Interfaces/MediaModel";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { SeasonModel } from "../Interfaces/SeasonModel";
+import TopBar from "../Components/TopBar";
 import {
   MenuItem,
   Select,
@@ -19,10 +18,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import "../Style/MediaPage.scss";
+import { GetMedia, GetSeason } from "../Server/Server";
 
 function MediaPage() {
-  const mediaServiceApiKey = useRecoilValue(serviceApiKeyState);
-  const user = useRecoilValue(userState);
   const [media, setMedia] = useState<MediaModel>({} as MediaModel);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
@@ -33,14 +31,10 @@ function MediaPage() {
   useEffect(() => {
     async function FetchMedia() {
       setIsLoading(true);
-      var mediaResponse = (await fetch(
-        `https://www.omdbapi.com/?i=${mediaId}&plot=full&apikey=${mediaServiceApiKey}`
-      ).then((response) => response.json())) as MediaModel;
+      var mediaResponse = await GetMedia(mediaId);
       var mediaSeasonsResponse = [] as SeasonModel[];
       if (mediaResponse.totalSeasons !== undefined) {
-        let mediaSeasonResponse = (await fetch(
-          `https://www.omdbapi.com/?i=${mediaId}&season=1&apikey=${mediaServiceApiKey}`
-        ).then((response) => response.json())) as SeasonModel;
+        let mediaSeasonResponse = await GetSeason(mediaId);
         mediaSeasonsResponse.push(mediaSeasonResponse);
       }
       setMedia({ ...mediaResponse, seasons: mediaSeasonsResponse });
@@ -65,9 +59,7 @@ function MediaPage() {
     if (
       !media.seasons?.some((season) => Number(season.Season) === selectedSeason)
     ) {
-      let mediaSeasonResponse = (await fetch(
-        `https://www.omdbapi.com/?i=${mediaId}&season=${selectedSeason}&apikey=${mediaServiceApiKey}`
-      ).then((response) => response.json())) as SeasonModel;
+      let mediaSeasonResponse = await GetSeason(mediaId, selectedSeason);
       setMedia({ ...media, seasons: [...media.seasons!, mediaSeasonResponse] });
     }
 
@@ -76,16 +68,6 @@ function MediaPage() {
 
   return (
     <div className="mediapage-container">
-      <div className="mediapage-topbar">
-        <div className="mediapage-return" onClick={() => history.back()}>
-          <div className="return-text">MEDIA CRITICA</div>
-        </div>
-        <div className="mediapage-account">
-          <div className="account-text">
-            {user.Email === undefined ? "SIGN IN" : "ACCOUNT"}
-          </div>
-        </div>
-      </div>
       {isLoading ? (
         <div className="media empty">
           <div className="loader">
@@ -98,28 +80,28 @@ function MediaPage() {
         </div>
       ) : (
         <div className="media">
+          <TopBar accountBlank={false} />
           <img className="media-poster" src={media.Poster}></img>
           <div className="media-details">
-            <div className="details-section">
-              <div>{media.Title}</div>
-              <div>{CapitaliseFirstLetter(media.Type)}</div>
-            </div>
+            <div className="text-6xl text-center my-5">{media.Title}</div>
             <div className="details-section section-2">
-              <div className="flex between row">
+              <div className="flex justify-between flex-row">
                 <div>Initial Release: {media.Released}</div>
-                <div>{media.Year}</div>
+                <div>
+                  {CapitaliseFirstLetter(media.Type)} | {media.Year}
+                </div>
               </div>
               <div>{media.Plot}</div>
             </div>
 
-            <div className="flex row gap-20">
-              <div className="details-section flex column width-50">
+            <div className="flex flex-row gap-5">
+              <div className="details-section flex justify-around flex-col w-1/2">
                 <div>Actors: {media.Actors}</div>
                 <div>Directos(s): {media.Director}</div>
                 <div>Writer(s): {media.Writer}</div>
               </div>
 
-              <div className="details-section flex column width-50">
+              <div className="details-section flex justify-around flex-col w-1/2">
                 <div>Runtime: {media.Runtime}</div>
                 <div>Genre: {media.Genre}</div>
                 <div>Language: {media.Language}</div>
@@ -128,8 +110,8 @@ function MediaPage() {
               </div>
             </div>
 
-            <div className="flex row gap-20">
-              <div className="details-section flex column width-50">
+            <div className="flex flex-row gap-5">
+              <div className="details-section flex justify-around flex-col w-1/2">
                 <div>Metascore: {media.Metascore}</div>
                 <div>
                   IMDb: {media.imdbRating} | {media.imdbVotes} Reviews
@@ -148,7 +130,7 @@ function MediaPage() {
               media.DVD !== undefined ||
               media.Production !== undefined ||
               media.Website !== undefined ? (
-                <div className="details-section flex column width-50">
+                <div className="details-section flex justify-around flex-col w-1/2">
                   {media.BoxOffice !== undefined ? (
                     <div>Box Office: {media.BoxOffice}</div>
                   ) : (
