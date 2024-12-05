@@ -1,4 +1,4 @@
-@import "../Style/Colours.scss";
+@use "../Style/Colours.scss";
 
 .topbar {
     position: absolute;
@@ -28,7 +28,7 @@
       }
 
       .text:hover {
-        color: $primary-red;
+        color: Colours.$primary-red;
       }
     }
 
@@ -38,7 +38,7 @@
       justify-content: end;
       font-size: 2.5rem;
       height: 4rem;
-      background-color: $dark-light;
+      background-color: Colours.$dark-light;
       margin-right: 15px;
 
       &.blank {
@@ -55,7 +55,7 @@
       }
 
       .text:hover {
-        color: $primary-red;
+        color: Colours.$primary-red;
       }
     }
   }

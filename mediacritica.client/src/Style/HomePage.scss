@@ -1,4 +1,4 @@
-@import "./Colours.scss";
+@use "Colours.scss";
 
 .homepage-container {
   width: calc(100% - 8rem);
@@ -33,7 +33,7 @@
   }
 
   .homepage-account:hover {
-    color: $primary-red;
+    color: Colours.$primary-red;
   }
 
   .homepage-title {
@@ -44,17 +44,17 @@
     user-select: none;
     width: 70%;
     line-height: 1;
-    color: $light-dark;
-    text-shadow: 0 6px 0 $primary-red, 0 7px 0 $primary-red,
-      0 8px 0 $primary-red, 0 9px 0 $primary-red,
-      0 10px 0 $primary-red, 0 6px 1px rgba(0, 0, 0, 0.1),
+    color: Colours.$light-dark;
+    text-shadow: 0 6px 0 Colours.$primary-red, 0 7px 0 Colours.$primary-red,
+      0 8px 0 Colours.$primary-red, 0 9px 0 Colours.$primary-red,
+      0 10px 0 Colours.$primary-red, 0 6px 1px rgba(0, 0, 0, 0.1),
       0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
       0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
       0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
   }
 
   .homepage-searchbar {
-    border: 2px solid $primary-red;
+    border: 2px solid Colours.$primary-red;
     border-radius: 10px;
     width: 100%;
     max-width: 60rem;
@@ -90,14 +90,14 @@
     }
 
     .homepage-icon:hover .icon-clear {
-      color: $dark-light;
+      color: Colours.$dark-light;
     }
   }
 
   .homepage-searchbar:focus-within,
   .homepage-searchbar:hover {
-    border-color: $light-dark;
-    background-color: $primary-red;
+    border-color: Colours.$light-dark;
+    background-color: Colours.$primary-red;
   }
 
   .homepage-results {
@@ -119,13 +119,13 @@
     }
 
     .homepage-result {
-      border: 2px solid $primary-red;
+      border: 2px solid Colours.$primary-red;
       transition: all 0.5s ease-in-out;
       border-radius: 10px;
       cursor: pointer;
       width: 300px;
       height: 405px;
-      background-color: $primary-red;
+      background-color: Colours.$primary-red;
       scroll-snap-align: start;
 
       .homepage-result-image {
@@ -172,7 +172,7 @@
     }
 
     .homepage-result:hover {
-      border-color: $light-dark;
+      border-color: Colours.$light-dark;
     }
   }
 }

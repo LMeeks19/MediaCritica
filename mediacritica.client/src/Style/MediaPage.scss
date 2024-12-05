@@ -1,4 +1,4 @@
-@import "./Colours.scss";
+@use "Colours.scss";
 
 .mediapage-container {
   width: 100%;
@@ -30,15 +30,12 @@
 
       .details-section {
         display: flex;
-        margin-top: 20px;
+        justify-content: space-around;
+        flex-direction: column;
+        flex-grow: 1;
         padding: 20px;
-        background-color: $primary-red;
+        background-color: Colours.$primary-red;
         border-radius: 10px;
-
-        &.section-2 {
-          flex-direction: column;
-          gap: 20px;
-        }
       }
 
       .table-title {
@@ -46,7 +43,7 @@
       }
 
       .star-icon {
-        color: $rating-star;
+        color: Colours.$rating-star;
         font-size: 1rem;
         margin-right: 5px;
       }

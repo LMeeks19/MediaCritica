@@ -1,7 +1,8 @@
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import { MediaModel } from "../Interfaces/MediaModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
+import { MovieModel } from "../Interfaces/MovieModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
+import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UserModel } from "../Interfaces/UserModel";
 
 const mediaServiceApiKey = import.meta.env.VITE_SERVICE_API_KEY;
@@ -20,7 +21,7 @@ export async function GetSearchResults(
   return response.json();
 }
 
-export async function GetMedia(mediaId: string): Promise<MediaModel> {
+export async function GetMedia(mediaId: string): Promise<MovieModel | SeriesModel> {
   const response = await fetch(
     `https://www.omdbapi.com/?i=${mediaId}&plot=full&apikey=${mediaServiceApiKey}`
   );
