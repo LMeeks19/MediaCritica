@@ -1,3 +1,5 @@
+@use "Colours.scss";
+
 .homepage-container {
   width: calc(100% - 8rem);
   height: calc(100% - 8rem);
@@ -31,7 +33,7 @@
   }
 
   .homepage-account:hover {
-    color: rgba(151, 18, 18, 1);
+    color: Colours.$primary-red;
   }
 
   .homepage-title {
@@ -42,17 +44,17 @@
     user-select: none;
     width: 70%;
     line-height: 1;
-    color: light-dark(#242424, whitesmoke);
-    text-shadow: 0 6px 0 rgba(151, 18, 18, 1), 0 7px 0 rgba(151, 18, 18, 1),
-      0 8px 0 rgba(151, 18, 18, 1), 0 9px 0 rgba(151, 18, 18, 1),
-      0 10px 0 rgba(151, 18, 18, 1), 0 6px 1px rgba(0, 0, 0, 0.1),
+    color: Colours.$light-dark;
+    text-shadow: 0 6px 0 Colours.$primary-red, 0 7px 0 Colours.$primary-red,
+      0 8px 0 Colours.$primary-red, 0 9px 0 Colours.$primary-red,
+      0 10px 0 Colours.$primary-red, 0 6px 1px rgba(0, 0, 0, 0.1),
       0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
       0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
       0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
   }
 
   .homepage-searchbar {
-    border: 2px solid rgba(151, 18, 18, 1);
+    border: 2px solid Colours.$primary-red;
     border-radius: 10px;
     width: 100%;
     max-width: 60rem;
@@ -88,14 +90,14 @@
     }
 
     .homepage-icon:hover .icon-clear {
-      color: light-dark(whitesmoke, #242424);
+      color: Colours.$dark-light;
     }
   }
 
   .homepage-searchbar:focus-within,
   .homepage-searchbar:hover {
-    border-color: light-dark(#242424, whitesmoke);
-    background-color: rgba(151, 18, 18, 1);
+    border-color: Colours.$light-dark;
+    background-color: Colours.$primary-red;
   }
 
   .homepage-results {
@@ -117,13 +119,13 @@
     }
 
     .homepage-result {
-      border: 2px solid rgba(151, 18, 18, 1);
+      border: 2px solid Colours.$primary-red;
       transition: all 0.5s ease-in-out;
       border-radius: 10px;
       cursor: pointer;
       width: 300px;
       height: 405px;
-      background-color: rgba(151, 18, 18, 1);
+      background-color: Colours.$primary-red;
       scroll-snap-align: start;
 
       .homepage-result-image {
@@ -170,7 +172,7 @@
     }
 
     .homepage-result:hover {
-      border-color: light-dark(#242424, whitesmoke);
+      border-color: Colours.$light-dark;
     }
   }
 }

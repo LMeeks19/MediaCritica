@@ -1,13 +1,15 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { serviceApiKeyState, userState } from "../State/GlobalState";
-import { MediaModel } from "../Interfaces/MediaModel";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
+import {
+  CapitaliseFirstLetter,
+  ConvertRatingStringToFiveScale,
+} from "../Helpers/StringHelper";
 import { SeasonModel } from "../Interfaces/SeasonModel";
+import TopBar from "../Components/TopBar";
 import {
   MenuItem,
+  Rating,
   Select,
   Table,
   TableBody,
@@ -19,11 +21,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import "../Style/MediaPage.scss";
+import { GetMedia, GetSeason } from "../Server/Server";
+import { MediaType } from "../Enums/MediaType";
+import { SeriesModel } from "../Interfaces/SeriesModel";
+import { MovieModel } from "../Interfaces/MovieModel";
+import StarRating from "../Components/StarRating";
 
 function MediaPage() {
-  const mediaServiceApiKey = useRecoilValue(serviceApiKeyState);
-  const user = useRecoilValue(userState);
-  const [media, setMedia] = useState<MediaModel>({} as MediaModel);
+  const [media, setMedia] = useState<MovieModel | SeriesModel>(
+    {} as MovieModel | SeriesModel
+  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
   const mediaId = location.state?.mediaId;
@@ -32,15 +39,12 @@ function MediaPage() {
 
   useEffect(() => {
     async function FetchMedia() {
+      if (mediaId === undefined) navigate("/");
       setIsLoading(true);
-      var mediaResponse = (await fetch(
-        `https://www.omdbapi.com/?i=${mediaId}&plot=full&apikey=${mediaServiceApiKey}`
-      ).then((response) => response.json())) as MediaModel;
+      var mediaResponse = await GetMedia(mediaId);
       var mediaSeasonsResponse = [] as SeasonModel[];
-      if (mediaResponse.totalSeasons !== undefined) {
-        let mediaSeasonResponse = (await fetch(
-          `https://www.omdbapi.com/?i=${mediaId}&season=1&apikey=${mediaServiceApiKey}`
-        ).then((response) => response.json())) as SeasonModel;
+      if (mediaResponse.Type === MediaType.Series) {
+        let mediaSeasonResponse = await GetSeason(mediaId);
         mediaSeasonsResponse.push(mediaSeasonResponse);
       }
       setMedia({ ...mediaResponse, seasons: mediaSeasonsResponse });
@@ -50,8 +54,9 @@ function MediaPage() {
   }, []);
 
   function GetSeasonOptions(): ReactNode[] {
+    let series = media as SeriesModel;
     let seasonOptions = [] as ReactNode[];
-    for (let season = 1; season <= Number(media.totalSeasons); season++) {
+    for (let season = 1; season <= Number(series.totalSeasons); season++) {
       seasonOptions.push(
         <MenuItem key={season} value={Number(season)}>
           Season {season}
@@ -62,30 +67,109 @@ function MediaPage() {
   }
 
   async function ChangeSelectedSeason(selectedSeason: number) {
+    let series = media as SeriesModel;
     if (
-      !media.seasons?.some((season) => Number(season.Season) === selectedSeason)
+      !series.seasons?.some(
+        (season) => Number(season.Season) === selectedSeason
+      )
     ) {
-      let mediaSeasonResponse = (await fetch(
-        `https://www.omdbapi.com/?i=${mediaId}&season=${selectedSeason}&apikey=${mediaServiceApiKey}`
-      ).then((response) => response.json())) as SeasonModel;
-      setMedia({ ...media, seasons: [...media.seasons!, mediaSeasonResponse] });
+      let mediaSeasonResponse = await GetSeason(mediaId, selectedSeason);
+      setMedia({
+        ...series,
+        seasons: [...series.seasons!, mediaSeasonResponse],
+      });
     }
 
     setSelectedSeason(selectedSeason);
   }
 
+  function GetUniqueMovieDetails() {
+    let movie = media as MovieModel;
+    return (
+      <div className="details-section">
+        <div>Runtime: {media.Runtime}</div>
+        <div>Box Office: {movie.BoxOffice}</div>
+        <div>DVD: {movie.DVD}</div>
+        <div>Production: {movie.Production}</div>
+        <div>Website: {movie.Website}</div>
+      </div>
+    );
+  }
+
+  function GetUniqueSeriesDetails() {
+    let series = media as SeriesModel;
+    return (
+      <div className="flex grow basis-full overflow-x-auto pb-5">
+        <Table key={selectedSeason}>
+          <TableHead>
+            <TableRow>
+              <TableCell className="table-title" colSpan={2}>
+                Season {selectedSeason}
+              </TableCell>
+              <TableCell colSpan={2}>
+                <Select
+                  value={selectedSeason}
+                  onChange={(e) =>
+                    ChangeSelectedSeason(e.target.value as number)
+                  }
+                  fullWidth
+                >
+                  {GetSeasonOptions().map((seasonOption) => {
+                    return seasonOption;
+                  })}
+                </Select>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Episode</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Released</TableCell>
+              <TableCell align="center">Rating</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {series.seasons
+              .find((season) => Number(season.Season) === selectedSeason)
+              ?.Episodes.filter((episode) => episode.Episode !== "0")
+              .map((episode) => {
+                return (
+                  <TableRow
+                    key={episode.imdbID}
+                    component="tr"
+                    onClick={() =>
+                      navigate(
+                        `seasons/${selectedSeason}/episodes/${episode.imdbID}`,
+                        {
+                          state: {
+                            episodeId: episode.imdbID,
+                            seriesTitle: series.Title,
+                          },
+                        }
+                      )
+                    }
+                  >
+                    <TableCell>{episode.Episode}</TableCell>
+                    <TableCell>{episode.Title}</TableCell>
+                    <TableCell>
+                      {episode.Released !== "N/A"
+                        ? format(new Date(episode.Released), "do MMM yyyy")
+                        : episode.Released}
+                    </TableCell>
+                    <TableCell align="center">
+                      <FontAwesomeIcon className="star-icon" icon={faStar} />
+                      {episode.imdbRating}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+
   return (
     <div className="mediapage-container">
-      <div className="mediapage-topbar">
-        <div className="mediapage-return" onClick={() => history.back()}>
-          <div className="return-text">MEDIA CRITICA</div>
-        </div>
-        <div className="mediapage-account">
-          <div className="account-text">
-            {user.Email === undefined ? "SIGN IN" : "ACCOUNT"}
-          </div>
-        </div>
-      </div>
       {isLoading ? (
         <div className="media empty">
           <div className="loader">
@@ -98,169 +182,75 @@ function MediaPage() {
         </div>
       ) : (
         <div className="media">
+          <TopBar accountBlank={false} />
           <img className="media-poster" src={media.Poster}></img>
           <div className="media-details">
-            <div className="details-section">
-              <div>{media.Title}</div>
-              <div>{CapitaliseFirstLetter(media.Type)}</div>
+            <div className="flex justify-between">
+              <div className="text-6xl text-center my-10">{media.Title}</div>
+              <StarRating rating={media.imdbRating} reviews={media.imdbVotes} />
             </div>
-            <div className="details-section section-2">
-              <div className="flex between row">
-                <div>Initial Release: {media.Released}</div>
-                <div>{media.Year}</div>
+            <div className="flex flex-wrap gap-5">
+              <div className="details-section basis-full gap-10">
+                <div>{media.Plot}</div>
+                <div className="flex justify-between flex-row ">
+                  <div>Initial Release: {media.Released}</div>
+                  <div>
+                    {CapitaliseFirstLetter(media.Type)} | {media.Year}
+                  </div>
+                </div>
               </div>
-              <div>{media.Plot}</div>
-            </div>
 
-            <div className="flex row gap-20">
-              <div className="details-section flex column width-50">
+              <div className="details-section">
                 <div>Actors: {media.Actors}</div>
                 <div>Directos(s): {media.Director}</div>
                 <div>Writer(s): {media.Writer}</div>
               </div>
 
-              <div className="details-section flex column width-50">
-                <div>Runtime: {media.Runtime}</div>
+              <div className="details-section">
                 <div>Genre: {media.Genre}</div>
                 <div>Language: {media.Language}</div>
                 <div>Country: {media.Country}</div>
                 <div>Rated: {media.Rated}</div>
+                <div>Awards: {media.Awards}</div>
               </div>
-            </div>
 
-            <div className="flex row gap-20">
-              <div className="details-section flex column width-50">
-                <div>Metascore: {media.Metascore}</div>
-                <div>
-                  IMDb: {media.imdbRating} | {media.imdbVotes} Reviews
-                </div>
+              <div className="details-section">
+                {media.Metascore !== "N/A" ? (
+                  <div className="flex gap-2">
+                    Metascore:
+                    <div className="my-auto">
+                      <Rating
+                        precision={0.1}
+                        value={ConvertRatingStringToFiveScale(media.Metascore)}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
                 {media.Ratings.map((rating) => {
                   return (
-                    <div key={rating.Source}>
-                      {rating.Source}: {rating.Value}
+                    <div className="flex gap-2" key={rating.Source}>
+                      {rating.Source}:
+                      <Rating
+                        precision={0.1}
+                        value={ConvertRatingStringToFiveScale(rating.Value)}
+                        readOnly
+                      />
                     </div>
                   );
                 })}
               </div>
 
-              {media.BoxOffice !== undefined ||
-              media.Awards !== undefined ||
-              media.DVD !== undefined ||
-              media.Production !== undefined ||
-              media.Website !== undefined ? (
-                <div className="details-section flex column width-50">
-                  {media.BoxOffice !== undefined ? (
-                    <div>Box Office: {media.BoxOffice}</div>
-                  ) : (
-                    <></>
-                  )}
-                  {media.Awards !== undefined ? (
-                    <div>Awards: {media.Awards}</div>
-                  ) : (
-                    <></>
-                  )}
-                  {media.DVD !== undefined ? (
-                    <div>DVD: {media.DVD}</div>
-                  ) : (
-                    <></>
-                  )}
-                  {media.Production !== undefined ? (
-                    <div>Production: {media.Production}</div>
-                  ) : (
-                    <></>
-                  )}
-                  {media.Website !== undefined ? (
-                    <div>Website: {media.Website}</div>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
-
-            <div style={{ marginTop: "20px" }}>
-              {media.seasons !== undefined &&
-              media.totalSeasons !== undefined ? (
-                <Table key={selectedSeason}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell className="table-title" colSpan={2}>
-                        Season {selectedSeason}
-                      </TableCell>
-                      <TableCell colSpan={2}>
-                        <Select
-                          value={selectedSeason}
-                          onChange={(e) =>
-                            ChangeSelectedSeason(e.target.value as number)
-                          }
-                          fullWidth
-                        >
-                          {GetSeasonOptions().map((seasonOption) => {
-                            return seasonOption;
-                          })}
-                        </Select>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Episode</TableCell>
-                      <TableCell>Title</TableCell>
-                      <TableCell>Released</TableCell>
-                      <TableCell align="center">Rating</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {media.seasons
-                      .find(
-                        (season) => Number(season.Season) === selectedSeason
-                      )
-                      ?.Episodes.filter((episode) => episode.Episode !== "0")
-                      .map((episode) => {
-                        return (
-                          <TableRow
-                            key={episode.imdbID}
-                            component="tr"
-                            onClick={() =>
-                              navigate(
-                                `seasons/${selectedSeason}/episodes/${episode.imdbID}`,
-                                {
-                                  state: {
-                                    episodeId: episode.imdbID,
-                                  },
-                                }
-                              )
-                            }
-                          >
-                            <TableCell>{episode.Episode}</TableCell>
-                            <TableCell>{episode.Title}</TableCell>
-                            <TableCell>
-                              {episode.Released !== "N/A"
-                                ? format(
-                                    new Date(episode.Released),
-                                    "do MMM yyyy"
-                                  )
-                                : episode.Released}
-                            </TableCell>
-                            <TableCell align="center">
-                              <FontAwesomeIcon
-                                className="star-icon"
-                                icon={faStar}
-                              />
-                              {episode.imdbRating}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              ) : (
-                <></>
-              )}
+              {media.Type === MediaType.Movie
+                ? GetUniqueMovieDetails()
+                : GetUniqueSeriesDetails()}
             </div>
           </div>
         </div>
       )}
+      ;
     </div>
   );
 }

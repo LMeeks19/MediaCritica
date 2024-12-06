@@ -1,63 +1,9 @@
+@use "Colours.scss";
+
 .mediapage-container {
   width: 100%;
   height: 100%;
   overflow: hidden;
-
-  .mediapage-topbar {
-    position: absolute;
-    top: 0;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 999;
-    height: 4rem;
-    text-wrap: nowrap;
-
-    .mediapage-return {
-      height: 4rem;
-      width: calc(40% - 15px);
-      display: flex;
-      font-size: 2.5rem;
-      margin-left: 15px;
-
-      .return-text {
-        font-size: 1.5rem;
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-left: 15px;
-        cursor: pointer;
-        transition: color 0.5s ease-in-out;
-      }
-
-      .return-text:hover {
-        color: rgba(151, 18, 18, 1);
-      }
-    }
-
-    .mediapage-account {
-      width: calc(60% - 15px);
-      display: flex;
-      justify-content: end;
-      font-size: 2.5rem;
-      height: 4rem;
-      background-color: light-dark(whitesmoke, #242424);
-      margin-right: 15px;
-
-      .account-text {
-        font-size: 1.5rem;
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-right: 15px;
-        cursor: pointer;
-        transition: color 0.5s ease-in-out;
-      }
-
-      .account-text:hover {
-        color: rgba(151, 18, 18, 1);
-      }
-    }
-  }
 
   .media {
     height: 100%;
@@ -84,16 +30,12 @@
 
       .details-section {
         display: flex;
-        justify-content: space-evenly;
-        margin-top: 20px;
+        justify-content: space-around;
+        flex-direction: column;
+        flex-grow: 1;
         padding: 20px;
-        background-color: rgba(151, 18, 18, 1);
+        background-color: Colours.$primary-red;
         border-radius: 10px;
-
-        &.section-2 {
-          flex-direction: column;
-          gap: 20px;
-        }
       }
 
       .table-title {
@@ -101,7 +43,7 @@
       }
 
       .star-icon {
-        color: goldenrod;
+        color: Colours.$rating-star;
         font-size: 1rem;
         margin-right: 5px;
       }

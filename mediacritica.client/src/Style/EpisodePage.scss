@@ -1,0 +1,64 @@
+@use "Colours.scss";
+
+.episodepage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .episode {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.empty {
+      justify-content: center;
+      align-items: center;
+    }
+
+    .episode-poster {
+      height: 40%;
+      width: 100%;
+
+      .episode-title {
+        height: calc(100% - 8rem);
+        width: calc(100% - 8rem);
+        padding: 4rem;
+        display: flex;
+        justify-content: center;
+        -webkit-text-stroke: 4px Colours.$primary-red;
+        color: Colours.$light-dark;
+        backdrop-filter: blur(8px);
+      }
+    }
+
+    .episode-details {
+      border-top: 4px solid Colours.$primary-red;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 4rem;
+      width: calc(100% - 8rem);
+      height: calc(60% - 8rem);
+      z-index: 1;
+      gap: 20px;
+      overflow-y: auto;
+
+      .episode-title {
+        font-size: 2.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .episode-detail {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 20px;
+        background-color: Colours.$primary-red;
+        border-radius: 10px;
+      }
+    }
+  }
+}
