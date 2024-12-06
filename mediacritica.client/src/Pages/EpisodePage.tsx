@@ -5,10 +5,10 @@ import { BeatLoader } from "react-spinners";
 import TopBar from "../Components/TopBar";
 import { AutoTextSize } from "auto-text-size";
 import { GetEpisode } from "../Server/Server";
-import "../Style/EpisodePage.scss";
 import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
+import "./EpisodePage.scss";
 
 function EpisodePage() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function EpisodePage() {
         </div>
       ) : (
         <div className="episode">
-          <TopBar />
+          <TopBar blankReturn blankAccount />
           <div
             className="episode-poster"
             style={{

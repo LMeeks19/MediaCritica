@@ -16,9 +16,9 @@ import { faMagnifyingGlass, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
-import "../Style/HomePage.scss";
 import { GetSearchResults, GetUser } from "../Server/Server";
 import TopBar from "../Components/TopBar";
+import "./HomePage.scss";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -69,7 +69,7 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
-      <TopBar isHomePage={true} />
+      <TopBar hideReturn />
       <div className="homepage-title">
         <AutoTextSize mode="oneline" minFontSizePx={30} maxFontSizePx={124}>
           MEDIA CRITICA

@@ -9,15 +9,19 @@ function TopBar(props: TopBarProps) {
 
   return (
     <div className="topbar">
-      <div className="return">
-        {!props.isHomePage && (
+      <div
+        className={`return ${
+          props.blankReturn && "blank"
+        }`}
+      >
+        {!props.hideReturn && (
           <div className="text" onClick={() => history.back()}>
             MEDIA CRITICA
           </div>
         )}
       </div>
-      <div className={`account ${!props.isMediaPage && "blank"}`}>
-        {!props.isLoginPage && (
+      <div className={`account ${props.blankAccount && "blank"}`}>
+        {!props.hideAccount && (
           <div
             className="text"
             onClick={() =>
@@ -35,7 +39,9 @@ function TopBar(props: TopBarProps) {
 export default TopBar;
 
 interface TopBarProps {
-  isMediaPage?: boolean;
-  isHomePage?: boolean;
-  isLoginPage?: boolean;
+  hideReturn?: boolean;
+  blankReturn?: boolean
+  hideAccount?: boolean;
+  blankAccount?: boolean;
+
 }

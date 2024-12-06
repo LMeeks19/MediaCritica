@@ -2,7 +2,7 @@ import { AppBar, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import TopBar from "../Components/TopBar";
 import LoginForm from "../Components/LoginForm";
-import "../Style/LoginPage.scss";
+import "./LoginPage.scss";
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -25,11 +25,11 @@ function LoginPage() {
 
   return (
     <div className="loginpage-container">
-      <TopBar isLoginPage={true} />
+      <TopBar hideAccount />
       <AppBar className="login" position="static">
         <Tabs
           value={activeTab}
-          onChange={(e, v) => setActiveTab(v)}
+          onChange={(_e, v) => setActiveTab(v)}
           variant="fullWidth"
           centered
         >

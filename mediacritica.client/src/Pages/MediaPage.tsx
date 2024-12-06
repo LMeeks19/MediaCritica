@@ -20,12 +20,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
-import "../Style/MediaPage.scss";
 import { GetMedia, GetSeason } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
+import "./MediaPage.scss";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -183,7 +183,7 @@ function MediaPage() {
         </div>
       ) : (
         <div className="media">
-          <TopBar isMediaPage={true} />
+          <TopBar blankReturn />
           <img className="media-poster" src={media.Poster}></img>
           <div className="media-details">
             <div className="flex justify-between">
