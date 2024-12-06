@@ -1,0 +1,52 @@
+@use "../Style/Colours.scss";
+
+.login-form {
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    height: calc(100% - 4rem);
+    gap: 5px;
+
+    .login-title {
+      font-size: 35px;
+    }
+
+    .login-input {
+      width: 100%;
+      .login-label {
+        align-self: flex-start;
+        font-size: 20px;
+      }
+
+      .login-email[type="email"],
+      .login-password[type="password"],
+      .login-password[type="text"] {
+        font-size: 20px;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        display: inline-block;
+        border: 2px solid Colours.$light-dark;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background-color: transparent;
+        color: Colours.$light-dark;
+        padding: 15px;
+      }
+    }
+
+    .login-button {
+      background-color: Colours.$primary-red;
+      color: Colours.$light-dark;
+      padding: 15px;
+      font-size: 20px;
+      font-family: inherit;
+      margin: 10px 0;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      width: 100%;
+    }
+  }

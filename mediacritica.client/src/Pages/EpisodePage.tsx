@@ -41,7 +41,7 @@ function EpisodePage() {
         </div>
       ) : (
         <div className="episode">
-          <TopBar accountBlank={true} />
+          <TopBar />
           <div
             className="episode-poster"
             style={{
@@ -90,7 +90,7 @@ function EpisodePage() {
             </div>
 
             <div className="episode-detail">
-              {episode.Metascore !== "N/A" ? (
+              {episode.Metascore !== "N/A" && (
                 <div className="flex">
                   Metascore:
                   <div className="my-auto">
@@ -101,8 +101,6 @@ function EpisodePage() {
                     />
                   </div>
                 </div>
-              ) : (
-                <></>
               )}
               {episode.Ratings.map((rating) => {
                 return (

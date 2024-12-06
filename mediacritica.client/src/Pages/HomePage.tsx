@@ -18,6 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
 import "../Style/HomePage.scss";
 import { GetSearchResults, GetUser } from "../Server/Server";
+import TopBar from "../Components/TopBar";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -40,7 +41,7 @@ function HomePage() {
     setIsLoading(true);
     const timeout = setTimeout(async () => {
       if (searchTerm.length > 0) {
-        var mediaSearchResponse = await GetSearchResults(searchTerm)
+        var mediaSearchResponse = await GetSearchResults(searchTerm);
         setMediaSearchResults(mediaSearchResponse.Search ?? []);
       } else {
         setMediaSearchResults([]);
@@ -68,20 +69,7 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
-      <div
-        className="homepage-account"
-        onClick={() => {
-          if (user.Email === undefined) {
-            navigate("/login");
-          } else {
-            navigate("/account");
-          }
-        }}
-      >
-        <div className="account-text">
-          {user.Email === undefined ? "SIGN IN" : "ACCOUNT"}
-        </div>
-      </div>
+      <TopBar isHomePage={true} />
       <div className="homepage-title">
         <AutoTextSize mode="oneline" minFontSizePx={30} maxFontSizePx={124}>
           MEDIA CRITICA
@@ -100,7 +88,7 @@ function HomePage() {
           placeholder="Search for media..."
         />
         <div className="homepage-icon">
-          {searchTerm.length > 0 ? (
+          {searchTerm.length > 0 && (
             <IconButton color="inherit" size="large">
               <CustomTooltip title="Clear Search" arrow>
                 <FontAwesomeIcon
@@ -111,8 +99,6 @@ function HomePage() {
                 />
               </CustomTooltip>
             </IconButton>
-          ) : (
-            <></>
           )}
         </div>
       </div>

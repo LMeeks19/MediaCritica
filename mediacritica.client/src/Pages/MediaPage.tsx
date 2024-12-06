@@ -108,6 +108,7 @@ function MediaPage() {
               </TableCell>
               <TableCell colSpan={2}>
                 <Select
+                  variant="standard"
                   value={selectedSeason}
                   onChange={(e) =>
                     ChangeSelectedSeason(e.target.value as number)
@@ -182,7 +183,7 @@ function MediaPage() {
         </div>
       ) : (
         <div className="media">
-          <TopBar accountBlank={false} />
+          <TopBar isMediaPage={true} />
           <img className="media-poster" src={media.Poster}></img>
           <div className="media-details">
             <div className="flex justify-between">
@@ -215,7 +216,7 @@ function MediaPage() {
               </div>
 
               <div className="details-section">
-                {media.Metascore !== "N/A" ? (
+                {media.Metascore !== "N/A" && (
                   <div className="flex gap-2">
                     Metascore:
                     <div className="my-auto">
@@ -226,8 +227,6 @@ function MediaPage() {
                       />
                     </div>
                   </div>
-                ) : (
-                  <></>
                 )}
                 {media.Ratings.map((rating) => {
                   return (
