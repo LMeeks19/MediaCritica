@@ -12,6 +12,15 @@ export async function GetUser(email: string): Promise<UserModel> {
   return response.json();
 }
 
+export async function PostUser(user: UserModel): Promise<UserModel> {
+  const response = await fetch(`/User/PostUser`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return await response.json();
+}
+
 export async function GetSearchResults(
   searchTerm: string
 ): Promise<MediaSearchResponse> {

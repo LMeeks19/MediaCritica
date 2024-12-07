@@ -39,7 +39,7 @@ function MediaPage() {
 
   useEffect(() => {
     async function FetchMedia() {
-      if (mediaId === undefined) navigate("/");
+      mediaId === undefined && navigate("/");
       setIsLoading(true);
       var mediaResponse = await GetMedia(mediaId);
       var mediaSeasonsResponse = [] as SeasonModel[];

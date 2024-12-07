@@ -7,16 +7,13 @@ import {
 import { BeatLoader } from "react-spinners";
 import $ from "jquery";
 import { AutoTextSize } from "auto-text-size";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
-import { UserModel } from "../Interfaces/UserModel";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
-import { GetSearchResults, GetUser } from "../Server/Server";
+import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
 import "./HomePage.scss";
 
@@ -26,16 +23,7 @@ function HomePage() {
   const [mediaSearchResults, setMediaSearchResults] = useState<
     MediaSearchModel[]
   >([] as MediaSearchModel[]);
-  const [user, setUser] = useRecoilState<UserModel>(userState);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function FetchUser() {
-      const userData = await GetUser(user.Email);
-      setUser(userData);
-    }
-    FetchUser();
-  }, []);
 
   useEffect(() => {
     setIsLoading(true);

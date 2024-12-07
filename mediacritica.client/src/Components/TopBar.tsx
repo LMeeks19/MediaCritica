@@ -9,13 +9,9 @@ function TopBar(props: TopBarProps) {
 
   return (
     <div className="topbar">
-      <div
-        className={`return ${
-          props.blankReturn && "blank"
-        }`}
-      >
+      <div className={`return ${props.blankReturn && "blank"}`}>
         {!props.hideReturn && (
-          <div className="text" onClick={() => history.back()}>
+          <div className="text" onClick={() => navigate("/")}>
             MEDIA CRITICA
           </div>
         )}
@@ -25,7 +21,7 @@ function TopBar(props: TopBarProps) {
           <div
             className="text"
             onClick={() =>
-              navigate(user.Email === undefined ? "/login" : "/account")
+              navigate(user.email === null ? "/login" : "/account")
             }
           >
             ACCOUNT
@@ -40,8 +36,7 @@ export default TopBar;
 
 interface TopBarProps {
   hideReturn?: boolean;
-  blankReturn?: boolean
+  blankReturn?: boolean;
   hideAccount?: boolean;
   blankAccount?: boolean;
-
 }

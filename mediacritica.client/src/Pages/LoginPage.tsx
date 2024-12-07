@@ -2,26 +2,13 @@ import { AppBar, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import TopBar from "../Components/TopBar";
 import LoginForm from "../Components/LoginForm";
+import { LoginFormType } from "../Enums/LoginFormType";
+
+import TabPanel from "../Components/TabPanel";
 import "./LoginPage.scss";
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
-
-  interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-  }
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index } = props;
-
-    return (
-      <div role="tabpanel" className="login-tab" hidden={value !== index}>
-        {value === index && children}
-      </div>
-    );
-  }
 
   return (
     <div className="loginpage-container">
@@ -37,10 +24,10 @@ function LoginPage() {
           <Tab label="CREATE ACCOUNT" />
         </Tabs>
         <TabPanel value={activeTab} index={0}>
-          <LoginForm formTitle="LOGIN" buttonText="Login" />
+          <LoginForm FormType={LoginFormType.Login} />
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
-          <LoginForm formTitle="CREATE ACCOUNT" buttonText="Create Account" />
+          <LoginForm FormType={LoginFormType.CreateAccount} />
         </TabPanel>
       </AppBar>
     </div>

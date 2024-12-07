@@ -18,7 +18,7 @@ function EpisodePage() {
 
   useEffect(() => {
     async function FetchEpisode() {
-      if (location.state?.episodeId === undefined) navigate("/");
+      location.state?.episodeId === undefined && navigate("/");
       setIsLoading(true);
       var episodeResponse = await GetEpisode(location.state.episodeId);
       setEpisode(episodeResponse);
