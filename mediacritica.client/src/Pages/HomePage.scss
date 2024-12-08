@@ -1,4 +1,4 @@
-@use "Colours.scss";
+@use "../Style/Colours.scss";
 
 .homepage-container {
   width: calc(100% - 8rem);
@@ -7,6 +7,7 @@
   display: grid;
   gap: 40px;
   justify-items: center;
+  align-items: center;
   scroll-padding: 4rem;
   overflow-y: auto;
   overflow-x: hidden;

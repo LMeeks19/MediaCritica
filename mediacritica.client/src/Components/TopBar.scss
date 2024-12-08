@@ -16,7 +16,12 @@
       width: calc(40% - 15px);
       display: flex;
       font-size: 2.5rem;
+      background-color: Colours.$dark-light;
       margin-left: 15px;
+
+      &.blank {
+        background-color: transparent !important;
+      }
 
       .text {
         font-size: 1.5rem;

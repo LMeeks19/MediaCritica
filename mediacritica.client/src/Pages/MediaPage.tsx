@@ -20,12 +20,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
-import "../Style/MediaPage.scss";
 import { GetMedia, GetSeason } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
+import "./MediaPage.scss";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -39,7 +39,7 @@ function MediaPage() {
 
   useEffect(() => {
     async function FetchMedia() {
-      if (mediaId === undefined) navigate("/");
+      mediaId === undefined && navigate("/");
       setIsLoading(true);
       var mediaResponse = await GetMedia(mediaId);
       var mediaSeasonsResponse = [] as SeasonModel[];
@@ -108,6 +108,7 @@ function MediaPage() {
               </TableCell>
               <TableCell colSpan={2}>
                 <Select
+                  variant="standard"
                   value={selectedSeason}
                   onChange={(e) =>
                     ChangeSelectedSeason(e.target.value as number)
@@ -182,7 +183,7 @@ function MediaPage() {
         </div>
       ) : (
         <div className="media">
-          <TopBar accountBlank={false} />
+          <TopBar blankReturn />
           <img className="media-poster" src={media.Poster}></img>
           <div className="media-details">
             <div className="flex justify-between">
@@ -215,7 +216,7 @@ function MediaPage() {
               </div>
 
               <div className="details-section">
-                {media.Metascore !== "N/A" ? (
+                {media.Metascore !== "N/A" && (
                   <div className="flex gap-2">
                     Metascore:
                     <div className="my-auto">
@@ -226,8 +227,6 @@ function MediaPage() {
                       />
                     </div>
                   </div>
-                ) : (
-                  <></>
                 )}
                 {media.Ratings.map((rating) => {
                   return (

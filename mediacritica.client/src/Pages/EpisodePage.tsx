@@ -5,10 +5,10 @@ import { BeatLoader } from "react-spinners";
 import TopBar from "../Components/TopBar";
 import { AutoTextSize } from "auto-text-size";
 import { GetEpisode } from "../Server/Server";
-import "../Style/EpisodePage.scss";
 import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
+import "./EpisodePage.scss";
 
 function EpisodePage() {
   const location = useLocation();
@@ -18,7 +18,7 @@ function EpisodePage() {
 
   useEffect(() => {
     async function FetchEpisode() {
-      if (location.state?.episodeId === undefined) navigate("/");
+      location.state?.episodeId === undefined && navigate("/");
       setIsLoading(true);
       var episodeResponse = await GetEpisode(location.state.episodeId);
       setEpisode(episodeResponse);
@@ -41,7 +41,7 @@ function EpisodePage() {
         </div>
       ) : (
         <div className="episode">
-          <TopBar accountBlank={true} />
+          <TopBar blankReturn blankAccount />
           <div
             className="episode-poster"
             style={{
@@ -90,7 +90,7 @@ function EpisodePage() {
             </div>
 
             <div className="episode-detail">
-              {episode.Metascore !== "N/A" ? (
+              {episode.Metascore !== "N/A" && (
                 <div className="flex">
                   Metascore:
                   <div className="my-auto">
@@ -101,8 +101,6 @@ function EpisodePage() {
                     />
                   </div>
                 </div>
-              ) : (
-                <></>
               )}
               {episode.Ratings.map((rating) => {
                 return (

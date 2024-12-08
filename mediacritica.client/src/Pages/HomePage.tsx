@@ -7,17 +7,15 @@ import {
 import { BeatLoader } from "react-spinners";
 import $ from "jquery";
 import { AutoTextSize } from "auto-text-size";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
-import { UserModel } from "../Interfaces/UserModel";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
-import "../Style/HomePage.scss";
-import { GetSearchResults, GetUser } from "../Server/Server";
+import { GetSearchResults } from "../Server/Server";
+import TopBar from "../Components/TopBar";
+import "./HomePage.scss";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -25,22 +23,13 @@ function HomePage() {
   const [mediaSearchResults, setMediaSearchResults] = useState<
     MediaSearchModel[]
   >([] as MediaSearchModel[]);
-  const [user, setUser] = useRecoilState<UserModel>(userState);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function FetchUser() {
-      const userData = await GetUser(user.Email);
-      setUser(userData);
-    }
-    FetchUser();
-  }, []);
 
   useEffect(() => {
     setIsLoading(true);
     const timeout = setTimeout(async () => {
       if (searchTerm.length > 0) {
-        var mediaSearchResponse = await GetSearchResults(searchTerm)
+        var mediaSearchResponse = await GetSearchResults(searchTerm);
         setMediaSearchResults(mediaSearchResponse.Search ?? []);
       } else {
         setMediaSearchResults([]);
@@ -68,20 +57,7 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
-      <div
-        className="homepage-account"
-        onClick={() => {
-          if (user.Email === undefined) {
-            navigate("/login");
-          } else {
-            navigate("/account");
-          }
-        }}
-      >
-        <div className="account-text">
-          {user.Email === undefined ? "SIGN IN" : "ACCOUNT"}
-        </div>
-      </div>
+      <TopBar hideReturn />
       <div className="homepage-title">
         <AutoTextSize mode="oneline" minFontSizePx={30} maxFontSizePx={124}>
           MEDIA CRITICA
@@ -100,7 +76,7 @@ function HomePage() {
           placeholder="Search for media..."
         />
         <div className="homepage-icon">
-          {searchTerm.length > 0 ? (
+          {searchTerm.length > 0 && (
             <IconButton color="inherit" size="large">
               <CustomTooltip title="Clear Search" arrow>
                 <FontAwesomeIcon
@@ -111,8 +87,6 @@ function HomePage() {
                 />
               </CustomTooltip>
             </IconButton>
-          ) : (
-            <></>
           )}
         </div>
       </div>
