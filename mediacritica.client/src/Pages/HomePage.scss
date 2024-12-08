@@ -12,31 +12,6 @@
   overflow-y: auto;
   overflow-x: hidden;
 
-  .homepage-account {
-    position: absolute;
-    top: 0%;
-    bottom: 0%;
-    right: 0%;
-    padding: 20px 20px 0 0;
-    height: 40px;
-    display: flex;
-    font-size: 2.5rem;
-    cursor: pointer;
-    text-wrap: nowrap;
-    transition: all .5s ease-in-out;
-
-    .account-text {
-      font-size: 1.5rem;
-      margin-top: auto;
-      margin-bottom: auto;
-      margin-right: 15px;
-    }
-  }
-
-  .homepage-account:hover {
-    color: Colours.$primary-red;
-  }
-
   .homepage-title {
     display: flex;
     justify-content: center;

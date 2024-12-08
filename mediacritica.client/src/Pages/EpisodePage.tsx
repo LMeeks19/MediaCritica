@@ -64,6 +64,7 @@ function EpisodePage() {
               <StarRating
                 rating={episode.imdbRating}
                 reviews={episode.imdbVotes}
+                mediaId={episode.imdbID}
               />
             </div>
             <div className="episode-detail">

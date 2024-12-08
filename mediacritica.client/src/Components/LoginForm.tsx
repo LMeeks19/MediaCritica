@@ -23,7 +23,6 @@ function LoginForm(props: LoginFormProps) {
     const userData = await GetUser(email);
     if (userData.password === password) {
       setUser(userData);
-      navigate("/account");
     }
   }
 
@@ -34,7 +33,6 @@ function LoginForm(props: LoginFormProps) {
         password: password,
       } as UserModel);
       setUser(userData);
-      navigate("/account");
     }
   }
 

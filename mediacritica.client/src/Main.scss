@@ -147,6 +147,16 @@ body {
   }
 }
 
+.MuiButton-root {
+  color: Colours.$light-dark !important;
+  font-family: inherit !important;
+  cursor: pointer !important;
+}
+
+.MuiButton-root:disabled {
+  opacity: 50% !important;
+}
+
 .MuiPaper-root {
   background-color: Colours.$dark-light !important;
   color: Colours.$light-dark !important;

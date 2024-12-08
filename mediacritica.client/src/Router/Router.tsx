@@ -1,9 +1,9 @@
 import HomePage from "../Pages/HomePage";
 import { createBrowserRouter } from "react-router-dom";
 import MediaPage from "../Pages/MediaPage";
-import LoginPage from "../Pages/LoginPage";
 import AccountPage from "../Pages/AccountPage";
 import EpisodePage from "../Pages/EpisodePage";
+import ReviewPage from "../Pages/ReviewPage";
 
 export const router = createBrowserRouter([
   {
@@ -16,14 +16,13 @@ export const router = createBrowserRouter([
   },
   {
     path: "/media/:id/seasons/:seasonId/episodes/:episodeId",
-    element: <EpisodePage />
+    element: <EpisodePage />,
   },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
+  { path: "/review",
+    element: <ReviewPage />
+   },
   {
     path: "/account",
     element: <AccountPage />,
-  }
+  },
 ]);

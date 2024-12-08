@@ -1,18 +1,15 @@
-import { AppBar, Tab, Tabs } from "@mui/material";
-import { useState } from "react";
-import TopBar from "../Components/TopBar";
-import LoginForm from "../Components/LoginForm";
+import { AppBar, Tabs, Tab } from "@mui/material";
 import { LoginFormType } from "../Enums/LoginFormType";
+import LoginForm from "./LoginForm";
+import TabPanel from "./TabPanel";
+import { useState } from "react";
+import "./AccountLogin.scss";
 
-import TabPanel from "../Components/TabPanel";
-import "./LoginPage.scss";
-
-function LoginPage() {
+function AccountLogin() {
   const [activeTab, setActiveTab] = useState<number>(0);
 
   return (
-    <div className="loginpage-container">
-      <TopBar hideAccount />
+    <div className="login-container">
       <AppBar className="login" position="static">
         <Tabs
           value={activeTab}
@@ -34,4 +31,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default AccountLogin;

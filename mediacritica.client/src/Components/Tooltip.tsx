@@ -5,11 +5,11 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
   [`& .${tooltipClasses.arrow}`]: {
-    color: "$light-dark",
+    color: "rgba(151, 18, 18, 1)",
   },
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: "$light-dark",
-    color: "$primary-red",
+    backgroundColor: "rgba(151, 18, 18, 1)",
+    color: "light-dark(#242424, whitesmoke)",
     fontSize: 15,
     padding: 5
   },

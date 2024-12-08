@@ -188,7 +188,11 @@ function MediaPage() {
           <div className="media-details">
             <div className="flex justify-between">
               <div className="text-6xl text-center my-10">{media.Title}</div>
-              <StarRating rating={media.imdbRating} reviews={media.imdbVotes} />
+              <StarRating
+                rating={media.imdbRating}
+                reviews={media.imdbVotes}
+                mediaId={media.imdbID}
+              />
             </div>
             <div className="flex flex-wrap gap-5">
               <div className="details-section basis-full gap-10">
