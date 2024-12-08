@@ -8,4 +8,14 @@ Accept: application/json
 POST {{MediaCritica.Server_HostAddress}}/User/PostUser
 Accept: application/json
 
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetReviews/
+Accept: application/json
+
+###
+
+POST {{MediaCritica.Server_HostAddress}}/Review/PostReview
+Accept: application/json
+
 
