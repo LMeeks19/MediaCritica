@@ -1,6 +1,7 @@
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MovieModel } from "../Interfaces/MovieModel";
+import { ReviewModel } from "../Interfaces/ReviewModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UserModel } from "../Interfaces/UserModel";
@@ -54,4 +55,13 @@ export async function GetEpisode(
     `https://www.omdbapi.com/?i=${episodeId}&plot=full&apikey=${mediaServiceApiKey}`
   );
   return response.json();
+}
+
+export async function PostReview(review: ReviewModel): Promise<void> {
+  await fetch(`/Review/PostReview`, {
+    method: "POST",
+    body: JSON.stringify(review),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+
 }

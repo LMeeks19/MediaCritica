@@ -24,7 +24,7 @@ namespace MediaCritica.Server.Migrations
                     MediaEpisode = table.Column<int>(type: "int", nullable: true),
                     MediaParentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MediaParentTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReviewerId = table.Column<int>(type: "int", nullable: false),
+                    ReviewerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<double>(type: "float", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },

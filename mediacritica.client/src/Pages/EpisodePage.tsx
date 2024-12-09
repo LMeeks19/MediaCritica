@@ -9,12 +9,14 @@ import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
 import "./EpisodePage.scss";
+import { SeriesModel } from "../Interfaces/SeriesModel";
 
 function EpisodePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [episode, setEpisode] = useState<EpisodeModel>({} as EpisodeModel);
+  const series = location.state?.series as SeriesModel;
 
   useEffect(() => {
     async function FetchEpisode() {
@@ -59,12 +61,13 @@ function EpisodePage() {
           </div>
           <div className="episode-details">
             <div className="episode-title flex justify-between basis-full px-5">
-              {location.state.seriesTitle} | S{episode.Season}:E
+              {series.Title} | S{episode.Season}:E
               {episode.Episode}
               <StarRating
                 rating={episode.imdbRating}
                 reviews={episode.imdbVotes}
-                mediaId={episode.imdbID}
+                media={episode}
+                parent={series}
               />
             </div>
             <div className="episode-detail">

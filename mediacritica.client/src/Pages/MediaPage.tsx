@@ -143,7 +143,7 @@ function MediaPage() {
                         {
                           state: {
                             episodeId: episode.imdbID,
-                            seriesTitle: series.Title,
+                            series: series as SeriesModel,
                           },
                         }
                       )
@@ -191,7 +191,7 @@ function MediaPage() {
               <StarRating
                 rating={media.imdbRating}
                 reviews={media.imdbVotes}
-                mediaId={media.imdbID}
+                media={media}
               />
             </div>
             <div className="flex flex-wrap gap-5">

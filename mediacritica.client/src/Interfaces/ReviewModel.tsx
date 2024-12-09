@@ -1,15 +1,15 @@
 import { MediaType } from "../Enums/MediaType";
 
 export interface ReviewModel {
-  MediaId: string;
-  MediaPoster: string;
-  MediaTitle: string;
-  MediaType: MediaType;
-  MediaSeason: number;
-  MediaEpisode: number;
-  MediaParentId: string;
-  MediaParentTitle: string;
-  ReviewerId: number;
-  Rating: number;
-  Description: string;
+  mediaId: string;
+  mediaPoster: string;
+  mediaTitle: string;
+  mediaType: MediaType;
+  mediaSeason?: number;
+  mediaEpisode?: number;
+  mediaParentId?: string;
+  mediaParentTitle?: string;
+  reviewerEmail: string;
+  rating: number;
+  description: string;
 }

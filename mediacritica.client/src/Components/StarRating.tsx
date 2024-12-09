@@ -4,6 +4,9 @@ import { userState } from "../State/GlobalState";
 import { useNavigate } from "react-router-dom";
 import { CustomTooltip } from "./Tooltip";
 import "./StarRating.scss";
+import { MovieModel } from "../Interfaces/MovieModel";
+import { SeriesModel } from "../Interfaces/SeriesModel";
+import { EpisodeModel } from "../Interfaces/EpisodeModel";
 
 function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
@@ -25,7 +28,7 @@ function StarRating(props: StarRatingProps) {
           <button
             className="review-button"
             onClick={() =>
-              navigate("/review", { state: { mediaId: props.mediaId } })
+              navigate("/write-review", { state: { media: props.media, parent: props.parent } })
             }
             disabled={user.email === null ? true : false}
           >
@@ -44,5 +47,6 @@ export default StarRating;
 interface StarRatingProps {
   rating: string;
   reviews: string;
-  mediaId: string;
+  media: MovieModel | SeriesModel | EpisodeModel;
+  parent?: SeriesModel;
 }

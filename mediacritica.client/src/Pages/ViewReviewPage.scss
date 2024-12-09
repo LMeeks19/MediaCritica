@@ -1,4 +1,6 @@
-.reviewpage-container {
+@use "../Style/Colours.scss";
+
+.viewreviewpage-container {
   width: calc(100% - 8rem);
   height: calc(100% - 8rem);
   padding: 4rem;
