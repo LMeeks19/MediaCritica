@@ -1,6 +1,7 @@
 import { MediaType } from "../Enums/MediaType";
 
 export interface ReviewModel {
+  id: number;
   mediaId: string;
   mediaPoster: string;
   mediaTitle: string;

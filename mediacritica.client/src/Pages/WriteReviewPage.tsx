@@ -108,7 +108,7 @@ function WriteReviewPage() {
               <textarea
                 className="review-description"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value.split('\n').join("\\n"))}
                 name="description"
                 placeholder="Add review..."
                 required

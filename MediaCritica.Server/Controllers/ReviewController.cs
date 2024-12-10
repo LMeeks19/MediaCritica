@@ -28,6 +28,7 @@ namespace MediaCritica.Server.Controllers
 
             return new ReviewModel()
             {
+                Id = review.Id,
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
@@ -63,6 +64,7 @@ namespace MediaCritica.Server.Controllers
         {
             var reviews = await _databaseContext.Reviews.Where(review => review.ReviewerEmail == reviewerEmail && review.MediaType == MediaType.Movie).Select(review => new ReviewModel()
             {
+                Id = review.Id,
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
@@ -86,6 +88,7 @@ namespace MediaCritica.Server.Controllers
         {
             var reviews = await _databaseContext.Reviews.Where(review => review.ReviewerEmail == reviewerEmail && review.MediaType == MediaType.Series).Select(review => new ReviewModel()
             {
+                Id = review.Id,
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
@@ -109,6 +112,7 @@ namespace MediaCritica.Server.Controllers
         {
             var reviews = await _databaseContext.Reviews.Where(review => review.ReviewerEmail == reviewerEmail && review.MediaType == MediaType.Game).Select(review => new ReviewModel()
             {
+                Id = review.Id,
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
@@ -132,6 +136,7 @@ namespace MediaCritica.Server.Controllers
         {
             var reviews = await _databaseContext.Reviews.Where(review => review.ReviewerEmail == reviewerEmail && review.MediaType == MediaType.Episode).Select(review => new ReviewModel()
             {
+                Id = review.Id,
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
@@ -153,7 +158,7 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]")]
         public async Task PostReview([FromBody] ReviewModel reviewModel)
         {
-            var review = new Review() { 
+            var review = new Review() {
                 MediaId = reviewModel.MediaId,
                 MediaPoster = reviewModel.MediaPoster,
                 MediaTitle = reviewModel.MediaTitle,
@@ -171,5 +176,16 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
         }
+
+        [HttpDelete(Name = "DeleteReview")]
+        [Route("[action]/{reviewId}")]
+        public void DeleteReview(int reviewId)
+        {
+            var review = _databaseContext.Reviews.Single(review => review.Id == reviewId);
+
+            _databaseContext.Reviews.Remove(review);
+            _databaseContext.SaveChanges();
+        }
     }
 }
+

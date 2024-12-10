@@ -25,14 +25,63 @@
       background-color: Colours.$primary-red;
       border-radius: 10px;
       display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex-wrap: wrap;
       width: calc(100% - 30px);
 
-      .email {
-        width: 50%;
-      }
+      .field {
+        display: flex;
+        flex-wrap: wrap;
 
-      .password {
-        width: 50%;
+        .key,
+        .value,
+        .action {
+          display: flex;
+          justify-content: center;
+          font-size: 1rem;
+        }
+
+        .value {
+          .input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            margin-left: 10px;
+            margin-right: 10px;
+            width: 100%;
+            font-family: inherit;
+            text-align: center;
+            font-size: 1rem;
+          }
+        }
+
+        .action {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          button[type="submit"] {
+            background-color: transparent;
+            padding: 0;
+            border: none;
+          }
+
+          .icon {
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.5s ease-in-out;
+
+            &.disabled {
+              pointer-events: none;
+              opacity: 50%;
+            }
+          }
+
+          .icon:hover {
+            color: Colours.$dark-light;
+          }
+        }
       }
     }
 

@@ -2,6 +2,7 @@
 {
     public class ReviewModel
     {
+        public int Id { get; set; }
         public required string MediaId { get; set; }
         public required string MediaPoster { get; set; }
         public required string MediaTitle { get; set; }

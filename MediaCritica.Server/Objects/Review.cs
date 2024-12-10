@@ -1,4 +1,6 @@
-﻿namespace MediaCritica.Server.Objects
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MediaCritica.Server.Objects
 {
     public class Review
     {

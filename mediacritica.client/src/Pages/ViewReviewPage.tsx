@@ -2,13 +2,19 @@ import { Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { GetReview } from "../Server/Server";
+import { DeleteReview, GetReview } from "../Server/Server";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MediaType } from "../Enums/MediaType";
 import { useRecoilValue } from "recoil";
 import { userState } from "../State/GlobalState";
 import { BeatLoader } from "react-spinners";
+import { formatRelative } from "date-fns";
+import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import "./ViewReviewPage.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-regular-svg-icons";
+import { Snackbar } from "../Components/Snackbar";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -30,6 +36,12 @@ function ViewReviewPage() {
     }
     FetchReview();
   }, []);
+
+  async function RemoveReview() {
+    await DeleteReview(review.id);
+    Snackbar("Review Deleted", "success");
+    history.back();
+  }
 
   return (
     <>
@@ -58,15 +70,37 @@ function ViewReviewPage() {
                     {review.mediaParentTitle && review.mediaTitle}
                   </div>
                 </div>
+                <div className="flex gap-3">
+                  <FontAwesomeIcon className="action-icon edit" icon={faEdit} />
+                  <FontAwesomeIcon
+                    onClick={() => RemoveReview()}
+                    className="action-icon delete"
+                    icon={faTrashCan}
+                  />
+                </div>
               </div>
-              <Rating
-                value={review.rating}
-                precision={0.5}
-                sx={{ fontSize: "4rem" }}
-                readOnly
-              />
+              <div className="flex flex-col gap-3 justify-center items-center">
+                <Rating
+                  value={review.rating}
+                  precision={0.5}
+                  sx={{ fontSize: "4rem" }}
+                  readOnly
+                />
+                Reviewed:{" "}
+                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}
+              </div>
             </div>
-            <div className="review-details">{review.description}</div>
+            <div className="review-details">
+              <div>
+                {review.description.split("\\n").map((str) => {
+                  return (
+                    <>
+                      <br /> {str}
+                    </>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
       </div>

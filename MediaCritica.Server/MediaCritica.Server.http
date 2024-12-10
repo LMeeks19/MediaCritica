@@ -10,6 +10,11 @@ Accept: application/json
 
 ###
 
+PUT {{MediaCritica.Server_HostAddress}}/User/UpdateUser
+Accept: application/json
+
+###
+
 GET {{MediaCritica.Server_HostAddress}}/Review/GetReview/
 Accept: application/json
 
@@ -41,6 +46,11 @@ Accept: application/json
 ###
 
 POST {{MediaCritica.Server_HostAddress}}/Review/PostReview
+Accept: application/json
+
+###
+
+DELETE {{MediaCritica.Server_HostAddress}}/Review/DeleteReview
 Accept: application/json
 
 

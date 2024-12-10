@@ -1,3 +1,4 @@
+import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
@@ -19,6 +20,15 @@ export async function PostUser(user: UserModel): Promise<UserModel> {
   const response = await fetch(`/User/PostUser`, {
     method: "POST",
     body: JSON.stringify(user),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return await response.json();
+}
+
+export async function UpdateUser(accountFieldValue: AccountFieldValue): Promise<UserModel> {
+  const response = await fetch(`/User/UpdateUser`, {
+    method: "PUT",
+    body: JSON.stringify(accountFieldValue),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
   return await response.json();
@@ -59,6 +69,19 @@ export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
   return response.json();
 }
 
+export async function GetReview(
+  mediaId: string,
+  reviewerEmail: string
+): Promise<ReviewModel> {
+  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerEmail}`);
+  return response.json();
+}
+
+export async function GetReviews(reviewEmail: string): Promise<ReviewsModel> {
+  const response = await fetch(`/Review/GetReviews/${reviewEmail}`);
+  return response.json();
+}
+
 export async function PostReview(review: ReviewModel): Promise<void> {
   await fetch(`/Review/PostReview`, {
     method: "POST",
@@ -67,12 +90,8 @@ export async function PostReview(review: ReviewModel): Promise<void> {
   });
 }
 
-export async function GetReview(mediaId: string, reviewerEmail: string): Promise<ReviewModel> {
-  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerEmail}`);
-  return response.json();
-}
-
-export async function GetReviews(reviewEmail: string): Promise<ReviewsModel> {
-  const response = await fetch(`/Review/GetReviews/${reviewEmail}`);
-  return response.json();
+export async function DeleteReview(reviewId: number): Promise<void> {
+  await fetch(`/Review/DeleteReview/${reviewId}`, {
+    method: "DELETE",
+  });
 }

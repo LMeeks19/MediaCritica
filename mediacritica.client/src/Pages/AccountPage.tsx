@@ -1,21 +1,38 @@
 import TopBar from "../Components/TopBar";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import AccountLogin from "../Components/AccountLogin";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
-import { GetReviews } from "../Server/Server";
+import { GetReviews, UpdateUser } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { Rating } from "@mui/material";
-import "./AccountPage.scss";
 import { useNavigate } from "react-router-dom";
 import { ReviewsModel } from "../Interfaces/ReviewsModel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCancel, faEdit, faSave } from "@fortawesome/free-solid-svg-icons";
+import {
+  AccountEditModel,
+  AccountFieldValue,
+} from "../Interfaces/AccountModels";
+import "./AccountPage.scss";
+import { AccountFieldType } from "../Enums/AccountFieldType";
+import { Snackbar } from "../Components/Snackbar";
 
 function AccountPage() {
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [reviews, setReviews] = useState<ReviewsModel>({} as ReviewsModel);
+  const [accountEditState, setAccountEditState] = useState<AccountEditModel>({
+    isEditing: false,
+    fieldType: null,
+  } as AccountEditModel);
   const navigate = useNavigate();
+  const [fieldValue, setFieldValue] = useState<AccountFieldValue>({
+    email: "",
+    value: "",
+    type: null,
+  } as AccountFieldValue);
 
   useEffect(() => {
     async function GetAccount() {
@@ -26,6 +43,22 @@ function AccountPage() {
     }
     GetAccount();
   }, [user]);
+
+  function ResetAccountField() {
+    setFieldValue({ email: user.email, value: "", type: null });
+    setAccountEditState({
+      isEditing: false,
+      fieldType: null,
+    });
+  }
+
+  async function UpdateAccountField(event: FormEvent) {
+    event.preventDefault();
+    const userData = await UpdateUser(fieldValue);
+    setUser(userData);
+    Snackbar("Account Updated", "success");
+    ResetAccountField();
+  }
 
   return (
     <>
@@ -46,8 +79,126 @@ function AccountPage() {
             <div className="flex flex-col w-full">
               <div className="section-heading">Account</div>
               <div className="profile">
-                <div className="email">Email: {user.email}</div>
-                <div className="password">Password: {user.password}</div>
+                <div className="field">
+                  <div className="key w-2/5">Email</div>
+                  {accountEditState.isEditing &&
+                  accountEditState.fieldType === AccountFieldType.Email ? (
+                    <form
+                      id="email-form"
+                      className="value w-2/5"
+                      onSubmit={(e) => UpdateAccountField(e)}
+                    >
+                      <input
+                        className="input"
+                        type="email"
+                        placeholder="Enter new email..."
+                        autoComplete="off"
+                        value={fieldValue.value}
+                        onChange={(e) =>
+                          setFieldValue({
+                            email: user.email,
+                            value: e.target.value,
+                            type: AccountFieldType.Email,
+                          })
+                        }
+                        required
+                      />
+                    </form>
+                  ) : (
+                    <div className="value w-2/5">{user.email}</div>
+                  )}
+                  <div className="action w-1/5">
+                    {accountEditState.fieldType !== AccountFieldType.Email && (
+                      <FontAwesomeIcon
+                        className={`icon ${
+                          accountEditState.isEditing && "disabled"
+                        }`}
+                        icon={faEdit}
+                        onClick={() =>
+                          setAccountEditState({
+                            isEditing: true,
+                            fieldType: AccountFieldType.Email,
+                          })
+                        }
+                      />
+                    )}
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType === AccountFieldType.Email && (
+                        <FontAwesomeIcon
+                          className="icon"
+                          icon={faCancel}
+                          onClick={() => ResetAccountField()}
+                        />
+                      )}
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType === AccountFieldType.Email && (
+                        <button type="submit" form="email-form">
+                          <FontAwesomeIcon className="icon" icon={faSave} />
+                        </button>
+                      )}
+                  </div>
+                </div>
+                <div className="field">
+                  <div className="key w-2/5">Password</div>
+                  {accountEditState.fieldType === AccountFieldType.Password ? (
+                    <form
+                      id="password-form"
+                      className="value w-2/5"
+                      onSubmit={(e) => UpdateAccountField(e)}
+                    >
+                      <input
+                        className="input"
+                        type="password"
+                        placeholder="Enter new password..."
+                        autoComplete="off"
+                        value={fieldValue.value}
+                        onChange={(e) =>
+                          setFieldValue({
+                            email: user.email,
+                            value: e.target.value,
+                            type: AccountFieldType.Password,
+                          })
+                        }
+                        required
+                      />
+                    </form>
+                  ) : (
+                    <div className="value w-2/5">{user.password}</div>
+                  )}
+                  <div className="action w-1/5">
+                    {accountEditState.fieldType !==
+                      AccountFieldType.Password && (
+                      <FontAwesomeIcon
+                        className={`icon ${
+                          accountEditState.isEditing && "disabled"
+                        }`}
+                        icon={faEdit}
+                        onClick={() =>
+                          setAccountEditState({
+                            isEditing: true,
+                            fieldType: AccountFieldType.Password,
+                          })
+                        }
+                      />
+                    )}
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType ===
+                        AccountFieldType.Password && (
+                        <FontAwesomeIcon
+                          className="icon"
+                          icon={faCancel}
+                          onClick={() => ResetAccountField()}
+                        />
+                      )}
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType ===
+                        AccountFieldType.Password && (
+                        <button type="submit" form="password-form">
+                          <FontAwesomeIcon className="icon" icon={faSave} />
+                        </button>
+                      )}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex flex-wrap w-full gap-16">

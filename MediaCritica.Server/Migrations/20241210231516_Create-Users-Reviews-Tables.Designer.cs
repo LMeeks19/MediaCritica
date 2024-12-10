@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241209222826_Create-Reviews-Table")]
-    partial class CreateReviewsTable
+    [Migration("20241210231516_Create-Users-Reviews-Tables")]
+    partial class CreateUsersReviewsTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
