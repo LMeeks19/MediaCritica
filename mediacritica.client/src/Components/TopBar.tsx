@@ -8,7 +8,7 @@ function TopBar(props: TopBarProps) {
     <div className="topbar">
       <div className={`return ${props.blankReturn ? "blank" : ""}`}>
         {!props.hideReturn && (
-          <div className="text" onClick={() => history.back()}>
+          <div className="text" onClick={() => navigate("/")}>
             MEDIA CRITICA
           </div>
         )}

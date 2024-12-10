@@ -1,7 +1,9 @@
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
+import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
+import { ReviewsModel } from "../Interfaces/ReviewsModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UserModel } from "../Interfaces/UserModel";
@@ -31,7 +33,9 @@ export async function GetSearchResults(
   return response.json();
 }
 
-export async function GetMedia(mediaId: string): Promise<MovieModel | SeriesModel> {
+export async function GetMedia(
+  mediaId: string
+): Promise<MovieModel | SeriesModel | GameModel> {
   const response = await fetch(
     `https://www.omdbapi.com/?i=${mediaId}&plot=full&apikey=${mediaServiceApiKey}`
   );
@@ -48,9 +52,7 @@ export async function GetSeason(
   return response.json();
 }
 
-export async function GetEpisode(
-  episodeId: string
-): Promise<EpisodeModel> {
+export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
   const response = await fetch(
     `https://www.omdbapi.com/?i=${episodeId}&plot=full&apikey=${mediaServiceApiKey}`
   );
@@ -63,5 +65,14 @@ export async function PostReview(review: ReviewModel): Promise<void> {
     body: JSON.stringify(review),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
+}
 
+export async function GetReview(mediaId: string, reviewerEmail: string): Promise<ReviewModel> {
+  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerEmail}`);
+  return response.json();
+}
+
+export async function GetReviews(reviewEmail: string): Promise<ReviewsModel> {
+  const response = await fetch(`/Review/GetReviews/${reviewEmail}`);
+  return response.json();
 }

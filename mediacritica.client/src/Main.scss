@@ -51,8 +51,7 @@ body {
 }
 
 .MuiTabs-root {
-  border-top-left-radius: 10px !important;
-  border-top-right-radius: 10px !important;
+  border-radius: 10px 10px 0 0 !important;
 
   .MuiTab-root {
     color: Colours.$light-dark !important;

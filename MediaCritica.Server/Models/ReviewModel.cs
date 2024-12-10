@@ -13,5 +13,6 @@
         public required string ReviewerEmail { get; set; }
         public required double Rating { get; set; }
         public required string Description { get; set; }
+        public required DateTime Date { get; set; }
     }
 }

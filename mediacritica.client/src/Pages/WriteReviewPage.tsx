@@ -10,8 +10,9 @@ import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { MediaType } from "../Enums/MediaType";
 import { PostReview } from "../Server/Server";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import "./WriteReviewPage.scss";
 import { Snackbar } from "../Components/Snackbar";
+import { BeatLoader } from "react-spinners";
+import "./WriteReviewPage.scss";
 
 function WriteReviewPage() {
   const user = useRecoilValue(userState);
@@ -20,6 +21,7 @@ function WriteReviewPage() {
 
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number | null>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const media = location.state?.media as
     | MovieModel
@@ -29,10 +31,13 @@ function WriteReviewPage() {
 
   useEffect(() => {
     (media === undefined || user.email === null) && navigate("/");
+    setIsLoading(false)
   });
 
   async function submitReview(e: FormEvent) {
     e.preventDefault();
+
+    setIsLoading(true);
 
     const review = {
       mediaId: media.imdbID,
@@ -52,62 +57,81 @@ function WriteReviewPage() {
       reviewerEmail: user.email,
       rating: rating,
       description: description,
+      date: new Date(),
     } as ReviewModel;
 
     await PostReview(review);
     Snackbar("Review Created", "success");
-    navigate("/")
+    navigate("/");
+
+    setIsLoading(false);
   }
 
   return (
-    <div className="writereviewpage-container">
+    <>
       <TopBar />
-      <div className="review">
-        <div className="media-details">
-          <div className="info">
-            <img className="media-poster" src={media.Poster} />
-            <div className="parent-title">
-              {parent?.Title ?? media.Title}
-              {media.Type === MediaType.Episode &&
-                ` | S${(media as EpisodeModel).Season}:E${
-                  (media as EpisodeModel).Episode
-                }`}
-              <div className="sub-title">{parent?.Title && media.Title}</div>
+      <div className="writereviewpage-container">
+        {isLoading ? (
+          <div className="review empty">
+            <div className="loader">
+              <BeatLoader
+                speedMultiplier={0.5}
+                color="rgba(151, 18, 18, 1)"
+                size={20}
+              />
             </div>
           </div>
-          <Rating
-            value={rating}
-            precision={0.5}
-            sx={{ fontSize: "4rem" }}
-            onChange={(_event, value) => setRating(value)}
-          />
-        </div>
-        <form className="review-form" onSubmit={(e) => submitReview(e)}>
-          <textarea
-            className="review-description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            name="description"
-            placeholder="Add review..."
-            required
-          />
-          <div className="review-buttons">
-            <button
-              type="reset"
-              className="reset-button"
-              onClick={() => {
-                setDescription(""), setRating(0);
-              }}
-            >
-              Reset
-            </button>
-            <button className="submit-button" type="submit">
-              Submit
-            </button>
+        ) : (
+          <div className="review">
+            <div className="media-details">
+              <div className="info">
+                <img className="media-poster" src={media.Poster} />
+                <div className="parent-title">
+                  {parent?.Title ?? media.Title}
+                  {media.Type === MediaType.Episode &&
+                    ` | S${(media as EpisodeModel).Season}:E${
+                      (media as EpisodeModel).Episode
+                    }`}
+                  <div className="sub-title">
+                    {parent?.Title && media.Title}
+                  </div>
+                </div>
+              </div>
+              <Rating
+                value={rating}
+                precision={0.5}
+                sx={{ fontSize: "4rem" }}
+                onChange={(_event, value) => setRating(value)}
+              />
+            </div>
+            <form className="review-form" onSubmit={(e) => submitReview(e)}>
+              <textarea
+                className="review-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                name="description"
+                placeholder="Add review..."
+                required
+              />
+              <div className="review-buttons">
+                <button
+                  type="reset"
+                  className="reset-button"
+                  onClick={() => {
+                    setDescription(""), setRating(0);
+                  }}
+                >
+                  Reset
+                </button>
+                <button className="submit-button" type="submit">
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        )}
       </div>
-    </div>
+    </>
   );
 }
 

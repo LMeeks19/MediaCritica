@@ -10,7 +10,32 @@ Accept: application/json
 
 ###
 
+GET {{MediaCritica.Server_HostAddress}}/Review/GetReview/
+Accept: application/json
+
+###
+
 GET {{MediaCritica.Server_HostAddress}}/Review/GetReviews/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetMovieReviews/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetSeriesReviews/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetGameReviews/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetEpisodeReviews/
 Accept: application/json
 
 ###

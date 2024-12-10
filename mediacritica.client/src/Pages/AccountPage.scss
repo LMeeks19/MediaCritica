@@ -4,11 +4,119 @@
   width: calc(100% - 8rem);
   height: calc(100% - 8rem);
   padding: 4rem;
-  display: grid;
-  gap: 40px;
-  justify-items: center;
-  align-items: center;
-  scroll-padding: 4rem;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
+
+  .account {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+
+    .section-heading {
+      font-size: 1.75rem;
+      margin-bottom: 10px;
+      text-wrap: nowrap;
+      align-self: flex-start;
+      display: flex;
+    }
+
+    .profile {
+      padding: 15px;
+      background-color: Colours.$primary-red;
+      border-radius: 10px;
+      display: flex;
+      width: calc(100% - 30px);
+
+      .email {
+        width: 50%;
+      }
+
+      .password {
+        width: 50%;
+      }
+    }
+
+    .movie-reviews,
+    .series-reviews,
+    .episode-reviews,
+    .game-reviews {
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      overflow: auto hidden;
+      scroll-snap-type: x mandatory;
+      flex-grow: 1;
+      padding-bottom: 20px;
+
+      .review {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        transition: border-color 0.5s ease-in-out;
+        scroll-snap-align: start;
+        max-height: 429px;
+
+        .poster {
+          border-radius: 10px 10px 0 0;
+          width: 300px;
+        }
+
+        .details {
+          background-color: Colours.$primary-red;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 15px;
+          border-radius: 0 0 10px 10px;
+          gap: 10px;
+
+          .title {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-wrap: nowrap;
+
+            .sub-title {
+              text-overflow: ellipsis;
+              overflow: hidden;
+              text-wrap: nowrap;
+              font-size: 0.75rem;
+            }
+          }
+        }
+      }
+
+      .review:hover {
+        border-color: Colours.$light-dark;
+      }
+    }
+
+    .movie-reviews,
+    .series-reviews,
+    .game-reviews {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      overflow: auto hidden;
+
+      .review {
+        .poster {
+          height: 375px;
+        }
+      }
+    }
+
+    .episode-reviews {
+      height: 204px;
+
+      .review {
+        height: 200px;
+        .poster {
+          height: 128px;
+        }
+      }
+    }
+  }
 }

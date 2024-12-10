@@ -26,6 +26,7 @@ import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
 import "./MediaPage.scss";
+import { GameModel } from "../Interfaces/GameModel";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -84,7 +85,7 @@ function MediaPage() {
   }
 
   function GetUniqueMovieDetails() {
-    let movie = media as MovieModel;
+    let movie = media as MovieModel | GameModel;
     return (
       <div className="details-section">
         <div>Runtime: {media.Runtime}</div>
@@ -170,91 +171,95 @@ function MediaPage() {
   }
 
   return (
-    <div className="mediapage-container">
-      {isLoading ? (
-        <div className="media empty">
-          <div className="loader">
-            <BeatLoader
-              speedMultiplier={0.5}
-              color="rgba(151, 18, 18, 1)"
-              size={20}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="media">
-          <TopBar blankReturn />
-          <img className="media-poster" src={media.Poster}></img>
-          <div className="media-details">
-            <div className="flex justify-between">
-              <div className="text-6xl text-center my-10">{media.Title}</div>
-              <StarRating
-                rating={media.imdbRating}
-                reviews={media.imdbVotes}
-                media={media}
+    <>
+      <TopBar blankReturn />
+      <div className="mediapage-container">
+        {isLoading ? (
+          <div className="media empty">
+            <div className="loader">
+              <BeatLoader
+                speedMultiplier={0.5}
+                color="rgba(151, 18, 18, 1)"
+                size={20}
               />
             </div>
-            <div className="flex flex-wrap gap-5">
-              <div className="details-section basis-full gap-10">
-                <div>{media.Plot}</div>
-                <div className="flex justify-between flex-row ">
-                  <div>Initial Release: {media.Released}</div>
-                  <div>
-                    {CapitaliseFirstLetter(media.Type)} | {media.Year}
+          </div>
+        ) : (
+          <div className="media">
+            <img className="media-poster" src={media.Poster}></img>
+            <div className="media-details">
+              <div className="flex justify-between">
+                <div className="text-6xl text-center my-10">{media.Title}</div>
+                <StarRating
+                  rating={media.imdbRating}
+                  reviews={media.imdbVotes}
+                  media={media}
+                />
+              </div>
+              <div className="flex flex-wrap gap-5">
+                <div className="details-section basis-full gap-10">
+                  <div>{media.Plot}</div>
+                  <div className="flex justify-between flex-row ">
+                    <div>Initial Release: {media.Released}</div>
+                    <div>
+                      {CapitaliseFirstLetter(media.Type)} | {media.Year}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="details-section">
-                <div>Actors: {media.Actors}</div>
-                <div>Directos(s): {media.Director}</div>
-                <div>Writer(s): {media.Writer}</div>
-              </div>
+                <div className="details-section">
+                  <div>Actors: {media.Actors}</div>
+                  <div>Directos(s): {media.Director}</div>
+                  <div>Writer(s): {media.Writer}</div>
+                </div>
 
-              <div className="details-section">
-                <div>Genre: {media.Genre}</div>
-                <div>Language: {media.Language}</div>
-                <div>Country: {media.Country}</div>
-                <div>Rated: {media.Rated}</div>
-                <div>Awards: {media.Awards}</div>
-              </div>
+                <div className="details-section">
+                  <div>Genre: {media.Genre}</div>
+                  <div>Language: {media.Language}</div>
+                  <div>Country: {media.Country}</div>
+                  <div>Rated: {media.Rated}</div>
+                  <div>Awards: {media.Awards}</div>
+                </div>
 
-              <div className="details-section">
-                {media.Metascore !== "N/A" && (
-                  <div className="flex gap-2">
-                    Metascore:
-                    <div className="my-auto">
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(media.Metascore)}
-                        readOnly
-                      />
+                <div className="details-section">
+                  {media.Metascore !== "N/A" && (
+                    <div className="flex gap-2">
+                      Metascore:
+                      <div className="my-auto">
+                        <Rating
+                          precision={0.1}
+                          value={ConvertRatingStringToFiveScale(
+                            media.Metascore
+                          )}
+                          readOnly
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
-                {media.Ratings.map((rating) => {
-                  return (
-                    <div className="flex gap-2" key={rating.Source}>
-                      {rating.Source}:
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(rating.Value)}
-                        readOnly
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+                  )}
+                  {media.Ratings.map((rating) => {
+                    return (
+                      <div className="flex gap-2" key={rating.Source}>
+                        {rating.Source}:
+                        <Rating
+                          precision={0.1}
+                          value={ConvertRatingStringToFiveScale(rating.Value)}
+                          readOnly
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
 
-              {media.Type === MediaType.Movie
-                ? GetUniqueMovieDetails()
-                : GetUniqueSeriesDetails()}
+                {media.Type === MediaType.Series
+                  ? GetUniqueSeriesDetails()
+                  : GetUniqueMovieDetails()}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      ;
-    </div>
+        )}
+        ;
+      </div>
+    </>
   );
 }
 

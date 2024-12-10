@@ -4,11 +4,51 @@
   width: calc(100% - 8rem);
   height: calc(100% - 8rem);
   padding: 4rem;
-  display: grid;
-  gap: 40px;
-  justify-items: center;
-  align-items: center;
-  scroll-padding: 4rem;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
+
+  .review {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+
+    &.empty {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      flex-wrap: wrap;
+
+      .info {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        .media-poster {
+          border-radius: 10px;
+          max-height: 128px;
+        }
+
+        .parent-title {
+          font-size: 3rem;
+          margin-top: auto;
+          margin-bottom: auto;
+
+          .sub-title {
+            font-size: 1.5rem;
+            opacity: 75%;
+          }
+        }
+      }
+    }
+
+    .review-details {
+      font-size: 2rem;
+    }
+  }
 }
