@@ -77,7 +77,7 @@ function AccountPage() {
         ) : (
           <div className="account">
             <div className="flex flex-col w-full">
-              <div className="section-heading">Account</div>
+              <div className="section-heading account">Account</div>
               <div className="profile">
                 <div className="field">
                   <div className="key w-2/5">Email</div>
@@ -201,126 +201,142 @@ function AccountPage() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-wrap w-full gap-16">
-              <div className="flex flex-col w-4/12 min-w-[304px] grow">
+            <div className="flex flex-wrap w-full gap-6">
+              <div className="flex flex-col grow overflow-x-auto">
                 <div className="section-heading">Movie Reviews</div>
-                <div className="movie-reviews">
-                  {reviews.movieReviews?.map((review) => {
-                    return (
-                      <div
-                        key={review.mediaId}
-                        className="review"
-                        onClick={() =>
-                          navigate(`/view-review/${review.mediaId}}`, {
-                            state: { mediaId: review.mediaId },
-                          })
-                        }
-                      >
-                        <img className="poster" src={review.mediaPoster} />
-                        <div className="details">
-                          <div className="title">{review.mediaTitle}</div>
-                          <Rating
-                            value={review.rating}
-                            precision={0.5}
-                            readOnly
-                          />
+                {reviews.movieReviews?.length === 0 ? (
+                  <div className="movie-reviews empty">No Movies Reviewed</div>
+                ) : (
+                  <div className="movie-reviews">
+                    {reviews.movieReviews?.map((review) => {
+                      return (
+                        <div
+                          key={review.mediaId}
+                          className="review"
+                          onClick={() =>
+                            navigate(`/view-review/${review.mediaId}}`, {
+                              state: { mediaId: review.mediaId },
+                            })
+                          }
+                        >
+                          <img className="poster" src={review.mediaPoster} />
+                          <div className="details">
+                            <div className="title">{review.mediaTitle}</div>
+                            <Rating
+                              value={review.rating}
+                              precision={0.5}
+                              readOnly
+                            />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-              <div className="flex flex-col w-3/12 min-w-[304px] grow">
+              <div className="flex flex-col grow overflow-x-auto">
                 <div className="section-heading">Series Reviews</div>
-                <div className="series-reviews">
-                  {reviews.seriesReviews?.map((review) => {
-                    return (
-                      <div
-                        key={review.mediaId}
-                        className="review"
-                        onClick={() =>
-                          navigate(`/view-review/${review.mediaId}}`, {
-                            state: { mediaId: review.mediaId },
-                          })
-                        }
-                      >
-                        <img className="poster" src={review.mediaPoster} />
-                        <div className="details">
-                          <div className="title">{review.mediaTitle}</div>
-                          <Rating
-                            value={review.rating}
-                            precision={0.5}
-                            readOnly
-                          />
+                {reviews.seriesReviews?.length === 0 ? (
+                  <div className="series-reviews empty">No Series Reviewed</div>
+                ) : (
+                  <div className="series-reviews">
+                    {reviews.seriesReviews?.map((review) => {
+                      return (
+                        <div
+                          key={review.mediaId}
+                          className="review"
+                          onClick={() =>
+                            navigate(`/view-review/${review.mediaId}}`, {
+                              state: { mediaId: review.mediaId },
+                            })
+                          }
+                        >
+                          <img className="poster" src={review.mediaPoster} />
+                          <div className="details">
+                            <div className="title">{review.mediaTitle}</div>
+                            <Rating
+                              value={review.rating}
+                              precision={0.5}
+                              readOnly
+                            />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-              <div className="flex flex-col w-4/12 min-w-[304px] grow">
+              <div className="flex flex-col grow overflow-x-auto">
                 <div className="section-heading">Game Reviews</div>
-                <div className="game-reviews">
-                  {reviews.gameReviews?.map((review) => {
-                    return (
-                      <div
-                        key={review.mediaId}
-                        className="review"
-                        onClick={() =>
-                          navigate(`/view-review/${review.mediaId}}`, {
-                            state: { mediaId: review.mediaId },
-                          })
-                        }
-                      >
-                        <img className="poster" src={review.mediaPoster} />
-                        <div className="details">
-                          <div className="title">{review.mediaTitle}</div>
-                          <Rating
-                            value={review.rating}
-                            precision={0.5}
-                            readOnly
-                          />
+                {reviews.gameReviews?.length === 0 ? (
+                  <div className="game-reviews empty">No Games Reviewed</div>
+                ) : (
+                  <div className="game-reviews">
+                    {reviews.gameReviews?.map((review) => {
+                      return (
+                        <div
+                          key={review.mediaId}
+                          className="review"
+                          onClick={() =>
+                            navigate(`/view-review/${review.mediaId}}`, {
+                              state: { mediaId: review.mediaId },
+                            })
+                          }
+                        >
+                          <img className="poster" src={review.mediaPoster} />
+                          <div className="details">
+                            <div className="title">{review.mediaTitle}</div>
+                            <Rating
+                              value={review.rating}
+                              precision={0.5}
+                              readOnly
+                            />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex flex-col w-full">
               <div className="section-heading">Episode Reviews</div>
-              <div className="episode-reviews">
-                {reviews.episodeReviews?.map((review) => {
-                  return (
-                    <div
-                      key={review.mediaId}
-                      className="review"
-                      onClick={() =>
-                        navigate(`/view-review/${review.mediaId}}`, {
-                          state: { mediaId: review.mediaId },
-                        })
-                      }
-                    >
-                      <img className="poster" src={review.mediaPoster} />
-                      <div className="details">
-                        <div className="title">
-                          {review.mediaParentTitle ?? review.mediaTitle}
-                          {review.mediaType === MediaType.Episode &&
-                            ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
-                          <div className="sub-title">
-                            {review.mediaParentTitle && review.mediaTitle}
+              {reviews.episodeReviews?.length === 0 ? (
+                <div className="episode-reviews empty">No Episodes Reviewed</div>
+              ) : (
+                <div className="episode-reviews">
+                  {reviews.episodeReviews?.map((review) => {
+                    return (
+                      <div
+                        key={review.mediaId}
+                        className="review"
+                        onClick={() =>
+                          navigate(`/view-review/${review.mediaId}}`, {
+                            state: { mediaId: review.mediaId },
+                          })
+                        }
+                      >
+                        <img className="poster" src={review.mediaPoster} />
+                        <div className="details">
+                          <div className="title">
+                            {review.mediaParentTitle ?? review.mediaTitle}
+                            {review.mediaType === MediaType.Episode &&
+                              ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
+                            <div className="sub-title">
+                              {review.mediaParentTitle && review.mediaTitle}
+                            </div>
                           </div>
+                          <Rating
+                            value={review.rating}
+                            precision={0.5}
+                            readOnly
+                          />
                         </div>
-                        <Rating
-                          value={review.rating}
-                          precision={0.5}
-                          readOnly
-                        />
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         )}
