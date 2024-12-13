@@ -27,9 +27,9 @@ function ViewReviewPage() {
 
   useEffect(() => {
     async function FetchReview() {
-      (mediaId === undefined || user.email === undefined) && navigate("/");
+      (mediaId === undefined || user.id === undefined) && navigate("/");
       setIsLoading(true);
-      const reviewData = await GetReview(mediaId, user.email);
+      const reviewData = await GetReview(mediaId, user.id);
       console.log(review.date);
       setReview(reviewData);
       setIsLoading(false);

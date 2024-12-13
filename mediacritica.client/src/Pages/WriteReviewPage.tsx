@@ -30,7 +30,7 @@ function WriteReviewPage() {
   const parent = location.state?.parent as SeriesModel;
 
   useEffect(() => {
-    (media === undefined || user.email === null) && navigate("/");
+    (media === undefined || user.id === null) && navigate("/");
     setIsLoading(false)
   });
 
@@ -54,7 +54,7 @@ function WriteReviewPage() {
           : null,
       mediaParentId: parent?.imdbID,
       mediaParentTitle: parent?.Title,
-      reviewerEmail: user.email,
+      reviewerId: user.id,
       rating: rating,
       description: description,
       date: new Date(),

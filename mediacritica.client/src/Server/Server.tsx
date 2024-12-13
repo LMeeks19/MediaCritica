@@ -1,10 +1,11 @@
 import { AccountFieldValue } from "../Interfaces/AccountModels";
+import { BacklogModel } from "../Interfaces/BacklogModel";
+import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { ReviewsModel } from "../Interfaces/ReviewsModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UserModel } from "../Interfaces/UserModel";
@@ -25,7 +26,9 @@ export async function PostUser(user: UserModel): Promise<UserModel> {
   return await response.json();
 }
 
-export async function UpdateUser(accountFieldValue: AccountFieldValue): Promise<UserModel> {
+export async function UpdateUser(
+  accountFieldValue: AccountFieldValue
+): Promise<UserModel> {
   const response = await fetch(`/User/UpdateUser`, {
     method: "PUT",
     body: JSON.stringify(accountFieldValue),
@@ -71,14 +74,19 @@ export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
 
 export async function GetReview(
   mediaId: string,
-  reviewerEmail: string
+  reviewerId: number
 ): Promise<ReviewModel> {
-  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerEmail}`);
+  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerId}`);
   return response.json();
 }
 
-export async function GetReviews(reviewEmail: string): Promise<ReviewsModel> {
-  const response = await fetch(`/Review/GetReviews/${reviewEmail}`);
+export async function GetReviews(
+  reviewerId: number,
+  offset: number = 0
+): Promise<ReviewModel[]> {
+  const response = await fetch(
+    `/Review/GetReviews/${reviewerId ?? -1}/${offset}`
+  );
   return response.json();
 }
 
@@ -90,8 +98,32 @@ export async function PostReview(review: ReviewModel): Promise<void> {
   });
 }
 
-export async function DeleteReview(reviewId: number): Promise<void> {
-  await fetch(`/Review/DeleteReview/${reviewId}`, {
+export async function DeleteReview(reviewerId: number): Promise<void> {
+  await fetch(`/Review/DeleteReview/${reviewerId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function GetBacklog(
+  userId: number,
+  offset: number = 0
+): Promise<BacklogModel[]> {
+  const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}/${offset}`);
+  return response.json();
+}
+
+export async function PostBacklog(backlog: BacklogModel): Promise<BacklogSummaryModel> {
+  const response = await fetch(`/Backlog/PostBacklog`, {
+    method: "POST",
+    body: JSON.stringify(backlog),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+
+  return response.json();
+}
+
+export async function DeleteBacklog(mediaId: string, userId: number): Promise<void> {
+  await fetch(`/Backlog/DeleteBacklog/${mediaId}/${userId}`, {
     method: "DELETE",
   });
 }

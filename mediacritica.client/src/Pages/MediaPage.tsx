@@ -8,6 +8,7 @@ import {
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import TopBar from "../Components/TopBar";
 import {
+  IconButton,
   MenuItem,
   Rating,
   Select,
@@ -20,13 +21,24 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
-import { GetMedia, GetSeason } from "../Server/Server";
+import {
+  DeleteBacklog,
+  GetMedia,
+  GetSeason,
+  PostBacklog,
+} from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
-import "./MediaPage.scss";
 import { GameModel } from "../Interfaces/GameModel";
+import { faHeart as faHeartReg } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
+import { BacklogModel } from "../Interfaces/BacklogModel";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
+import { Snackbar } from "../Components/Snackbar";
+import "./MediaPage.scss";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -36,6 +48,7 @@ function MediaPage() {
   const location = useLocation();
   const mediaId = location.state?.mediaId;
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
+  const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,6 +108,38 @@ function MediaPage() {
         <div>Website: {movie.Website}</div>
       </div>
     );
+  }
+
+  async function AddToBacklog() {
+    const backlog = {
+      userId: user.id,
+      mediaId: media.imdbID,
+      mediaType: media.Type,
+      mediaPoster: media.Poster,
+      mediaTitle: media.Title,
+    } as unknown as BacklogModel;
+
+    const newBacklogSummary = await PostBacklog(backlog);
+
+    setUser({
+      ...user,
+      backlogSummary: [...user.backlogSummary, newBacklogSummary],
+    });
+
+    Snackbar(`${media.Title} added to Backlog`, "success");
+  }
+
+  async function RemoveFromBacklog() {
+    await DeleteBacklog(media.imdbID, user.id);
+
+    setUser({
+      ...user,
+      backlogSummary: user.backlogSummary.filter(
+        (backlog) => backlog.mediaId !== media.imdbID
+      ),
+    });
+
+    Snackbar(`${media.Title} removed from Backlog`, "success");
   }
 
   function GetUniqueSeriesDetails() {
@@ -188,8 +233,33 @@ function MediaPage() {
           <div className="media">
             <img className="media-poster" src={media.Poster}></img>
             <div className="media-details">
-              <div className="flex justify-between">
-                <div className="text-6xl text-center my-10">{media.Title}</div>
+              <div className="flex justify-between flex-wrap">
+                <div className="flex gap-5 items-center text-6xl text-center my-10">
+                  {media.Title}
+                  {user.backlogSummary?.some(
+                    (backlog) => backlog.mediaId === media.imdbID
+                  ) ? (
+                    <IconButton
+                      className="backlog-icon"
+                      disabled={user.id === null || user === undefined}
+                    >
+                      <FontAwesomeIcon
+                        icon={faHeartSolid}
+                        onClick={() => RemoveFromBacklog()}
+                      />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      className="backlog-icon"
+                      disabled={user.id === null || user === undefined}
+                    >
+                      <FontAwesomeIcon
+                        icon={faHeartReg}
+                        onClick={() => AddToBacklog()}
+                      />
+                    </IconButton>
+                  )}
+                </div>
                 <StarRating
                   rating={media.imdbRating}
                   reviews={media.imdbVotes}

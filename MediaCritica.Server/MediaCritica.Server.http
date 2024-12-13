@@ -25,32 +25,27 @@ Accept: application/json
 
 ###
 
-GET {{MediaCritica.Server_HostAddress}}/Review/GetMovieReviews/
-Accept: application/json
-
-###
-
-GET {{MediaCritica.Server_HostAddress}}/Review/GetSeriesReviews/
-Accept: application/json
-
-###
-
-GET {{MediaCritica.Server_HostAddress}}/Review/GetGameReviews/
-Accept: application/json
-
-###
-
-GET {{MediaCritica.Server_HostAddress}}/Review/GetEpisodeReviews/
-Accept: application/json
-
-###
-
 POST {{MediaCritica.Server_HostAddress}}/Review/PostReview
 Accept: application/json
 
 ###
 
-DELETE {{MediaCritica.Server_HostAddress}}/Review/DeleteReview
+DELETE {{MediaCritica.Server_HostAddress}}/Review/DeleteReview/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Backlog/GetBacklog/
+Accept: application/json
+
+###
+
+POST {{MediaCritica.Server_HostAddress}}/Backlog/PostBacklog
+Accept: application/json
+
+###
+
+DELETE {{MediaCritica.Server_HostAddress}}/Backlog/DeleteBacklog/
 Accept: application/json
 
 

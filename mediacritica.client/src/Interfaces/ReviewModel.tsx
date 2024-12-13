@@ -10,7 +10,7 @@ export interface ReviewModel {
   mediaEpisode?: number;
   mediaParentId?: string;
   mediaParentTitle?: string;
-  reviewerEmail: string;
+  reviewerId: number;
   rating: number;
   description: string;
   date: Date;

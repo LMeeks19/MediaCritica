@@ -6,7 +6,7 @@ export interface AccountEditModel {
 }
 
 export interface AccountFieldValue {
-    email: string;
+    userId: number;
     value: string;
     type: AccountFieldType | null;
 }

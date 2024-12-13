@@ -22,7 +22,7 @@ function StarRating(props: StarRatingProps) {
       />
       <div className="text-base text-center flex gap-1">
         <CustomTooltip
-          title={user.email === null ? "Sign in to Review" : "Write a Review"}
+          title={user.id === null ? "Sign in to Review" : "Write a Review"}
           arrow
         >
           <button
@@ -30,7 +30,7 @@ function StarRating(props: StarRatingProps) {
             onClick={() =>
               navigate("/write-review", { state: { media: props.media, parent: props.parent } })
             }
-            disabled={user.email === null ? true : false}
+            disabled={user.id === null ? true : false}
           >
             Review
           </button>

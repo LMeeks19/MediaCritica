@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MediaCritica.Server.Objects
+﻿namespace MediaCritica.Server.Objects
 {
     public class Review
     {
@@ -13,7 +11,8 @@ namespace MediaCritica.Server.Objects
         public int? MediaEpisode { get; set; }
         public string? MediaParentId { get; set; }
         public string? MediaParentTitle { get; set; }
-        public required string ReviewerEmail { get; set; }
+        public required int ReviewerId { get; set; }
+        public virtual User Reviewer { get; set; }
         public required double Rating { get; set; }
         public required string Description { get; set; }
         public required DateTime Date { get; set; }

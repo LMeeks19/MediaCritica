@@ -25,7 +25,6 @@ function App() {
       anchorOrigin={{horizontal: "right", vertical: "bottom"}}
       autoHideDuration={3000}
       style={{ color: "inherit" }}
-      preventDuplicate
     >
       <div className="wrapper">
         <RouterProvider router={router} />

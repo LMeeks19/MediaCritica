@@ -50,6 +50,10 @@ export default defineConfig({
             '^/Review': {
                 target,
                 secure: false
+            },
+            '^/Backlog': {
+                target,
+                secure: false
             }
         },
         port: 5174,
