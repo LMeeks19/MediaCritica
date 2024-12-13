@@ -10,7 +10,6 @@
   align-items: center;
   overflow: hidden auto;
 
-
   .homepage-title {
     display: flex;
     justify-content: center;
@@ -83,7 +82,7 @@
     overflow: auto hidden;
     padding: 12.5px;
     scroll-snap-type: x mandatory;
-    height: 423px;
+    height: 375px;
 
     &.empty {
       justify-content: center;
@@ -93,60 +92,67 @@
     }
 
     .homepage-result {
-      border: 2px solid Colours.$primary-red;
       transition: all 0.5s ease-in-out;
       border-radius: 10px;
       cursor: pointer;
       width: 300px;
-      height: 405px;
-      background-color: Colours.$primary-red;
+      min-width: 300px;
+      background-color: Colours.$dark-light;
       scroll-snap-align: start;
+      position: relative;
+      border: 2px solid Colours.$primary-red;
+      overflow: hidden;
 
-      .homepage-result-image {
-        border-radius: 10px 10px 0 0;
-        width: 300px;
-        height: 300px;
-
-        &.empty {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 8rem;
-        }
+      .result-image-empty {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 8rem;
       }
 
-      .homepage-result-details {
-        user-select: none;
-        width: 270px;
-        padding: 0 15px 15px 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 90px;
+      .result-details-title,
+      .result-details-type,
+      .result-details-year {
+        padding: 10px;
+        background-color: Colours.$primary-red;
+        position: absolute;
+        overflow: hidden;
+        font-size: 15px;
+      }
 
-        .result-details-title {
-          font-size: 35px;
-          text-wrap: nowrap;
-          overflow: hidden;
-        }
+      .result-details-title, .result-details-year {
+        visibility: hidden;
+        opacity: 0;
+        transition: all .5s ease-in-out;
+      }
 
-        .result-sub-details {
-          display: flex;
-          justify-content: space-between;
+      .result-details-title {
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        bottom: 0;
+        width: 280px;
+      }
 
-          .result-details-type {
-            font-size: 15px;
-          }
+      .result-details-type {
+        border-bottom-left-radius: 10px;
+        right: 0;
+      }
 
-          .result-details-year {
-            font-size: 15px;
-          }
-        }
+      .result-details-year {
+        border-bottom-right-radius: 10px;
       }
     }
 
     .homepage-result:hover {
       border-color: Colours.$light-dark;
+
+      .result-details-title, .result-details-year {
+        visibility: visible;
+        opacity: 1;
+      }
     }
   }
 }

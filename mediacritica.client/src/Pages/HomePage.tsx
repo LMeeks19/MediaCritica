@@ -10,12 +10,12 @@ import { AutoTextSize } from "auto-text-size";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
 import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
 import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
 import "./HomePage.scss";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -41,16 +41,14 @@ function HomePage() {
 
   function scrollTitleIfOverflowing(id: string) {
     let element = $(`#${id}`);
-    let info = element.find(".homepage-result-details");
-    let title = info.find(".result-details-title");
+    let title = element.find(".result-details-title");
     title.stop();
     title.animate({ scrollLeft: 1000 }, 8000, function () {});
   }
 
   function unscrollTitleIfOverflowing(id: string) {
     let element = $(`#${id}`);
-    let info = element.find(".homepage-result-details");
-    let title = info.find(".result-details-title");
+    let title = element.find(".result-details-title");
     title.stop();
     title.animate({ scrollLeft: -1000 }, 8000, function () {});
   }
@@ -99,6 +97,9 @@ function HomePage() {
                   className="homepage-result"
                   id={mediaSearchResult.imdbID}
                   key={mediaSearchResult.imdbID}
+                  style={{
+                    backgroundImage: `url(${mediaSearchResult.Poster})`,
+                  }}
                   onMouseOver={() =>
                     scrollTitleIfOverflowing(mediaSearchResult.imdbID)
                   }
@@ -113,29 +114,19 @@ function HomePage() {
                     })
                   }
                 >
-                  {mediaSearchResult.Poster !== "N/A" ? (
-                    <img
-                      draggable="false"
-                      className="homepage-result-image"
-                      src={mediaSearchResult.Poster}
-                    ></img>
-                  ) : (
-                    <div className="homepage-result-image empty">
+                  {mediaSearchResult.Poster === "N/A" && (
+                    <div className="result-image-empty">
                       <FontAwesomeIcon icon={faImage} />
                     </div>
                   )}
-                  <div className="homepage-result-details">
-                    <div className="result-details-title">
-                      {mediaSearchResult.Title}
-                    </div>
-                    <div className="result-sub-details">
-                      <div className="result-details-type">
-                        {CapitaliseFirstLetter(mediaSearchResult.Type)}
-                      </div>
-                      <div className="result-details-year">
-                        {MediaYearFormatter(mediaSearchResult.Year)}
-                      </div>
-                    </div>
+                  <div className="result-details-title">
+                    {mediaSearchResult.Title}
+                  </div>
+                  <div className="result-details-type">
+                    {CapitaliseFirstLetter(mediaSearchResult.Type)}
+                  </div>
+                  <div className="result-details-year">
+                    {MediaYearFormatter(mediaSearchResult.Year)}
                   </div>
                 </div>
               );

@@ -18,6 +18,14 @@
     .media-poster {
       height: 100%;
       width: 40%;
+
+      &.empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30rem;
+        color: Colours.$primary-red;
+      }
     }
 
     .media-details {

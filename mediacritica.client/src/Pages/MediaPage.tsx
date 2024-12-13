@@ -32,7 +32,10 @@ import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
 import { GameModel } from "../Interfaces/GameModel";
-import { faHeart as faHeartReg } from "@fortawesome/free-regular-svg-icons";
+import {
+  faHeart as faHeartReg,
+  faImage,
+} from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { useRecoilState } from "recoil";
@@ -231,32 +234,34 @@ function MediaPage() {
           </div>
         ) : (
           <div className="media">
-            <img className="media-poster" src={media.Poster}></img>
-            <div className="media-details">
-              <div className="flex justify-between flex-wrap">
-                <div className="flex gap-5 items-center text-6xl text-center my-10">
-                  {media.Title}
+            {media.Poster !== "N/A" ? (
+              <img className="media-poster" src={media.Poster}></img>
+            ) : (
+              <div className="media-poster empty">
+                <FontAwesomeIcon icon={faImage} />
+              </div>
+            )}
+            <div className="media-details gap-6">
+              <div className="flex flex-wrap">
+                <div className="flex gap-5 items-center text-6xl text-center my-10 grow">
+                  <div>{media.Title}</div>
                   {user.backlogSummary?.some(
                     (backlog) => backlog.mediaId === media.imdbID
                   ) ? (
                     <IconButton
                       className="backlog-icon"
                       disabled={user.id === null || user === undefined}
+                      onClick={() => RemoveFromBacklog()}
                     >
-                      <FontAwesomeIcon
-                        icon={faHeartSolid}
-                        onClick={() => RemoveFromBacklog()}
-                      />
+                      <FontAwesomeIcon icon={faHeartSolid} />
                     </IconButton>
                   ) : (
                     <IconButton
                       className="backlog-icon"
                       disabled={user.id === null || user === undefined}
+                      onClick={() => AddToBacklog()}
                     >
-                      <FontAwesomeIcon
-                        icon={faHeartReg}
-                        onClick={() => AddToBacklog()}
-                      />
+                      <FontAwesomeIcon icon={faHeartReg} />
                     </IconButton>
                   )}
                 </div>

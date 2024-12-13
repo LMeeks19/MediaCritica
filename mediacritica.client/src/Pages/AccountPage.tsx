@@ -26,6 +26,7 @@ import "./AccountPage.scss";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
 import { BacklogModel } from "../Interfaces/BacklogModel";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -114,7 +115,7 @@ function AccountPage() {
       return backlog.filter((media) => media.mediaType === MediaType.Movie);
     else if (selectedBacklogFilter === 2)
       return backlog.filter((media) => media.mediaType === MediaType.Series);
-    else if (selectedBacklogFilter === 3)
+    else if (selectedBacklogFilter === 3) 
       return backlog.filter((media) => media.mediaType === MediaType.Game);
     return backlog;
   }
@@ -292,13 +293,13 @@ function AccountPage() {
                     </div>
                   </div>
                   <div className="flex flex-col grow overflow-x-auto w-full">
-                    {filteredReviews()?.length === 0 ? (
+                    {filteredReviews().length === 0 ? (
                       <div className="media-reviews empty">
                         No Media Reviewed
                       </div>
                     ) : (
                       <div className="media-reviews">
-                        {filteredReviews()?.map((review) => {
+                        {filteredReviews().map((review) => {
                           return (
                             <div
                               key={review.mediaId}
@@ -312,6 +313,11 @@ function AccountPage() {
                                 })
                               }
                             >
+                              {review.mediaPoster === "N/A" && (
+                                <div className="image-empty">
+                                  <FontAwesomeIcon icon={faImage} />
+                                </div>
+                              )}
                               <div className="type">
                                 {CapitaliseFirstLetter(review.mediaType)}
                               </div>
@@ -334,8 +340,7 @@ function AccountPage() {
                             </div>
                           );
                         })}
-                        {(reviews.length !== user.totalReviews ||
-                          user.totalReviews > 20) && (
+                        {reviews.length !== user.totalReviews && (
                           <div
                             className="review load"
                             onClick={() => LoadMoreReviews()}
@@ -363,17 +368,17 @@ function AccountPage() {
                         }
                       >
                         <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Movie</MenuItem>
+                        <MenuItem value={1}>Movies</MenuItem>
                         <MenuItem value={2}>Series</MenuItem>
-                        <MenuItem value={3}>Game</MenuItem>
+                        <MenuItem value={3}>Games</MenuItem>
                       </Select>
                     </div>
                   </div>
-                  {filteredBacklog()?.length === 0 ? (
+                  {filteredBacklog().length === 0 ? (
                     <div className="backlog empty">No Backlogged Media</div>
                   ) : (
                     <div className="backlog">
-                      {backlog.map((media) => {
+                      {filteredBacklog().map((media) => {
                         return (
                           <div
                             key={media.mediaId}
@@ -387,6 +392,11 @@ function AccountPage() {
                               })
                             }
                           >
+                            {media.mediaPoster === "N/A" && (
+                              <div className="image-empty">
+                                <FontAwesomeIcon icon={faImage} />
+                              </div>
+                            )}
                             <div className="type">
                               {CapitaliseFirstLetter(media.mediaType)}
                             </div>
@@ -396,16 +406,15 @@ function AccountPage() {
                           </div>
                         );
                       })}
-                    </div>
-                  )}
-                  {(backlog.length !== user.totalBacklogs ||
-                    user.totalBacklogs > 20) && (
-                    <div
-                      className="media load"
-                      onClick={() => LoadMoreBacklogs()}
-                    >
-                      Load More
-                      <FontAwesomeIcon icon={faPlus} size="lg" />
+                      {backlog.length !== user.totalBacklogs && (
+                        <div
+                          className="media load"
+                          onClick={() => LoadMoreBacklogs()}
+                        >
+                          Load More
+                          <FontAwesomeIcon icon={faPlus} size="lg" />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

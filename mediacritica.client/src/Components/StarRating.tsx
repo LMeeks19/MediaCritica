@@ -25,15 +25,19 @@ function StarRating(props: StarRatingProps) {
           title={user.id === null ? "Sign in to Review" : "Write a Review"}
           arrow
         >
-          <button
-            className="review-button"
-            onClick={() =>
-              navigate("/write-review", { state: { media: props.media, parent: props.parent } })
-            }
-            disabled={user.id === null ? true : false}
-          >
-            Review
-          </button>
+          <span>
+            <button
+              className="review-button"
+              onClick={() =>
+                navigate("/write-review", {
+                  state: { media: props.media, parent: props.parent },
+                })
+              }
+              disabled={user.id === null ? true : false}
+            >
+              Review
+            </button>
+          </span>
         </CustomTooltip>
         {" | "}
         <div>{props.reviews} Reviews</div>

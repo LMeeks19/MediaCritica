@@ -30,7 +30,7 @@ namespace MediaCritica.Server.Controllers
                   MediaPoster = media.MediaPoster,
                   MediaTitle = media.MediaTitle,
                   MediaType = media.MediaType,
-              }).OrderByDescending(media => media.MediaTitle)
+              }).OrderBy(media => media.MediaTitle)
               .Skip(offset)
               .Take(20)
               .ToListAsync();
@@ -42,7 +42,7 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]")]
         public async Task<BacklogSummaryModel> PostBacklog([FromBody] BacklogModel backlogModel)
         {
-            var backlog = new Backlog()
+            var backlogData = new Backlog()
             {
                 UserId = backlogModel.UserId,
                 MediaId = backlogModel.MediaId,
@@ -51,10 +51,10 @@ namespace MediaCritica.Server.Controllers
                 MediaType = backlogModel.MediaType,
             };
 
-            await _databaseContext.Backlogs.AddAsync(backlog);
+            await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();
 
-            var newBacklog = await _databaseContext.Backlogs.SingleAsync(backlog => backlog.UserId == backlogModel.UserId && backlog.MediaId == backlog.MediaId);
+            var newBacklog = await _databaseContext.Backlogs.SingleAsync(backlog => backlog.MediaId == backlogData.MediaId && backlog.UserId == backlogData.UserId);
 
             return new BacklogSummaryModel()
             {

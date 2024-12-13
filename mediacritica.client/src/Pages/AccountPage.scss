@@ -107,17 +107,28 @@
         flex-direction: column;
         cursor: pointer;
         border-radius: 10px;
-        border: 2px solid Colours.$dark-light;
+        border: 2px solid Colours.$primary-red;
         transition: border-color 0.5s ease-in-out;
-        background-color: Colours.$primary-red;
         height: 375px;
         position: relative;
+        overflow: hidden;
+
+        .image-empty {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 8rem;
+        }
 
         &.load {
           justify-content: center;
           align-items: center;
           font-size: 1.5rem;
           gap: 5px;
+          background-color: Colours.$primary-red;
         }
 
         .details,
@@ -129,7 +140,7 @@
 
         .type {
           right: 0;
-          border-radius: 0 10px 0 10px;
+          border-bottom-left-radius: 10px;
           font-size: 0.75rem;
         }
 
@@ -140,7 +151,6 @@
           align-items: center;
           justify-content: space-between;
           gap: 10px;
-          border-radius: 0 0 10px 10px;
           visibility: hidden;
           opacity: 0;
           transition: all 0.5s ease-in-out;
