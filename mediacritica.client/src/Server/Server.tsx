@@ -8,6 +8,7 @@ import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
+import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserModel } from "../Interfaces/UserModel";
 
 const mediaServiceApiKey = import.meta.env.VITE_SERVICE_API_KEY;
@@ -98,6 +99,17 @@ export async function PostReview(review: ReviewModel): Promise<void> {
   });
 }
 
+export async function UpdateReview(
+  updateReviewModel: UpdateReviewModel
+): Promise<ReviewModel> {
+  const response = await fetch(`/Review/UpdateReview`, {
+    method: "PUT",
+    body: JSON.stringify(updateReviewModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response.json();
+}
+
 export async function DeleteReview(reviewerId: number): Promise<void> {
   await fetch(`/Review/DeleteReview/${reviewerId}`, {
     method: "DELETE",
@@ -112,7 +124,9 @@ export async function GetBacklog(
   return response.json();
 }
 
-export async function PostBacklog(backlog: BacklogModel): Promise<BacklogSummaryModel> {
+export async function PostBacklog(
+  backlog: BacklogModel
+): Promise<BacklogSummaryModel> {
   const response = await fetch(`/Backlog/PostBacklog`, {
     method: "POST",
     body: JSON.stringify(backlog),
@@ -122,7 +136,10 @@ export async function PostBacklog(backlog: BacklogModel): Promise<BacklogSummary
   return response.json();
 }
 
-export async function DeleteBacklog(mediaId: string, userId: number): Promise<void> {
+export async function DeleteBacklog(
+  mediaId: string,
+  userId: number
+): Promise<void> {
   await fetch(`/Backlog/DeleteBacklog/${mediaId}/${userId}`, {
     method: "DELETE",
   });

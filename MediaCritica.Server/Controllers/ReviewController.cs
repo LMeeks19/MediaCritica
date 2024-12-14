@@ -97,6 +97,22 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.SaveChangesAsync();
         }
 
+        [HttpPut(Name = "UpdateReview")]
+        [Route("[action]")]
+        public async Task<ReviewModel> UpdateReview([FromBody] UpdateReviewModel updateReviewModel)
+        {
+            var review = _databaseContext.Reviews.Single(review => review.Id == updateReviewModel.ReviewId);
+
+            review.Description = updateReviewModel.Description;
+            review.Rating = updateReviewModel.Rating;
+            review.Date = updateReviewModel.Date;
+
+            _databaseContext.Reviews.Update(review);
+            await _databaseContext.SaveChangesAsync();
+
+            return GetReview(review.MediaId, review.ReviewerId).Result!;
+        }
+
         [HttpDelete(Name = "DeleteReview")]
         [Route("[action]/{reviewId}")]
         public void DeleteReview(int reviewId)

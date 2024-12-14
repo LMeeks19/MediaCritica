@@ -30,6 +30,11 @@ Accept: application/json
 
 ###
 
+PUT {{MediaCritica.Server_HostAddress}}/Review/UpdateReview
+Accept: application/json
+
+###
+
 DELETE {{MediaCritica.Server_HostAddress}}/Review/DeleteReview/
 Accept: application/json
 
