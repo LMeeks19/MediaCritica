@@ -1,4 +1,10 @@
+import { BacklogSummaryModel } from "./BacklogSummaryModel";
+
 export interface UserModel {
-    Email: string;
-    Password: string;
+    id: number;
+    email: string;
+    password: string;
+    backlogSummary: BacklogSummaryModel[]
+    totalReviews: number;
+    totalBacklogs: number
 }

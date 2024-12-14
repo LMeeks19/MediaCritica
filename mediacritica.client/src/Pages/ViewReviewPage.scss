@@ -1,0 +1,137 @@
+@use "../Style/Colours.scss";
+
+.viewreviewpage-container {
+  width: calc(100% - 8rem);
+  height: calc(100% - 8rem);
+  padding: 4rem;
+  overflow: hidden auto;
+
+  .review {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+
+    &.empty {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+
+      .info {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .action-icon {
+          cursor: pointer;
+          margin-left: 10px;
+          font-size: 2rem;
+
+          &.edit {
+            color: Colours.$light-dark;
+          }
+
+          &.delete {
+            color: Colours.$primary-red
+          }
+        }
+
+        .media-poster {
+          border-radius: 10px;
+          max-height: 256px;
+        }
+
+          .parent-title {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-wrap: nowrap;
+            font-size: 3rem;
+
+            .sub-title {
+              text-overflow: ellipsis;
+              overflow: hidden;
+              text-wrap: nowrap;
+              font-size: 1.5rem;
+              opacity: 75%;
+            }
+          }
+      }
+    }
+
+    .review-details {
+      font-size: 1.5rem;
+    }
+
+    .review-form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      gap: 20px;
+
+      .review-description {
+        font-size: 20px;
+        width: 100%;
+        padding: 10px;
+        display: inline-block;
+        border: 2px solid Colours.$primary-red;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background-color: transparent;
+        color: Colours.$light-dark;
+        padding: 15px;
+        transition: border-color 0.5s ease-in-out;
+        resize: none;
+        font-family: inherit;
+        height: 100%;
+        resize: vertical;
+        min-height: 400px;
+      }
+
+      .review-description:hover,
+      .review-description:focus {
+        border-color: Colours.$light-dark;
+      }
+
+      .review-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .submit-button,
+        .reset-button {
+          background-color: Colours.$primary-red;
+          color: Colours.$light-dark;
+          padding: 20px;
+          font-size: 20px;
+          font-family: inherit;
+          border: none;
+          cursor: pointer;
+          border-radius: 10px;
+          transition: all 0.5s ease-in-out;
+          border: 2px solid Colours.$primary-red;
+          min-height: 60px;
+          display: flex;
+          align-items: center;
+          align-self: flex-end;
+        }
+      }
+
+      .review-button:hover {
+        border-color: Colours.$light-dark;
+      }
+    }
+  }
+}

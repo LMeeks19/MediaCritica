@@ -1,4 +1,4 @@
-@use "Colours.scss";
+@use "../Style/Colours.scss";
 
 .mediapage-container {
   width: 100%;
@@ -18,6 +18,14 @@
     .media-poster {
       height: 100%;
       width: 40%;
+
+      &.empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30rem;
+        color: Colours.$primary-red;
+      }
     }
 
     .media-details {
@@ -27,6 +35,15 @@
       overflow: auto;
       display: flex;
       flex-direction: column;
+
+      .backlog-icon {
+        color: Colours.$backlog-heart;
+        font-size: 3rem;
+      }
+
+      .backlog-icon:disabled {
+        opacity: 50%;
+      }
 
       .details-section {
         display: flex;

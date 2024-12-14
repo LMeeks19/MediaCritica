@@ -46,18 +46,45 @@ body {
   height: 100%;
 }
 
+.MuiAppBar-root {
+  border-radius: 10px;
+}
+
+.MuiTabs-root {
+  border-radius: 10px 10px 0 0 !important;
+
+  .MuiTab-root {
+    color: Colours.$light-dark !important;
+    background-color: Colours.$primary-red !important;
+    padding: 20px !important;
+    font-family: "orbitron" !important;
+    font-size: 20px;
+    border-bottom: 4px solid transparent !important;
+    transition: all 0.5s ease-in-out !important;
+  }
+
+  .MuiTab-root:hover {
+    border-bottom-color: Colours.$light-dark !important;
+  }
+
+  .MuiTabs-indicator {
+    background-color: Colours.$light-dark !important;
+    height: 4px !important;
+  }
+}
+
 .MuiOutlinedInput-notchedOutline {
   border: none !important;
 }
 
-.MuiOutlinedInput-root {
+.MuiRating-icon {
+  color: Colours.$rating-star !important;
+}
+
+.MuiInput-root {
   .MuiSvgIcon-root {
     color: Colours.$light-dark !important;
   }
-}
-
-.MuiSvgIcon-root {
-  color: Colours.$rating-star !important;
 }
 
 .MuiSelect-select {
@@ -65,6 +92,12 @@ body {
   color: Colours.$light-dark !important;
   transition: all 0.5s ease-in-out !important;
   font-family: "orbitron" !important;
+  border-color: Colours.$light-dark !important;
+}
+
+.MuiInput-underline::before,
+.MuiInput-underline::after {
+  border-bottom: 1px solid Colours.$light-dark !important;
 }
 
 .MuiTableHead-root {
@@ -111,6 +144,16 @@ body {
       border-bottom-right-radius: 10px !important ;
     }
   }
+}
+
+.MuiButton-root {
+  color: Colours.$light-dark !important;
+  font-family: inherit !important;
+  cursor: pointer !important;
+}
+
+.MuiButton-root:disabled {
+  opacity: 50% !important;
 }
 
 .MuiPaper-root {

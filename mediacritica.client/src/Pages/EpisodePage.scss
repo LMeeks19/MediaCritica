@@ -1,4 +1,4 @@
-@use "Colours.scss";
+@use "../Style/Colours.scss";
 
 .episodepage-container {
   width: 100%;
@@ -42,7 +42,7 @@
       height: calc(60% - 8rem);
       z-index: 1;
       gap: 20px;
-      overflow-y: auto;
+      overflow: hidden auto;
 
       .episode-title {
         font-size: 2.5rem;

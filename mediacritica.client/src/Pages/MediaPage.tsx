@@ -8,6 +8,7 @@ import {
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import TopBar from "../Components/TopBar";
 import {
+  IconButton,
   MenuItem,
   Rating,
   Select,
@@ -20,12 +21,27 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
-import "../Style/MediaPage.scss";
-import { GetMedia, GetSeason } from "../Server/Server";
+import {
+  DeleteBacklog,
+  GetMedia,
+  GetSeason,
+  PostBacklog,
+} from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
+import { GameModel } from "../Interfaces/GameModel";
+import {
+  faHeart as faHeartReg,
+  faImage,
+} from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
+import { BacklogModel } from "../Interfaces/BacklogModel";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
+import { Snackbar } from "../Components/Snackbar";
+import "./MediaPage.scss";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -35,11 +51,12 @@ function MediaPage() {
   const location = useLocation();
   const mediaId = location.state?.mediaId;
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
+  const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
   useEffect(() => {
     async function FetchMedia() {
-      if (mediaId === undefined) navigate("/");
+      mediaId === undefined && navigate("/");
       setIsLoading(true);
       var mediaResponse = await GetMedia(mediaId);
       var mediaSeasonsResponse = [] as SeasonModel[];
@@ -84,7 +101,7 @@ function MediaPage() {
   }
 
   function GetUniqueMovieDetails() {
-    let movie = media as MovieModel;
+    let movie = media as MovieModel | GameModel;
     return (
       <div className="details-section">
         <div>Runtime: {media.Runtime}</div>
@@ -94,6 +111,38 @@ function MediaPage() {
         <div>Website: {movie.Website}</div>
       </div>
     );
+  }
+
+  async function AddToBacklog() {
+    const backlog = {
+      userId: user.id,
+      mediaId: media.imdbID,
+      mediaType: media.Type,
+      mediaPoster: media.Poster,
+      mediaTitle: media.Title,
+    } as unknown as BacklogModel;
+
+    const newBacklogSummary = await PostBacklog(backlog);
+
+    setUser({
+      ...user,
+      backlogSummary: [...user.backlogSummary, newBacklogSummary],
+    });
+
+    Snackbar(`${media.Title} added to Backlog`, "success");
+  }
+
+  async function RemoveFromBacklog() {
+    await DeleteBacklog(media.imdbID, user.id);
+
+    setUser({
+      ...user,
+      backlogSummary: user.backlogSummary.filter(
+        (backlog) => backlog.mediaId !== media.imdbID
+      ),
+    });
+
+    Snackbar(`${media.Title} removed from Backlog`, "success");
   }
 
   function GetUniqueSeriesDetails() {
@@ -108,6 +157,7 @@ function MediaPage() {
               </TableCell>
               <TableCell colSpan={2}>
                 <Select
+                  variant="standard"
                   value={selectedSeason}
                   onChange={(e) =>
                     ChangeSelectedSeason(e.target.value as number)
@@ -142,7 +192,7 @@ function MediaPage() {
                         {
                           state: {
                             episodeId: episode.imdbID,
-                            seriesTitle: series.Title,
+                            series: series as SeriesModel,
                           },
                         }
                       )
@@ -169,89 +219,122 @@ function MediaPage() {
   }
 
   return (
-    <div className="mediapage-container">
-      {isLoading ? (
-        <div className="media empty">
-          <div className="loader">
-            <BeatLoader
-              speedMultiplier={0.5}
-              color="rgba(151, 18, 18, 1)"
-              size={20}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="media">
-          <TopBar accountBlank={false} />
-          <img className="media-poster" src={media.Poster}></img>
-          <div className="media-details">
-            <div className="flex justify-between">
-              <div className="text-6xl text-center my-10">{media.Title}</div>
-              <StarRating rating={media.imdbRating} reviews={media.imdbVotes} />
+    <>
+      <TopBar blankReturn />
+      <div className="mediapage-container">
+        {isLoading ? (
+          <div className="media empty">
+            <div className="loader">
+              <BeatLoader
+                speedMultiplier={0.5}
+                color="rgba(151, 18, 18, 1)"
+                size={20}
+              />
             </div>
-            <div className="flex flex-wrap gap-5">
-              <div className="details-section basis-full gap-10">
-                <div>{media.Plot}</div>
-                <div className="flex justify-between flex-row ">
-                  <div>Initial Release: {media.Released}</div>
-                  <div>
-                    {CapitaliseFirstLetter(media.Type)} | {media.Year}
+          </div>
+        ) : (
+          <div className="media">
+            {media.Poster !== "N/A" ? (
+              <img className="media-poster" src={media.Poster}></img>
+            ) : (
+              <div className="media-poster empty">
+                <FontAwesomeIcon icon={faImage} />
+              </div>
+            )}
+            <div className="media-details gap-6">
+              <div className="flex flex-wrap">
+                <div className="flex gap-5 items-center text-6xl text-center my-10 grow">
+                  <div>{media.Title}</div>
+                  {user.backlogSummary?.some(
+                    (backlog) => backlog.mediaId === media.imdbID
+                  ) ? (
+                    <IconButton
+                      className="backlog-icon"
+                      disabled={user.id === null || user === undefined}
+                      onClick={() => RemoveFromBacklog()}
+                    >
+                      <FontAwesomeIcon icon={faHeartSolid} />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      className="backlog-icon"
+                      disabled={user.id === null || user === undefined}
+                      onClick={() => AddToBacklog()}
+                    >
+                      <FontAwesomeIcon icon={faHeartReg} />
+                    </IconButton>
+                  )}
+                </div>
+                <StarRating
+                  rating={media.imdbRating}
+                  reviews={media.imdbVotes}
+                  media={media}
+                />
+              </div>
+              <div className="flex flex-wrap gap-5">
+                <div className="details-section basis-full gap-10">
+                  <div>{media.Plot}</div>
+                  <div className="flex justify-between flex-row ">
+                    <div>Initial Release: {media.Released}</div>
+                    <div>
+                      {CapitaliseFirstLetter(media.Type)} | {media.Year}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="details-section">
-                <div>Actors: {media.Actors}</div>
-                <div>Directos(s): {media.Director}</div>
-                <div>Writer(s): {media.Writer}</div>
-              </div>
+                <div className="details-section">
+                  <div>Actors: {media.Actors}</div>
+                  <div>Directos(s): {media.Director}</div>
+                  <div>Writer(s): {media.Writer}</div>
+                </div>
 
-              <div className="details-section">
-                <div>Genre: {media.Genre}</div>
-                <div>Language: {media.Language}</div>
-                <div>Country: {media.Country}</div>
-                <div>Rated: {media.Rated}</div>
-                <div>Awards: {media.Awards}</div>
-              </div>
+                <div className="details-section">
+                  <div>Genre: {media.Genre}</div>
+                  <div>Language: {media.Language}</div>
+                  <div>Country: {media.Country}</div>
+                  <div>Rated: {media.Rated}</div>
+                  <div>Awards: {media.Awards}</div>
+                </div>
 
-              <div className="details-section">
-                {media.Metascore !== "N/A" ? (
-                  <div className="flex gap-2">
-                    Metascore:
-                    <div className="my-auto">
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(media.Metascore)}
-                        readOnly
-                      />
+                <div className="details-section">
+                  {media.Metascore !== "N/A" && (
+                    <div className="flex gap-2">
+                      Metascore:
+                      <div className="my-auto">
+                        <Rating
+                          precision={0.1}
+                          value={ConvertRatingStringToFiveScale(
+                            media.Metascore
+                          )}
+                          readOnly
+                        />
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                {media.Ratings.map((rating) => {
-                  return (
-                    <div className="flex gap-2" key={rating.Source}>
-                      {rating.Source}:
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(rating.Value)}
-                        readOnly
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+                  )}
+                  {media.Ratings.map((rating) => {
+                    return (
+                      <div className="flex gap-2" key={rating.Source}>
+                        {rating.Source}:
+                        <Rating
+                          precision={0.1}
+                          value={ConvertRatingStringToFiveScale(rating.Value)}
+                          readOnly
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
 
-              {media.Type === MediaType.Movie
-                ? GetUniqueMovieDetails()
-                : GetUniqueSeriesDetails()}
+                {media.Type === MediaType.Series
+                  ? GetUniqueSeriesDetails()
+                  : GetUniqueMovieDetails()}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      ;
-    </div>
+        )}
+        ;
+      </div>
+    </>
   );
 }
 
