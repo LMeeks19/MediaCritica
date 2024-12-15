@@ -42,6 +42,20 @@ export default defineConfig({
         }
     },
     server: {
+        proxy: {
+            '^/User': {
+                target,
+                secure: false
+            },
+            '^/Review': {
+                target,
+                secure: false
+            },
+            '^/Backlog': {
+                target,
+                secure: false
+            }
+        },
         port: 5174,
         https: {
             key: fs.readFileSync(keyFilePath),

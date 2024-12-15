@@ -1,0 +1,178 @@
+@use "./Style/Colours.scss";
+@import url(https://fonts.googleapis.com/css?family=Orbitron);
+
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: Colours.$light-dark;
+  background-color: Colours.$dark-light;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "orbitron";
+}
+
+body {
+  margin: 0;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  background-color: transparent;
+  font-family: "orbitron";
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: Colours.$primary-red;
+  cursor: grab;
+}
+
+::placeholder {
+  color: Colours.$light-dark;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.MuiAppBar-root {
+  border-radius: 20px !important;
+
+}
+
+.MuiTabs-root {
+  border-radius: 20px 20px 0 0 !important;
+
+  .MuiTab-root {
+    color: Colours.$light-dark !important;
+    background-color: Colours.$primary-red !important;
+    padding: 20px !important;
+    font-family: "orbitron" !important;
+    font-size: 20px;
+    border-bottom: 4px solid transparent !important;
+    transition: all 0.5s ease-in-out !important;
+  }
+
+  .MuiTab-root:hover {
+    border-bottom-color: Colours.$light-dark !important;
+  }
+
+  .MuiTabs-indicator {
+    background-color: Colours.$light-dark !important;
+    height: 4px !important;
+  }
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}
+
+.MuiRating-icon {
+  color: Colours.$rating-star !important;
+}
+
+.MuiInput-root {
+  .MuiSvgIcon-root {
+    color: Colours.$light-dark !important;
+  }
+}
+
+.MuiSelect-select {
+  padding: 10px !important;
+  color: Colours.$light-dark !important;
+  transition: all 0.5s ease-in-out !important;
+  font-family: "orbitron" !important;
+  border-color: Colours.$light-dark !important;
+}
+
+.MuiInput-underline::before,
+.MuiInput-underline::after {
+  border-bottom: 1px solid Colours.$light-dark !important;
+}
+
+.MuiTableHead-root {
+  background-color: Colours.$primary-red !important;
+}
+
+.MuiTableCell-root {
+  color: Colours.$light-dark !important;
+  font-family: "orbitron" !important;
+  text-wrap: nowrap !important;
+  transition: all 0.5s ease-in-out !important;
+  border-bottom-color: Colours.$light-dark !important;
+}
+
+.MuiTableHead-root {
+  .MuiTableRow-root:first-child {
+    .MuiTableCell-root:first-child {
+      border-top-left-radius: 10px !important ;
+    }
+
+    .MuiTableCell-root:last-child {
+      border-top-right-radius: 10px !important ;
+    }
+  }
+}
+
+.MuiTableBody-root {
+  .MuiTableRow-root:hover {
+    .MuiTableCell-root {
+      background-color: Colours.$primary-red !important;
+      cursor: pointer;
+    }
+  }
+
+  .MuiTableRow-root:first-child {
+    .MuiTableCell-root:first-child {
+      border-bottom-left-radius: 10px !important ;
+    }
+
+    .MuiTableCell-root:last-child {
+      border-bottom-right-radius: 10px !important ;
+    }
+  }
+}
+
+.MuiPaper-root {
+  background-color: Colours.$dark-light !important;
+  color: Colours.$light-dark !important;
+
+  .MuiList-root {
+    padding: 0 !important;
+
+    .MuiMenuItem-root {
+      padding: 15px !important;
+      font-family: "orbitron" !important;
+    }
+
+    .MuiMenuItem-root:hover {
+      background-color: Colours.$primary-red-faded !important;
+    }
+
+    .MuiMenuItem-root[aria-selected="true"] {
+      background-color: Colours.$primary-red !important;
+    }
+  }
+}

@@ -1,0 +1,117 @@
+@use "../Style/Colours.scss";
+
+.writereviewpage-container {
+  width: calc(100% - 8rem);
+  height: calc(100% - 8rem);
+  padding: 4rem;
+  overflow: hidden auto;
+
+  .review {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &.empty {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      flex-wrap: wrap;
+
+      .info {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        .media-poster {
+          border-radius: 20px;
+          max-height: 256px;
+        }
+
+        .parent-title {
+          font-size: 3rem;
+          margin-top: auto;
+          margin-bottom: auto;
+
+          .sub-title {
+            font-size: 1.5rem;
+            opacity: 75%;
+          }
+        }
+      }
+    }
+
+    .review-form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      gap: 20px;
+
+      .review-description {
+        font-size: 20px;
+        width: 100%;
+        padding: 10px;
+        display: inline-block;
+        border: 2px solid Colours.$primary-red;
+        box-sizing: border-box;
+        border-radius: 20px;
+        background-color: transparent;
+        color: Colours.$light-dark;
+        padding: 15px;
+        transition: border-color 0.5s ease-in-out;
+        resize: none;
+        font-family: inherit;
+        height: 100%;
+        resize: vertical;
+        min-height: 400px;
+      }
+
+      .review-description:hover,
+      .review-description:focus {
+        border-color: Colours.$light-dark;
+      }
+
+      .review-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .save-btn,
+        .reset-btn {
+          font-size: 20px;
+          padding: 8px 25px;
+          transition: all 0.5s ease-in-out;
+          font-weight: lighter;
+        }
+
+        .reset-btn {
+          border: 1px solid Colours.$light-dark;
+          color: Colours.$light-dark;
+        }
+
+        .reset-btn:hover {
+          background-color: light-dark(lightgray, rgba(0, 0, 0, 0.75));
+        }
+
+        .save-btn {
+          background-color: Colours.$primary-red;
+          color: whitesmoke;
+          border: 1px solid Colours.$primary-red;
+        }
+
+        .save-btn:hover {
+          border-color: Colours.$light-dark;
+        }
+      }
+    }
+  }
+}

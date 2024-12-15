@@ -1,3 +1,56 @@
 @MediaCritica.Server_HostAddress = http://localhost:5227
 
+GET {{MediaCritica.Server_HostAddress}}/User/GetUser/
+Accept: application/json
+
+###
+
+POST {{MediaCritica.Server_HostAddress}}/User/PostUser
+Accept: application/json
+
+###
+
+PUT {{MediaCritica.Server_HostAddress}}/User/UpdateUser
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetReview/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetReviews/
+Accept: application/json
+
+###
+
+POST {{MediaCritica.Server_HostAddress}}/Review/PostReview
+Accept: application/json
+
+###
+
+PUT {{MediaCritica.Server_HostAddress}}/Review/UpdateReview
+Accept: application/json
+
+###
+
+DELETE {{MediaCritica.Server_HostAddress}}/Review/DeleteReview/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Backlog/GetBacklog/
+Accept: application/json
+
+###
+
+POST {{MediaCritica.Server_HostAddress}}/Backlog/PostBacklog
+Accept: application/json
+
+###
+
+DELETE {{MediaCritica.Server_HostAddress}}/Backlog/DeleteBacklog/
+Accept: application/json
+
 

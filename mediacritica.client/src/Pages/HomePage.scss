@@ -1,0 +1,160 @@
+@use "../Style/Colours.scss";
+
+.homepage-container {
+  width: calc(100% - 8rem);
+  height: calc(100% - 8rem);
+  padding: 4rem;
+  display: grid;
+  gap: 40px;
+  justify-items: center;
+  align-items: center;
+  overflow: hidden auto;
+
+  .homepage-title {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    user-select: none;
+    width: 70%;
+    line-height: 1;
+    color: Colours.$light-dark;
+    text-shadow: 0 6px 0 Colours.$primary-red, 0 7px 0 Colours.$primary-red,
+      0 8px 0 Colours.$primary-red, 0 9px 0 Colours.$primary-red,
+      0 10px 0 Colours.$primary-red, 0 6px 1px rgba(0, 0, 0, 0.1),
+      0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
+      0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
+      0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .homepage-searchbar {
+    border: 2px solid Colours.$primary-red;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 60rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s ease-in-out;
+
+    .homepage-input {
+      background-color: transparent;
+      border: none;
+      border-radius: 20px;
+      height: 4rem;
+      width: 85%;
+      font-size: 20px;
+      font-family: inherit;
+    }
+
+    .homepage-input:focus-visible {
+      outline: none;
+    }
+
+    .homepage-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 7.5%;
+
+      .icon-clear {
+        cursor: pointer;
+        transition: all 0.5s ease-in-out;
+      }
+    }
+
+    .homepage-icon:hover .icon-clear {
+      color: Colours.$dark-light;
+    }
+  }
+
+  .homepage-searchbar:focus-within,
+  .homepage-searchbar:hover {
+    border-color: Colours.$light-dark;
+    background-color: Colours.$primary-red;
+    color: whitesmoke;
+  }
+
+  .homepage-results {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 80rem;
+    overflow: auto hidden;
+    padding: 12.5px;
+    scroll-snap-type: x mandatory;
+    height: 375px;
+
+    &.empty {
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .homepage-result {
+      transition: all 0.5s ease-in-out;
+      border-radius: 20px;
+      cursor: pointer;
+      width: 300px;
+      min-width: 300px;
+      background-color: Colours.$dark-light;
+      scroll-snap-align: start;
+      position: relative;
+      border: 2px solid Colours.$primary-red;
+      overflow: hidden;
+
+      .result-image-empty {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 8rem;
+      }
+
+      .result-details-title,
+      .result-details-type,
+      .result-details-year {
+        padding: 10px;
+        background-color: Colours.$primary-red;
+        color: whitesmoke;
+        position: absolute;
+        overflow: hidden;
+        font-size: 15px;
+      }
+
+      .result-details-title, .result-details-year {
+        visibility: hidden;
+        opacity: 0;
+        transition: all .5s ease-in-out;
+      }
+
+      .result-details-title {
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        bottom: 0;
+        width: 280px;
+      }
+
+      .result-details-type {
+        border-bottom-left-radius: 10px;
+        right: 0;
+      }
+
+      .result-details-year {
+        border-bottom-right-radius: 10px;
+      }
+    }
+
+    .homepage-result:hover {
+      border-color: Colours.$light-dark;
+
+      .result-details-title, .result-details-year {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}
