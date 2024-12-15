@@ -116,15 +116,15 @@ function WriteReviewPage() {
               <div className="review-buttons">
                 <button
                   type="reset"
-                  className="reset-button"
+                  className="reset-btn"
                   onClick={() => {
                     setDescription(""), setRating(0);
                   }}
                 >
                   Reset
                 </button>
-                <button className="submit-button" type="submit">
-                  Submit
+                <button className="save-btn" type="submit">
+                  Post
                 </button>
               </div>
             </form>

@@ -1,0 +1,96 @@
+@use "../Style/Colours.scss";
+
+/* Blur Background */
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+/* Modal Box Styling */
+.modal {
+  background-color: Colours.$dark-light;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 0;
+  min-width: 400px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  z-index: 1000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Modal Header */
+  .header {
+    background-color: Colours.$primary-red;
+    color: whitesmoke;
+    margin: 0;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .title {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    /* Close (X) Button */
+    .close {
+      font-size: 24px;
+      color: whitesmoke;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: lightgray;
+    }
+  }
+
+  /* Divider */
+  .divider {
+    border-color: light-dark(
+      rgba(0, 0, 0, 0.12),
+      rgba(255, 255, 255, 0.12)
+    ) !important;
+  }
+
+  .dialog {
+    font-size: 14px;
+    color: Colours.$light-dark;
+    margin: 0 0 0;
+    padding: 15px 20px;
+  }
+
+  /* Button Container */
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 20px;
+
+    .cancel-btn {
+      border: 1px solid Colours.$light-dark;
+      color: Colours.$light-dark;
+    }
+
+    .cancel-btn:hover {
+      background-color: light-dark(lightgray, rgba(0, 0, 0, 0.75));
+    }
+
+    .confirm-btn {
+      background-color: Colours.$primary-red;
+      color: whitesmoke;
+      border: 1px solid Colours.$primary-red;
+    }
+
+    .confirm-btn:hover {
+      border-color: Colours.$light-dark;
+    }
+  }
+}

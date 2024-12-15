@@ -29,7 +29,7 @@
 
   .homepage-searchbar {
     border: 2px solid Colours.$primary-red;
-    border-radius: 10px;
+    border-radius: 20px;
     width: 100%;
     max-width: 60rem;
     height: 4rem;
@@ -40,7 +40,7 @@
     .homepage-input {
       background-color: transparent;
       border: none;
-      border-radius: 10px;
+      border-radius: 20px;
       height: 4rem;
       width: 85%;
       font-size: 20px;
@@ -72,6 +72,7 @@
   .homepage-searchbar:hover {
     border-color: Colours.$light-dark;
     background-color: Colours.$primary-red;
+    color: whitesmoke;
   }
 
   .homepage-results {
@@ -93,7 +94,7 @@
 
     .homepage-result {
       transition: all 0.5s ease-in-out;
-      border-radius: 10px;
+      border-radius: 20px;
       cursor: pointer;
       width: 300px;
       min-width: 300px;
@@ -118,6 +119,7 @@
       .result-details-year {
         padding: 10px;
         background-color: Colours.$primary-red;
+        color: whitesmoke;
         position: absolute;
         overflow: hidden;
         font-size: 15px;

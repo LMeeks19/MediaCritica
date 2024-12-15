@@ -29,7 +29,7 @@
         display: inline-block;
         border: 2px solid Colours.$light-dark;
         box-sizing: border-box;
-        border-radius: 5px;
+        border-radius: 20px;
         background-color: transparent;
         color: Colours.$light-dark;
         padding: 15px;
@@ -38,14 +38,14 @@
 
     .login-button {
       background-color: Colours.$primary-red;
-      color: Colours.$light-dark;
+      color: whitesmoke;
       padding: 15px;
       font-size: 20px;
       font-family: inherit;
       margin: 10px 0;
       border: none;
       cursor: pointer;
-      border-radius: 10px;
+      border-radius: 20px;
       width: 100%;
     }
   }
