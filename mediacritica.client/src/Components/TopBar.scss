@@ -7,7 +7,7 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    z-index: 999;
+    z-index: 998;
     height: 4rem;
     text-wrap: nowrap;
 
@@ -17,7 +17,7 @@
       display: flex;
       font-size: 2.5rem;
       background-color: Colours.$dark-light;
-      margin-left: 15px;
+      padding-left: 15px;
 
       &.blank {
         background-color: transparent !important;
@@ -44,7 +44,7 @@
       font-size: 2.5rem;
       height: 4rem;
       background-color: Colours.$dark-light;
-      margin-right: 15px;
+      padding-right: 15px;
 
       &.blank {
         background-color: transparent !important;

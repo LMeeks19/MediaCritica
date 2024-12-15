@@ -23,6 +23,17 @@ body {
   margin: 0;
 }
 
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  background-color: transparent;
+  font-family: "orbitron";
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -47,11 +58,12 @@ body {
 }
 
 .MuiAppBar-root {
-  border-radius: 10px;
+  border-radius: 20px !important;
+
 }
 
 .MuiTabs-root {
-  border-radius: 10px 10px 0 0 !important;
+  border-radius: 20px 20px 0 0 !important;
 
   .MuiTab-root {
     color: Colours.$light-dark !important;
@@ -109,6 +121,7 @@ body {
   font-family: "orbitron" !important;
   text-wrap: nowrap !important;
   transition: all 0.5s ease-in-out !important;
+  border-bottom-color: Colours.$light-dark !important;
 }
 
 .MuiTableHead-root {
@@ -121,10 +134,6 @@ body {
       border-top-right-radius: 10px !important ;
     }
   }
-}
-
-.MuiTableCell-root {
-  border-bottom-color: Colours.$light-dark !important;
 }
 
 .MuiTableBody-root {
@@ -144,16 +153,6 @@ body {
       border-bottom-right-radius: 10px !important ;
     }
   }
-}
-
-.MuiButton-root {
-  color: Colours.$light-dark !important;
-  font-family: inherit !important;
-  cursor: pointer !important;
-}
-
-.MuiButton-root:disabled {
-  opacity: 50% !important;
 }
 
 .MuiPaper-root {

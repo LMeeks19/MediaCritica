@@ -7,6 +7,7 @@ import { UserModel } from "./Interfaces/UserModel";
 import { userState } from "./State/GlobalState";
 import { SnackbarProvider } from "notistack";
 import "./App.scss";
+import ConfirmationDialog from "./Components/ConfirmationDialog";
 
 function App() {
   const [user, setUser] = useRecoilState<UserModel>(userState);
@@ -22,11 +23,12 @@ function App() {
   return (
     <SnackbarProvider
       maxSnack={3}
-      anchorOrigin={{horizontal: "right", vertical: "bottom"}}
+      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       autoHideDuration={3000}
       style={{ color: "inherit" }}
     >
       <div className="wrapper">
+        <ConfirmationDialog />
         <RouterProvider router={router} />
       </div>
     </SnackbarProvider>
