@@ -127,6 +127,7 @@ function MediaPage() {
     setUser({
       ...user,
       backlogSummary: [...user.backlogSummary, newBacklogSummary],
+      totalBacklogs: user.totalBacklogs + 1,
     });
 
     Snackbar(`${media.Title} added to Backlog`, "success");
@@ -140,6 +141,7 @@ function MediaPage() {
       backlogSummary: user.backlogSummary.filter(
         (backlog) => backlog.mediaId !== media.imdbID
       ),
+      totalBacklogs: user.totalBacklogs - 1,
     });
 
     Snackbar(`${media.Title} removed from Backlog`, "success");

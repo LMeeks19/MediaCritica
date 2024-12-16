@@ -1,7 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { userState } from "../State/GlobalState";
-import { useRecoilValue } from "recoil";
+import { ConfirmationDialogState, userState } from "../State/GlobalState";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import TopBar from "../Components/TopBar";
 import { Rating } from "@mui/material";
 import { MovieModel } from "../Interfaces/MovieModel";
@@ -12,16 +12,19 @@ import { PostReview } from "../Server/Server";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { Snackbar } from "../Components/Snackbar";
 import { BeatLoader } from "react-spinners";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotate, faShare } from "@fortawesome/free-solid-svg-icons";
+import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import "./WriteReviewPage.scss";
 
 function WriteReviewPage() {
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
   const navigate = useNavigate();
-
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number | null>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   const media = location.state?.media as
     | MovieModel
@@ -31,14 +34,20 @@ function WriteReviewPage() {
 
   useEffect(() => {
     (media === undefined || user.id === null) && navigate("/");
-    setIsLoading(false)
+    setIsLoading(false);
   });
 
-  async function submitReview(e: FormEvent) {
-    e.preventDefault();
+  const postReviewDialog = {
+    show: true,
+    title: "Post review",
+    dialog: "This will post everything written in this review",
+    cancel_text: "Keep Writing",
+    confirm_text: "Post",
+    confirm_action: null,
+  } as unknown as ConfirmationDialogModel;
 
+  async function SubmitReview() {
     setIsLoading(true);
-
     const review = {
       mediaId: media.imdbID,
       mediaPoster: media.Poster,
@@ -61,9 +70,9 @@ function WriteReviewPage() {
     } as ReviewModel;
 
     await PostReview(review);
+    setUser({ ...user, totalReviews: user.totalReviews + 1 });
     Snackbar("Review Created", "success");
     navigate("/");
-
     setIsLoading(false);
   }
 
@@ -104,7 +113,16 @@ function WriteReviewPage() {
                 onChange={(_event, value) => setRating(value)}
               />
             </div>
-            <form className="review-form" onSubmit={(e) => submitReview(e)}>
+            <form
+              className="review-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setConfirmationDialog({
+                  ...postReviewDialog,
+                  confirm_action: () => SubmitReview(),
+                });
+              }}
+            >
               <textarea
                 className="review-description"
                 value={description}
@@ -120,11 +138,18 @@ function WriteReviewPage() {
                   onClick={() => {
                     setDescription(""), setRating(0);
                   }}
+                  disabled={description === ""}
                 >
                   Reset
+                  <FontAwesomeIcon icon={faRotate} flip="horizontal" />
                 </button>
-                <button className="save-btn" type="submit">
+                <button
+                  className="save-btn"
+                  type="submit"
+                  disabled={description === ""}
+                >
                   Post
+                  <FontAwesomeIcon icon={faShare} />
                 </button>
               </div>
             </form>

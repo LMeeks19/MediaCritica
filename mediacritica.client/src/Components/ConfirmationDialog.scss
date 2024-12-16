@@ -29,7 +29,7 @@
     background-color: Colours.$primary-red;
     color: whitesmoke;
     margin: 0;
-    padding: 10px 20px;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,22 +75,23 @@
     padding: 15px 20px;
 
     .cancel-btn {
-      border: 1px solid Colours.$light-dark;
+      border-color: Colours.$light-dark;
       color: Colours.$light-dark;
     }
 
     .cancel-btn:hover {
-      background-color: light-dark(lightgray, rgba(0, 0, 0, 0.75));
+      background-color: Colours.$light-dark;
+      color: Colours.$dark-light;
     }
 
     .confirm-btn {
-      background-color: Colours.$primary-red;
-      color: whitesmoke;
-      border: 1px solid Colours.$primary-red;
+      color: Colours.$light-dark;
+      border-color: Colours.$primary-red;
     }
 
     .confirm-btn:hover {
-      border-color: Colours.$light-dark;
+      background-color: Colours.$primary-red;
+      color: whitesmoke;
     }
   }
 }

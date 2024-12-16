@@ -1,10 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Divider, IconButton } from "@mui/material";
-import "./ConfirmationDialog.scss";
+import { Divider } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { ConfirmationDialogState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import "./ConfirmationDialog.scss";
 
 function ConfirmationDialog() {
   const [confirmationDialog, setConfirmationDialog] = useRecoilState(
@@ -26,12 +24,6 @@ function ConfirmationDialog() {
       <div className="modal">
         <div className="header">
           <div className="title">{confirmationDialog.title}?</div>
-          <IconButton
-            className="close"
-            onClick={() => setConfirmationDialog(blankDialog)}
-          >
-            <FontAwesomeIcon icon={faTimes} />
-          </IconButton>
         </div>
         <div className="dialog">{confirmationDialog.dialog}</div>
         <Divider className="divider" />

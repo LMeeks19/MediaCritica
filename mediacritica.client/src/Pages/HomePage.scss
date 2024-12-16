@@ -28,7 +28,7 @@
   }
 
   .homepage-searchbar {
-    border: 2px solid Colours.$primary-red;
+    border: 1px solid Colours.$primary-red;
     border-radius: 20px;
     width: 100%;
     max-width: 60rem;
@@ -101,7 +101,7 @@
       background-color: Colours.$dark-light;
       scroll-snap-align: start;
       position: relative;
-      border: 2px solid Colours.$primary-red;
+      border: 1px solid Colours.$primary-red;
       overflow: hidden;
 
       .result-image-empty {
