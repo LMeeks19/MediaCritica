@@ -7,13 +7,10 @@
   border: none;
   padding: 0;
   font-size: inherit;
+  color: whitesmoke;
 }
 
 .review-button:disabled {
   opacity: 50% !important;
-  cursor: not-allowed !important;
-}
-
-.review-button:not(:disabled):hover {
-  color: Colours.$primary-red;
+  cursor: default;
 }

@@ -15,17 +15,17 @@ function StarRating(props: StarRatingProps) {
   return (
     <div className="flex items-center flex-col gap-2 my-auto">
       <Rating
-        sx={{ fontSize: "3rem" }}
+        sx={{ fontSize: "2.5rem" }}
         value={Number(props.rating) / 2}
         precision={0.1}
         readOnly
       />
       <div className="text-base text-center flex gap-1">
         <CustomTooltip
-          title={user.id === null ? "Sign in to Review" : "Write a Review"}
+          title={user.id === null ? "Login to review" : "Write a review"}
           arrow
         >
-          <span>
+          <span className="flex items-center">
             <button
               className="review-button"
               onClick={() =>

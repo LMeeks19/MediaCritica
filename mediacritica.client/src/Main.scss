@@ -45,7 +45,6 @@ button {
 
 ::-webkit-scrollbar-thumb {
   background-clip: padding-box;
-  border-radius: 9999px;
   background-color: Colours.$primary-red;
   cursor: grab;
 }
@@ -167,7 +166,7 @@ button {
     padding: 0 !important;
 
     .MuiMenuItem-root {
-      padding: 15px !important;
+      padding: 10px !important;
       font-family: "orbitron" !important;
     }
 
@@ -177,6 +176,7 @@ button {
 
     .MuiMenuItem-root[aria-selected="true"] {
       background-color: Colours.$primary-red !important;
+      color: whitesmoke;
     }
   }
 }
