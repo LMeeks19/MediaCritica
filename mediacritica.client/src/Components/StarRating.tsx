@@ -3,10 +3,10 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../State/GlobalState";
 import { useNavigate } from "react-router-dom";
 import { CustomTooltip } from "./Tooltip";
-import "./StarRating.scss";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
+import "./StarRating.scss";
 
 function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);

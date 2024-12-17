@@ -1,18 +1,16 @@
 import { FormEvent, useState } from "react";
 import { LoginFormType } from "../Enums/LoginFormType";
-import "./LoginForm.scss";
 import { GetUser, PostUser } from "../Server/Server";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import { useNavigate } from "react-router-dom";
 import { UserModel } from "../Interfaces/UserModel";
+import "./LoginForm.scss";
 
 function LoginForm(props: LoginFormProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassowrd, setConfirmPassword] = useState<string>("");
   const setUser = useSetRecoilState(userState);
-  const navigate = useNavigate();
 
   function Submit(event: FormEvent) {
     event.preventDefault();

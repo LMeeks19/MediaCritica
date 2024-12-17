@@ -2,7 +2,7 @@ import TopBar from "../Components/TopBar";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import AccountLogin from "../Components/AccountLogin";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { GetBacklog, GetReviews, UpdateUser } from "../Server/Server";
 import { MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
