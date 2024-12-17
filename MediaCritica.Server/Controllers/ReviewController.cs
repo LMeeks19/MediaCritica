@@ -17,11 +17,11 @@ namespace MediaCritica.Server.Controllers
         }
 
         [HttpGet(Name = "GetReview")]
-        [Route("[action]/{mediaId}/{reviewerId}")]
-        public async Task<ReviewModel?> GetReview(string mediaId, int reviewerId)
+        [Route("[action]/{reviewId}")]
+        public async Task<ReviewModel?> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
-                .SingleOrDefaultAsync(review => review.MediaId == mediaId && review.ReviewerId == reviewerId);
+                .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)
                 return null;
@@ -75,7 +75,7 @@ namespace MediaCritica.Server.Controllers
 
         [HttpPost(Name = "PostReview")]
         [Route("[action]")]
-        public async Task PostReview([FromBody] ReviewModel reviewModel)
+        public async Task<int> PostReview([FromBody] ReviewModel reviewModel)
         {
             var review = new Review()
             {
@@ -95,6 +95,8 @@ namespace MediaCritica.Server.Controllers
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
+
+            return review.Id;
         }
 
         [HttpPut(Name = "UpdateReview")]
@@ -110,7 +112,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
 
-            return GetReview(review.MediaId, review.ReviewerId).Result!;
+            return GetReview(review.Id).Result!;
         }
 
         [HttpDelete(Name = "DeleteReview")]
