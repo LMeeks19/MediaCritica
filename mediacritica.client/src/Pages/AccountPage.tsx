@@ -1,6 +1,6 @@
 import TopBar from "../Components/TopBar";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import AccountLogin from "../Components/AccountLogin";
 import { FormEvent, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
@@ -11,8 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCancel,
   faEdit,
-  faPlus,
   faSave,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   AccountEditModel,
@@ -20,13 +20,15 @@ import {
 } from "../Interfaces/AccountModels";
 import { AccountFieldType } from "../Enums/AccountFieldType";
 import { Snackbar } from "../Components/Snackbar";
-import TabPanel from "../Components/TabPanel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import "./AccountPage.scss";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
+import { formatDistanceToNowStrict } from "date-fns";
+import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import { CustomTooltip } from "../Components/Tooltip";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -46,6 +48,7 @@ function AccountPage() {
   const [selectedReviewFilter, setSelectedReviewFilter] = useState<number>(0);
   const [backlog, setBacklog] = useState<BacklogModel[]>([] as BacklogModel[]);
   const [selectedBacklogFilter, setSelectedBacklogFilter] = useState<number>(0);
+  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   useEffect(() => {
     if (user?.id !== undefined) {
@@ -90,8 +93,7 @@ function AccountPage() {
     });
   }
 
-  async function UpdateAccountField(event: FormEvent) {
-    event.preventDefault();
+  async function UpdateAccountField() {
     const userData = await UpdateUser(fieldValue);
     setUser(userData);
     Snackbar("Account Updated", "success");
@@ -115,14 +117,31 @@ function AccountPage() {
       return backlog.filter((media) => media.mediaType === MediaType.Movie);
     else if (selectedBacklogFilter === 2)
       return backlog.filter((media) => media.mediaType === MediaType.Series);
-    else if (selectedBacklogFilter === 3) 
+    else if (selectedBacklogFilter === 3)
       return backlog.filter((media) => media.mediaType === MediaType.Game);
     return backlog;
   }
 
+  const cancelEditReviewDialog = {
+    show: true,
+    title: "Discard unsaved changes",
+    dialog: "This will delete all edits since you last saved",
+    cancel_text: "Keep Editing",
+    confirm_text: "Discard",
+    confirm_action: () => ResetAccountField(),
+  } as unknown as ConfirmationDialogModel;
+
+  const saveReviewDialog = {
+    show: true,
+    title: "Save changes",
+    dialog: "This will save your changes",
+    cancel_text: "Keep Editing",
+    confirm_text: "Save",
+    confirm_action: null,
+  } as unknown as ConfirmationDialogModel;
+
   return (
     <>
-      <TopBar hideAccount />
       <div className="accountpage-container">
         {isLoading ? (
           <div className="loader">
@@ -136,17 +155,25 @@ function AccountPage() {
           <AccountLogin />
         ) : (
           <div className="account">
-            <div className="flex flex-col w-full">
-              <div className="section-heading">Account</div>
-              <div className="profile">
-                <div className="field">
-                  <div className="key w-2/5">Email</div>
+            <TopBar hideAccount topbarColor="rgba(151, 18, 18, 1)" />
+            <section className="account-details">
+              <div className="account-header">
+                <h1>ACCOUNT DETAILS</h1>
+              </div>
+              <div className="account-info">
+                <div className="info-item">
+                  <span>Email</span>
                   {accountEditState.isEditing &&
                   accountEditState.fieldType === AccountFieldType.Email ? (
                     <form
                       id="email-form"
-                      className="value w-2/5"
-                      onSubmit={(e) => UpdateAccountField(e)}
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        setConfirmationDialog({
+                          ...saveReviewDialog,
+                          confirm_action: () => UpdateAccountField(),
+                        });
+                      }}
                     >
                       <input
                         className="input"
@@ -165,46 +192,64 @@ function AccountPage() {
                       />
                     </form>
                   ) : (
-                    <div className="value w-2/5">{user.email}</div>
+                    <span>{user.email}</span>
                   )}
-                  <div className="action w-1/5">
+                  <div className="info-action">
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType === AccountFieldType.Email && (
+                        <button
+                          disabled={
+                            !accountEditState.isEditing &&
+                            accountEditState.fieldType !==
+                              AccountFieldType.Email
+                          }
+                          className="cancel-btn"
+                          onClick={() =>
+                            setConfirmationDialog(cancelEditReviewDialog)
+                          }
+                        >
+                          Cancel <FontAwesomeIcon icon={faCancel} />
+                        </button>
+                      )}
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType === AccountFieldType.Email && (
+                        <button className="save-btn" form="email-form">
+                          Save <FontAwesomeIcon icon={faSave} />
+                        </button>
+                      )}
                     {accountEditState.fieldType !== AccountFieldType.Email && (
-                      <FontAwesomeIcon
-                        className={`icon ${
-                          accountEditState.isEditing && "disabled"
-                        }`}
-                        icon={faEdit}
+                      <button
+                        className="edit-btn"
+                        disabled={accountEditState.isEditing}
                         onClick={() =>
                           setAccountEditState({
                             isEditing: true,
                             fieldType: AccountFieldType.Email,
                           })
                         }
-                      />
+                      >
+                        Edit <FontAwesomeIcon icon={faEdit} />
+                      </button>
                     )}
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType === AccountFieldType.Email && (
-                        <FontAwesomeIcon
-                          className="icon"
-                          icon={faCancel}
-                          onClick={() => ResetAccountField()}
-                        />
-                      )}
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType === AccountFieldType.Email && (
-                        <button type="submit" form="email-form">
-                          <FontAwesomeIcon className="icon" icon={faSave} />
-                        </button>
-                      )}
                   </div>
                 </div>
-                <div className="field">
-                  <div className="key w-2/5">Password</div>
-                  {accountEditState.fieldType === AccountFieldType.Password ? (
+                <div className="info-item">
+                  <span>Password</span>
+                  {accountEditState.isEditing &&
+                  accountEditState.fieldType === AccountFieldType.Password ? (
                     <form
                       id="password-form"
-                      className="value w-2/5"
-                      onSubmit={(e) => UpdateAccountField(e)}
+                      hidden={
+                        !accountEditState.isEditing &&
+                        accountEditState.fieldType !== AccountFieldType.Password
+                      }
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        setConfirmationDialog({
+                          ...saveReviewDialog,
+                          confirm_action: () => UpdateAccountField(),
+                        });
+                      }}
                     >
                       <input
                         className="input"
@@ -223,202 +268,203 @@ function AccountPage() {
                       />
                     </form>
                   ) : (
-                    <div className="value w-2/5">{user.password}</div>
+                    <span>********</span>
                   )}
-                  <div className="action w-1/5">
+                  <div className="info-action">
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType ===
+                        AccountFieldType.Password && (
+                        <button
+                          className="cancel-btn"
+                          onClick={() =>
+                            setConfirmationDialog(cancelEditReviewDialog)
+                          }
+                        >
+                          Cancel <FontAwesomeIcon icon={faCancel} />
+                        </button>
+                      )}
+                    {accountEditState.isEditing &&
+                      accountEditState.fieldType ===
+                        AccountFieldType.Password && (
+                        <button className="save-btn" form="password-form">
+                          Save <FontAwesomeIcon icon={faSave} />
+                        </button>
+                      )}
                     {accountEditState.fieldType !==
                       AccountFieldType.Password && (
-                      <FontAwesomeIcon
-                        className={`icon ${
-                          accountEditState.isEditing && "disabled"
-                        }`}
-                        icon={faEdit}
+                      <button
+                        className="edit-btn"
+                        disabled={accountEditState.isEditing}
                         onClick={() =>
                           setAccountEditState({
                             isEditing: true,
                             fieldType: AccountFieldType.Password,
                           })
                         }
-                      />
+                      >
+                        Edit <FontAwesomeIcon icon={faEdit} />
+                      </button>
                     )}
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType ===
-                        AccountFieldType.Password && (
-                        <FontAwesomeIcon
-                          className="icon"
-                          icon={faCancel}
-                          onClick={() => ResetAccountField()}
-                        />
-                      )}
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType ===
-                        AccountFieldType.Password && (
-                        <button type="submit" form="password-form">
-                          <FontAwesomeIcon className="icon" icon={faSave} />
-                        </button>
-                      )}
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col w-full">
-              <Tabs
-                value={activeTab}
-                onChange={(_e, v) => setActiveTab(v)}
-                variant="fullWidth"
-                centered
-              >
-                <Tab label="Reviews" />
-                <Tab label="Backlog" />
-              </Tabs>
-              <TabPanel value={activeTab} index={0}>
-                <div className="flex flex-wrap w-full gap-6 mt-10">
-                  <div className="section-heading w-full justify-between">
-                    <div className="w-1/2">Reviews</div>
-                    <div className="w-1/2 flex justify-end">
-                      <Select
-                        className="w-1/2"
-                        variant="standard"
-                        value={selectedReviewFilter}
-                        onChange={(e) =>
-                          setSelectedReviewFilter(Number(e.target.value))
+            </section>
+            <Tabs
+              value={activeTab}
+              onChange={(_e, v) => setActiveTab(v)}
+              variant="fullWidth"
+            >
+              <Tab label="Reviews" />
+              <Tab label="Backlog" />
+            </Tabs>
+            <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
+              <div className="actions">
+                <CustomTooltip
+                  title={
+                    reviews.length === user.totalReviews && "All reviews loaded"
+                  }
+                  arrow
+                >
+                  <span>
+                    <button
+                      className="load-btn"
+                      disabled={reviews.length === user.totalReviews}
+                      onClick={() => LoadMoreReviews()}
+                    >
+                      Load More <FontAwesomeIcon icon={faSpinner} />
+                    </button>
+                  </span>
+                </CustomTooltip>
+                <Select
+                  variant="standard"
+                  value={selectedReviewFilter}
+                  onChange={(e) =>
+                    setSelectedReviewFilter(Number(e.target.value))
+                  }
+                >
+                  <MenuItem value={0}>None</MenuItem>
+                  <MenuItem value={1}>Movies</MenuItem>
+                  <MenuItem value={2}>Series</MenuItem>
+                  <MenuItem value={3}>Games</MenuItem>
+                  <MenuItem value={4}>Episodes</MenuItem>
+                </Select>
+              </div>
+              {filteredReviews().length === 0 ? (
+                <div className="media-reviews empty">No Media Reviewed</div>
+              ) : (
+                <div className="media-reviews">
+                  {filteredReviews().map((review) => {
+                    return (
+                      <div
+                        key={review.mediaId}
+                        className="review"
+                        onClick={() =>
+                          navigate(`/view-review/${review.id}}`, {
+                            state: { reviewId: review.id },
+                          })
                         }
                       >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Movies</MenuItem>
-                        <MenuItem value={2}>Series</MenuItem>
-                        <MenuItem value={3}>Games</MenuItem>
-                        <MenuItem value={4}>Episodes</MenuItem>
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="flex flex-col grow overflow-x-auto w-full">
-                    {filteredReviews().length === 0 ? (
-                      <div className="media-reviews empty">
-                        No Media Reviewed
-                      </div>
-                    ) : (
-                      <div className="media-reviews">
-                        {filteredReviews().map((review) => {
-                          return (
-                            <div
-                              key={review.mediaId}
-                              className="review"
-                              style={{
-                                backgroundImage: `url(${review.mediaPoster})`,
-                              }}
-                              onClick={() =>
-                                navigate(`/view-review/${review.id}}`, {
-                                  state: { reviewId: review.id },
-                                })
-                              }
-                            >
-                              {review.mediaPoster === "N/A" && (
-                                <div className="image-empty">
-                                  <FontAwesomeIcon icon={faImage} />
-                                </div>
-                              )}
-                              <div className="type">
-                                {CapitaliseFirstLetter(review.mediaType)}
-                              </div>
-                              <div className="details">
-                                <div className="title">
-                                  {review.mediaParentTitle ?? review.mediaTitle}
-                                  {review.mediaType === MediaType.Episode &&
-                                    ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
-                                  <div className="sub-title">
-                                    {review.mediaParentTitle &&
-                                      review.mediaTitle}
-                                  </div>
-                                </div>
-                                <Rating
-                                  value={review.rating}
-                                  precision={0.5}
-                                  readOnly
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
-                        {reviews.length !== user.totalReviews && (
-                          <div
-                            className="review load"
-                            onClick={() => LoadMoreReviews()}
-                          >
-                            Load More
-                            <FontAwesomeIcon icon={faPlus} size="lg" />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </TabPanel>
-              <TabPanel value={activeTab} index={1}>
-                <div className="flex flex-col gap-6 w-full mt-10">
-                  <div className="section-heading w-full justify-between">
-                    <div className="w-1/2">Backlog</div>
-                    <div className="w-1/2 flex justify-end">
-                      <Select
-                        className="w-1/2"
-                        variant="standard"
-                        value={selectedBacklogFilter}
-                        onChange={(e) =>
-                          setSelectedBacklogFilter(Number(e.target.value))
-                        }
-                      >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Movies</MenuItem>
-                        <MenuItem value={2}>Series</MenuItem>
-                        <MenuItem value={3}>Games</MenuItem>
-                      </Select>
-                    </div>
-                  </div>
-                  {filteredBacklog().length === 0 ? (
-                    <div className="backlog empty">No Backlogged Media</div>
-                  ) : (
-                    <div className="backlog">
-                      {filteredBacklog().map((media) => {
-                        return (
-                          <div
-                            key={media.mediaId}
-                            className="media"
-                            style={{
-                              backgroundImage: `url(${media.mediaPoster})`,
-                            }}
-                            onClick={() =>
-                              navigate(`/media/${media.mediaId}}`, {
-                                state: { mediaId: media.mediaId },
-                              })
-                            }
-                          >
-                            {media.mediaPoster === "N/A" && (
-                              <div className="image-empty">
-                                <FontAwesomeIcon icon={faImage} />
-                              </div>
-                            )}
-                            <div className="type">
-                              {CapitaliseFirstLetter(media.mediaType)}
-                            </div>
-                            <div className="details">
-                              <div className="title">{media.mediaTitle}</div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {backlog.length !== user.totalBacklogs && (
-                        <div
-                          className="media load"
-                          onClick={() => LoadMoreBacklogs()}
-                        >
-                          Load More
-                          <FontAwesomeIcon icon={faPlus} size="lg" />
+                        <div className="tag">
+                          {CapitaliseFirstLetter(review.mediaType)}
                         </div>
-                      )}
-                    </div>
-                  )}
+                        {review.mediaPoster === "N/A" ? (
+                          <div className="image empty">
+                            <FontAwesomeIcon icon={faImage} />
+                          </div>
+                        ) : (
+                          <img className="image" src={review.mediaPoster} />
+                        )}
+                        <div className="review-info">
+                          <h3>
+                            {review.mediaParentTitle ?? review.mediaTitle}
+                            {review.mediaType === MediaType.Episode &&
+                              ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
+                          </h3>
+                          <p>{review.mediaParentTitle && review.mediaTitle}</p>
+                          <p>
+                            Reviewed:{" "}
+                            {CapitaliseFirstLetter(
+                              formatDistanceToNowStrict(review.date) + " ago"
+                            )}
+                          </p>
+                          <Rating
+                            style={{ fontSize: "2rem" }}
+                            value={review.rating}
+                            precision={0.5}
+                            readOnly
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </TabPanel>
+              )}
+            </div>
+            <div className="tab-panel" tabIndex={1} hidden={activeTab !== 1}>
+              <div className="actions">
+                <CustomTooltip
+                  title={
+                    backlog.length === user.totalBacklogs &&
+                    "All reviews loaded"
+                  }
+                  arrow
+                >
+                  <span>
+                    <button
+                      className="load-btn"
+                      disabled={backlog.length === user.totalBacklogs}
+                      onClick={() => LoadMoreBacklogs()}
+                    >
+                      Load More <FontAwesomeIcon icon={faSpinner} />
+                    </button>
+                  </span>
+                </CustomTooltip>
+                <Select
+                  variant="standard"
+                  value={selectedBacklogFilter}
+                  onChange={(e) =>
+                    setSelectedBacklogFilter(Number(e.target.value))
+                  }
+                >
+                  <MenuItem value={0}>None</MenuItem>
+                  <MenuItem value={1}>Movies</MenuItem>
+                  <MenuItem value={2}>Series</MenuItem>
+                  <MenuItem value={3}>Games</MenuItem>
+                </Select>
+              </div>
+              {filteredBacklog().length === 0 ? (
+                <div className="backlog empty">No Backlogged Media</div>
+              ) : (
+                <div className="backlog">
+                  {filteredBacklog().map((media) => {
+                    return (
+                      <div
+                        key={media.mediaId}
+                        className="media"
+                        onClick={() =>
+                          navigate(`/media/${media.mediaId}}`, {
+                            state: { mediaId: media.mediaId },
+                          })
+                        }
+                      >
+                        <div className="tag">
+                          {CapitaliseFirstLetter(media.mediaType)}
+                        </div>
+                        {media.mediaPoster === "N/A" ? (
+                          <div className="image empty">
+                            <FontAwesomeIcon icon={faImage} />
+                          </div>
+                        ) : (
+                          <img className="image" src={media.mediaPoster} />
+                        )}
+                        <div className="backlog-info">
+                          <p>{media.mediaTitle}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         )}

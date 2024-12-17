@@ -36,7 +36,7 @@
     height: 4rem;
     display: flex;
     align-items: center;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.3s ease;
 
     .homepage-input {
       background-color: transparent;
@@ -60,7 +60,7 @@
 
       .icon-clear {
         cursor: pointer;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.3s ease;
       }
     }
 
@@ -94,7 +94,7 @@
     }
 
     .homepage-result {
-      transition: all 0.5s ease-in-out;
+      transition: all 0.3s ease;
       border-radius: 20px;
       cursor: pointer;
       width: 300px;
@@ -129,7 +129,7 @@
       .result-details-title, .result-details-year {
         visibility: hidden;
         opacity: 0;
-        transition: all .5s ease-in-out;
+        transition: all .3s ease;
       }
 
       .result-details-title {

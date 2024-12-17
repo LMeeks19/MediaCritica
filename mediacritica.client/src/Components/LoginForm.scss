@@ -1,13 +1,15 @@
 @use "../Style/Colours.scss";
 
 .login-form {
-    padding: 2rem 4rem;
+    padding: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
     height: calc(100% - 4rem);
+    background-color: light-dark(whitesmoke, #242424);
     gap: 5px;
+    border-radius: 0 0 20px 20px;
 
     .login-title {
       font-size: 35px;

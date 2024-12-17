@@ -7,6 +7,7 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
+  letter-spacing: .1rem;
 
   color-scheme: light dark;
   color: Colours.$light-dark;
@@ -32,10 +33,15 @@ button {
   border-radius: 20px;
   font-size: 15px;
   cursor: pointer;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease;
   background-color: transparent;
   font-family: "orbitron";
   border: 1px solid transparent;
+}
+
+button:disabled {
+  opacity: 50%;
+  cursor: default;
 }
 
 ::-webkit-scrollbar {
@@ -75,7 +81,7 @@ button {
     font-family: "orbitron" !important;
     font-size: 20px;
     border-bottom: 4px solid transparent !important;
-    transition: all 0.5s ease-in-out !important;
+    transition: all 0.3s ease !important;
   }
 
   .MuiTab-root:hover {
@@ -105,7 +111,7 @@ button {
 .MuiSelect-select {
   padding: 10px !important;
   color: Colours.$light-dark !important;
-  transition: all 0.5s ease-in-out !important;
+  transition: all 0.3s ease !important;
   font-family: "orbitron" !important;
   border-color: Colours.$light-dark !important;
 }
@@ -123,7 +129,7 @@ button {
   color: Colours.$light-dark !important;
   font-family: "orbitron" !important;
   text-wrap: nowrap !important;
-  transition: all 0.5s ease-in-out !important;
+  transition: all 0.3s ease !important;
   border-bottom-color: Colours.$light-dark !important;
 }
 

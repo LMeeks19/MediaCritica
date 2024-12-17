@@ -50,7 +50,6 @@ function LoginForm(props: LoginFormProps) {
         <input
           className="login-email"
           type="email"
-          id="email"
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -64,7 +63,6 @@ function LoginForm(props: LoginFormProps) {
         <input
           className="login-password"
           type="password"
-          id="password"
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -79,7 +77,6 @@ function LoginForm(props: LoginFormProps) {
           <input
             className="login-password"
             type="password"
-            id="confirm_password"
             name="confirm_password"
             value={confirmPassowrd}
             onChange={(e) => setConfirmPassword(e.target.value)}

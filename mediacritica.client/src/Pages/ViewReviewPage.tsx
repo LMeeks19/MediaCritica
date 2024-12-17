@@ -15,7 +15,6 @@ import {
   faCancel,
   faFloppyDisk,
   faImage,
-  faRotate,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
