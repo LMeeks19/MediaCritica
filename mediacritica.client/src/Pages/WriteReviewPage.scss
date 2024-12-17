@@ -1,120 +1,120 @@
 @use "../Style/Colours.scss";
 
 .writereviewpage-container {
-  width: calc(100% - 8rem);
-  height: calc(100% - 8rem);
-  padding: 4rem;
-  overflow: hidden auto;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
   .review {
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    overflow: hidden;
 
     &.empty {
       align-items: center;
       justify-content: center;
     }
 
-    .media-details {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 20px;
-      flex-wrap: wrap;
+    .media-poster {
+      height: 100%;
+      width: 40%;
+      z-index: 200;
+      background-size: 100%;
+      min-height: 100%;
 
-      .info {
+      &.empty {
         display: flex;
-        gap: 20px;
+        justify-content: center;
         align-items: center;
-
-        .media-poster {
-          border-radius: 20px;
-          max-height: 256px;
-        }
-
-        .parent-title {
-          font-size: 3rem;
-          margin-top: auto;
-          margin-bottom: auto;
-
-          .sub-title {
-            font-size: 1.5rem;
-            opacity: 75%;
-          }
-        }
+        font-size: 30rem;
+        color: Colours.$primary-red;
       }
     }
 
-    .review-form {
+    /* Container */
+    .info {
+      margin: 0;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       flex-direction: column;
-      width: 100%;
-      height: 100%;
-      gap: 20px;
+      width: 60%;
+      position: relative;
+      overflow: hidden auto;
 
-      .review-description {
-        font-size: 20px;
-        width: 100%;
-        padding: 10px;
-        display: inline-block;
-        border: 1px solid Colours.$primary-red;
-        box-sizing: border-box;
-        border-radius: 20px;
-        background-color: transparent;
-        color: Colours.$light-dark;
-        padding: 15px;
-        transition: border-color 0.5s ease-in-out;
-        resize: none;
-        font-family: inherit;
-        height: 100%;
-        resize: vertical;
-        min-height: 400px;
-      }
-
-      .review-description:hover,
-      .review-description:focus {
-        border-color: Colours.$light-dark;
-      }
-
-      .review-buttons {
+      .hero {
+        font-size: 3rem;
+        padding: 5.5rem 2rem 1.5rem 2rem;
+        background-color: Colours.$primary-red;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        justify-content: flex-end;
-        width: 100%;
-        gap: 20px;
+        justify-content: space-between;
+        color: whitesmoke;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 
-        .save-btn,
-        .reset-btn {
-          font-size: 20px;
-          padding: 8px 25px;
+        .parent-title {
+          .sub-title {
+            font-size: 1.5rem;
+            color: #bbb;
+          }
         }
 
-        .save-btn:disabled,
-        .reset-btn:disabled {
-          opacity: 50%;
-        }
-
-        .reset-btn {
-          border-color: Colours.$light-dark;
-          color: Colours.$light-dark;
-        }
-
-        .reset-btn:not(:disabled):hover {
-          background-color: Colours.$light-dark;
-          color: Colours.$dark-light;
-        }
-
-        .save-btn {
-          color: Colours.$light-dark;
-          border-color: Colours.$primary-red;
-        }
-
-        .save-btn:not(:disabled):hover {
-          background-color: Colours.$primary-red;
+        .reset-btn,
+        .post-btn {
+          border-color: whitesmoke;
           color: whitesmoke;
+        }
+
+        .reset-btn:not(:disabled):hover,
+        .post-btn:not(:disabled):hover {
+          background-color: whitesmoke;
+          color: Colours.$primary-red;
+        }
+
+        .reset-btn:disabled,
+        .post-btn:disabled {
+          opacity: 50%;
+          cursor: default;
+        }
+      }
+
+      .review-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+
+        .review-description {
+          font-size: 20px;
+          width: calc(100% - 4rem);
+          color: Colours.$light-dark;
+          background-color: transparent;
+          resize: none;
+          font-family: inherit;
+          border: none;
+          padding: 2rem;
+          height: 100%;
+          outline: none;
+          line-height: inherit;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 849px) {
+  .viewreviewpage-container {
+    .review {
+      .media-poster {
+        display: none;
+      }
+
+      .info {
+        width: 100%;
+
+        .hero {
+          justify-content: center !important;
+          padding-top: 4rem;
+          gap: 1rem;
         }
       }
     }

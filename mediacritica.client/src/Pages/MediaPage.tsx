@@ -166,6 +166,7 @@ function MediaPage() {
             .map((episode) => {
               return (
                 <div
+                  key={episode.imdbID}
                   className="episode-card"
                   onClick={() =>
                     navigate(
@@ -287,9 +288,15 @@ function MediaPage() {
               <div className="grid">
                 <div className="card">
                   <h3>Cast</h3>
-                  <div className="inline-grid grid-cols-2 gap-3 mt-4 w-full">{media.Actors.split(",").map((actor) => {
-                    return <p className="m-0" key={actor}>{actor}</p>;
-                  })}</div>
+                  <div className="inline-grid grid-cols-2 gap-3 mt-4 w-full">
+                    {media.Actors.split(",").map((actor) => {
+                      return (
+                        <p className="m-0" key={actor}>
+                          {actor}
+                        </p>
+                      );
+                    })}
+                  </div>
                 </div>
                 <div className="card">
                   <h3>Details</h3>
@@ -318,7 +325,7 @@ function MediaPage() {
                   {media.Metascore !== "N/A" && (
                     <p className="flex items-center gap-2">
                       Metascore:{" "}
-                      <div className="rating">
+                      <span className="rating">
                         <Rating
                           precision={0.1}
                           value={ConvertRatingStringToFiveScale(
@@ -326,7 +333,7 @@ function MediaPage() {
                           )}
                           readOnly
                         />
-                      </div>
+                      </span>
                     </p>
                   )}
                   {media.Ratings.map((rating) => {
@@ -336,13 +343,13 @@ function MediaPage() {
                         key={rating.Source}
                       >
                         {rating.Source}:{" "}
-                        <div className="rating">
+                        <span className="rating">
                           <Rating
                             precision={0.5}
                             value={ConvertRatingStringToFiveScale(rating.Value)}
                             readOnly
                           />
-                        </div>
+                        </span>
                       </p>
                     );
                   })}

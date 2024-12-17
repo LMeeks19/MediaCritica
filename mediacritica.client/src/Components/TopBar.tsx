@@ -6,7 +6,7 @@ function TopBar(props: TopBarProps) {
 
   return (
     <div
-      className={`topbar ${!props.topbarColor && "blank"}`}
+      className={`topbar ${!props.topbarColor === undefined && "blank"}`}
       style={{ backgroundColor: props.topbarColor }}
     >
       <div

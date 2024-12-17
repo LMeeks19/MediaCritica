@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCancel,
   faFloppyDisk,
+  faImage,
   faRotate,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
@@ -34,13 +35,13 @@ function ViewReviewPage() {
   const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
   const [user, setUser] = useRecoilState(userState);
 
-  const mediaId = location.state?.mediaId;
+  const reviewId = location.state?.reviewId;
 
   useEffect(() => {
     async function FetchReview() {
-      (mediaId === undefined || user.id === undefined) && navigate("/");
+      reviewId === undefined && navigate("/");
       setIsLoading(true);
-      const reviewData = await GetReview(mediaId, user.id);
+      const reviewData = await GetReview(reviewId);
       setReview(reviewData);
 
       setRating(reviewData.rating);
@@ -66,7 +67,7 @@ function ViewReviewPage() {
 
   async function RemoveReview() {
     await DeleteReview(review.id);
-    setUser({ ...user, totalReviews: user.totalReviews- 1 });
+    setUser({ ...user, totalReviews: user.totalReviews - 1 });
     Snackbar("Review Deleted", "success");
     navigate("/account");
   }
@@ -106,7 +107,6 @@ function ViewReviewPage() {
 
   return (
     <>
-      <TopBar />
       <div className="viewreviewpage-container">
         {isLoading ? (
           <div className="review empty">
@@ -120,9 +120,9 @@ function ViewReviewPage() {
           </div>
         ) : (
           <div className="review">
-            <div className="media-details">
-              <div className="info">
-                <img className="media-poster" src={review.mediaPoster} />
+            <div className="info">
+              <TopBar topbarColor="rgba(151, 18, 18, 1)" />
+              <div className="hero">
                 <div className="parent-title">
                   {review.mediaParentTitle ?? review.mediaTitle}
                   {review.mediaType === MediaType.Episode &&
@@ -131,110 +131,115 @@ function ViewReviewPage() {
                     {review.mediaParentTitle && review.mediaTitle}
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-3 justify-center items-center">
-                <Rating
-                  value={rating}
-                  precision={0.5}
-                  sx={{ fontSize: "4rem" }}
-                  readOnly={isEditing ? false : true}
-                  onChange={(_event, value) => setRating(value!)}
-                />
-                <div>
-                  Reviewed:{" "}
-                  {CapitaliseFirstLetter(
-                    formatRelative(review.date, new Date())
-                  )}
-                </div>
-                <div className="flex gap-3 pt-2">
-                  {!isEditing ? (
-                    <button
-                      className="edit-btn"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      Edit
-                      <FontAwesomeIcon className="icon" icon={faEdit} />
-                    </button>
-                  ) : (
-                    <button
-                      className="cancel-btn"
-                      onClick={() =>
-                        setConfirmationDialog(cancelEditReviewDialog)
-                      }
-                    >
-                      Cancel
-                      <FontAwesomeIcon className="icon" icon={faCancel} />
-                    </button>
-                  )}
-                  <button
-                    className="delete-btn"
-                    onClick={() => setConfirmationDialog(deleteReviewDialog)}
-                    disabled={isEditing}
-                  >
-                    Delete
-                    <FontAwesomeIcon className="icon" icon={faTrashCan} />
-                  </button>
-                </div>
-              </div>
-            </div>
-            {!isEditing ? (
-              <div className="review-details">
-                {review.description.split("\\n").map((str) => {
-                  return (
-                    <div key={str}>
-                      <br /> {str}
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "2.5rem" }}
+                    readOnly={isEditing ? false : true}
+                    onChange={(_event, value) => setRating(value!)}
+                  />
+                  <div className="review-date">
+                    Reviewed:{" "}
+                    {CapitaliseFirstLetter(
+                      formatRelative(review.date, new Date())
+                    )}
+                  </div>
+                  {review.reviewerId === user.id && (
+                    <div className="flex gap-3 pt-2">
+                      {!isEditing ? (
+                        <>
+                          <button
+                            className="edit-btn"
+                            onClick={() => setIsEditing(true)}
+                          >
+                            Edit
+                            <FontAwesomeIcon className="icon" icon={faEdit} />
+                          </button>
+                          <button
+                            className="delete-btn"
+                            onClick={() =>
+                              setConfirmationDialog(deleteReviewDialog)
+                            }
+                            disabled={isEditing}
+                          >
+                            Delete
+                            <FontAwesomeIcon
+                              className="icon"
+                              icon={faTrashCan}
+                            />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="cancel-btn"
+                            onClick={() =>
+                              setConfirmationDialog(cancelEditReviewDialog)
+                            }
+                          >
+                            Cancel
+                            <FontAwesomeIcon className="icon" icon={faCancel} />
+                          </button>
+                          <button
+                            className="save-btn"
+                            form="review-form"
+                            type="submit"
+                            disabled={
+                              review.description === description &&
+                              review.rating === rating
+                            }
+                          >
+                            Save
+                            <FontAwesomeIcon icon={faFloppyDisk} />
+                          </button>
+                        </>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <form
-                className="review-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setConfirmationDialog({
-                    ...saveReviewDialog,
-                    confirm_action: () => PutReview(),
-                  });
-                }}
-              >
-                <textarea
-                  className="review-description"
-                  value={description}
-                  name="description"
-                  placeholder="Add review..."
-                  required
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-                <div className="review-buttons">
-                  <button
-                    type="reset"
-                    className="reset-btn"
-                    onClick={() => {
-                      setRating(review.rating);
-                      setDescription(review.description);
-                    }}
-                    disabled={
-                      review.description === description &&
-                      review.rating === rating
-                    }
-                  >
-                    Reset
-                    <FontAwesomeIcon icon={faRotate} flip="horizontal" />
-                  </button>
-                  <button
-                    className="save-btn"
-                    type="submit"
-                    disabled={
-                      review.description === description &&
-                      review.rating === rating
-                    }
-                  >
-                    Save
-                    <FontAwesomeIcon icon={faFloppyDisk} />
-                  </button>
+                  )}
                 </div>
-              </form>
+              </div>
+              {!isEditing ? (
+                <div className="review-details">
+                  {review.description
+                    .trim()
+                    .split("\n\n")
+                    .map((paragraph) => {
+                      return <p key={paragraph}>{paragraph}</p>;
+                    })}
+                </div>
+              ) : (
+                <form
+                  id="review-form"
+                  className="review-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setConfirmationDialog({
+                      ...saveReviewDialog,
+                      confirm_action: () => PutReview(),
+                    });
+                  }}
+                >
+                  <textarea
+                    className="review-description"
+                    value={description}
+                    name="description"
+                    placeholder="Add review..."
+                    required
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </form>
+              )}
+            </div>
+            {review.mediaPoster !== "N/A" ? (
+              <div
+                className="media-poster"
+                style={{ backgroundImage: `url(${review.mediaPoster})` }}
+              ></div>
+            ) : (
+              <div className="media-poster empty">
+                <FontAwesomeIcon icon={faImage} />
+              </div>
             )}
           </div>
         )}

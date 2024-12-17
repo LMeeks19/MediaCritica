@@ -308,8 +308,8 @@ function AccountPage() {
                                 backgroundImage: `url(${review.mediaPoster})`,
                               }}
                               onClick={() =>
-                                navigate(`/view-review/${review.mediaId}}`, {
-                                  state: { mediaId: review.mediaId },
+                                navigate(`/view-review/${review.id}}`, {
+                                  state: { reviewId: review.id },
                                 })
                               }
                             >

@@ -74,10 +74,9 @@ export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
 }
 
 export async function GetReview(
-  mediaId: string,
-  reviewerId: number
+  reviewId: string,
 ): Promise<ReviewModel> {
-  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerId}`);
+  const response = await fetch(`/Review/GetReview/${reviewId}`);
   return response.json();
 }
 
@@ -91,12 +90,13 @@ export async function GetReviews(
   return response.json();
 }
 
-export async function PostReview(review: ReviewModel): Promise<void> {
-  await fetch(`/Review/PostReview`, {
+export async function PostReview(review: ReviewModel): Promise<number> {
+  const response = await fetch(`/Review/PostReview`, {
     method: "POST",
     body: JSON.stringify(review),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
+  return response.json()
 }
 
 export async function UpdateReview(

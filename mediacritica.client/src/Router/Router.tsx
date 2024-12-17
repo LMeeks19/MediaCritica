@@ -14,6 +14,6 @@ export const router = createBrowserRouter([
     element: <EpisodePage />,
   },
   { path: "/write-review", element: <WriteReviewPage /> },
-  { path: "/view-review/:mediaId", element: <ViewReviewPage /> },
+  { path: "/view-review/:reviewId", element: <ViewReviewPage /> },
   { path: "/account", element: <AccountPage /> },
 ]);
