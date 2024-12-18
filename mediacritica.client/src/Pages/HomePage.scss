@@ -1,160 +1,172 @@
 @use "../Style/Colours.scss";
 
 .homepage-container {
-  width: calc(100% - 8rem);
-  height: calc(100% - 8rem);
-  padding: 4rem;
-  display: grid;
-  gap: 40px;
-  justify-items: center;
-  align-items: center;
-  overflow: hidden auto;
-  background-color: Colours.$dark-light;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
-  .homepage-title {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    user-select: none;
-    width: 70%;
-    line-height: 1;
-    color: Colours.$light-dark;
-    text-shadow: 0 6px 0 Colours.$primary-red, 0 7px 0 Colours.$primary-red,
-      0 8px 0 Colours.$primary-red, 0 9px 0 Colours.$primary-red,
-      0 10px 0 Colours.$primary-red, 0 6px 1px rgba(0, 0, 0, 0.1),
-      0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
-      0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
-      0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .homepage-searchbar {
-    border: 1px solid Colours.$primary-red;
-    border-radius: 20px;
+  .homepage {
     width: 100%;
-    max-width: 60rem;
-    height: 4rem;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    transition: all 0.3s ease;
 
-    .homepage-input {
-      background-color: transparent;
-      border: none;
+    .homepage-title {
+      display: flex;
+      justify-content: center;
+      user-select: none;
+      font-size: 9rem;
+      padding: 2rem 2rem 0 2rem;
+      width: calc(100% - 4rem);
+      text-wrap: nowrap;
+      text-shadow: 0 6px 0 Colours.$primary-red, 0 7px 0 Colours.$primary-red,
+        0 8px 0 Colours.$primary-red, 0 9px 0 Colours.$primary-red,
+        0 10px 0 Colours.$primary-red, 0 6px 1px rgba(0, 0, 0, 0.1),
+        0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
+        0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .homepage-searchbar {
+      border: 1px solid Colours.$primary-red;
       border-radius: 20px;
+      max-width: 60rem;
       height: 4rem;
-      width: 85%;
-      font-size: 20px;
-      font-family: inherit;
-    }
-
-    .homepage-input:focus-visible {
-      outline: none;
-    }
-
-    .homepage-icon {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 7.5%;
+      transition: all 0.3s ease;
+      width: 100%;
 
-      .icon-clear {
-        cursor: pointer;
-        transition: all 0.3s ease;
+      .homepage-input {
+        background-color: transparent;
+        border: none;
+        border-radius: 20px;
+        height: 4rem;
+        width: 85%;
+        font-size: 20px;
+        font-family: inherit;
+      }
+
+      .homepage-input:focus-visible {
+        outline: none;
+      }
+
+      .homepage-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 7.5%;
+        font-size: 1.5rem;
+
+        .icon-clear {
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+      }
+
+      .homepage-icon:hover .icon-clear {
+        color: Colours.$dark-light;
       }
     }
 
-    .homepage-icon:hover .icon-clear {
+    .homepage-searchbar:focus-within,
+    .homepage-searchbar:hover {
+      border-color: Colours.$light-dark;
+      background-color: Colours.$primary-red;
+      color: whitesmoke;
+    }
+
+    .load-btn {
+      background-color: Colours.$primary-red;
+      color: whitesmoke;
+      margin-bottom: 2rem;
+    }
+
+    .load-btn:not(:disabled):hover {
       color: Colours.$dark-light;
+      background-color: Colours.$light-dark;
     }
-  }
 
-  .homepage-searchbar:focus-within,
-  .homepage-searchbar:hover {
-    border-color: Colours.$light-dark;
-    background-color: Colours.$primary-red;
-    color: whitesmoke;
-  }
-
-  .homepage-results {
-    display: flex;
-    gap: 15px;
-    width: 100%;
-    max-width: 80rem;
-    overflow: auto hidden;
-    padding: 12.5px;
-    scroll-snap-type: x mandatory;
-    height: 375px;
-
-    &.empty {
+    .homepage-results {
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
-      font-size: 30px;
-      text-align: center;
-    }
+      gap: 2rem;
+      padding: 2rem;
+      width: calc(100% - 4rem);
 
-    .homepage-result {
-      transition: all 0.3s ease;
-      border-radius: 20px;
-      cursor: pointer;
-      width: 300px;
-      min-width: 300px;
-      background-color: Colours.$dark-light;
-      scroll-snap-align: start;
-      position: relative;
-      border: 1px solid Colours.$primary-red;
-      overflow: hidden;
-
-      .result-image-empty {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
+      &.empty {
         justify-content: center;
         align-items: center;
-        font-size: 8rem;
+        font-size: 2rem;
+        height: 100%;
       }
 
-      .result-details-title,
-      .result-details-type,
-      .result-details-year {
-        padding: 10px;
-        background-color: Colours.$primary-red;
-        color: whitesmoke;
-        position: absolute;
+      .media {
+        width: 300px;
+        background-color: light-dark(whitesmoke, #242424);
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         overflow: hidden;
-        font-size: 15px;
-      }
-
-      .result-details-title, .result-details-year {
-        visibility: hidden;
-        opacity: 0;
-        transition: all .3s ease;
-      }
-
-      .result-details-title {
         text-wrap: nowrap;
-        text-overflow: ellipsis;
-        bottom: 0;
-        width: 280px;
+        cursor: pointer;
+        position: relative;
+        flex-direction: column;
+
+        .tag {
+          position: absolute;
+          background-color: Colours.$primary-red;
+          top: 0;
+          padding: 0.75rem;
+          font-size: 0.75rem;
+          box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+          color: whitesmoke;
+
+          &.type {
+            left: 0;
+            border-radius: 0 0 20px;
+          }
+
+          &.year {
+            right: 0;
+            border-radius: 0 0 0 20px;
+          }
+        }
+
+        .image {
+          color: whitesmoke;
+          text-align: center;
+          width: 100%;
+          height: 375px;
+
+          &.empty {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            color: Colours.$light-dark;
+          }
+        }
+
+        .title {
+          background-color: Colours.$primary-red;
+          padding: 1rem;
+          width: calc(100% - 2rem);
+          box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+          color: whitesmoke;
+          text-overflow: ellipsis;
+          text-wrap: nowrap;
+          overflow: hidden;
+        }
       }
 
-      .result-details-type {
-        border-bottom-left-radius: 10px;
-        right: 0;
-      }
-
-      .result-details-year {
-        border-bottom-right-radius: 10px;
-      }
-    }
-
-    .homepage-result:hover {
-      border-color: Colours.$light-dark;
-
-      .result-details-title, .result-details-year {
-        visibility: visible;
-        opacity: 1;
+      .media:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
       }
     }
   }

@@ -458,7 +458,7 @@ function AccountPage() {
                           <img className="image" src={media.mediaPoster} />
                         )}
                         <div className="backlog-info">
-                          <p>{media.mediaTitle}</p>
+                          {media.mediaTitle}
                         </div>
                       </div>
                     );

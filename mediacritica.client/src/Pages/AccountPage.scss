@@ -10,7 +10,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-
+    
     .section-heading {
       font-size: 2rem;
       text-wrap: nowrap;
@@ -179,12 +179,9 @@
             opacity: 0;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
             color: whitesmoke;
-
-            p {
-              margin: 0;
-              text-overflow: ellipsis;
-              overflow: hidden;
-            }
+            text-overflow: ellipsis;
+            text-wrap: nowrap;
+            overflow: hidden;
           }
         }
 
@@ -226,15 +223,6 @@
           cursor: pointer;
           position: relative;
 
-          &.load {
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            gap: 5px;
-            background-color: Colours.$primary-red;
-            color: whitesmoke;
-          }
-
           .tag {
             position: absolute;
             background-color: Colours.$primary-red;
@@ -269,13 +257,14 @@
             color: light-dark(grey, #ccc);
           }
         }
+
+        .review:hover,
+        .media:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
       }
 
-      .review:hover,
-      .media:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
-      }
     }
   }
 }
