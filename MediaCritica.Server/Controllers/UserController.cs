@@ -60,14 +60,14 @@ namespace MediaCritica.Server.Controllers
 
         [HttpPost(Name = "PostUser")]
         [Route("[action]")]
-        public async Task<UserModel> PostUser([FromBody] UserModel userModel)
+        public async Task<UserModel> PostUser([FromBody] CreateUserModel userModel)
         {
             var user = new User
             {
-                Forename = userModel.Forename!,
-                Surname = userModel.Surname!,
-                Email = userModel.Email!,
-                Password = userModel.Password!
+                Forename = userModel.Forename,
+                Surname = userModel.Surname,
+                Email = userModel.Email,
+                Password = userModel.Password
             };
 
             await _databaseContext.Users.AddAsync(user);

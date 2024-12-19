@@ -31,10 +31,26 @@
       border-bottom: 1px solid light-dark(grey, #333);
     }
 
-    .account-header h1 {
-      font-size: 2rem;
-      color: Colours.$light-dark;
-      text-wrap: nowrap;
+    .account-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      h1 {
+        font-size: 2rem;
+        color: Colours.$light-dark;
+        text-wrap: nowrap;
+      }
+
+      .logout-btn {
+        background-color: Colours.$primary-red;
+        color: whitesmoke;
+      }
+
+      .logout-btn:not(:disabled):hover {
+        background-color: Colours.$light-dark;
+        color: Colours.$primary-red;
+      }
     }
 
     .account-info {

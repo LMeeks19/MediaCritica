@@ -7,6 +7,8 @@ import { UserModel } from "../Interfaces/UserModel";
 import "./LoginForm.scss";
 
 function LoginForm(props: LoginFormProps) {
+  const [forename, setForename] = useState<string>("");
+  const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassowrd, setConfirmPassword] = useState<string>("");
@@ -27,6 +29,8 @@ function LoginForm(props: LoginFormProps) {
   async function CreateAccount() {
     if (password === confirmPassowrd) {
       const userData = await PostUser({
+        forename: forename,
+        surname: surname,
         email: email,
         password: password,
       } as UserModel);
@@ -41,12 +45,42 @@ function LoginForm(props: LoginFormProps) {
           ? LoginFormType.Login.toUpperCase()
           : LoginFormType.CreateAccount.toUpperCase()}
       </div>
-      <div className="login-input">
+      {props.FormType === LoginFormType.CreateAccount && (
+        <div className="login-field">
+          <label className="login-label" htmlFor="forename">
+            Forename:
+          </label>
+          <input
+            className="login-input"
+            type="text"
+            name="forename"
+            value={forename}
+            onChange={(e) => setForename(e.target.value)}
+            required
+          />
+        </div>
+      )}
+      {props.FormType === LoginFormType.CreateAccount && (
+        <div className="login-field">
+          <label className="login-label" htmlFor="surname">
+            Surname:
+          </label>
+          <input
+            className="login-input"
+            type="text"
+            name="surname"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+            required
+          />
+        </div>
+      )}
+      <div className="login-field">
         <label className="login-label" htmlFor="email">
           Email:
         </label>
         <input
-          className="login-email"
+          className="login-input"
           type="email"
           name="email"
           value={email}
@@ -54,12 +88,12 @@ function LoginForm(props: LoginFormProps) {
           required
         />
       </div>
-      <div className="login-input">
+      <div className="login-field">
         <label className="login-label" htmlFor="password">
           Password:
         </label>
         <input
-          className="login-password"
+          className="login-input"
           type="password"
           name="password"
           value={password}
@@ -68,12 +102,12 @@ function LoginForm(props: LoginFormProps) {
         />
       </div>
       {props.FormType === LoginFormType.CreateAccount && (
-        <div className="login-input">
-          <label className="login-label" htmlFor="password">
+        <div className="login-field">
+          <label className="login-label" htmlFor="confirm_password">
             Confirm Password:
           </label>
           <input
-            className="login-password"
+            className="login-input"
             type="password"
             name="confirm_password"
             value={confirmPassowrd}

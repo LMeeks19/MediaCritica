@@ -6,7 +6,7 @@ import { GetBacklog, GetUserReviews } from "../Server/Server";
 import { AppBar, MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSignOut, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
@@ -15,13 +15,14 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { formatDistanceToNowStrict } from "date-fns";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import { useRecoilValue } from "recoil";
-import "./AccountPage.scss";
+import { useRecoilState } from "recoil";
 import AccountDetail from "../Components/AccountDetail";
 import { AccountFieldType } from "../Enums/AccountFieldType";
+import "./AccountPage.scss";
+import { UserModel } from "../Interfaces/UserModel";
 
 function AccountPage() {
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -31,7 +32,7 @@ function AccountPage() {
   const [selectedBacklogFilter, setSelectedBacklogFilter] = useState<number>(0);
 
   useEffect(() => {
-    if (user?.id !== undefined) {
+    if (user?.id !== null) {
       FetchReviews(0);
       FetchBacklog(0);
     }
@@ -92,7 +93,7 @@ function AccountPage() {
       <div className="accountpage-container">
         {isLoading ? (
           <Loader />
-        ) : user.id === null ? (
+        ) : user.id === null || user.id === undefined ? (
           <AccountLogin />
         ) : (
           <div className="account">
@@ -100,6 +101,12 @@ function AccountPage() {
             <div className="account-details">
               <div className="account-header">
                 <h1>ACCOUNT DETAILS</h1>
+                <button
+                  className="logout-btn"
+                  onClick={() => setUser({} as UserModel)}
+                >
+                  Logout <FontAwesomeIcon icon={faSignOut} />
+                </button>
               </div>
               <div className="account-info">
                 <AccountDetail
@@ -142,7 +149,8 @@ function AccountPage() {
               <div className="actions">
                 <CustomTooltip
                   title={
-                    reviews.length === user.totalReviews && "All reviewed media loaded"
+                    reviews.length === user.totalReviews &&
+                    "All reviewed media loaded"
                   }
                   arrow
                 >
