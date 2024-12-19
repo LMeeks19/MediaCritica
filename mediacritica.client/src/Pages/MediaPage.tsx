@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { BeatLoader } from "react-spinners";
 import {
   CapitaliseFirstLetter,
   ConvertRatingStringToFiveScale,
@@ -31,8 +30,9 @@ import { BacklogModel } from "../Interfaces/BacklogModel";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { Snackbar } from "../Components/Snackbar";
-import "./MediaPage.scss";
 import { CustomTooltip } from "../Components/Tooltip";
+import "./MediaPage.scss";
+import Loader from "../Components/Loader";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -208,15 +208,7 @@ function MediaPage() {
   return (
     <div className="mediapage-container">
       {isLoading ? (
-        <div className="media empty">
-          <div className="loader">
-            <BeatLoader
-              speedMultiplier={0.5}
-              color="rgba(151, 18, 18, 1)"
-              size={20}
-            />
-          </div>
-        </div>
+        <Loader />
       ) : (
         <div className="media">
           {media.Poster !== "N/A" ? (
@@ -309,7 +301,7 @@ function MediaPage() {
                 {(media.Writer !== "N/A" || media.Director !== "N/A") && (
                   <div className="card">
                     <h3>Writers & Directors</h3>
-                    {media.Writer !== "N/A" && <p>Writer(s) {media.Writer}</p>}
+                    {media.Writer !== "N/A" && <p>Writer(s): {media.Writer}</p>}
                     {media.Director !== "N/A" && (
                       <p>Director(s): {media.Director}</p>
                     )}

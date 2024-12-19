@@ -7,6 +7,7 @@ import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import "./StarRating.scss";
+import { MediaType } from "../Enums/MediaType";
 
 function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
@@ -25,21 +26,21 @@ function StarRating(props: StarRatingProps) {
           title={user.id === null ? "Login to review" : "Write a review"}
           arrow
         >
-          <span className="flex items-center">
+          <span hidden={props.media.Type === MediaType.Episode}>
             <button
-              className="review-button"
+              className="review-btn"
               onClick={() =>
-                navigate("/write-review", {
+                navigate(`/media/${props.media.imdbID}/write-review`, {
                   state: { media: props.media, parent: props.parent },
                 })
               }
-              disabled={user.id === null ? true : false}
+              disabled={user.id === null}
             >
               Review
             </button>
+            {" | "}
           </span>
         </CustomTooltip>
-        {" | "}
         <div>{props.reviews} Reviews</div>
       </div>
     </div>

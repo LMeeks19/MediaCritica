@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import { BeatLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,6 +14,7 @@ import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import "./HomePage.scss";
+import Loader from "../Components/Loader";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -57,7 +57,6 @@ function HomePage() {
     <div className="homepage-container">
       <div className="homepage">
         <TopBar hideReturn />
-
         <div className="homepage-title">MEDIA CRITICA</div>
         <div className="homepage-searchbar">
           <div className="homepage-icon">
@@ -106,11 +105,6 @@ function HomePage() {
                     <div className="tag type">
                       {CapitaliseFirstLetter(mediaSearchResult.Type)}
                     </div>
-                    <div className="tag year">
-                      {mediaSearchResult.Year.endsWith("–")
-                        ? `${mediaSearchResult.Year}Present`
-                        : mediaSearchResult.Year}
-                    </div>
                     {mediaSearchResult.Poster === "N/A" ? (
                       <div className="image empty">
                         <FontAwesomeIcon icon={faImage} />
@@ -140,21 +134,11 @@ function HomePage() {
               </span>
             </CustomTooltip>
           </div>
+        ) : isLoading ? (
+          <Loader />
         ) : (
           <div className="homepage-results empty">
-            {isLoading ? (
-              <BeatLoader
-                color="rgba(151, 18, 18, 1)"
-                size={20}
-                speedMultiplier={0.5}
-              />
-            ) : (
-              <div>
-                {searchTerm.length > 0
-                  ? "No Media Found"
-                  : "Type To Begin Search"}
-              </div>
-            )}
+            {searchTerm.length > 0 ? "No Media Found" : "Type To Begin Search"}
           </div>
         )}
       </div>

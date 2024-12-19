@@ -7,7 +7,7 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
-  letter-spacing: .1rem;
+  letter-spacing: 0.1rem;
 
   color-scheme: light dark;
   color: Colours.$light-dark;
@@ -18,6 +18,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "orbitron";
+}
+
+* {
+  transition: background-color .3s ease-in-out, opacity .3s ease-in-out,
+    visibility .3s ease-in-out, transform,
+    border-color .3s ease-in-out, box-shadow .3s ease-in-out;
+}
+
+.animate-transform {
+  transition: transform .3s ease-in-out;
 }
 
 body {
@@ -33,7 +43,6 @@ button {
   border-radius: 20px;
   font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
   background-color: transparent;
   font-family: "orbitron";
   border: 1px solid transparent;
@@ -68,7 +77,6 @@ button:disabled {
 
 .MuiAppBar-root {
   border-radius: 20px !important;
-
 }
 
 .MuiTabs-root {
@@ -81,7 +89,6 @@ button:disabled {
     font-family: "orbitron" !important;
     font-size: 20px;
     border-bottom: 4px solid transparent !important;
-    transition: all 0.3s ease !important;
   }
 
   .MuiTab-root:hover {
@@ -111,7 +118,6 @@ button:disabled {
 .MuiSelect-select {
   padding: 10px !important;
   color: Colours.$light-dark !important;
-  transition: all 0.3s ease !important;
   font-family: "orbitron" !important;
   border-color: Colours.$light-dark !important;
 }
@@ -129,7 +135,6 @@ button:disabled {
   color: Colours.$light-dark !important;
   font-family: "orbitron" !important;
   text-wrap: nowrap !important;
-  transition: all 0.3s ease !important;
   border-bottom-color: Colours.$light-dark !important;
 }
 

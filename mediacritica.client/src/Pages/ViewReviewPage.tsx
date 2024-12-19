@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MediaType } from "../Enums/MediaType";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
-import { BeatLoader } from "react-spinners";
 import { formatRelative } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,6 +20,7 @@ import { faEdit } from "@fortawesome/free-regular-svg-icons";
 import { Snackbar } from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import Loader from "../Components/Loader";
 import "./ViewReviewPage.scss";
 
 function ViewReviewPage() {
@@ -108,15 +108,7 @@ function ViewReviewPage() {
     <>
       <div className="viewreviewpage-container">
         {isLoading ? (
-          <div className="review empty">
-            <div className="loader">
-              <BeatLoader
-                speedMultiplier={0.5}
-                color="rgba(151, 18, 18, 1)"
-                size={20}
-              />
-            </div>
-          </div>
+          <Loader />
         ) : (
           <div className="review">
             <div className="info">
@@ -135,7 +127,7 @@ function ViewReviewPage() {
                     value={rating}
                     precision={0.5}
                     sx={{ fontSize: "2.5rem" }}
-                    readOnly={isEditing ? false : true}
+                    readOnly={!isEditing}
                     onChange={(_event, value) => setRating(value!)}
                   />
                   <div className="review-date">

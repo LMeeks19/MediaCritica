@@ -11,10 +11,10 @@ import { MediaType } from "../Enums/MediaType";
 import { PostReview } from "../Server/Server";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { Snackbar } from "../Components/Snackbar";
-import { BeatLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faRotate, faShare } from "@fortawesome/free-solid-svg-icons";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import Loader from "../Components/Loader";
 import "./WriteReviewPage.scss";
 
 function WriteReviewPage() {
@@ -81,15 +81,7 @@ function WriteReviewPage() {
   return (
     <div className="writereviewpage-container">
       {isLoading ? (
-        <div className="review empty">
-          <div className="loader">
-            <BeatLoader
-              speedMultiplier={0.5}
-              color="rgba(151, 18, 18, 1)"
-              size={20}
-            />
-          </div>
-        </div>
+        <Loader />
       ) : (
         <div className="review">
           <div className="info">

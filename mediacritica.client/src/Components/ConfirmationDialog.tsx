@@ -19,7 +19,7 @@ function ConfirmationDialog() {
   } as unknown as ConfirmationDialogModel;
 
   return (
-    <div hidden={confirmationDialog.show ? false : true}>
+    <div hidden={!confirmationDialog.show}>
       <div className="background"></div>
       <div className="modal">
         <div className="header">

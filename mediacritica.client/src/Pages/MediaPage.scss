@@ -135,9 +135,9 @@
           background-color: light-dark(whitesmoke, #242424);
           padding: 1.2rem;
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
           border-radius: 20px;
           flex-grow: 1;
+          transition: transform .3s ease-in-out;
         }
 
         .card:hover {
@@ -188,7 +188,6 @@
           width: 200px;
           outline: none;
           cursor: pointer;
-          transition: all 0.3s ease;
         }
 
         .season-select:hover {
@@ -210,11 +209,11 @@
           align-items: center;
           padding: 1rem;
           flex: 1 1 calc(33.333% - 1.5rem);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
           min-width: 280px;
           overflow: hidden;
           text-wrap: nowrap;
           cursor: pointer;
+          transition: transform .3s ease-in-out;
         }
 
         .episode-card:hover {

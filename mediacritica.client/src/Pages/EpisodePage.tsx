@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import { BeatLoader } from "react-spinners";
 import TopBar from "../Components/TopBar";
 import { GetEpisode } from "../Server/Server";
 import StarRating from "../Components/StarRating";
@@ -11,6 +10,7 @@ import { SeriesModel } from "../Interfaces/SeriesModel";
 import "./EpisodePage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
+import Loader from "../Components/Loader";
 
 function EpisodePage() {
   const location = useLocation();
@@ -32,20 +32,12 @@ function EpisodePage() {
 
   return (
     <>
-      <TopBar topbarColor="rgba(151, 18, 18, 1)" />
       <div className="episodepage-container">
         {isLoading ? (
-          <div className="episode empty">
-            <div className="loader">
-              <BeatLoader
-                speedMultiplier={0.5}
-                color="rgba(151, 18, 18, 1)"
-                size={20}
-              />
-            </div>
-          </div>
+          <Loader />
         ) : (
           <div className="episode">
+            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
             <div className="episode-info">
               <div className="flex flex-col gap-4">
                 <h2>

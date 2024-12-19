@@ -19,8 +19,7 @@
       height: 100%;
       width: 40%;
       z-index: 200;
-      background-size: 100%;
-      min-height: 100%;
+      background-size: 100% 100%;
 
       &.empty {
         display: flex;
@@ -41,17 +40,21 @@
       overflow: hidden auto;
 
       .hero {
-        font-size: 3rem;
-        padding: 5.5rem 2rem 1.5rem 2rem;
+        padding: 4rem 2rem 2rem 2rem;
         background-color: Colours.$primary-red;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        flex-direction: column;
         color: whitesmoke;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 
         .parent-title {
+          font-size: 3rem;
+          text-align: center;
+          margin-bottom: 1rem;
+
           .sub-title {
             font-size: 1.5rem;
             color: #bbb;
@@ -95,8 +98,8 @@
   }
 }
 
-@media screen and (max-width: 849px) {
-  .viewreviewpage-container {
+@media screen and (max-width: 1000px) {
+  .writwreviewpage-container {
     .review {
       .media-poster {
         display: none;

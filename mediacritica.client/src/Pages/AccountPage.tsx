@@ -3,9 +3,8 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import AccountLogin from "../Components/AccountLogin";
 import { useEffect, useState } from "react";
-import { BeatLoader } from "react-spinners";
 import { GetBacklog, GetReviews, UpdateUser } from "../Server/Server";
-import { MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
+import { AppBar, MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -29,6 +28,7 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { CustomTooltip } from "../Components/Tooltip";
+import Loader from "../Components/Loader";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -144,13 +144,7 @@ function AccountPage() {
     <>
       <div className="accountpage-container">
         {isLoading ? (
-          <div className="loader">
-            <BeatLoader
-              speedMultiplier={0.5}
-              color="rgba(151, 18, 18, 1)"
-              size={20}
-            />
-          </div>
+          <Loader />
         ) : user.id === null ? (
           <AccountLogin />
         ) : (
@@ -162,10 +156,11 @@ function AccountPage() {
               </div>
               <div className="account-info">
                 <div className="info-item">
-                  <span>Email</span>
+                  <span className="info-label w-1/3">Email</span>
                   {accountEditState.isEditing &&
                   accountEditState.fieldType === AccountFieldType.Email ? (
                     <form
+                      className="info-value w-1/3"
                       id="email-form"
                       onSubmit={(e) => {
                         e.preventDefault();
@@ -192,9 +187,9 @@ function AccountPage() {
                       />
                     </form>
                   ) : (
-                    <span>{user.email}</span>
+                    <span className="info-value w-1/3">{user.email}</span>
                   )}
-                  <div className="info-action">
+                  <div className="info-action w-1/3">
                     {accountEditState.isEditing &&
                       accountEditState.fieldType === AccountFieldType.Email && (
                         <button
@@ -234,10 +229,11 @@ function AccountPage() {
                   </div>
                 </div>
                 <div className="info-item">
-                  <span>Password</span>
+                  <span className="info-label w-1/3">Password</span>
                   {accountEditState.isEditing &&
                   accountEditState.fieldType === AccountFieldType.Password ? (
                     <form
+                      className="info-value w-1/3"
                       id="password-form"
                       hidden={
                         !accountEditState.isEditing &&
@@ -268,9 +264,9 @@ function AccountPage() {
                       />
                     </form>
                   ) : (
-                    <span>********</span>
+                    <span className="info-value w-1/3">********</span>
                   )}
-                  <div className="info-action">
+                  <div className="info-action w-1/3">
                     {accountEditState.isEditing &&
                       accountEditState.fieldType ===
                         AccountFieldType.Password && (
@@ -309,14 +305,16 @@ function AccountPage() {
                 </div>
               </div>
             </section>
-            <Tabs
-              value={activeTab}
-              onChange={(_e, v) => setActiveTab(v)}
-              variant="fullWidth"
-            >
-              <Tab label="Reviews" />
-              <Tab label="Backlog" />
-            </Tabs>
+            <AppBar position="static">
+              <Tabs
+                value={activeTab}
+                onChange={(_e, v) => setActiveTab(v)}
+                variant="fullWidth"
+              >
+                <Tab label="Reviews" />
+                <Tab label="Backlog" />
+              </Tabs>
+            </AppBar>
             <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
               <div className="actions">
                 <CustomTooltip
@@ -457,9 +455,7 @@ function AccountPage() {
                         ) : (
                           <img className="image" src={media.mediaPoster} />
                         )}
-                        <div className="backlog-info">
-                          {media.mediaTitle}
-                        </div>
+                        <div className="backlog-info">{media.mediaTitle}</div>
                       </div>
                     );
                   })}
