@@ -28,6 +28,7 @@ function ViewReviewPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const [title, setTitle] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
@@ -43,8 +44,10 @@ function ViewReviewPage() {
       const reviewData = await GetReview(reviewId);
       setReview(reviewData);
 
+      setTitle(reviewData.title);
       setRating(reviewData.rating);
       setDescription(reviewData.description);
+
       setIsLoading(false);
     }
     FetchReview();
@@ -54,6 +57,7 @@ function ViewReviewPage() {
     const details = {
       reviewId: review.id,
       description: description,
+      title: title,
       rating: rating,
       date: new Date(),
     } as UpdateReviewModel;
@@ -72,6 +76,7 @@ function ViewReviewPage() {
   }
 
   function ResetReviewEdit() {
+    setTitle(review.title);
     setRating(review.rating);
     setDescription(review.description);
     setIsEditing(false);
@@ -131,10 +136,10 @@ function ViewReviewPage() {
                     onChange={(_event, value) => setRating(value!)}
                   />
                   <div className="review-date">
-                    Reviewed:{" "}
                     {CapitaliseFirstLetter(
                       formatRelative(review.date, new Date())
-                    )}
+                    )}{" "}
+                    | {review.reviewerName}
                   </div>
                   {review.reviewerId === user.id && (
                     <div className="flex gap-3 pt-2">
@@ -178,7 +183,8 @@ function ViewReviewPage() {
                             type="submit"
                             disabled={
                               review.description === description &&
-                              review.rating === rating
+                              review.rating === rating &&
+                              review.title === title
                             }
                           >
                             Save
@@ -192,6 +198,7 @@ function ViewReviewPage() {
               </div>
               {!isEditing ? (
                 <div className="review-details">
+                  <h2>{review.title}</h2>
                   {review.description
                     .trim()
                     .split("\n\n")
@@ -211,11 +218,20 @@ function ViewReviewPage() {
                     });
                   }}
                 >
+                  <input
+                    className="review-title"
+                    type="text"
+                    value={title}
+                    name="title"
+                    placeholder="Enter title..."
+                    required
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
                   <textarea
                     className="review-description"
                     value={description}
                     name="description"
-                    placeholder="Add review..."
+                    placeholder="Write review..."
                     required
                     onChange={(e) => setDescription(e.target.value)}
                   />

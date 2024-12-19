@@ -82,28 +82,6 @@
       }
     }
 
-    .rating-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      .stars {
-        font-size: 1.5rem;
-        color: #ffd700;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .review-count {
-        font-size: 0.9rem;
-        color: #f0f0f0;
-        margin: 0;
-      }
-    }
-
     .details {
       overflow: auto;
       height: 100%;
@@ -126,7 +104,7 @@
       .grid {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 1.5rem;
         padding: 2rem;
         background-color: Colours.$dark-light;
         border-bottom: 1px solid #444;
@@ -137,7 +115,7 @@
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
           border-radius: 20px;
           flex-grow: 1;
-          transition: transform .3s ease-in-out;
+          transition: transform 0.3s ease-in-out;
         }
 
         .card:hover {
@@ -163,9 +141,85 @@
         }
       }
 
+      .review-details {
+        padding: 2rem;
+        background-color: light-dark(whitesmoke, #1b1b1b);
+        border-bottom: 1px solid #444;
+
+        .review-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: Colours.$primary-red;
+          }
+
+          .view-btn {
+            border-color: Colours.$primary-red;
+            background-color: Colours.$primary-red;
+            color: whitesmoke;
+          }
+
+          .view-btn:not(:disabled):hover {
+            border-color: Colours.$dark-light;
+            background-color: Colours.$light-dark;
+            color: Colours.$dark-light;
+          }
+        }
+
+        .review-cards {
+          display: flex;
+          gap: 1.5rem;
+          padding-top: 1rem;
+
+          .review-card {
+            background-color: light-dark(whitesmoke, #242424);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            transition: transform 0.3s ease-in-out;
+            min-width: 250px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            h3,
+            p,
+            .rating .date {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+
+            h3 {
+              margin: 0;
+            }
+
+            p {
+              margin: 0;
+              color: gray;
+            }
+
+            .rating {
+              display: flex;
+              gap: 0.5rem;
+            }
+          }
+
+          .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+
       /* Season Details Section */
       .season-details {
-        background-color: light-dark(whitesmoke, #1b1b1b);
+        background-color: Colours.$dark-light;
         padding: 2rem;
         border-bottom: 1px solid #444;
 
@@ -213,7 +267,7 @@
           overflow: hidden;
           text-wrap: nowrap;
           cursor: pointer;
-          transition: transform .3s ease-in-out;
+          transition: transform 0.3s ease-in-out;
         }
 
         .episode-card:hover {
@@ -251,11 +305,10 @@
           margin: 0;
           font-size: 0.9rem;
           color: grey;
-        }
 
-        .episode-info span {
-          color: #ffd700;
-          font-weight: 600;
+          .star-icon {
+            color: Colours.$rating-star;
+          }
         }
       }
     }

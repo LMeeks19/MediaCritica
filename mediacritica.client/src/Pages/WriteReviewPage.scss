@@ -80,18 +80,22 @@
         align-items: center;
         height: 100%;
 
+        .review-title,
         .review-description {
           font-size: 20px;
           width: calc(100% - 4rem);
           color: Colours.$light-dark;
           background-color: transparent;
-          resize: none;
           font-family: inherit;
           border: none;
-          padding: 2rem;
-          height: 100%;
           outline: none;
           line-height: inherit;
+          padding: 2rem;
+        }
+
+        .review-description {
+          resize: none;
+          height: 100%;
         }
       }
     }

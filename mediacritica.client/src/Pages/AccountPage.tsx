@@ -1,57 +1,38 @@
 import TopBar from "../Components/TopBar";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { ConfirmationDialogState, userState } from "../State/GlobalState";
+import { userState } from "../State/GlobalState";
 import AccountLogin from "../Components/AccountLogin";
 import { useEffect, useState } from "react";
-import { GetBacklog, GetReviews, UpdateUser } from "../Server/Server";
+import { GetBacklog, GetUserReviews } from "../Server/Server";
 import { AppBar, MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCancel,
-  faEdit,
-  faSave,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  AccountEditModel,
-  AccountFieldValue,
-} from "../Interfaces/AccountModels";
-import { AccountFieldType } from "../Enums/AccountFieldType";
-import { Snackbar } from "../Components/Snackbar";
+import { faSignOut, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import "./AccountPage.scss";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { formatDistanceToNowStrict } from "date-fns";
-import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
+import { useRecoilState } from "recoil";
+import AccountDetail from "../Components/AccountDetail";
+import { AccountFieldType } from "../Enums/AccountFieldType";
+import "./AccountPage.scss";
+import { UserModel } from "../Interfaces/UserModel";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [accountEditState, setAccountEditState] = useState<AccountEditModel>({
-    isEditing: false,
-    fieldType: null,
-  } as AccountEditModel);
   const navigate = useNavigate();
-  const [fieldValue, setFieldValue] = useState<AccountFieldValue>({
-    userId: -1,
-    value: "",
-    type: null,
-  } as AccountFieldValue);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
   const [selectedReviewFilter, setSelectedReviewFilter] = useState<number>(0);
   const [backlog, setBacklog] = useState<BacklogModel[]>([] as BacklogModel[]);
   const [selectedBacklogFilter, setSelectedBacklogFilter] = useState<number>(0);
-  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   useEffect(() => {
-    if (user?.id !== undefined) {
+    if (user?.id !== null) {
       FetchReviews(0);
       FetchBacklog(0);
     }
@@ -59,7 +40,7 @@ function AccountPage() {
 
   async function FetchReviews(offset: number) {
     setIsLoading(true);
-    const reviewsData = await GetReviews(user.id, offset);
+    const reviewsData = await GetUserReviews(user.id, offset);
     setReviews(reviewsData);
     setIsLoading(false);
   }
@@ -73,7 +54,7 @@ function AccountPage() {
 
   async function LoadMoreReviews() {
     setIsLoading(true);
-    const reviewsData = await GetReviews(user.id, reviews.length);
+    const reviewsData = await GetUserReviews(user.id, reviews.length);
     setReviews([...reviews, ...reviewsData]);
     setIsLoading(false);
   }
@@ -83,21 +64,6 @@ function AccountPage() {
     const backlogData = await GetBacklog(user.id, backlog.length);
     setBacklog([...backlog, ...backlogData]);
     setIsLoading(false);
-  }
-
-  function ResetAccountField() {
-    setFieldValue({ userId: user.id, value: "", type: null });
-    setAccountEditState({
-      isEditing: false,
-      fieldType: null,
-    });
-  }
-
-  async function UpdateAccountField() {
-    const userData = await UpdateUser(fieldValue);
-    setUser(userData);
-    Snackbar("Account Updated", "success");
-    ResetAccountField();
   }
 
   function filteredReviews() {
@@ -122,189 +88,53 @@ function AccountPage() {
     return backlog;
   }
 
-  const cancelEditReviewDialog = {
-    show: true,
-    title: "Discard unsaved changes",
-    dialog: "This will delete all edits since you last saved",
-    cancel_text: "Keep Editing",
-    confirm_text: "Discard",
-    confirm_action: () => ResetAccountField(),
-  } as unknown as ConfirmationDialogModel;
-
-  const saveReviewDialog = {
-    show: true,
-    title: "Save changes",
-    dialog: "This will save your changes",
-    cancel_text: "Keep Editing",
-    confirm_text: "Save",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
-
   return (
     <>
       <div className="accountpage-container">
         {isLoading ? (
           <Loader />
-        ) : user.id === null ? (
+        ) : user.id === null || user.id === undefined ? (
           <AccountLogin />
         ) : (
           <div className="account">
             <TopBar hideAccount topbarColor="rgba(151, 18, 18, 1)" />
-            <section className="account-details">
+            <div className="account-details">
               <div className="account-header">
                 <h1>ACCOUNT DETAILS</h1>
+                <button
+                  className="logout-btn"
+                  onClick={() => setUser({} as UserModel)}
+                >
+                  Logout <FontAwesomeIcon icon={faSignOut} />
+                </button>
               </div>
               <div className="account-info">
-                <div className="info-item">
-                  <span className="info-label w-1/3">Email</span>
-                  {accountEditState.isEditing &&
-                  accountEditState.fieldType === AccountFieldType.Email ? (
-                    <form
-                      className="info-value w-1/3"
-                      id="email-form"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        setConfirmationDialog({
-                          ...saveReviewDialog,
-                          confirm_action: () => UpdateAccountField(),
-                        });
-                      }}
-                    >
-                      <input
-                        className="input"
-                        type="email"
-                        placeholder="Enter new email..."
-                        autoComplete="off"
-                        value={fieldValue.value}
-                        onChange={(e) =>
-                          setFieldValue({
-                            userId: user.id,
-                            value: e.target.value,
-                            type: AccountFieldType.Email,
-                          })
-                        }
-                        required
-                      />
-                    </form>
-                  ) : (
-                    <span className="info-value w-1/3">{user.email}</span>
-                  )}
-                  <div className="info-action w-1/3">
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType === AccountFieldType.Email && (
-                        <button
-                          disabled={
-                            !accountEditState.isEditing &&
-                            accountEditState.fieldType !==
-                              AccountFieldType.Email
-                          }
-                          className="cancel-btn"
-                          onClick={() =>
-                            setConfirmationDialog(cancelEditReviewDialog)
-                          }
-                        >
-                          Cancel <FontAwesomeIcon icon={faCancel} />
-                        </button>
-                      )}
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType === AccountFieldType.Email && (
-                        <button className="save-btn" form="email-form">
-                          Save <FontAwesomeIcon icon={faSave} />
-                        </button>
-                      )}
-                    {accountEditState.fieldType !== AccountFieldType.Email && (
-                      <button
-                        className="edit-btn"
-                        disabled={accountEditState.isEditing}
-                        onClick={() =>
-                          setAccountEditState({
-                            isEditing: true,
-                            fieldType: AccountFieldType.Email,
-                          })
-                        }
-                      >
-                        Edit <FontAwesomeIcon icon={faEdit} />
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className="info-item">
-                  <span className="info-label w-1/3">Password</span>
-                  {accountEditState.isEditing &&
-                  accountEditState.fieldType === AccountFieldType.Password ? (
-                    <form
-                      className="info-value w-1/3"
-                      id="password-form"
-                      hidden={
-                        !accountEditState.isEditing &&
-                        accountEditState.fieldType !== AccountFieldType.Password
-                      }
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        setConfirmationDialog({
-                          ...saveReviewDialog,
-                          confirm_action: () => UpdateAccountField(),
-                        });
-                      }}
-                    >
-                      <input
-                        className="input"
-                        type="password"
-                        placeholder="Enter new password..."
-                        autoComplete="off"
-                        value={fieldValue.value}
-                        onChange={(e) =>
-                          setFieldValue({
-                            userId: user.id,
-                            value: e.target.value,
-                            type: AccountFieldType.Password,
-                          })
-                        }
-                        required
-                      />
-                    </form>
-                  ) : (
-                    <span className="info-value w-1/3">********</span>
-                  )}
-                  <div className="info-action w-1/3">
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType ===
-                        AccountFieldType.Password && (
-                        <button
-                          className="cancel-btn"
-                          onClick={() =>
-                            setConfirmationDialog(cancelEditReviewDialog)
-                          }
-                        >
-                          Cancel <FontAwesomeIcon icon={faCancel} />
-                        </button>
-                      )}
-                    {accountEditState.isEditing &&
-                      accountEditState.fieldType ===
-                        AccountFieldType.Password && (
-                        <button className="save-btn" form="password-form">
-                          Save <FontAwesomeIcon icon={faSave} />
-                        </button>
-                      )}
-                    {accountEditState.fieldType !==
-                      AccountFieldType.Password && (
-                      <button
-                        className="edit-btn"
-                        disabled={accountEditState.isEditing}
-                        onClick={() =>
-                          setAccountEditState({
-                            isEditing: true,
-                            fieldType: AccountFieldType.Password,
-                          })
-                        }
-                      >
-                        Edit <FontAwesomeIcon icon={faEdit} />
-                      </button>
-                    )}
-                  </div>
-                </div>
+                <AccountDetail
+                  accountFieldName="Forename"
+                  accountFieldType={AccountFieldType.Forename}
+                  accountFieldValue={user.forename}
+                  inputType="text"
+                />
+                <AccountDetail
+                  accountFieldName="Surname"
+                  accountFieldType={AccountFieldType.Surname}
+                  accountFieldValue={user.surname}
+                  inputType="text"
+                />
+                <AccountDetail
+                  accountFieldName="Email"
+                  accountFieldType={AccountFieldType.Email}
+                  accountFieldValue={user.email}
+                  inputType="text"
+                />
+                <AccountDetail
+                  accountFieldName="Password"
+                  accountFieldType={AccountFieldType.Password}
+                  accountFieldValue="********"
+                  inputType="password"
+                />
               </div>
-            </section>
+            </div>
             <AppBar position="static">
               <Tabs
                 value={activeTab}
@@ -319,7 +149,8 @@ function AccountPage() {
               <div className="actions">
                 <CustomTooltip
                   title={
-                    reviews.length === user.totalReviews && "All reviews loaded"
+                    reviews.length === user.totalReviews &&
+                    "All reviewed media loaded"
                   }
                   arrow
                 >
@@ -357,9 +188,12 @@ function AccountPage() {
                         key={review.mediaId}
                         className="review"
                         onClick={() =>
-                          navigate(`/view-review/${review.id}}`, {
-                            state: { reviewId: review.id },
-                          })
+                          navigate(
+                            `/media/${review.mediaId}/view-review/${review.id}}`,
+                            {
+                              state: { reviewId: review.id },
+                            }
+                          )
                         }
                       >
                         <div className="tag">
@@ -403,7 +237,7 @@ function AccountPage() {
                 <CustomTooltip
                   title={
                     backlog.length === user.totalBacklogs &&
-                    "All reviews loaded"
+                    "All backlogged media loaded"
                   }
                   arrow
                 >

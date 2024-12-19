@@ -21,6 +21,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<ReviewModel?> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
+                .Include(review => review.Reviewer)
                 .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)
@@ -37,16 +38,18 @@ namespace MediaCritica.Server.Controllers
                 MediaEpisode = review.MediaEpisode,
                 MediaParentId = review.MediaParentId,
                 MediaParentTitle = review.MediaParentTitle,
+                ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
                 ReviewerId = review.ReviewerId,
+                Title = review.Title,
                 Rating = review.Rating,
                 Description = review.Description,
                 Date = review.Date
             };
         }
 
-        [HttpGet(Name = "GetReviews")]
+        [HttpGet(Name = "GetUserReviews")]
         [Route("[action]/{reviewerId}/{offset}")]
-        public async Task<List<ReviewModel>> GetReviews(int reviewerId, int offset)
+        public async Task<List<ReviewModel>> GetUserReviews(int reviewerId, int offset)
         {
             var reviews = await _databaseContext.Reviews
                 .Where(review => review.ReviewerId == reviewerId)
@@ -61,13 +64,37 @@ namespace MediaCritica.Server.Controllers
                     MediaEpisode = review.MediaEpisode,
                     MediaParentId = review.MediaParentId,
                     MediaParentTitle = review.MediaParentTitle,
+                    ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
                     ReviewerId = review.ReviewerId,
+                    Title = review.Title,
                     Rating = review.Rating,
                     Description = review.Description,
                     Date = review.Date
                 }).OrderByDescending(review => review.Date)
                 .Skip(offset)
                 .Take(20)
+                .ToListAsync();
+
+            return reviews;
+        }
+
+        [HttpGet(Name = "GetMediaReviews")]
+        [Route("[action]/{mediaId}/{offset}")]
+        public async Task<List<ReviewSummaryModel>> GetMediaReviews(string mediaId, int offset)
+        {
+            var reviews = await _databaseContext.Reviews
+                .Include(review => review.Reviewer)
+                .Where(review => review.MediaId == mediaId)
+                .Select(review => new ReviewSummaryModel()
+                {
+                    Id = review.Id,
+                    ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
+                    Title = review.Title,
+                    Rating = review.Rating,
+                    Date = review.Date
+                }).OrderByDescending(review => review.Date)
+                .Skip(offset)
+                .Take(10)
                 .ToListAsync();
 
             return reviews;
@@ -88,6 +115,7 @@ namespace MediaCritica.Server.Controllers
                 MediaParentId = reviewModel.MediaParentId,
                 MediaParentTitle = reviewModel.MediaParentTitle,
                 ReviewerId = reviewModel.ReviewerId,
+                Title = reviewModel.Title,
                 Rating = reviewModel.Rating,
                 Description = reviewModel.Description,
                 Date = reviewModel.Date
@@ -105,6 +133,7 @@ namespace MediaCritica.Server.Controllers
         {
             var review = _databaseContext.Reviews.Single(review => review.Id == updateReviewModel.ReviewId);
 
+            review.Title = updateReviewModel.Title;
             review.Description = updateReviewModel.Description;
             review.Rating = updateReviewModel.Rating;
             review.Date = updateReviewModel.Date;

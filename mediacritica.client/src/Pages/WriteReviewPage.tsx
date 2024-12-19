@@ -21,6 +21,7 @@ function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
   const navigate = useNavigate();
+  const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number | null>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -64,6 +65,7 @@ function WriteReviewPage() {
       mediaParentId: parent?.imdbID,
       mediaParentTitle: parent?.Title,
       reviewerId: user.id,
+      title: title,
       rating: rating,
       description: description,
       date: new Date(),
@@ -72,10 +74,16 @@ function WriteReviewPage() {
     const reviewId = await PostReview(review);
     setUser({ ...user, totalReviews: user.totalReviews + 1 });
     Snackbar("Review Created", "success");
-    navigate(`/view-review/${reviewId}`, {
+    navigate(`/media/${media.imdbID}/view-review/${reviewId}`, {
       state: { reviewId: reviewId },
     });
     setIsLoading(false);
+  }
+
+  function ResetFields() {
+    setTitle("");
+    setDescription("");
+    setRating(0);
   }
 
   return (
@@ -106,9 +114,7 @@ function WriteReviewPage() {
                   <button
                     type="reset"
                     className="reset-btn"
-                    onClick={() => {
-                      setDescription(""), setRating(0);
-                    }}
+                    onClick={() => ResetFields()}
                   >
                     Reset
                     <FontAwesomeIcon icon={faRotate} flip="horizontal" />
@@ -117,7 +123,7 @@ function WriteReviewPage() {
                     className="post-btn"
                     form="review-form"
                     type="submit"
-                    disabled={description === ""}
+                    disabled={description === "" || title == ""}
                   >
                     Post
                     <FontAwesomeIcon icon={faShare} />
@@ -136,6 +142,15 @@ function WriteReviewPage() {
                 });
               }}
             >
+              <input
+                className="review-title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                name="title"
+                placeholder="Enter title..."
+                required
+              />
               <textarea
                 className="review-description"
                 value={description}
