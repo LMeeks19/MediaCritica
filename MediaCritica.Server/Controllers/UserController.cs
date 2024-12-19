@@ -31,6 +31,8 @@ namespace MediaCritica.Server.Controllers
                 return new UserModel
                 {
                     Id = null,
+                    Forename = null,
+                    Surname = null,
                     Email = null,
                     Password = null,
                     BacklogSummary = [],
@@ -42,6 +44,8 @@ namespace MediaCritica.Server.Controllers
             return new UserModel
             {
                 Id = user.Id,
+                Forename = user.Forename,
+                Surname = user.Surname,
                 Email = user.Email,
                 Password = user.Password,
                 BacklogSummary = user.Backlogs.Select(backlogSummary => new BacklogSummaryModel()
@@ -58,7 +62,13 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]")]
         public async Task<UserModel> PostUser([FromBody] UserModel userModel)
         {
-            var user = new User { Email = userModel.Email!, Password = userModel.Password! };
+            var user = new User
+            {
+                Forename = userModel.Forename!,
+                Surname = userModel.Surname!,
+                Email = userModel.Email!,
+                Password = userModel.Password!
+            };
 
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
@@ -72,6 +82,10 @@ namespace MediaCritica.Server.Controllers
         {
             var user = _databaseContext.Users.Single(user => user.Id == updateUserModel.UserId);
 
+            if (updateUserModel.Type == UpdateUserEnum.Forename)
+                user.Forename = updateUserModel.Value;
+            if (updateUserModel.Type == UpdateUserEnum.Surname)
+                user.Surname = updateUserModel.Value;
             if (updateUserModel.Type == UpdateUserEnum.Email)
                 user.Email = updateUserModel.Value;
             if (updateUserModel.Type == UpdateUserEnum.Password)

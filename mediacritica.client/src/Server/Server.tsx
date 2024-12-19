@@ -6,6 +6,7 @@ import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
+import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
@@ -79,13 +80,21 @@ export async function GetReview(reviewId: string): Promise<ReviewModel> {
   return response.json();
 }
 
-export async function GetReviews(
+export async function GetUserReviews(
   reviewerId: number,
   offset: number = 0
 ): Promise<ReviewModel[]> {
   const response = await fetch(
-    `/Review/GetReviews/${reviewerId ?? -1}/${offset}`
+    `/Review/GetUserReviews/${reviewerId ?? -1}/${offset}`
   );
+  return response.json();
+}
+
+export async function GetMediaReviews(
+  mediaId: string,
+  offset: number = 0
+): Promise<ReviewSummaryModel[]> {
+  const response = await fetch(`/Review/GetMediaReviews/${mediaId}/${offset}`);
   return response.json();
 }
 

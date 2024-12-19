@@ -45,6 +45,7 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
         color: whitesmoke;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 
@@ -81,6 +82,10 @@
         font-size: 20px;
         overflow: hidden auto;
 
+        h2 {
+          margin-top: 0;
+        }
+
         p {
           margin-top: 0;
         }
@@ -96,19 +101,27 @@
         align-items: center;
         height: 100%;
 
+        .review-title {
+          padding-bottom: 0 !important;
+          font-size: 2rem !important;
+        }
+
+        .review-title,
         .review-description {
           font-size: 20px;
           width: calc(100% - 4rem);
           color: Colours.$light-dark;
           background-color: transparent;
-          resize: none;
           font-family: inherit;
           border: none;
-          padding: 2rem;
-          height: 100%;
           outline: none;
           line-height: inherit;
-          word-spacing: inherit;
+          padding: 2rem;
+        }
+
+        .review-description {
+          resize: none;
+          height: 100%;
         }
       }
     }

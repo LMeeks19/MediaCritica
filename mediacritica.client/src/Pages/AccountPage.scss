@@ -41,55 +41,8 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-    }
-
-    .info-item {
-      color: Colours.$light-dark;
-      display: flex;
-      align-items: center;
-      background-color: light-dark(whitesmoke, #242424);
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    }
-
-    #email-form,
-    #password-form {
-      .input {
-        font-size: inherit;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        font-family: inherit;
-        text-align: center;
-      }
-    }
-
-    .info-action {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
-
-    .cancel-btn {
-      border-color: Colours.$light-dark;
-    }
-
-    .cancel-btn:not(:disabled):hover {
-      background-color: Colours.$light-dark;
-      color: Colours.$dark-light;
-    }
-
-    .edit-btn,
-    .save-btn {
-      background-color: Colours.$primary-red;
-      color: whitesmoke;
-    }
-
-    .edit-btn:not(:disabled):hover,
-    .save-btn:not(:disabled):hover {
-      background-color: light-dark(#242424, whitesmoke);
-      color: Colours.$primary-red;
+      max-height: 200px;
+      overflow: hidden auto;
     }
 
     .MuiTabs-root {
@@ -222,7 +175,7 @@
           text-wrap: nowrap;
           cursor: pointer;
           position: relative;
-          transition: transform .3s ease-in-out;
+          transition: transform 0.3s ease-in-out;
 
           .tag {
             position: absolute;
@@ -281,7 +234,7 @@
             text-align: center;
           }
         }
-        
+
         .account-info {
           height: 160px;
           padding: 0 2rem 2rem 2rem;

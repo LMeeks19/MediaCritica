@@ -11,7 +11,9 @@
         public int? MediaEpisode { get; set; }
         public string? MediaParentId { get; set; }
         public string? MediaParentTitle { get; set; }
+        public string? ReviewerName { get; set; }
         public required int ReviewerId { get; set; }
+        public required string Title { get; set; }
         public required double Rating { get; set; }
         public required string Description { get; set; }
         public required DateTime Date { get; set; }

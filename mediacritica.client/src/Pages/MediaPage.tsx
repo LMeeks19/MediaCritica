@@ -9,10 +9,11 @@ import TopBar from "../Components/TopBar";
 import { IconButton, MenuItem, Rating, Select } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { format } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
 import {
   DeleteBacklog,
   GetMedia,
+  GetMediaReviews,
   GetSeason,
   PostBacklog,
 } from "../Server/Server";
@@ -22,6 +23,7 @@ import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
 import { GameModel } from "../Interfaces/GameModel";
 import {
+  faEye,
   faHeart as faHeartReg,
   faImage,
 } from "@fortawesome/free-regular-svg-icons";
@@ -31,12 +33,17 @@ import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { Snackbar } from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
-import "./MediaPage.scss";
 import Loader from "../Components/Loader";
+import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
+import ScrollContainer from "react-indiana-drag-scroll";
+import "./MediaPage.scss";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
     {} as MovieModel | SeriesModel
+  );
+  const [mediaReviews, setMediaReviews] = useState<ReviewSummaryModel[]>(
+    [] as ReviewSummaryModel[]
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
@@ -49,17 +56,27 @@ function MediaPage() {
     async function FetchMedia() {
       mediaId === undefined && navigate("/");
       setIsLoading(true);
-      var mediaResponse = await GetMedia(mediaId);
-      var mediaSeasonsResponse = [] as SeasonModel[];
-      if (mediaResponse.Type === MediaType.Series) {
-        let mediaSeasonResponse = await GetSeason(mediaId);
-        mediaSeasonsResponse.push(mediaSeasonResponse);
-      }
-      setMedia({ ...mediaResponse, seasons: mediaSeasonsResponse });
+      await FetchMediaDetails();
+      await FetchMediaReviews();
       setIsLoading(false);
     }
     FetchMedia();
   }, []);
+
+  async function FetchMediaDetails() {
+    var mediaResponse = await GetMedia(mediaId);
+    var mediaSeasonsResponse = [] as SeasonModel[];
+    if (mediaResponse.Type === MediaType.Series) {
+      let mediaSeasonResponse = await GetSeason(mediaId);
+      mediaSeasonsResponse.push(mediaSeasonResponse);
+    }
+    setMedia({ ...mediaResponse, seasons: mediaSeasonsResponse });
+  }
+
+  async function FetchMediaReviews() {
+    var mediaReviewsResponse = await GetMediaReviews(mediaId);
+    setMediaReviews(mediaReviewsResponse);
+  }
 
   function GetSeasonOptions(): ReactNode[] {
     let series = media as SeriesModel;
@@ -191,9 +208,7 @@ function MediaPage() {
                     </p>
                     <p>
                       Rating:{" "}
-                      <span>
-                        <FontAwesomeIcon className="star-icon" icon={faStar} />{" "}
-                      </span>
+                      <FontAwesomeIcon className="star-icon" icon={faStar} />{" "}
                       {episode.imdbRating}
                     </p>
                   </div>
@@ -317,15 +332,12 @@ function MediaPage() {
                   {media.Metascore !== "N/A" && (
                     <p className="flex items-center gap-2">
                       Metascore:{" "}
-                      <span className="rating">
-                        <Rating
-                          precision={0.1}
-                          value={ConvertRatingStringToFiveScale(
-                            media.Metascore
-                          )}
-                          readOnly
-                        />
-                      </span>
+                      <Rating
+                        precision={0.1}
+                        value={ConvertRatingStringToFiveScale(media.Metascore)}
+                        readOnly
+                      />
+                      \{" "}
                     </p>
                   )}
                   {media.Ratings.map((rating) => {
@@ -335,19 +347,61 @@ function MediaPage() {
                         key={rating.Source}
                       >
                         {rating.Source}:{" "}
-                        <span className="rating">
-                          <Rating
-                            precision={0.5}
-                            value={ConvertRatingStringToFiveScale(rating.Value)}
-                            readOnly
-                          />
-                        </span>
+                        <Rating
+                          precision={0.5}
+                          value={ConvertRatingStringToFiveScale(rating.Value)}
+                          readOnly
+                        />
                       </p>
                     );
                   })}
                 </div>
                 {media.Type === MediaType.Movie && GetUniqueMovieDetails()}
               </div>
+
+              {mediaReviews.length > 0 && (
+                <div className="review-details">
+                  <div className="review-header">
+                    <h2>Reviews</h2>
+                    <button
+                      className="view-btn"
+                      onClick={() =>
+                        navigate("reviews", {
+                          state: {
+                            media: media,
+                          },
+                        })
+                      }
+                    >
+                      View all <FontAwesomeIcon icon={faEye} />
+                    </button>
+                  </div>
+                  <ScrollContainer className="review-cards">
+                    {mediaReviews.map((review) => {
+                      return (
+                        <div
+                          className="review-card"
+                          key={review.id}
+                          onClick={() =>
+                            navigate(`view-review/${review.id}`, {
+                              state: { reviewId: review.id },
+                            })
+                          }
+                        >
+                          <h3>{review.title}</h3>
+                          <p>{review.reviewerName}</p>
+                          <p> {formatDistanceToNowStrict(review.date)} ago</p>
+                          <Rating
+                            value={review.rating}
+                            precision={0.5}
+                            readOnly
+                          />
+                        </div>
+                      );
+                    })}
+                  </ScrollContainer>
+                </div>
+              )}
 
               {media.Type === MediaType.Series && GetUniqueSeriesDetails()}
             </div>

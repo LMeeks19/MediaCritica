@@ -1,4 +1,6 @@
 export enum AccountFieldType {
-    Email,
-    Password,
+  Forename,
+  Surname,
+  Email,
+  Password,
 }

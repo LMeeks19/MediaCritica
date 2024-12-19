@@ -5,6 +5,7 @@ import AccountPage from "../Pages/AccountPage";
 import EpisodePage from "../Pages/EpisodePage";
 import WriteReviewPage from "../Pages/WriteReviewPage";
 import ViewReviewPage from "../Pages/ViewReviewPage";
+import ReviewsPage from "../Pages/ReviewsPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -13,7 +14,11 @@ export const router = createBrowserRouter([
     path: "/media/:mediaId/seasons/:seasonId/episodes/:episodeId",
     element: <EpisodePage />,
   },
+  { path: "/media/:mediaId/reviews", element: <ReviewsPage /> },
   { path: "/media/:mediaId/write-review", element: <WriteReviewPage /> },
-  { path: "/view-review/:reviewId", element: <ViewReviewPage /> },
+  {
+    path: "/media/:mediaId/view-review/:reviewId",
+    element: <ViewReviewPage />,
+  },
   { path: "/account", element: <AccountPage /> },
 ]);
