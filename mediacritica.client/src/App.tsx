@@ -25,7 +25,7 @@ function App() {
       maxSnack={3}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       autoHideDuration={3000}
-      style={{ color: "inherit" }}
+      style={{ color: "whitesmoke" }}
     >
       <div className="wrapper">
         <ConfirmationDialog />

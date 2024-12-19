@@ -39,10 +39,11 @@ export async function UpdateUser(
 }
 
 export async function GetSearchResults(
-  searchTerm: string
+  searchTerm: string,
+  page: number = 1
 ): Promise<MediaSearchResponse> {
   const response = await fetch(
-    `https://www.omdbapi.com/?s=${searchTerm}&apikey=${mediaServiceApiKey}`
+    `https://www.omdbapi.com/?s=${searchTerm}&page=${page}&apikey=${mediaServiceApiKey}`
   );
   return response.json();
 }
@@ -73,11 +74,8 @@ export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
   return response.json();
 }
 
-export async function GetReview(
-  mediaId: string,
-  reviewerId: number
-): Promise<ReviewModel> {
-  const response = await fetch(`/Review/GetReview/${mediaId}/${reviewerId}`);
+export async function GetReview(reviewId: string): Promise<ReviewModel> {
+  const response = await fetch(`/Review/GetReview/${reviewId}`);
   return response.json();
 }
 
@@ -91,12 +89,13 @@ export async function GetReviews(
   return response.json();
 }
 
-export async function PostReview(review: ReviewModel): Promise<void> {
-  await fetch(`/Review/PostReview`, {
+export async function PostReview(review: ReviewModel): Promise<number> {
+  const response = await fetch(`/Review/PostReview`, {
     method: "POST",
     body: JSON.stringify(review),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
+  return response.json();
 }
 
 export async function UpdateReview(

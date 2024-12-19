@@ -8,12 +8,12 @@ import ViewReviewPage from "../Pages/ViewReviewPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
-  { path: "/media/:id", element: <MediaPage /> },
+  { path: "/media/:mediaId", element: <MediaPage /> },
   {
-    path: "/media/:id/seasons/:seasonId/episodes/:episodeId",
+    path: "/media/:mediaId/seasons/:seasonId/episodes/:episodeId",
     element: <EpisodePage />,
   },
-  { path: "/write-review", element: <WriteReviewPage /> },
-  { path: "/view-review/:mediaId", element: <ViewReviewPage /> },
+  { path: "/media/:mediaId/write-review", element: <WriteReviewPage /> },
+  { path: "/view-review/:reviewId", element: <ViewReviewPage /> },
   { path: "/account", element: <AccountPage /> },
 ]);

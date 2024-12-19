@@ -3,10 +3,11 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../State/GlobalState";
 import { useNavigate } from "react-router-dom";
 import { CustomTooltip } from "./Tooltip";
-import "./StarRating.scss";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
+import "./StarRating.scss";
+import { MediaType } from "../Enums/MediaType";
 
 function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
@@ -15,31 +16,31 @@ function StarRating(props: StarRatingProps) {
   return (
     <div className="flex items-center flex-col gap-2 my-auto">
       <Rating
-        sx={{ fontSize: "3rem" }}
+        sx={{ fontSize: "2.5rem" }}
         value={Number(props.rating) / 2}
         precision={0.1}
         readOnly
       />
       <div className="text-base text-center flex gap-1">
         <CustomTooltip
-          title={user.id === null ? "Sign in to Review" : "Write a Review"}
+          title={user.id === null ? "Login to review" : "Write a review"}
           arrow
         >
-          <span>
+          <span hidden={props.media.Type === MediaType.Episode}>
             <button
-              className="review-button"
+              className="review-btn"
               onClick={() =>
-                navigate("/write-review", {
+                navigate(`/media/${props.media.imdbID}/write-review`, {
                   state: { media: props.media, parent: props.parent },
                 })
               }
-              disabled={user.id === null ? true : false}
+              disabled={user.id === null}
             >
               Review
             </button>
+            {" | "}
           </span>
         </CustomTooltip>
-        {" | "}
         <div>{props.reviews} Reviews</div>
       </div>
     </div>

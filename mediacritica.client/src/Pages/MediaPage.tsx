@@ -1,23 +1,12 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { BeatLoader } from "react-spinners";
 import {
   CapitaliseFirstLetter,
   ConvertRatingStringToFiveScale,
 } from "../Helpers/StringHelper";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import TopBar from "../Components/TopBar";
-import {
-  IconButton,
-  MenuItem,
-  Rating,
-  Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { IconButton, MenuItem, Rating, Select } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
@@ -41,7 +30,9 @@ import { BacklogModel } from "../Interfaces/BacklogModel";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { Snackbar } from "../Components/Snackbar";
+import { CustomTooltip } from "../Components/Tooltip";
 import "./MediaPage.scss";
+import Loader from "../Components/Loader";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
@@ -100,19 +91,6 @@ function MediaPage() {
     setSelectedSeason(selectedSeason);
   }
 
-  function GetUniqueMovieDetails() {
-    let movie = media as MovieModel | GameModel;
-    return (
-      <div className="details-section">
-        <div>Runtime: {media.Runtime}</div>
-        <div>Box Office: {movie.BoxOffice}</div>
-        <div>DVD: {movie.DVD}</div>
-        <div>Production: {movie.Production}</div>
-        <div>Website: {movie.Website}</div>
-      </div>
-    );
-  }
-
   async function AddToBacklog() {
     const backlog = {
       userId: user.id,
@@ -127,6 +105,7 @@ function MediaPage() {
     setUser({
       ...user,
       backlogSummary: [...user.backlogSummary, newBacklogSummary],
+      totalBacklogs: user.totalBacklogs + 1,
     });
 
     Snackbar(`${media.Title} added to Backlog`, "success");
@@ -140,167 +119,205 @@ function MediaPage() {
       backlogSummary: user.backlogSummary.filter(
         (backlog) => backlog.mediaId !== media.imdbID
       ),
+      totalBacklogs: user.totalBacklogs - 1,
     });
 
     Snackbar(`${media.Title} removed from Backlog`, "success");
   }
 
+  function GetUniqueMovieDetails() {
+    let movie = media as MovieModel | GameModel;
+    return (
+      <div className="card">
+        <h3>Additional Information</h3>
+        <p>Runtime: {movie.Runtime}</p>
+        <p>Box Office: {movie.BoxOffice}</p>
+        <p>DVD: {movie.DVD}</p>
+        <p>Production: {movie.Production}</p>
+        <p>Website: {movie.Website}</p>
+      </div>
+    );
+  }
+
   function GetUniqueSeriesDetails() {
     let series = media as SeriesModel;
     return (
-      <div className="flex grow basis-full overflow-x-auto pb-5">
-        <Table key={selectedSeason}>
-          <TableHead>
-            <TableRow>
-              <TableCell className="table-title" colSpan={2}>
-                Season {selectedSeason}
-              </TableCell>
-              <TableCell colSpan={2}>
-                <Select
-                  variant="standard"
-                  value={selectedSeason}
-                  onChange={(e) =>
-                    ChangeSelectedSeason(e.target.value as number)
+      <div className="season-details">
+        <div className="season-header">
+          <h2>Season {selectedSeason} Episodes</h2>
+          <div className="season-selector">
+            <Select
+              className="season-select"
+              variant="standard"
+              value={selectedSeason}
+              onChange={(e) => ChangeSelectedSeason(e.target.value as number)}
+              fullWidth
+            >
+              {GetSeasonOptions().map((seasonOption) => {
+                return seasonOption;
+              })}
+            </Select>
+          </div>
+        </div>
+        <div className="episode-cards">
+          {series.seasons
+            .find((season) => Number(season.Season) === selectedSeason)
+            ?.Episodes.filter((episode) => episode.Episode !== "0")
+            .map((episode) => {
+              return (
+                <div
+                  key={episode.imdbID}
+                  className="episode-card"
+                  onClick={() =>
+                    navigate(
+                      `seasons/${selectedSeason}/episodes/${episode.imdbID}`,
+                      {
+                        state: {
+                          episodeId: episode.imdbID,
+                          series: series as SeriesModel,
+                        },
+                      }
+                    )
                   }
-                  fullWidth
                 >
-                  {GetSeasonOptions().map((seasonOption) => {
-                    return seasonOption;
-                  })}
-                </Select>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Episode</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Released</TableCell>
-              <TableCell align="center">Rating</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {series.seasons
-              .find((season) => Number(season.Season) === selectedSeason)
-              ?.Episodes.filter((episode) => episode.Episode !== "0")
-              .map((episode) => {
-                return (
-                  <TableRow
-                    key={episode.imdbID}
-                    component="tr"
-                    onClick={() =>
-                      navigate(
-                        `seasons/${selectedSeason}/episodes/${episode.imdbID}`,
-                        {
-                          state: {
-                            episodeId: episode.imdbID,
-                            series: series as SeriesModel,
-                          },
-                        }
-                      )
-                    }
-                  >
-                    <TableCell>{episode.Episode}</TableCell>
-                    <TableCell>{episode.Title}</TableCell>
-                    <TableCell>
+                  <div className="episode-number">{episode.Episode}</div>
+                  <div className="episode-info">
+                    <h3>{episode.Title}</h3>
+                    <p>
+                      Released:{" "}
                       {episode.Released !== "N/A"
                         ? format(new Date(episode.Released), "do MMM yyyy")
                         : episode.Released}
-                    </TableCell>
-                    <TableCell align="center">
-                      <FontAwesomeIcon className="star-icon" icon={faStar} />
+                    </p>
+                    <p>
+                      Rating:{" "}
+                      <span>
+                        <FontAwesomeIcon className="star-icon" icon={faStar} />{" "}
+                      </span>
                       {episode.imdbRating}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
       </div>
     );
   }
 
   return (
-    <>
-      <TopBar blankReturn />
-      <div className="mediapage-container">
-        {isLoading ? (
-          <div className="media empty">
-            <div className="loader">
-              <BeatLoader
-                speedMultiplier={0.5}
-                color="rgba(151, 18, 18, 1)"
-                size={20}
-              />
+    <div className="mediapage-container">
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="media">
+          {media.Poster !== "N/A" ? (
+            <img className="media-poster" src={media.Poster}></img>
+          ) : (
+            <div className="media-poster empty">
+              <FontAwesomeIcon icon={faImage} />
             </div>
-          </div>
-        ) : (
-          <div className="media">
-            {media.Poster !== "N/A" ? (
-              <img className="media-poster" src={media.Poster}></img>
-            ) : (
-              <div className="media-poster empty">
-                <FontAwesomeIcon icon={faImage} />
-              </div>
-            )}
-            <div className="media-details gap-6">
-              <div className="flex flex-wrap">
-                <div className="flex gap-5 items-center text-6xl text-center my-10 grow">
-                  <div>{media.Title}</div>
+          )}
+          <div className="info">
+            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
+            <div className="hero">
+              <div className="title-section">
+                <div className="flex items-center gap-5 flex-wrap justify-center">
+                  <h1>{media.Title}</h1>
                   {user.backlogSummary?.some(
                     (backlog) => backlog.mediaId === media.imdbID
                   ) ? (
-                    <IconButton
-                      className="backlog-icon"
-                      disabled={user.id === null || user === undefined}
-                      onClick={() => RemoveFromBacklog()}
-                    >
-                      <FontAwesomeIcon icon={faHeartSolid} />
-                    </IconButton>
+                    <CustomTooltip title="Remove from backlog" arrow>
+                      <span>
+                        <IconButton
+                          className="heart"
+                          onClick={() => RemoveFromBacklog()}
+                        >
+                          <FontAwesomeIcon icon={faHeartSolid} />
+                        </IconButton>
+                      </span>
+                    </CustomTooltip>
                   ) : (
-                    <IconButton
-                      className="backlog-icon"
-                      disabled={user.id === null || user === undefined}
-                      onClick={() => AddToBacklog()}
+                    <CustomTooltip
+                      title={
+                        user.id === null || user === undefined
+                          ? "Login to update backlog status"
+                          : "Add to backlog"
+                      }
+                      arrow
                     >
-                      <FontAwesomeIcon icon={faHeartReg} />
-                    </IconButton>
+                      <span>
+                        <IconButton
+                          className="heart"
+                          disabled={user.id === null || user === undefined}
+                          onClick={() => AddToBacklog()}
+                        >
+                          <FontAwesomeIcon icon={faHeartReg} />
+                        </IconButton>
+                      </span>
+                    </CustomTooltip>
                   )}
                 </div>
-                <StarRating
-                  rating={media.imdbRating}
-                  reviews={media.imdbVotes}
-                  media={media}
-                />
-              </div>
-              <div className="flex flex-wrap gap-5">
-                <div className="details-section basis-full gap-10">
-                  <div>{media.Plot}</div>
-                  <div className="flex justify-between flex-row ">
-                    <div>Initial Release: {media.Released}</div>
-                    <div>
-                      {CapitaliseFirstLetter(media.Type)} | {media.Year}
-                    </div>
+                <div className="release">
+                  <div>Initial Release: {media.Released}</div>
+                  <div>
+                    {CapitaliseFirstLetter(media.Type)}: {media.Year}
                   </div>
                 </div>
+              </div>
+              <StarRating
+                rating={media.imdbRating}
+                reviews={media.imdbVotes}
+                media={media}
+              />
+            </div>
+            <div className="details">
+              <div className="summary">
+                <h2>{CapitaliseFirstLetter(media.Type)} Synopsis</h2>
+                <p>{media.Plot}</p>
+              </div>
 
-                <div className="details-section">
-                  <div>Actors: {media.Actors}</div>
-                  <div>Directos(s): {media.Director}</div>
-                  <div>Writer(s): {media.Writer}</div>
+              <div className="grid">
+                <div className="card">
+                  <h3>Cast</h3>
+                  <div className="inline-grid grid-cols-2 gap-3 mt-4 w-full">
+                    {media.Actors.split(",").map((actor) => {
+                      return (
+                        <p className="m-0" key={actor}>
+                          {actor}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="card">
+                  <h3>Details</h3>
+                  <p>Genre: {media.Genre}</p>
+                  <p>Language: {media.Language}</p>
+                  <p>Country: {media.Country}</p>
+                  <p>Rated: {media.Rated}</p>
                 </div>
 
-                <div className="details-section">
-                  <div>Genre: {media.Genre}</div>
-                  <div>Language: {media.Language}</div>
-                  <div>Country: {media.Country}</div>
-                  <div>Rated: {media.Rated}</div>
-                  <div>Awards: {media.Awards}</div>
-                </div>
+                {(media.Writer !== "N/A" || media.Director !== "N/A") && (
+                  <div className="card">
+                    <h3>Writers & Directors</h3>
+                    {media.Writer !== "N/A" && <p>Writer(s): {media.Writer}</p>}
+                    {media.Director !== "N/A" && (
+                      <p>Director(s): {media.Director}</p>
+                    )}
+                  </div>
+                )}
 
-                <div className="details-section">
+                <div className="card">
+                  <h3>Awards</h3>
+                  <p>{media.Awards}</p>
+                </div>
+                <div className="card">
+                  <h3>Ratings</h3>
                   {media.Metascore !== "N/A" && (
-                    <div className="flex gap-2">
-                      Metascore:
-                      <div className="my-auto">
+                    <p className="flex items-center gap-2">
+                      Metascore:{" "}
+                      <span className="rating">
                         <Rating
                           precision={0.1}
                           value={ConvertRatingStringToFiveScale(
@@ -308,33 +325,36 @@ function MediaPage() {
                           )}
                           readOnly
                         />
-                      </div>
-                    </div>
+                      </span>
+                    </p>
                   )}
                   {media.Ratings.map((rating) => {
                     return (
-                      <div className="flex gap-2" key={rating.Source}>
-                        {rating.Source}:
-                        <Rating
-                          precision={0.1}
-                          value={ConvertRatingStringToFiveScale(rating.Value)}
-                          readOnly
-                        />
-                      </div>
+                      <p
+                        className="flex items-center gap-2"
+                        key={rating.Source}
+                      >
+                        {rating.Source}:{" "}
+                        <span className="rating">
+                          <Rating
+                            precision={0.5}
+                            value={ConvertRatingStringToFiveScale(rating.Value)}
+                            readOnly
+                          />
+                        </span>
+                      </p>
                     );
                   })}
                 </div>
-
-                {media.Type === MediaType.Series
-                  ? GetUniqueSeriesDetails()
-                  : GetUniqueMovieDetails()}
+                {media.Type === MediaType.Movie && GetUniqueMovieDetails()}
               </div>
+
+              {media.Type === MediaType.Series && GetUniqueSeriesDetails()}
             </div>
           </div>
-        )}
-        ;
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }
 

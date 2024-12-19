@@ -6,59 +6,119 @@
   overflow: hidden;
 
   .episode {
-    height: 100%;
+    height: calc(100% - 4rem);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding-top: 4rem;
 
-    &.empty {
-      justify-content: center;
-      align-items: center;
+    .content {
+      overflow: hidden auto;
+      height: 100%;
     }
 
-    .episode-poster {
-      height: 40%;
-      width: 100%;
+    .episode-info {
+      background-color: Colours.$primary-red;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: whitesmoke;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
 
-      .episode-title {
-        height: calc(100% - 8rem);
-        width: calc(100% - 8rem);
-        padding: 4rem;
-        display: flex;
-        justify-content: center;
-        -webkit-text-stroke: 4px Colours.$primary-red;
-        color: Colours.$light-dark;
-        backdrop-filter: blur(8px);
+    .episode-info h2 {
+      margin: 0;
+    }
+
+    .description {
+      margin: 0;
+    }
+
+    .meta {
+      color: #bbb;
+      margin: 0;
+    }
+
+    /* Summary Section */
+    .summary {
+      padding: 1.5rem 2rem;
+      text-align: justify;
+      border-bottom: 1px solid #444;
+      background-color: light-dark(whitesmoke, #242424);
+
+      h2 {
+        font-size: 1.8rem;
+        color: Colours.$primary-red;
+        margin: 0;
       }
     }
 
-    .episode-details {
-      border-top: 4px solid Colours.$primary-red;
+    /* Hero Section */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      border-bottom: 1px solid #444;
+      background-color: transparent;
+    }
+
+    /* Details Container */
+    .details-container {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      padding: 4rem;
-      width: calc(100% - 8rem);
-      height: calc(60% - 8rem);
-      z-index: 1;
-      gap: 20px;
-      overflow: hidden auto;
+      gap: 2rem;
+      padding: 2rem;
+      overflow: auto;
+      background-color: Colours.$dark-light;
+    }
 
-      .episode-title {
-        font-size: 2.5rem;
-        align-items: center;
-        flex-wrap: wrap;
+    .details-card {
+      background-color: light-dark(whitesmoke, #242424);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      flex-grow: 1;
+      flex-basis: 400px;
+    }
+
+    .details-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .details-card h3 {
+      color: Colours.$primary-red;
+      border-bottom: 1px solid #333;
+      margin: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .episode {
+    .episode-info {
+      justify-content: center !important;
+
+      h2,
+      .description,
+      .meta {
+        text-align: center;
       }
 
-      .episode-detail {
-        display: flex;
-        justify-content: space-around;
-        flex-direction: column;
-        flex-grow: 1;
-        padding: 20px;
-        background-color: Colours.$primary-red;
-        color: whitesmoke;
-        border-radius: 20px;
+      h2 {
+        font-size: 1rem;
+      }
+
+      .description {
+        font-size: 0.8rem;
+      }
+
+      .meta {
+        font-size: 0.6rem;
       }
     }
   }

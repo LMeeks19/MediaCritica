@@ -1,7 +1,6 @@
 import { AppBar, Tabs, Tab } from "@mui/material";
 import { LoginFormType } from "../Enums/LoginFormType";
 import LoginForm from "./LoginForm";
-import TabPanel from "./TabPanel";
 import { useState } from "react";
 import "./AccountLogin.scss";
 
@@ -20,12 +19,12 @@ function AccountLogin() {
           <Tab label="LOGIN" />
           <Tab label="CREATE ACCOUNT" />
         </Tabs>
-        <TabPanel value={activeTab} index={0}>
+        <div tabIndex={0} hidden={activeTab !== 0}>
           <LoginForm FormType={LoginFormType.Login} />
-        </TabPanel>
-        <TabPanel value={activeTab} index={1}>
+        </div>
+        <div tabIndex={1} hidden={activeTab !== 1}>
           <LoginForm FormType={LoginFormType.CreateAccount} />
-        </TabPanel>
+        </div>
       </AppBar>
     </div>
   );

@@ -1,19 +1,10 @@
 @use "../Style/Colours.scss";
 
-.review-button {
+.review-btn {
+  all: unset;
   cursor: pointer;
-  font-family: inherit;
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  font-size: inherit;
 }
 
-.review-button:disabled {
-  opacity: 50% !important;
-  cursor: not-allowed !important;
-}
-
-.review-button:not(:disabled):hover {
-  color: Colours.$primary-red;
+.review-btn:not(:disabled):hover {
+  color: #1b1b1b;
 }

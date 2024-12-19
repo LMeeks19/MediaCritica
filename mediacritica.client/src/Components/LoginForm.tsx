@@ -1,18 +1,16 @@
 import { FormEvent, useState } from "react";
 import { LoginFormType } from "../Enums/LoginFormType";
-import "./LoginForm.scss";
 import { GetUser, PostUser } from "../Server/Server";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import { useNavigate } from "react-router-dom";
 import { UserModel } from "../Interfaces/UserModel";
+import "./LoginForm.scss";
 
 function LoginForm(props: LoginFormProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassowrd, setConfirmPassword] = useState<string>("");
   const setUser = useSetRecoilState(userState);
-  const navigate = useNavigate();
 
   function Submit(event: FormEvent) {
     event.preventDefault();
@@ -50,7 +48,6 @@ function LoginForm(props: LoginFormProps) {
         <input
           className="login-email"
           type="email"
-          id="email"
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -64,7 +61,6 @@ function LoginForm(props: LoginFormProps) {
         <input
           className="login-password"
           type="password"
-          id="password"
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -79,7 +75,6 @@ function LoginForm(props: LoginFormProps) {
           <input
             className="login-password"
             type="password"
-            id="confirm_password"
             name="confirm_password"
             value={confirmPassowrd}
             onChange={(e) => setConfirmPassword(e.target.value)}

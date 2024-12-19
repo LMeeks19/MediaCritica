@@ -1,15 +1,16 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import { BeatLoader } from "react-spinners";
 import TopBar from "../Components/TopBar";
-import { AutoTextSize } from "auto-text-size";
 import { GetEpisode } from "../Server/Server";
 import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
-import "./EpisodePage.scss";
 import { SeriesModel } from "../Interfaces/SeriesModel";
+import "./EpisodePage.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
+import Loader from "../Components/Loader";
 
 function EpisodePage() {
   const location = useLocation();
@@ -31,39 +32,25 @@ function EpisodePage() {
 
   return (
     <>
-      <TopBar blankReturn blankAccount />
       <div className="episodepage-container">
         {isLoading ? (
-          <div className="episode empty">
-            <div className="loader">
-              <BeatLoader
-                speedMultiplier={0.5}
-                color="rgba(151, 18, 18, 1)"
-                size={20}
-              />
-            </div>
-          </div>
+          <Loader />
         ) : (
           <div className="episode">
-            <div
-              className="episode-poster"
-              style={{
-                backgroundImage: `url(${episode.Poster})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "100% 100%",
-                backgroundPosition: "center center",
-              }}
-            >
-              <div className="episode-title">
-                <AutoTextSize className="my-auto" maxFontSizePx={80}>
-                  {episode.Title}
-                </AutoTextSize>
+            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
+            <div className="episode-info">
+              <div className="flex flex-col gap-4">
+                <h2>
+                  {series.Title} | S{episode.Season}:E
+                  {episode.Episode} - {episode.Title}
+                </h2>
+                <p className="meta">
+                  <span>Initial Release: {episode.Released}</span> |{" "}
+                  <span>Duration: {episode.Runtime}(s)</span> |{" "}
+                  <span>Rated: {episode.Rated}</span>
+                </p>
               </div>
-            </div>
-            <div className="episode-details">
-              <div className="episode-title flex justify-between basis-full px-5">
-                {series.Title} | S{episode.Season}:E
-                {episode.Episode}
+              <div className="flex items-center flex-col gap-2 my-auto">
                 <StarRating
                   rating={episode.imdbRating}
                   reviews={episode.imdbVotes}
@@ -71,56 +58,72 @@ function EpisodePage() {
                   parent={series}
                 />
               </div>
-              <div className="episode-detail">
-                <div className="text-lg">{episode.Plot}</div>
-                <div className="flex justify-between">
-                  <div>Inital Release: {episode.Released}</div>
-                  <div>
-                    {episode.Runtime}(s) | {episode.Year}
-                  </div>
+            </div>
+
+            <div className="content">
+              {episode.Poster !== "N/A" ? (
+                <div
+                  className="hero"
+                  style={{ backgroundImage: `url(${episode.Poster})` }}
+                />
+              ) : (
+                <div className="hero flex justify-center items-center">
+                  <FontAwesomeIcon className="text-9xl" icon={faImage} />
                 </div>
+              )}
+
+              <div className="summary">
+                <h2>Episode Synopsis</h2>
+                <p>{episode.Plot}</p>
               </div>
 
-              <div className="episode-detail">
-                <div>Actors: {episode.Actors} </div>
-                <div>Director(s): {episode.Director}</div>
-                <div>Writers(s): {episode.Writer}</div>
-              </div>
+              <div className="details-container">
+                <div className="details-card">
+                  <h3>Details</h3>
+                  <p>Genre: {episode.Genre}</p>
+                  <p>Language: {episode.Language}</p>
+                  <p>Country: {episode.Country}</p>
+                </div>
+                <div className="details-card">
+                  <h3>Cast</h3>
+                  <p>{episode.Actors}</p>
+                </div>
+                <div className="details-card">
+                  <h3>Directors & Writers</h3>
+                  <p>Director(s):{episode.Director}</p>
+                  <p>Writer(s): {episode.Writer}</p>
+                </div>
 
-              <div className="episode-detail">
-                <div>Genre: {episode.Genre}</div>
-                <div>Language: {episode.Language}</div>
-                <div>Country: {episode.Country}</div>
-                <div>Rated: {episode.Rated}</div>
-              </div>
-
-              <div className="episode-detail">
-                {episode.Metascore !== "N/A" && (
-                  <div className="flex">
-                    Metascore:
-                    <div className="my-auto">
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(
-                          episode.Metascore
-                        )}
-                        readOnly
-                      />
-                    </div>
+                {(episode.Ratings.length > 0 ||
+                  episode.Metascore !== "N/A") && (
+                  <div className="details-card">
+                    <h3>Ratings</h3>
+                    {episode.Metascore !== "N/A" && (
+                      <p className="flex gap-4">
+                        Metascore:{" "}
+                        <Rating
+                          precision={0.1}
+                          value={ConvertRatingStringToFiveScale(
+                            episode.Metascore
+                          )}
+                          readOnly
+                        />
+                      </p>
+                    )}
+                    {episode.Ratings.map((rating) => {
+                      return (
+                        <p className="flex gap-4" key={rating.Source}>
+                          {rating.Source}:{" "}
+                          <Rating
+                            precision={0.1}
+                            value={ConvertRatingStringToFiveScale(rating.Value)}
+                            readOnly
+                          />
+                        </p>
+                      );
+                    })}
                   </div>
                 )}
-                {episode.Ratings.map((rating) => {
-                  return (
-                    <div className="flex gap-2" key={rating.Source}>
-                      {rating.Source}:
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(rating.Value)}
-                        readOnly
-                      />
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </div>
