@@ -25,7 +25,12 @@ Accept: application/json
 
 ###
 
-GET {{MediaCritica.Server_HostAddress}}/Review/GetMediaReviews/
+GET {{MediaCritica.Server_HostAddress}}/Review/Get10MediaReviews/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/Get40MediaReviews/
 Accept: application/json
 
 ###

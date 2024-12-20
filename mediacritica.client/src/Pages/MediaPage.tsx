@@ -13,7 +13,7 @@ import { format, formatDistanceToNowStrict } from "date-fns";
 import {
   DeleteBacklog,
   GetMedia,
-  GetMediaReviews,
+  Get10MediaReviews,
   GetSeason,
   PostBacklog,
 } from "../Server/Server";
@@ -74,7 +74,7 @@ function MediaPage() {
   }
 
   async function FetchMediaReviews() {
-    var mediaReviewsResponse = await GetMediaReviews(mediaId);
+    var mediaReviewsResponse = await Get10MediaReviews(mediaId);
     setMediaReviews(mediaReviewsResponse);
   }
 
@@ -368,7 +368,8 @@ function MediaPage() {
                       onClick={() =>
                         navigate("reviews", {
                           state: {
-                            media: media,
+                            mediaId: media.imdbID,
+                            mediaTitle: media.Title,
                           },
                         })
                       }

@@ -181,6 +181,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             border-radius: 20px;
             transition: transform 0.3s ease-in-out;
+            max-width: 400px;
             min-width: 250px;
             cursor: pointer;
             display: flex;
@@ -195,12 +196,16 @@
               text-overflow: ellipsis;
             }
 
-            h3 {
+            h3,
+            p {
               margin: 0;
             }
 
+            h3 {
+              font-size: 1.8rem;
+            }
+
             p {
-              margin: 0;
               color: gray;
             }
 

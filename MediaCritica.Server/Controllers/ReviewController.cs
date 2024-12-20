@@ -78,9 +78,30 @@ namespace MediaCritica.Server.Controllers
             return reviews;
         }
 
-        [HttpGet(Name = "GetMediaReviews")]
+        [HttpGet(Name = "Get10MediaReviews")]
+        [Route("[action]/{mediaId}")]
+        public async Task<List<ReviewSummaryModel>> Get10MediaReviews(string mediaId)
+        {
+            var reviews = await _databaseContext.Reviews
+                .Include(review => review.Reviewer)
+                .Where(review => review.MediaId == mediaId)
+                .Select(review => new ReviewSummaryModel()
+                {
+                    Id = review.Id,
+                    ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
+                    Title = review.Title,
+                    Rating = review.Rating,
+                    Date = review.Date
+                }).OrderByDescending(review => review.Date)
+                .Take(10)
+                .ToListAsync();
+
+            return reviews;
+        }
+
+        [HttpGet(Name = "Ge40MediaReviews")]
         [Route("[action]/{mediaId}/{offset}")]
-        public async Task<List<ReviewSummaryModel>> GetMediaReviews(string mediaId, int offset)
+        public async Task<List<ReviewSummaryModel>> Get40MediaReviews(string mediaId, int offset)
         {
             var reviews = await _databaseContext.Reviews
                 .Include(review => review.Reviewer)
@@ -94,7 +115,7 @@ namespace MediaCritica.Server.Controllers
                     Date = review.Date
                 }).OrderByDescending(review => review.Date)
                 .Skip(offset)
-                .Take(10)
+                .Take(40)
                 .ToListAsync();
 
             return reviews;

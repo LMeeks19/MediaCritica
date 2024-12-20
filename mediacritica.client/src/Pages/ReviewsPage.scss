@@ -1,0 +1,99 @@
+@use "../Style/Colours.scss";
+
+.reviewspage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .reviews {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: Colours.$primary-red;
+      padding: 6rem 2rem 2rem 2rem;
+
+      h1 {
+        margin: 0;
+        color: whitesmoke;
+      }
+    }
+
+    .review-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding: 2rem 2rem 0 2rem;
+      overflow: auto auto;
+
+      .review-card {
+        background-color: light-dark(whitesmoke, #242424);
+        padding: 1rem 1.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+        transition: transform 0.3s ease-in-out;
+        min-width: 200px;
+        flex: 1 1 calc(25% - 1.5rem);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        h3,
+        p,
+        .rating .date {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        h3,
+        p {
+          margin: 0;
+        }
+
+        h3 {
+          font-size: 1.8rem;
+          text-align: center;
+        }
+
+        p {
+          color: gray;
+        }
+
+        .rating {
+          display: flex;
+          gap: 0.5rem;
+        }
+      }
+
+      .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .button-container {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: center;
+      
+      .load-btn {
+        background-color: Colours.$primary-red;
+        border-color: Colours.$primary-red;
+        color: whitesmoke;
+      }
+
+      .load-btn:not(:disabled):hover {
+        background-color: Colours.$light-dark;
+        border-color: Colours.$light-dark;
+        color: Colours.$dark-light;
+      }
+    }
+  }
+}

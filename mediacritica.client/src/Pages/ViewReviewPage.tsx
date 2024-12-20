@@ -226,6 +226,7 @@ function ViewReviewPage() {
                     placeholder="Enter title..."
                     required
                     onChange={(e) => setTitle(e.target.value)}
+                    maxLength={50}
                   />
                   <textarea
                     className="review-description"

@@ -149,6 +149,7 @@ function WriteReviewPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 name="title"
                 placeholder="Enter title..."
+                maxLength={50}
                 required
               />
               <textarea
