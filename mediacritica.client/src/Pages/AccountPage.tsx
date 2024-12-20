@@ -35,6 +35,8 @@ function AccountPage() {
     if (user?.id !== null) {
       FetchReviews(0);
       FetchBacklog(0);
+    } else {
+      setIsLoading(false);
     }
   }, [user]);
 
@@ -93,7 +95,7 @@ function AccountPage() {
       <div className="accountpage-container">
         {isLoading ? (
           <Loader />
-        ) : user.id === null || user.id === undefined ? (
+        ) : user.id === null ? (
           <AccountLogin />
         ) : (
           <div className="account">
@@ -212,9 +214,7 @@ function AccountPage() {
                             {review.mediaType === MediaType.Episode &&
                               ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
                           </h3>
-                          <p>{review.mediaParentTitle && review.mediaTitle}</p>
                           <p>
-                            Reviewed:{" "}
                             {CapitaliseFirstLetter(
                               formatDistanceToNowStrict(review.date) + " ago"
                             )}

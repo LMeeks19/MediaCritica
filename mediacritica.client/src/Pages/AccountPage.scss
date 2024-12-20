@@ -11,16 +11,11 @@
     display: flex;
     flex-direction: column;
 
-    .section-heading {
-      font-size: 2rem;
-      text-wrap: nowrap;
-      display: flex;
-      margin-bottom: 20px;
-    }
-
     /* Account Details Section */
     .account-details {
       width: 100vw; /* Full viewport width */
+      max-height: 400px;
+      overflow: hidden auto;
       padding: 4rem 2rem 2rem 2rem;
       box-sizing: border-box; /* Include padding in width calculations */
       background-color: light-dark(whitesmoke, #1a1a1a);
@@ -33,10 +28,14 @@
 
     .account-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 1.5rem 0;
+
       h1 {
+        margin: 0;
         font-size: 2rem;
         color: Colours.$light-dark;
         text-wrap: nowrap;
@@ -57,7 +56,6 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      max-height: 200px;
       overflow: hidden auto;
     }
 
@@ -85,11 +83,12 @@
 
       .actions {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
         padding: 2rem 2rem 0.5rem 2rem;
         width: calc(100% - 4rem);
-        gap: 2rem;
+        gap: 0.5rem;
 
         .load-btn {
           background-color: Colours.$primary-red;
@@ -102,7 +101,8 @@
         }
 
         .MuiInputBase-root {
-          width: 25% !important;
+          width: 25%;
+          min-width: 200px;
         }
       }
 
@@ -129,8 +129,6 @@
             text-align: center;
             width: 300px;
             height: 375px;
-            min-width: 300px;
-            min-height: 375px;
 
             &.empty {
               display: flex;
@@ -238,13 +236,18 @@
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
   .accountpage-container {
     .account {
       .account-details {
         padding: 4rem 0 0 0 !important;
+        overflow: hidden auto;
+        max-height: 300px;
 
         .account-header {
+          padding: 1.5rem 2rem;
+          justify-content: space-evenly !important;
+
           h1 {
             font-size: 1.5rem;
             text-align: center;
@@ -252,9 +255,7 @@
         }
 
         .account-info {
-          height: 160px;
           padding: 0 2rem 2rem 2rem;
-          overflow: hidden auto;
 
           .info-item {
             flex-direction: column !important;
@@ -268,6 +269,64 @@
 
             .info-action {
               justify-content: center !important;
+            }
+          }
+        }
+      }
+
+      .tab-panel {
+        .actions {
+          justify-content: center !important;
+        }
+        .backlog {
+          justify-content: center;
+          .media {
+            width: 225px;
+            height: 281.25px;
+            .image {
+              width: 225px;
+              height: 281.25px;
+            }
+          }
+        }
+
+        .media-reviews {
+          justify-content: center;
+
+          .review {
+            flex-direction: column;
+            align-items: flex-start;
+            flex-grow: 0;
+            height: auto;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            min-width: 225px;
+
+            .image {
+              width: 225px;
+              height: 281.25px;
+            }
+
+            .review-info {
+              width: calc(225px - 2rem);
+              padding: 0 1rem 0.5rem 1rem;
+              gap: 0;
+              justify-content: center;
+      
+              h3 {
+                text-align: center;
+              }
+
+              p {
+                text-align: center;
+              }
+
+              span {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+              }
             }
           }
         }

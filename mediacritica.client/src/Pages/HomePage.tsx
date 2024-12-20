@@ -8,7 +8,6 @@ import {
   faSpinner,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import IconButton from "@mui/material/IconButton";
 import { CustomTooltip } from "../Components/Tooltip";
 import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
@@ -59,32 +58,27 @@ function HomePage() {
         <TopBar hideReturn />
         <div className="homepage-title">MEDIA CRITICA</div>
         <div className="homepage-searchbar">
-          <div className="homepage-icon">
-            <FontAwesomeIcon icon={faMagnifyingGlass} flip="horizontal" />
-          </div>
+          <FontAwesomeIcon
+            className="icon"
+            icon={faMagnifyingGlass}
+            flip="horizontal"
+          />
           <input
             className="homepage-input"
             value={searchTerm}
             onChange={(e) => setSerarchTerm(e.target.value)}
             placeholder="Search for media..."
           />
-          <div className="homepage-icon">
-            {searchTerm.length > 0 && (
-              <IconButton
-                color="inherit"
-                size="large"
+          {searchTerm.length > 0 && (
+            <CustomTooltip title="Clear Search" arrow>
+              <FontAwesomeIcon
+                className="icon clear"
+                icon={faTimes}
+                flip="horizontal"
                 onClick={() => setSerarchTerm("")}
-              >
-                <CustomTooltip title="Clear Search" arrow>
-                  <FontAwesomeIcon
-                    className="icon-clear"
-                    icon={faTimes}
-                    flip="horizontal"
-                  />
-                </CustomTooltip>
-              </IconButton>
-            )}
-          </div>
+              />
+            </CustomTooltip>
+          )}
         </div>
         {mediaSearchResults.length > 0 ? (
           <div className="overflow-y-auto flex flex-col items-center">

@@ -10,6 +10,8 @@
   background-color: light-dark(whitesmoke, #242424);
   gap: 5px;
   border-radius: 0 0 20px 20px;
+  max-height: 400px;
+  overflow: hidden auto;
 
   .login-title {
     font-size: 35px;
@@ -49,5 +51,29 @@
     cursor: pointer;
     border-radius: 20px;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .login-form {
+    .login-title {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    .login-field {
+      font-size: 1rem;
+      .login-label {
+        font-size: 1rem;
+
+      }
+      .login-input {
+        font-size: 1rem;
+      }
+    }
+
+    .login-button {
+      font-size: 1rem;
+      padding: 10px;
+    }
   }
 }
