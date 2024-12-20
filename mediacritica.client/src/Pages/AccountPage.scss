@@ -11,107 +11,81 @@
     display: flex;
     flex-direction: column;
 
-    /* Account Details Section */
-    .account-details {
-      width: 100vw; /* Full viewport width */
-      max-height: 400px;
-      overflow: hidden auto;
-      padding: 4rem 2rem 2rem 2rem;
-      box-sizing: border-box; /* Include padding in width calculations */
-      background-color: light-dark(whitesmoke, #1a1a1a);
-      color: Colours.$dark-light;
-      border-radius: 0; /* Remove rounded edges for full-width design */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-      margin: 0 auto;
-      border-bottom: 1px solid light-dark(grey, #333);
-    }
-
-    .account-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      padding: 1.5rem 0;
-
-      h1 {
-        margin: 0;
-        font-size: 2rem;
-        color: Colours.$light-dark;
-        text-wrap: nowrap;
-      }
-
-      .logout-btn {
-        background-color: Colours.$primary-red;
-        color: whitesmoke;
-      }
-
-      .logout-btn:not(:disabled):hover {
-        background-color: Colours.$light-dark;
-        color: Colours.$primary-red;
-      }
-    }
-
-    .account-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      overflow: hidden auto;
-    }
-
-    .MuiTabs-root {
+    .MuiAppBar-root {
+      background-color: Colours.$primary-red !important;
       border-radius: 0 !important;
 
-      .MuiTab-root {
-        width: 50% !important;
+      .MuiTabs-root {
         border-radius: 0 !important;
-        background-color: light-dark(whitesmoke, #242424) !important;
-      }
-
-      .MuiTab-root:hover {
-        border-color: Colours.$primary-red !important;
-      }
-
-      .MuiTabs-indicator {
+        margin-top: 4rem;
         background-color: Colours.$primary-red !important;
+
+        .MuiTab-root {
+          width: 50% !important;
+          border-radius: 0 !important;
+          background-color: Colours.$primary-red !important;
+        }
+
+        .MuiTab-root:hover {
+          border-color: whitesmoke !important;
+        }
+
+        .MuiTabs-indicator {
+          background-color: whitesmoke !important;
+        }
       }
     }
 
     .tab-panel {
-      border-top: 1px solid light-dark(gray, #333);
+      height: 100%;
       overflow: hidden auto;
 
-      .actions {
+      .header {
+        width: calc(100% - 3rem);
+        padding: 1.5rem;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        background-color: light-dark(whitesmoke, #1a1a1a);
         flex-wrap: wrap;
-        padding: 2rem 2rem 0.5rem 2rem;
-        width: calc(100% - 4rem);
         gap: 0.5rem;
+        border-bottom: 1px solid light-dark(grey, #333);
 
-        .load-btn {
+        h1 {
+          margin: 0;
+          font-size: 2rem;
+          color: Colours.$light-dark;
+          text-wrap: nowrap;
+        }
+
+        .select {
+          width: 25%;
+        }
+
+        .logout-btn {
           background-color: Colours.$primary-red;
           color: whitesmoke;
         }
 
-        .load-btn:not(:disabled):hover {
+        .logout-btn:not(:disabled):hover {
           background-color: Colours.$light-dark;
           color: Colours.$primary-red;
         }
+      }
 
-        .MuiInputBase-root {
-          width: 25%;
-          min-width: 200px;
-        }
+      .account-details {
+        color: Colours.$dark-light;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2rem;
       }
 
       .media-reviews,
       .backlog {
         display: flex;
         flex-wrap: wrap;
-        overflow: hidden auto;
-        padding: 2rem;
+        padding: 2rem 2rem 0 2rem;
         gap: 2rem;
 
         &.empty {
@@ -119,6 +93,82 @@
           align-items: center;
         }
 
+        .media,
+        .review {
+          background-color: light-dark(whitesmoke, #242424);
+          border-radius: 20px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          text-wrap: nowrap;
+          cursor: pointer;
+          position: relative;
+          transition: transform 0.3s ease-in-out;
+
+          .tag {
+            position: absolute;
+            background-color: Colours.$primary-red;
+            top: 0;
+            left: 0;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 0 0 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            color: whitesmoke;
+          }
+        }
+      }
+
+      .media-reviews {
+        .review {
+          height: 187.5px;
+          min-height: 187.5px;
+
+          .image {
+            height: 100%;
+            width: 150px;
+            min-width: 150px;
+            color: whitesmoke;
+            text-align: center;
+
+            &.empty {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+
+          .review-info {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 0 1.5rem;
+            gap: 0.5rem;
+          }
+
+          .review-info h3 {
+            font-size: 2rem;
+            margin: 0;
+            overflow: hidden;
+            text-wrap: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          .review-info p {
+            margin: 0;
+            font-size: 1rem;
+            color: light-dark(grey, #ccc);
+          }
+        }
+
+        .review:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      .backlog {
         .media {
           flex-direction: column;
           width: 300px;
@@ -153,84 +203,25 @@
           }
         }
 
-        .media:hover .backlog-info {
-          opacity: 1;
-          visibility: visible;
-        }
-
-        .review {
-          flex-grow: 1;
-          height: 187.5px;
-          min-height: 187.5px;
-
-          .image {
-            height: 100%;
-            width: 150px;
-            min-width: 150px;
-            color: whitesmoke;
-            text-align: center;
-
-            &.empty {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-          }
-        }
-
-        .review,
-        .media {
-          background-color: light-dark(whitesmoke, #242424);
-          border-radius: 20px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-          text-wrap: nowrap;
-          cursor: pointer;
-          position: relative;
-          transition: transform 0.3s ease-in-out;
-
-          .tag {
-            position: absolute;
-            background-color: Colours.$primary-red;
-            top: 0;
-            left: 0;
-            padding: 0.75rem;
-            font-size: 0.75rem;
-            border-radius: 0 0 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            color: whitesmoke;
-          }
-
-          .review-info {
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-            gap: 0.5rem;
-          }
-
-          .review-info h3 {
-            font-size: 2rem;
-            margin: 0;
-            overflow: hidden;
-            text-wrap: nowrap;
-            text-overflow: ellipsis;
-          }
-
-          .review-info p {
-            margin: 0;
-            font-size: 1rem;
-            color: light-dark(grey, #ccc);
-          }
-        }
-
-        .review:hover,
         .media:hover {
           transform: translateY(-5px);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+
+          .backlog-info {
+            opacity: 1;
+            visibility: visible;
+          }
         }
+      }
+
+      .load-btn {
+        background-color: Colours.$primary-red;
+        color: whitesmoke;
+      }
+
+      .load-btn:not(:disabled):hover {
+        background-color: Colours.$light-dark;
+        color: Colours.$primary-red;
       }
     }
   }
@@ -239,50 +230,52 @@
 @media screen and (max-width: 600px) {
   .accountpage-container {
     .account {
-      .account-details {
-        padding: 4rem 0 0 0 !important;
-        overflow: hidden auto;
-        max-height: 300px;
+      .MuiTab-root {
+        font-size: 0.75rem !important;
+      }
 
-        .account-header {
-          padding: 1.5rem 2rem;
-          justify-content: space-evenly !important;
+      .header {
+        justify-content: center !important;
+        flex-direction: column;
 
-          h1 {
-            font-size: 1.5rem;
-            text-align: center;
-          }
+        h1 {
+          font-size: 1.5rem !important;
         }
 
-        .account-info {
-          padding: 0 2rem 2rem 2rem;
+        .select {
+          width: 75% !important;
+        }
+      }
 
-          .info-item {
-            flex-direction: column !important;
-            gap: 0.5rem;
+      .account-details {
+        padding: 0 2rem 2rem 2rem;
 
-            .info-label,
-            .info-value {
-              width: 100% !important;
-              text-align: center;
-            }
+        .info-item {
+          flex-direction: column !important;
+          gap: 0.5rem;
 
-            .info-action {
-              justify-content: center !important;
-            }
+          .info-label,
+          .info-value {
+            width: 100% !important;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .info-action {
+            justify-content: center !important;
           }
         }
       }
 
       .tab-panel {
-        .actions {
-          justify-content: center !important;
-        }
         .backlog {
           justify-content: center;
+
           .media {
             width: 225px;
             height: 281.25px;
+
             .image {
               width: 225px;
               height: 281.25px;
@@ -313,7 +306,7 @@
               padding: 0 1rem 0.5rem 1rem;
               gap: 0;
               justify-content: center;
-      
+
               h3 {
                 text-align: center;
               }

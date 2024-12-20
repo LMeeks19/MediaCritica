@@ -116,8 +116,8 @@ function ViewReviewPage() {
           <Loader />
         ) : (
           <div className="review">
+            <TopBar />
             <div className="info">
-              <TopBar topbarColor="rgba(151, 18, 18, 1)" />
               <div className="hero">
                 <div className="parent-title">
                   {review.mediaParentTitle ?? review.mediaTitle}

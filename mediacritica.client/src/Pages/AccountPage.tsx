@@ -93,15 +93,26 @@ function AccountPage() {
   return (
     <>
       <div className="accountpage-container">
+        <TopBar hideAccount />
         {isLoading ? (
           <Loader />
         ) : user.id === null ? (
           <AccountLogin />
         ) : (
           <div className="account">
-            <TopBar hideAccount topbarColor="rgba(151, 18, 18, 1)" />
-            <div className="account-details">
-              <div className="account-header">
+            <AppBar position="static">
+              <Tabs
+                value={activeTab}
+                onChange={(_e, v) => setActiveTab(v)}
+                variant="fullWidth"
+              >
+                <Tab label="Details" />
+                <Tab label="Reviews" />
+                <Tab label="Backlog" />
+              </Tabs>
+            </AppBar>
+            <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
+              <div className="header">
                 <h1>ACCOUNT DETAILS</h1>
                 <button
                   className="logout-btn"
@@ -110,7 +121,7 @@ function AccountPage() {
                   Logout <FontAwesomeIcon icon={faSignOut} />
                 </button>
               </div>
-              <div className="account-info">
+              <div className="account-details">
                 <AccountDetail
                   accountFieldName="Forename"
                   accountFieldType={AccountFieldType.Forename}
@@ -137,36 +148,11 @@ function AccountPage() {
                 />
               </div>
             </div>
-            <AppBar position="static">
-              <Tabs
-                value={activeTab}
-                onChange={(_e, v) => setActiveTab(v)}
-                variant="fullWidth"
-              >
-                <Tab label="Reviews" />
-                <Tab label="Backlog" />
-              </Tabs>
-            </AppBar>
-            <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
-              <div className="actions">
-                <CustomTooltip
-                  title={
-                    reviews.length === user.totalReviews &&
-                    "All reviewed media loaded"
-                  }
-                  arrow
-                >
-                  <span>
-                    <button
-                      className="load-btn"
-                      disabled={reviews.length === user.totalReviews}
-                      onClick={() => LoadMoreReviews()}
-                    >
-                      Load More <FontAwesomeIcon icon={faSpinner} />
-                    </button>
-                  </span>
-                </CustomTooltip>
+            <div className="tab-panel" tabIndex={1} hidden={activeTab !== 1}>
+              <div className="header">
+                <h1>REVIEWS</h1>
                 <Select
+                  className="select"
                   variant="standard"
                   value={selectedReviewFilter}
                   onChange={(e) =>
@@ -231,27 +217,31 @@ function AccountPage() {
                   })}
                 </div>
               )}
-            </div>
-            <div className="tab-panel" tabIndex={1} hidden={activeTab !== 1}>
-              <div className="actions">
+              <div className="flex justify-center p-6">
                 <CustomTooltip
                   title={
-                    backlog.length === user.totalBacklogs &&
-                    "All backlogged media loaded"
+                    reviews.length === user.totalReviews &&
+                    "All reviewed media loaded"
                   }
                   arrow
                 >
                   <span>
                     <button
                       className="load-btn"
-                      disabled={backlog.length === user.totalBacklogs}
-                      onClick={() => LoadMoreBacklogs()}
+                      disabled={reviews.length === user.totalReviews}
+                      onClick={() => LoadMoreReviews()}
                     >
                       Load More <FontAwesomeIcon icon={faSpinner} />
                     </button>
                   </span>
                 </CustomTooltip>
+              </div>
+            </div>
+            <div className="tab-panel" tabIndex={2} hidden={activeTab !== 2}>
+              <div className="header">
+                <h1>REVIEWS</h1>
                 <Select
+                  className="select"
                   variant="standard"
                   value={selectedBacklogFilter}
                   onChange={(e) =>
@@ -295,6 +285,25 @@ function AccountPage() {
                   })}
                 </div>
               )}
+              <div className="flex justify-center p-6">
+                <CustomTooltip
+                  title={
+                    backlog.length === user.totalBacklogs &&
+                    "All backlogged media loaded"
+                  }
+                  arrow
+                >
+                  <span>
+                    <button
+                      className="load-btn"
+                      disabled={backlog.length === user.totalBacklogs}
+                      onClick={() => LoadMoreBacklogs()}
+                    >
+                      Load More <FontAwesomeIcon icon={faSpinner} />
+                    </button>
+                  </span>
+                </CustomTooltip>
+              </div>
             </div>
           </div>
         )}

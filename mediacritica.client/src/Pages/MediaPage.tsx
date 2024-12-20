@@ -226,6 +226,7 @@ function MediaPage() {
         <Loader />
       ) : (
         <div className="media">
+          <TopBar />
           {media.Poster !== "N/A" ? (
             <img className="media-poster" src={media.Poster}></img>
           ) : (
@@ -234,7 +235,6 @@ function MediaPage() {
             </div>
           )}
           <div className="info">
-            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
             <div className="hero">
               <div className="title-section">
                 <div className="flex items-center gap-5 flex-wrap justify-center">

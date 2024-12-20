@@ -8,8 +8,8 @@ import TopBar from "../Components/TopBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { CustomTooltip } from "../Components/Tooltip";
-import "./ReviewsPage.scss";
 import Loader from "../Components/Loader";
+import "./ReviewsPage.scss";
 
 function ReviewsPage() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function ReviewsPage() {
         <Loader />
       ) : (
         <div className="reviews">
-          <TopBar topbarColor="rgba(151, 18, 18, 1)" />
+          <TopBar />
           <div className="header">
             <h1>{mediaTitle} Reviews</h1>
           </div>

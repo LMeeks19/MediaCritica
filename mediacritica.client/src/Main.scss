@@ -21,13 +21,13 @@
 }
 
 * {
-  transition: background-color .3s ease-in-out, opacity .3s ease-in-out,
-    visibility .3s ease-in-out, transform,
-    border-color .3s ease-in-out, box-shadow .3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out, transform, border-color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
 
 .animate-transform {
-  transition: transform .3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 body {
@@ -54,19 +54,7 @@ button:disabled {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
   display: none;
-}
-
-::-webkit-scrollbar-thumb {
-  background-clip: padding-box;
-  background-color: Colours.$primary-red;
-  cursor: grab;
-}
-
-::placeholder {
-  color: Colours.$light-dark;
 }
 
 .loader {

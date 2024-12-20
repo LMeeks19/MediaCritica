@@ -5,24 +5,15 @@ function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
 
   return (
-    <div
-      className={`topbar ${!props.topbarColor === undefined && "blank"}`}
-      style={{ backgroundColor: props.topbarColor }}
-    >
-      <div
-        className="return"
-        style={{ color: props.topbarColor && "whitesmoke" }}
-      >
+    <div className="topbar">
+      <div className="return">
         {!props.hideReturn && (
           <div className="text" onClick={() => navigate("/")}>
             MEDIA CRITICA
           </div>
         )}
       </div>
-      <div
-        className="account"
-        style={{ color: props.topbarColor && "whitesmoke" }}
-      >
+      <div className="account">
         {!props.hideAccount && (
           <div className="text" onClick={() => navigate("/account")}>
             ACCOUNT
@@ -36,7 +27,6 @@ function TopBar(props: TopBarProps) {
 export default TopBar;
 
 interface TopBarProps {
-  topbarColor?: string;
   hideReturn?: boolean;
   hideAccount?: boolean;
 }

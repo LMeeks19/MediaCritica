@@ -37,7 +37,7 @@ function EpisodePage() {
           <Loader />
         ) : (
           <div className="episode">
-            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
+            <TopBar />
             <div className="episode-info">
               <div className="flex flex-col gap-4">
                 <h2>
