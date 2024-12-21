@@ -1,18 +1,51 @@
 @use "../Style//Colours.scss";
 
 .login-container {
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 4rem);
+  height: calc(100% - 4rem);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2rem;
 
   .login {
     width: 50%;
-    min-width: 400px;
+  }
+}
 
-    .login-tab {
-      height: calc(100% - 69px);
+@media screen and (max-width: 1160px) {
+  .login-container {
+    .login {
+      align-self: center !important;
+      width: 75%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-container {
+    .login {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-container {
+    .login {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .login-container {
+    .login {
+      .MuiTabs-root {
+        .MuiTab-root {
+          font-size: .75rem;
+        }
+      }
     }
   }
 }

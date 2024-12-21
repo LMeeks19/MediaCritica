@@ -90,11 +90,20 @@ export async function GetUserReviews(
   return response.json();
 }
 
-export async function GetMediaReviews(
+export async function Get10MediaReviews(
+  mediaId: string
+): Promise<ReviewSummaryModel[]> {
+  const response = await fetch(`/Review/Get10MediaReviews/${mediaId}`);
+  return response.json();
+}
+
+export async function Get40MediaReviews(
   mediaId: string,
   offset: number = 0
 ): Promise<ReviewSummaryModel[]> {
-  const response = await fetch(`/Review/GetMediaReviews/${mediaId}/${offset}`);
+  const response = await fetch(
+    `/Review/Get40MediaReviews/${mediaId}/${offset}`
+  );
   return response.json();
 }
 

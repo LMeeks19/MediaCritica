@@ -1,7 +1,7 @@
 @use "../Style/Colours.scss";
 
 .topbar {
-  position: absolute;
+  position: fixed;
   top: 0;
   display: flex;
   width: 100%;
@@ -10,11 +10,9 @@
   z-index: 999;
   height: 4rem;
   text-wrap: nowrap;
-  background-color: Colours.$dark-light;
+  background-color: transparent;
+  color: whitesmoke;
 
-  &.blank {
-    background-color: transparent !important;
-  }
 
   .return {
     height: 4rem;

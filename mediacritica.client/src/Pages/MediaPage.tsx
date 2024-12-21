@@ -13,7 +13,7 @@ import { format, formatDistanceToNowStrict } from "date-fns";
 import {
   DeleteBacklog,
   GetMedia,
-  GetMediaReviews,
+  Get10MediaReviews,
   GetSeason,
   PostBacklog,
 } from "../Server/Server";
@@ -74,7 +74,7 @@ function MediaPage() {
   }
 
   async function FetchMediaReviews() {
-    var mediaReviewsResponse = await GetMediaReviews(mediaId);
+    var mediaReviewsResponse = await Get10MediaReviews(mediaId);
     setMediaReviews(mediaReviewsResponse);
   }
 
@@ -226,6 +226,7 @@ function MediaPage() {
         <Loader />
       ) : (
         <div className="media">
+          <TopBar />
           {media.Poster !== "N/A" ? (
             <img className="media-poster" src={media.Poster}></img>
           ) : (
@@ -234,7 +235,6 @@ function MediaPage() {
             </div>
           )}
           <div className="info">
-            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
             <div className="hero">
               <div className="title-section">
                 <div className="flex items-center gap-5 flex-wrap justify-center">
@@ -368,7 +368,8 @@ function MediaPage() {
                       onClick={() =>
                         navigate("reviews", {
                           state: {
-                            media: media,
+                            mediaId: media.imdbID,
+                            mediaTitle: media.Title,
                           },
                         })
                       }

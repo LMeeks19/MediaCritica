@@ -21,7 +21,8 @@ function StarRating(props: StarRatingProps) {
         precision={0.1}
         readOnly
       />
-      <div className="text-base text-center flex gap-1">
+      <div className="text-base text-center flex flex-col flex-wrap justify-center">
+        <div>{props.reviews} Reviews</div>
         <CustomTooltip
           title={user.id === null ? "Login to review" : "Write a review"}
           arrow
@@ -38,10 +39,8 @@ function StarRating(props: StarRatingProps) {
             >
               Review
             </button>
-            {" | "}
           </span>
         </CustomTooltip>
-        <div>{props.reviews} Reviews</div>
       </div>
     </div>
   );

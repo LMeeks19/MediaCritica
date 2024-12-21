@@ -17,7 +17,7 @@ function AccountLogin() {
           centered
         >
           <Tab label="LOGIN" />
-          <Tab label="CREATE ACCOUNT" />
+          <Tab label="SIGNUP" />
         </Tabs>
         <div tabIndex={0} hidden={activeTab !== 0}>
           <LoginForm FormType={LoginFormType.Login} />

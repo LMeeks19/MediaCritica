@@ -92,8 +92,9 @@ function WriteReviewPage() {
         <Loader />
       ) : (
         <div className="review">
+          <TopBar />
+
           <div className="info">
-            <TopBar topbarColor="rgba(151, 18, 18, 1)" />
             <div className="hero">
               <div className="parent-title">
                 {parent?.Title ?? media.Title}
@@ -149,6 +150,7 @@ function WriteReviewPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 name="title"
                 placeholder="Enter title..."
+                maxLength={50}
                 required
               />
               <textarea
