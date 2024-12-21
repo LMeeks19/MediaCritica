@@ -51,19 +51,19 @@ function WriteReviewPage() {
     setIsLoading(true);
     const review = {
       mediaId: media.imdbID,
-      mediaPoster: media.Poster,
-      mediaTitle: media.Title,
-      mediaType: media.Type,
+      mediaPoster: media.poster,
+      mediaTitle: media.title,
+      mediaType: media.type,
       mediaSeason:
-        media.Type === MediaType.Episode
-          ? Number((media as EpisodeModel).Season)
+        media.type === MediaType.Episode
+          ? Number((media as EpisodeModel).season)
           : null,
       mediaEpisode:
-        media.Type === MediaType.Episode
-          ? Number((media as EpisodeModel).Episode)
+        media.type === MediaType.Episode
+          ? Number((media as EpisodeModel).episode)
           : null,
       mediaParentId: parent?.imdbID,
-      mediaParentTitle: parent?.Title,
+      mediaParentTitle: parent?.title,
       reviewerId: user.id,
       title: title,
       rating: rating,
@@ -97,12 +97,12 @@ function WriteReviewPage() {
           <div className="info">
             <div className="hero">
               <div className="parent-title">
-                {parent?.Title ?? media.Title}
-                {media.Type === MediaType.Episode &&
-                  ` | S${(media as EpisodeModel).Season}:E${
-                    (media as EpisodeModel).Episode
+                {parent?.title ?? media.title}
+                {media.type === MediaType.Episode &&
+                  ` | S${(media as EpisodeModel).season}:E${
+                    (media as EpisodeModel).episode
                   }`}
-                <div className="sub-title">{parent?.Title && media.Title}</div>
+                <div className="sub-title">{parent?.title && media.title}</div>
               </div>
               <div className="flex flex-col justify-center items-center gap-2">
                 <Rating
@@ -163,10 +163,10 @@ function WriteReviewPage() {
               />
             </form>
           </div>
-          {media.Poster !== "N/A" ? (
+          {media.poster !== "N/A" ? (
             <div
               className="media-poster"
-              style={{ backgroundImage: `url(${media.Poster})` }}
+              style={{ backgroundImage: `url(${media.poster})` }}
             ></div>
           ) : (
             <div className="media-poster empty">

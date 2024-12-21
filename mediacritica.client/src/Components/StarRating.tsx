@@ -27,7 +27,7 @@ function StarRating(props: StarRatingProps) {
           title={user.id === null ? "Login to review" : "Write a review"}
           arrow
         >
-          <span hidden={props.media.Type === MediaType.Episode}>
+          <span hidden={props.media.type === MediaType.Episode}>
             <button
               className="review-btn"
               onClick={() =>

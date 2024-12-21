@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
-import { Get40MediaReviews } from "../Server/Server";
+import { GetMediaReviews } from "../Server/Server";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
@@ -30,7 +30,7 @@ function ReviewsPage() {
   }, []);
 
   async function FetchMediaReviews() {
-    const reviewsData = await Get40MediaReviews(mediaId, reviews.length);
+    const reviewsData = await GetMediaReviews(mediaId, reviews.length);
     if (reviewsData.length === 40) setIsLoadDisabled(false);
     setReviews([...reviews, ...reviewsData]);
   }

@@ -1,27 +1,31 @@
+import { ReviewSummaryModel } from "./ReviewSummaryModel";
+
 export interface MediaModel {
-  Actors: string;
-  Awards: string;
-  Country: string;
-  Director: string;
-  Genre: string;
-  Language: string;
-  Metascore: string;
-  Plot: string;
-  Poster: string;
-  Rated: string;
-  Ratings: Rating[];
-  Released: string;
-  Runtime: string;
-  Title: string;
-  Type: string;
-  Writer: string;
-  Year: string;
+  actors: string;
+  awards: string;
+  country: string;
+  director: string;
+  genre: string;
+  language: string;
+  metascore: string;
+  plot: string;
+  poster: string;
+  rated: string;
+  ratings: Rating[];
+  released: string;
+  runtime: string;
+  title: string;
+  type: string;
+  writer: string;
+  year: string;
   imdbID: string;
   imdbRating: string;
   imdbVotes: string;
+
+  reviews: ReviewSummaryModel[]
 }
 
 interface Rating {
-  Source: string;
-  Value: string;
+  source: string;
+  value: string;
 }

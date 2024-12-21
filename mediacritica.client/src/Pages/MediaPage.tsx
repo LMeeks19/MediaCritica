@@ -4,7 +4,6 @@ import {
   CapitaliseFirstLetter,
   ConvertRatingStringToFiveScale,
 } from "../Helpers/StringHelper";
-import { SeasonModel } from "../Interfaces/SeasonModel";
 import TopBar from "../Components/TopBar";
 import { IconButton, MenuItem, Rating, Select } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +12,6 @@ import { format, formatDistanceToNowStrict } from "date-fns";
 import {
   DeleteBacklog,
   GetMedia,
-  Get10MediaReviews,
   GetSeason,
   PostBacklog,
 } from "../Server/Server";
@@ -34,7 +32,6 @@ import { userState } from "../State/GlobalState";
 import { Snackbar } from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import ScrollContainer from "react-indiana-drag-scroll";
 import "./MediaPage.scss";
 
@@ -42,12 +39,10 @@ function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(
     {} as MovieModel | SeriesModel
   );
-  const [mediaReviews, setMediaReviews] = useState<ReviewSummaryModel[]>(
-    [] as ReviewSummaryModel[]
-  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
   const mediaId = location.state?.mediaId;
+  const mediaType = location.state.mediaType;
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
@@ -56,27 +51,12 @@ function MediaPage() {
     async function FetchMedia() {
       mediaId === undefined && navigate("/");
       setIsLoading(true);
-      await FetchMediaDetails();
-      await FetchMediaReviews();
+      var mediaResponse = await GetMedia(mediaId, mediaType);
+      setMedia(mediaResponse);
       setIsLoading(false);
     }
     FetchMedia();
   }, []);
-
-  async function FetchMediaDetails() {
-    var mediaResponse = await GetMedia(mediaId);
-    var mediaSeasonsResponse = [] as SeasonModel[];
-    if (mediaResponse.Type === MediaType.Series) {
-      let mediaSeasonResponse = await GetSeason(mediaId);
-      mediaSeasonsResponse.push(mediaSeasonResponse);
-    }
-    setMedia({ ...mediaResponse, seasons: mediaSeasonsResponse });
-  }
-
-  async function FetchMediaReviews() {
-    var mediaReviewsResponse = await Get10MediaReviews(mediaId);
-    setMediaReviews(mediaReviewsResponse);
-  }
 
   function GetSeasonOptions(): ReactNode[] {
     let series = media as SeriesModel;
@@ -95,7 +75,7 @@ function MediaPage() {
     let series = media as SeriesModel;
     if (
       !series.seasons?.some(
-        (season) => Number(season.Season) === selectedSeason
+        (season) => Number(season.season) === selectedSeason
       )
     ) {
       let mediaSeasonResponse = await GetSeason(mediaId, selectedSeason);
@@ -112,9 +92,9 @@ function MediaPage() {
     const backlog = {
       userId: user.id,
       mediaId: media.imdbID,
-      mediaType: media.Type,
-      mediaPoster: media.Poster,
-      mediaTitle: media.Title,
+      mediaType: media.type,
+      mediaPoster: media.poster,
+      mediaTitle: media.title,
     } as unknown as BacklogModel;
 
     const newBacklogSummary = await PostBacklog(backlog);
@@ -125,7 +105,7 @@ function MediaPage() {
       totalBacklogs: user.totalBacklogs + 1,
     });
 
-    Snackbar(`${media.Title} added to Backlog`, "success");
+    Snackbar(`${media.title} added to Backlog`, "success");
   }
 
   async function RemoveFromBacklog() {
@@ -139,7 +119,7 @@ function MediaPage() {
       totalBacklogs: user.totalBacklogs - 1,
     });
 
-    Snackbar(`${media.Title} removed from Backlog`, "success");
+    Snackbar(`${media.title} removed from Backlog`, "success");
   }
 
   function GetUniqueMovieDetails() {
@@ -147,11 +127,11 @@ function MediaPage() {
     return (
       <div className="card">
         <h3>Additional Information</h3>
-        <p>Runtime: {movie.Runtime}</p>
-        <p>Box Office: {movie.BoxOffice}</p>
-        <p>DVD: {movie.DVD}</p>
-        <p>Production: {movie.Production}</p>
-        <p>Website: {movie.Website}</p>
+        <p>Runtime: {movie.runtime}</p>
+        <p>Box Office: {movie.boxOffice}</p>
+        <p>DVD: {movie.dvd}</p>
+        <p>Production: {movie.production}</p>
+        <p>Website: {movie.website}</p>
       </div>
     );
   }
@@ -178,8 +158,8 @@ function MediaPage() {
         </div>
         <div className="episode-cards">
           {series.seasons
-            .find((season) => Number(season.Season) === selectedSeason)
-            ?.Episodes.filter((episode) => episode.Episode !== "0")
+            .find((season) => Number(season.season) === selectedSeason)
+            ?.episodes.filter((episode) => episode.episode !== "0")
             .map((episode) => {
               return (
                 <div
@@ -197,14 +177,14 @@ function MediaPage() {
                     )
                   }
                 >
-                  <div className="episode-number">{episode.Episode}</div>
+                  <div className="episode-number">{episode.episode}</div>
                   <div className="episode-info">
-                    <h3>{episode.Title}</h3>
+                    <h3>{episode.title}</h3>
                     <p>
                       Released:{" "}
-                      {episode.Released !== "N/A"
-                        ? format(new Date(episode.Released), "do MMM yyyy")
-                        : episode.Released}
+                      {episode.released !== "N/A"
+                        ? format(new Date(episode.released), "do MMM yyyy")
+                        : episode.released}
                     </p>
                     <p>
                       Rating:{" "}
@@ -227,8 +207,8 @@ function MediaPage() {
       ) : (
         <div className="media">
           <TopBar />
-          {media.Poster !== "N/A" ? (
-            <img className="media-poster" src={media.Poster}></img>
+          {media.poster !== "N/A" ? (
+            <img className="media-poster" src={media.poster}></img>
           ) : (
             <div className="media-poster empty">
               <FontAwesomeIcon icon={faImage} />
@@ -238,7 +218,7 @@ function MediaPage() {
             <div className="hero">
               <div className="title-section">
                 <div className="flex items-center gap-5 flex-wrap justify-center">
-                  <h1>{media.Title}</h1>
+                  <h1>{media.title}</h1>
                   {user.backlogSummary?.some(
                     (backlog) => backlog.mediaId === media.imdbID
                   ) ? (
@@ -274,9 +254,9 @@ function MediaPage() {
                   )}
                 </div>
                 <div className="release">
-                  <div>Initial Release: {media.Released}</div>
+                  <div>Initial Release: {media.released}</div>
                   <div>
-                    {CapitaliseFirstLetter(media.Type)}: {media.Year}
+                    {CapitaliseFirstLetter(media.type)}: {media.year}
                   </div>
                 </div>
               </div>
@@ -288,15 +268,15 @@ function MediaPage() {
             </div>
             <div className="details">
               <div className="summary">
-                <h2>{CapitaliseFirstLetter(media.Type)} Synopsis</h2>
-                <p>{media.Plot}</p>
+                <h2>{CapitaliseFirstLetter(media.type)} Synopsis</h2>
+                <p>{media.plot}</p>
               </div>
 
               <div className="grid">
                 <div className="card">
                   <h3>Cast</h3>
                   <div className="inline-grid grid-cols-2 gap-3 mt-4 w-full">
-                    {media.Actors.split(",").map((actor) => {
+                    {media.actors.split(",").map((actor) => {
                       return (
                         <p className="m-0" key={actor}>
                           {actor}
@@ -307,59 +287,59 @@ function MediaPage() {
                 </div>
                 <div className="card">
                   <h3>Details</h3>
-                  <p>Genre: {media.Genre}</p>
-                  <p>Language: {media.Language}</p>
-                  <p>Country: {media.Country}</p>
-                  <p>Rated: {media.Rated}</p>
+                  <p>Genre: {media.genre}</p>
+                  <p>Language: {media.language}</p>
+                  <p>Country: {media.country}</p>
+                  <p>Rated: {media.rated}</p>
                 </div>
 
-                {(media.Writer !== "N/A" || media.Director !== "N/A") && (
+                {(media.writer !== "N/A" || media.director !== "N/A") && (
                   <div className="card">
                     <h3>Writers & Directors</h3>
-                    {media.Writer !== "N/A" && <p>Writer(s): {media.Writer}</p>}
-                    {media.Director !== "N/A" && (
-                      <p>Director(s): {media.Director}</p>
+                    {media.writer !== "N/A" && <p>Writer(s): {media.writer}</p>}
+                    {media.director !== "N/A" && (
+                      <p>Director(s): {media.director}</p>
                     )}
                   </div>
                 )}
 
                 <div className="card">
                   <h3>Awards</h3>
-                  <p>{media.Awards}</p>
+                  <p>{media.awards}</p>
                 </div>
                 <div className="card">
                   <h3>Ratings</h3>
-                  {media.Metascore !== "N/A" && (
+                  {media.metascore !== "N/A" && (
                     <p className="flex items-center gap-2">
                       Metascore:{" "}
                       <Rating
                         precision={0.1}
-                        value={ConvertRatingStringToFiveScale(media.Metascore)}
+                        value={ConvertRatingStringToFiveScale(media.metascore)}
                         readOnly
                       />
                       \{" "}
                     </p>
                   )}
-                  {media.Ratings.map((rating) => {
+                  {media.ratings.map((rating) => {
                     return (
                       <p
                         className="flex items-center gap-2"
-                        key={rating.Source}
+                        key={rating.source}
                       >
-                        {rating.Source}:{" "}
+                        {rating.source}:{" "}
                         <Rating
                           precision={0.5}
-                          value={ConvertRatingStringToFiveScale(rating.Value)}
+                          value={ConvertRatingStringToFiveScale(rating.value)}
                           readOnly
                         />
                       </p>
                     );
                   })}
                 </div>
-                {media.Type === MediaType.Movie && GetUniqueMovieDetails()}
+                {media.type === MediaType.Movie && GetUniqueMovieDetails()}
               </div>
 
-              {mediaReviews.length > 0 && (
+              {media.reviews.length > 0 && (
                 <div className="review-details">
                   <div className="review-header">
                     <h2>Reviews</h2>
@@ -369,7 +349,7 @@ function MediaPage() {
                         navigate("reviews", {
                           state: {
                             mediaId: media.imdbID,
-                            mediaTitle: media.Title,
+                            mediaTitle: media.title,
                           },
                         })
                       }
@@ -378,7 +358,7 @@ function MediaPage() {
                     </button>
                   </div>
                   <ScrollContainer className="review-cards">
-                    {mediaReviews.map((review) => {
+                    {media.reviews.map((review) => {
                       return (
                         <div
                           className="review-card"
@@ -404,7 +384,7 @@ function MediaPage() {
                 </div>
               )}
 
-              {media.Type === MediaType.Series && GetUniqueSeriesDetails()}
+              {media.type === MediaType.Series && GetUniqueSeriesDetails()}
             </div>
           </div>
         </div>

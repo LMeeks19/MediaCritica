@@ -1,7 +1,7 @@
 export interface MediaSearchModel {
-  Poster: string;
-  Title: string;
-  Type: string;
-  Year: string;
+  poster: string;
+  title: string;
+  type: string;
+  year: string;
   imdbID: string;
 }
