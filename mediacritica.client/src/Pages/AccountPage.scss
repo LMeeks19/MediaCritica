@@ -1,5 +1,3 @@
-@use "../Style/Colours.scss";
-
 .accountpage-container {
   width: 100%;
   height: 100%;
@@ -12,26 +10,24 @@
     flex-direction: column;
 
     .MuiAppBar-root {
-      background-color: Colours.$primary-red !important;
+      background-color: var(--palette-color) !important;
       border-radius: 0 !important;
 
       .MuiTabs-root {
         border-radius: 0 !important;
         margin-top: 4rem;
-        background-color: Colours.$primary-red !important;
 
         .MuiTab-root {
           width: 50% !important;
           border-radius: 0 !important;
-          background-color: Colours.$primary-red !important;
         }
 
         .MuiTab-root:hover {
-          border-color: whitesmoke !important;
+          border-color: var(--light-dark) !important;
         }
 
         .MuiTabs-indicator {
-          background-color: whitesmoke !important;
+          background-color: var(--light-dark) !important;
         }
       }
     }
@@ -41,8 +37,8 @@
       overflow: hidden auto;
 
       .header {
-        width: calc(100% - 3rem);
-        padding: 1.5rem;
+        width: calc(100% - 4rem);
+        padding: 1.5rem 2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -54,7 +50,7 @@
         h1 {
           margin: 0;
           font-size: 2rem;
-          color: Colours.$light-dark;
+          color: var(--light-dark);
           text-wrap: nowrap;
         }
 
@@ -63,18 +59,18 @@
         }
 
         .logout-btn {
-          background-color: Colours.$primary-red;
+          background-color: var(--palette-color);
           color: whitesmoke;
         }
 
         .logout-btn:not(:disabled):hover {
-          background-color: Colours.$light-dark;
-          color: Colours.$primary-red;
+          background-color: var(--light-dark);
+          color: var(--palette-color);
         }
       }
 
       .account-details {
-        color: Colours.$dark-light;
+        color: var(--dark-light);
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
@@ -108,7 +104,7 @@
 
           .tag {
             position: absolute;
-            background-color: Colours.$primary-red;
+            background-color: var(--palette-color);
             top: 0;
             left: 0;
             padding: 0.75rem;
@@ -190,7 +186,7 @@
           .backlog-info {
             position: absolute;
             bottom: 0;
-            background-color: Colours.$primary-red;
+            background-color: var(--palette-color);
             padding: 1rem;
             width: calc(100% - 2rem);
             visibility: hidden;
@@ -215,13 +211,13 @@
       }
 
       .load-btn {
-        background-color: Colours.$primary-red;
+        background-color: var(--palette-color);
         color: whitesmoke;
       }
 
       .load-btn:not(:disabled):hover {
-        background-color: Colours.$light-dark;
-        color: Colours.$primary-red;
+        background-color: var(--light-dark);
+        color: var(--palette-color);
       }
     }
   }

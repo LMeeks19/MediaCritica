@@ -7,6 +7,7 @@
         public required string Surname { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
+        public virtual Preference Preference { get; set; }
         public virtual List<Backlog> Backlogs { get; set; } = [];
         public virtual List<Review> Reviews { get; set; } = [];
     }

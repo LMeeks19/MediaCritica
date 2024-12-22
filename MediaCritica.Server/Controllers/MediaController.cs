@@ -38,7 +38,7 @@ namespace MediaCritica.Server.Controllers
             var stringResponse = await response.Content.ReadAsStringAsync();
             var movieModel = JsonSerializer.Deserialize<MovieModel>(stringResponse);
 
-            movieModel!.Reviews.AddRange(_reviewController.GetMediaReviews(mediaId, 0, 10).Result);
+            movieModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10));
 
             return movieModel!;
         }
@@ -51,8 +51,8 @@ namespace MediaCritica.Server.Controllers
             var stringResponse = await response.Content.ReadAsStringAsync();
             var seriesModel = JsonSerializer.Deserialize<SeriesModel>(stringResponse);
 
-            seriesModel!.Seasons.Add(GetSeason(mediaId).Result);
-            seriesModel!.Reviews.AddRange(_reviewController.GetMediaReviews(mediaId, 0, 10).Result);
+            seriesModel!.Seasons.Add(await GetSeason(mediaId));
+            seriesModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10));
 
             return seriesModel!;
         }
@@ -76,7 +76,7 @@ namespace MediaCritica.Server.Controllers
             var stringResponse = await response.Content.ReadAsStringAsync();
             var gameModel = JsonSerializer.Deserialize<GameModel>(stringResponse);
 
-            gameModel!.Reviews.AddRange(_reviewController.GetMediaReviews(mediaId, 0, 10).Result); ;
+            gameModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10)); ;
 
             return gameModel!;
         }

@@ -31,13 +31,12 @@ function EpisodePage() {
   }, []);
 
   return (
-    <>
       <div className="episodepage-container">
         {isLoading ? (
           <Loader />
         ) : (
           <div className="episode">
-            <TopBar />
+            <TopBar showReturn />
             <div className="episode-info">
               <div className="flex flex-col gap-4">
                 <h2>
@@ -129,7 +128,6 @@ function EpisodePage() {
           </div>
         )}
       </div>
-    </>
   );
 }
 

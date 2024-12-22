@@ -24,6 +24,7 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users
                 .Include(user => user.Reviews)
                 .Include(user => user.Backlogs)
+                .Include(user => user.Preference)
                 .SingleOrDefaultAsync(user => user.Email == email);
 
             if (user == null)
@@ -35,6 +36,7 @@ namespace MediaCritica.Server.Controllers
                     Surname = null,
                     Email = null,
                     Password = null,
+                    Preference = { },
                     BacklogSummary = [],
                     TotalReviews = 0,
                     TotalBacklogs = 0
@@ -48,6 +50,12 @@ namespace MediaCritica.Server.Controllers
                 Surname = user.Surname,
                 Email = user.Email,
                 Password = user.Password,
+                Preference = new PreferenceModel()
+                {
+                    Id = user.Preference.Id,
+                    Theme = user.Preference.Theme,
+                    Palette = user.Preference.Palette,
+                },
                 BacklogSummary = user.Backlogs.Select(backlogSummary => new BacklogSummaryModel()
                 {
                     Id = backlogSummary.Id,
@@ -67,7 +75,12 @@ namespace MediaCritica.Server.Controllers
                 Forename = userModel.Forename,
                 Surname = userModel.Surname,
                 Email = userModel.Email,
-                Password = userModel.Password
+                Password = userModel.Password,
+                Preference = new Preference()
+                {
+                    Theme = "System",
+                    Palette = "Default"
+                }
             };
 
             await _databaseContext.Users.AddAsync(user);
@@ -95,6 +108,26 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.SaveChangesAsync();
 
             return GetUser(user.Email).Result;
+        }
+
+        [HttpPut(Name = "UpdateUserPreference")]
+        [Route("[action]")]
+        public async Task<PreferenceModel> UpdateUserPreference([FromBody] PreferenceModel preferenceModel)
+        {
+            var preference = _databaseContext.Preferences.Single(p => p.Id == preferenceModel.Id);
+
+            preference.Theme = preferenceModel.Theme;
+            preference.Palette = preferenceModel.Palette;
+
+            _databaseContext.Preferences.Update(preference);
+            await _databaseContext.SaveChangesAsync();
+
+            return new PreferenceModel()
+            {
+                Id = preference.Id,
+                Theme = preference.Theme,
+                Palette = preference.Palette
+            };
         }
     }
 }

@@ -1,5 +1,3 @@
-@use "../Style/Colours.scss";
-
 /* Blur Background */
 .background {
   position: absolute;
@@ -11,7 +9,7 @@
 
 /* Modal Box Styling */
 .modal {
-  background-color: Colours.$dark-light;
+  background-color: var(--dark-light);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   padding: 0;
@@ -26,7 +24,7 @@
 
   /* Modal Header */
   .header {
-    background-color: Colours.$primary-red;
+    background-color: var(--palette-color);
     color: whitesmoke;
     margin: 0;
     padding: 15px 20px;
@@ -62,7 +60,7 @@
 
   .dialog {
     font-size: 14px;
-    color: Colours.$light-dark;
+    color: var(--light-dark);
     margin: 0 0 0;
     padding: 15px 20px;
   }
@@ -75,22 +73,22 @@
     padding: 15px 20px;
 
     .cancel-btn {
-      border-color: Colours.$light-dark;
-      color: Colours.$light-dark;
+      border-color: var(--light-dark);
+      color: var(--light-dark);
     }
 
     .cancel-btn:hover {
-      background-color: Colours.$light-dark;
-      color: Colours.$dark-light;
+      background-color: var(--light-dark);
+      color: var(--dark-light);
     }
 
     .confirm-btn {
-      color: Colours.$light-dark;
-      border-color: Colours.$primary-red;
+      color: var(--light-dark);
+      border-color: var(--palette-color);
     }
 
     .confirm-btn:hover {
-      background-color: Colours.$primary-red;
+      background-color: var(--palette-color);
       color: whitesmoke;
     }
   }
