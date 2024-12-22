@@ -1,5 +1,3 @@
-@use "../Style/Colours.scss";
-
 .mediapage-container {
   width: 100%;
   height: 100%;
@@ -23,7 +21,7 @@
         justify-content: center;
         align-items: center;
         font-size: 30rem;
-        color: Colours.$primary-red;
+        color: var(--palette-color);
       }
     }
 
@@ -38,7 +36,7 @@
 
     /* Hero Section */
     .hero {
-      background-color: Colours.$primary-red;
+      background-color: var(--palette-color);
       color: whitesmoke;
       display: flex;
       justify-content: space-between;
@@ -72,7 +70,7 @@
 
       .heart {
         font-size: 2.5rem;
-        color: Colours.$backlog-heart;
+        color: var(--backlog-heart);
       }
 
       .heart:disabled {
@@ -94,7 +92,7 @@
 
       .summary h2 {
         font-size: 1.8rem;
-        color: Colours.$primary-red;
+        color: var(--palette-color);
         margin: 0;
       }
 
@@ -104,7 +102,7 @@
         flex-wrap: wrap;
         gap: 1.5rem;
         padding: 2rem;
-        background-color: Colours.$dark-light;
+        background-color: var(--dark-light);
         border-bottom: 1px solid #444;
 
         .card {
@@ -123,7 +121,7 @@
 
         .card h3 {
           margin-bottom: 0.5rem;
-          color: Colours.$primary-red;
+          color: var(--palette-color);
           margin: 0;
           border-bottom: 1px solid #333;
         }
@@ -154,19 +152,19 @@
           h2 {
             margin: 0;
             font-size: 1.8rem;
-            color: Colours.$primary-red;
+            color: var(--palette-color);
           }
 
           .view-btn {
-            border-color: Colours.$primary-red;
-            background-color: Colours.$primary-red;
+            border-color: var(--palette-color);
+            background-color: var(--palette-color);
             color: whitesmoke;
           }
 
           .view-btn:not(:disabled):hover {
-            border-color: Colours.$dark-light;
-            background-color: Colours.$light-dark;
-            color: Colours.$dark-light;
+            border-color: var(--dark-light);
+            background-color: var(--light-dark);
+            color: var(--dark-light);
           }
         }
 
@@ -224,7 +222,7 @@
 
       /* Season Details Section */
       .season-details {
-        background-color: Colours.$dark-light;
+        background-color: var(--dark-light);
         padding: 2rem;
         border-bottom: 1px solid #444;
 
@@ -236,7 +234,7 @@
         }
 
         .season-header h2 {
-          color: Colours.$primary-red;
+          color: var(--palette-color);
           font-size: 1.8rem;
           margin: 0;
         }
@@ -250,7 +248,7 @@
         }
 
         .season-select:hover {
-          border-color: Colours.$light-dark;
+          border-color: var(--light-dark);
         }
 
         /* Episode Cards */
@@ -281,7 +279,7 @@
         }
 
         .episode-number {
-          background-color: Colours.$primary-red;
+          background-color: var(--palette-color);
           color: whitesmoke;
           font-size: 1.5rem;
           font-weight: bold;
@@ -315,7 +313,7 @@
           text-overflow: ellipsis;
 
           .star-icon {
-            color: Colours.$rating-star;
+            color: var(--rating-star);
           }
         }
       }

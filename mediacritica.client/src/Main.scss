@@ -1,4 +1,3 @@
-@use "./Style/Colours.scss";
 @import url(https://fonts.googleapis.com/css?family=Orbitron);
 
 @tailwind components;
@@ -9,9 +8,16 @@
   font-weight: 400;
   letter-spacing: 0.1rem;
 
+  --primary-red: rgba(151, 18, 18, 1);
+  --palette-color: rgba(151, 18, 18, 1);
+  --light-dark: light-dark(#141414, whitesmoke);
+  --dark-light: light-dark(whitesmoke, #141414);
+  --rating-star: #faaf00;
+  --backlog-heart: palevioletred;
+
   color-scheme: light dark;
-  color: Colours.$light-dark;
-  background-color: Colours.$dark-light;
+  color: var(--light-dark);
+  background-color: var(--dark-light);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,8 +27,8 @@
 }
 
 * {
-  transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out,
-    visibility 0.3s ease-in-out, transform, border-color 0.3s ease-in-out,
+  transition: background 0.3s ease-in-out, opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out, border-color 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
 }
 
@@ -57,11 +63,32 @@ button:disabled {
   display: none;
 }
 
+.w-color-circle {
+  justify-content: space-between !important;
+  .w-color-circle-point {
+    margin: 0 !important;
+
+    div {
+      background-color: var(--light-dark) !important;
+    }
+  }
+}
+
 .loader {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.MuiSwitch-root {
+  .MuiSwitch-colorPrimary {
+    color: var(--palette-color) !important;
+  }
+
+  .Mui-checked + .MuiSwitch-track {
+    background-color: var(--palette-color) !important;
+  }
 }
 
 .MuiAppBar-root {
@@ -72,20 +99,21 @@ button:disabled {
   border-radius: 20px 20px 0 0 !important;
 
   .MuiTab-root {
-    color: Colours.$light-dark !important;
-    background-color: Colours.$primary-red !important;
+    color: var(--light-dark) !important;
+    background-color: var(--palette-color) !important;
     padding: 20px !important;
     font-family: "orbitron" !important;
     font-size: 20px;
     border-bottom: 4px solid transparent !important;
+    color: whitesmoke !important;
   }
 
   .MuiTab-root:hover {
-    border-bottom-color: Colours.$light-dark !important;
+    border-bottom-color: var(--light-dark) !important;
   }
 
   .MuiTabs-indicator {
-    background-color: Colours.$light-dark !important;
+    background-color: var(--light-dark) !important;
     height: 4px !important;
   }
 }
@@ -95,36 +123,38 @@ button:disabled {
 }
 
 .MuiRating-icon {
-  color: Colours.$rating-star !important;
+  color: var(--rating-star) !important;
 }
 
-.MuiInput-root {
+.MuiInputBase-root {
   .MuiSvgIcon-root {
-    color: Colours.$light-dark !important;
+    color: var(--light-dark) !important;
   }
 }
 
 .MuiSelect-select {
-  padding: 10px !important;
-  color: Colours.$light-dark !important;
+  padding: 0 !important;
+  color: var(--light-dark) !important;
   font-family: "orbitron" !important;
-  border-color: Colours.$light-dark !important;
+  border-color: var(--light-dark) !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.1rem !important;
 }
 
 .MuiInput-underline::before,
 .MuiInput-underline::after {
-  border-bottom: 1px solid Colours.$light-dark !important;
+  border-bottom: 1px solid var(--light-dark) !important;
 }
 
 .MuiTableHead-root {
-  background-color: Colours.$primary-red !important;
+  background-color: var(--palette-color) !important;
 }
 
 .MuiTableCell-root {
-  color: Colours.$light-dark !important;
+  color: var(--light-dark) !important;
   font-family: "orbitron" !important;
   text-wrap: nowrap !important;
-  border-bottom-color: Colours.$light-dark !important;
+  border-bottom-color: var(--light-dark) !important;
 }
 
 .MuiTableHead-root {
@@ -142,7 +172,7 @@ button:disabled {
 .MuiTableBody-root {
   .MuiTableRow-root:hover {
     .MuiTableCell-root {
-      background-color: Colours.$primary-red !important;
+      background-color: var(--palette-color) !important;
       cursor: pointer;
     }
   }
@@ -159,8 +189,8 @@ button:disabled {
 }
 
 .MuiPaper-root {
-  background-color: Colours.$dark-light !important;
-  color: Colours.$light-dark !important;
+  background-color: var(--dark-light) !important;
+  color: var(--light-dark) !important;
 
   .MuiList-root {
     padding: 0 !important;
@@ -171,11 +201,11 @@ button:disabled {
     }
 
     .MuiMenuItem-root:hover {
-      background-color: Colours.$primary-red-faded !important;
+      background-color: var(--palette-color) !important;
     }
 
     .MuiMenuItem-root[aria-selected="true"] {
-      background-color: Colours.$primary-red !important;
+      background-color: var(--palette-color) !important;
       color: whitesmoke;
     }
   }

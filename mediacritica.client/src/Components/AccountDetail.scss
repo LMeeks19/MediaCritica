@@ -1,7 +1,5 @@
-@use "../Style/Colours.scss";
-
 .info-item {
-  color: Colours.$light-dark;
+  color: var(--light-dark);
   display: flex;
   align-items: center;
   background-color: light-dark(whitesmoke, #242424);
@@ -25,22 +23,22 @@ input {
 }
 
 .cancel-btn {
-  border-color: Colours.$light-dark;
+  border-color: var(--light-dark);
 }
 
 .cancel-btn:not(:disabled):hover {
-  background-color: Colours.$light-dark;
-  color: Colours.$dark-light;
+  background-color: var(--light-dark);
+  color: var(--dark-light);
 }
 
 .edit-btn,
 .save-btn {
-  background-color: Colours.$primary-red;
+  background-color: var(--palette-color);
   color: whitesmoke;
 }
 
 .edit-btn:not(:disabled):hover,
 .save-btn:not(:disabled):hover {
   background-color: light-dark(#242424, whitesmoke);
-  color: Colours.$primary-red;
+  color: var(--palette-color);
 }

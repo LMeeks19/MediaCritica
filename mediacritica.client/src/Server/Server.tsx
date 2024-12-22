@@ -11,8 +11,9 @@ import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
-import { UserModel } from "../Interfaces/UserModel";
+import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 
+// User API Calls
 export async function GetUser(email: string): Promise<UserModel> {
   const response = await fetch(`/User/GetUser/${email}`);
   return response.json();
@@ -38,6 +39,18 @@ export async function UpdateUser(
   return await response.json();
 }
 
+export async function UpdateUserPreference(
+  preference: PreferenceModel
+): Promise<PreferenceModel> {
+  const response = await fetch(`/User/UpdateUserPreference`, {
+    method: "PUT",
+    body: JSON.stringify(preference),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response.json();
+}
+
+// Media API Calls
 export async function GetSearchResults(
   searchTerm: string,
   page: number = 1
@@ -88,6 +101,7 @@ export async function GetReview(reviewId: string): Promise<ReviewModel> {
   return response.json();
 }
 
+// Review API Calls
 export async function GetUserReviews(
   reviewerId: number,
   offset: number = 0
@@ -134,6 +148,7 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
   });
 }
 
+// Backlog API Calls
 export async function GetBacklog(
   userId: number,
   offset: number = 0

@@ -54,7 +54,7 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
-      <TopBar hideReturn />
+      <TopBar hideHome />
       <div className="homepage">
         <div className="homepage-title">MEDIA CRITICA</div>
         <div className="homepage-searchbar">

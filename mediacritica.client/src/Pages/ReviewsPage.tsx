@@ -41,7 +41,7 @@ function ReviewsPage() {
         <Loader />
       ) : (
         <div className="reviews">
-          <TopBar />
+          <TopBar showReturn />
           <div className="header">
             <h1>{mediaTitle} Reviews</h1>
           </div>

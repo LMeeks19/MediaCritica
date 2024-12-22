@@ -110,7 +110,6 @@ function ViewReviewPage() {
   } as unknown as ConfirmationDialogModel;
 
   return (
-    <>
       <div className="viewreviewpage-container">
         {isLoading ? (
           <Loader />
@@ -252,7 +251,6 @@ function ViewReviewPage() {
           </div>
         )}
       </div>
-    </>
   );
 }
 

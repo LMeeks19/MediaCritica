@@ -8,6 +8,7 @@ namespace MediaCritica.Server
         public DbSet<User> Users { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Backlog> Backlogs { get; set; }
+        public DbSet<Preference> Preferences { get; set; }
 
         public DatabaseContext(DbContextOptions options) : base(options) { }
     }

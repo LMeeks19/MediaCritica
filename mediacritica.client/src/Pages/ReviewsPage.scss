@@ -1,5 +1,3 @@
-@use "../Style/Colours.scss";
-
 .reviewspage-container {
   width: 100%;
   height: 100%;
@@ -15,7 +13,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: Colours.$primary-red;
+      background-color: var(--palette-color);
       padding: 6rem 2rem 2rem 2rem;
 
       h1 {
@@ -85,15 +83,15 @@
       justify-content: center;
       
       .load-btn {
-        background-color: Colours.$primary-red;
-        border-color: Colours.$primary-red;
+        background-color: var(--palette-color);
+        border-color: var(--palette-color);
         color: whitesmoke;
       }
 
       .load-btn:not(:disabled):hover {
-        background-color: Colours.$light-dark;
-        border-color: Colours.$light-dark;
-        color: Colours.$dark-light;
+        background-color: var(--light-dark);
+        border-color: var(--light-dark);
+        color: var(--dark-light);
       }
     }
   }

@@ -49,7 +49,7 @@ function MediaPage() {
 
   useEffect(() => {
     async function FetchMedia() {
-      mediaId === undefined && navigate("/");
+      (mediaId === undefined || mediaType === undefined) && navigate("/");
       setIsLoading(true);
       var mediaResponse = await GetMedia(mediaId, mediaType);
       setMedia(mediaResponse);
@@ -275,15 +275,13 @@ function MediaPage() {
               <div className="grid">
                 <div className="card">
                   <h3>Cast</h3>
-                  <div className="inline-grid grid-cols-2 gap-3 mt-4 w-full">
-                    {media.actors.split(",").map((actor) => {
-                      return (
-                        <p className="m-0" key={actor}>
-                          {actor}
-                        </p>
-                      );
-                    })}
-                  </div>
+                  {media.actors.split(",").map((actor) => {
+                    return (
+                      <p key={actor}>
+                        {actor}
+                      </p>
+                    );
+                  })}
                 </div>
                 <div className="card">
                   <h3>Details</h3>

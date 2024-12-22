@@ -18,8 +18,11 @@ import Loader from "../Components/Loader";
 import { useRecoilState } from "recoil";
 import AccountDetail from "../Components/AccountDetail";
 import { AccountFieldType } from "../Enums/AccountFieldType";
-import "./AccountPage.scss";
 import { UserModel } from "../Interfaces/UserModel";
+import ThemePreference from "../Components/ThemePreference";
+import $ from "jquery";
+import PalettePreference from "../Components/PalettePreference";
+import "./AccountPage.scss";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -32,13 +35,12 @@ function AccountPage() {
   const [selectedBacklogFilter, setSelectedBacklogFilter] = useState<number>(0);
 
   useEffect(() => {
-    if (user?.id !== null) {
+    if (activeTab === 1 && user.totalReviews !== reviews.length)
       FetchReviews(0);
+    else if (activeTab === 2 && user.totalBacklogs !== backlog.length)
       FetchBacklog(0);
-    } else {
-      setIsLoading(false);
-    }
-  }, [user]);
+    else setIsLoading(false);
+  }, [activeTab]);
 
   async function FetchReviews(offset: number) {
     setIsLoading(true);
@@ -91,224 +93,236 @@ function AccountPage() {
   }
 
   return (
-    <>
-      <div className="accountpage-container">
-        <TopBar hideAccount />
-        {isLoading ? (
-          <Loader />
-        ) : user.id === null ? (
-          <AccountLogin />
-        ) : (
-          <div className="account">
-            <AppBar position="static">
-              <Tabs
-                value={activeTab}
-                onChange={(_e, v) => setActiveTab(v)}
-                variant="fullWidth"
+    <div className="accountpage-container">
+      <TopBar hideAccount />
+      {isLoading ? (
+        <Loader />
+      ) : user.id === null || user.id === undefined ? (
+        <AccountLogin />
+      ) : (
+        <div className="account">
+          <AppBar position="static">
+            <Tabs
+              value={activeTab}
+              onChange={(_e, v) => setActiveTab(v)}
+              variant="fullWidth"
+            >
+              <Tab label="Details" />
+              <Tab label="Reviews" />
+              <Tab label="Backlog" />
+            </Tabs>
+          </AppBar>
+          <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
+            <div className="header">
+              <h1>DETAILS</h1>
+              <button
+                className="logout-btn"
+                onClick={() => {
+                  setUser({} as UserModel);
+                  $(":root").css("color-scheme", "light dark");
+                  $(":root").attr("style", `--palette-color:var(--primary-red)`);
+                }}
               >
-                <Tab label="Details" />
-                <Tab label="Reviews" />
-                <Tab label="Backlog" />
-              </Tabs>
-            </AppBar>
-            <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
-              <div className="header">
-                <h1>ACCOUNT DETAILS</h1>
-                <button
-                  className="logout-btn"
-                  onClick={() => setUser({} as UserModel)}
-                >
-                  Logout <FontAwesomeIcon icon={faSignOut} />
-                </button>
-              </div>
-              <div className="account-details">
-                <AccountDetail
-                  accountFieldName="Forename"
-                  accountFieldType={AccountFieldType.Forename}
-                  accountFieldValue={user.forename}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Surname"
-                  accountFieldType={AccountFieldType.Surname}
-                  accountFieldValue={user.surname}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Email"
-                  accountFieldType={AccountFieldType.Email}
-                  accountFieldValue={user.email}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Password"
-                  accountFieldType={AccountFieldType.Password}
-                  accountFieldValue="********"
-                  inputType="password"
-                />
-              </div>
+                Logout <FontAwesomeIcon icon={faSignOut} />
+              </button>
             </div>
-            <div className="tab-panel" tabIndex={1} hidden={activeTab !== 1}>
-              <div className="header">
-                <h1>REVIEWS</h1>
-                <Select
-                  className="select"
-                  variant="standard"
-                  value={selectedReviewFilter}
-                  onChange={(e) =>
-                    setSelectedReviewFilter(Number(e.target.value))
-                  }
-                >
-                  <MenuItem value={0}>None</MenuItem>
-                  <MenuItem value={1}>Movies</MenuItem>
-                  <MenuItem value={2}>Series</MenuItem>
-                  <MenuItem value={3}>Games</MenuItem>
-                  <MenuItem value={4}>Episodes</MenuItem>
-                </Select>
-              </div>
-              {filteredReviews().length === 0 ? (
-                <div className="media-reviews empty">No Media Reviewed</div>
-              ) : (
-                <div className="media-reviews">
-                  {filteredReviews().map((review) => {
-                    return (
-                      <div
-                        key={review.mediaId}
-                        className="review"
-                        onClick={() =>
-                          navigate(
-                            `/media/${review.mediaId}/view-review/${review.id}}`,
-                            {
-                              state: { reviewId: review.id },
-                            }
-                          )
-                        }
-                      >
-                        <div className="tag">
-                          {CapitaliseFirstLetter(review.mediaType)}
-                        </div>
-                        {review.mediaPoster === "N/A" ? (
-                          <div className="image empty">
-                            <FontAwesomeIcon icon={faImage} />
-                          </div>
-                        ) : (
-                          <img className="image" src={review.mediaPoster} />
-                        )}
-                        <div className="review-info">
-                          <h3>
-                            {review.mediaParentTitle ?? review.mediaTitle}
-                            {review.mediaType === MediaType.Episode &&
-                              ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
-                          </h3>
-                          <p>
-                            {CapitaliseFirstLetter(
-                              formatDistanceToNowStrict(review.date) + " ago"
-                            )}
-                          </p>
-                          <Rating
-                            style={{ fontSize: "2rem" }}
-                            value={review.rating}
-                            precision={0.5}
-                            readOnly
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              <div className="flex justify-center p-6">
-                <CustomTooltip
-                  title={
-                    reviews.length === user.totalReviews &&
-                    "All reviewed media loaded"
-                  }
-                  arrow
-                >
-                  <span>
-                    <button
-                      className="load-btn"
-                      disabled={reviews.length === user.totalReviews}
-                      onClick={() => LoadMoreReviews()}
-                    >
-                      Load More <FontAwesomeIcon icon={faSpinner} />
-                    </button>
-                  </span>
-                </CustomTooltip>
-              </div>
+            <div className="account-details">
+              <AccountDetail
+                accountFieldName="Forename"
+                accountFieldType={AccountFieldType.Forename}
+                accountFieldValue={user.forename}
+                inputType="text"
+              />
+              <AccountDetail
+                accountFieldName="Surname"
+                accountFieldType={AccountFieldType.Surname}
+                accountFieldValue={user.surname}
+                inputType="text"
+              />
+              <AccountDetail
+                accountFieldName="Email"
+                accountFieldType={AccountFieldType.Email}
+                accountFieldValue={user.email}
+                inputType="text"
+              />
+              <AccountDetail
+                accountFieldName="Password"
+                accountFieldType={AccountFieldType.Password}
+                accountFieldValue="********"
+                inputType="password"
+              />
             </div>
-            <div className="tab-panel" tabIndex={2} hidden={activeTab !== 2}>
-              <div className="header">
-                <h1>REVIEWS</h1>
-                <Select
-                  className="select"
-                  variant="standard"
-                  value={selectedBacklogFilter}
-                  onChange={(e) =>
-                    setSelectedBacklogFilter(Number(e.target.value))
-                  }
-                >
-                  <MenuItem value={0}>None</MenuItem>
-                  <MenuItem value={1}>Movies</MenuItem>
-                  <MenuItem value={2}>Series</MenuItem>
-                  <MenuItem value={3}>Games</MenuItem>
-                </Select>
-              </div>
-              {filteredBacklog().length === 0 ? (
-                <div className="backlog empty">No Backlogged Media</div>
-              ) : (
-                <div className="backlog">
-                  {filteredBacklog().map((media) => {
-                    return (
-                      <div
-                        key={media.mediaId}
-                        className="media"
-                        onClick={() =>
-                          navigate(`/media/${media.mediaId}}`, {
-                            state: { mediaId: media.mediaId },
-                          })
-                        }
-                      >
-                        <div className="tag">
-                          {CapitaliseFirstLetter(media.mediaType)}
-                        </div>
-                        {media.mediaPoster === "N/A" ? (
-                          <div className="image empty">
-                            <FontAwesomeIcon icon={faImage} />
-                          </div>
-                        ) : (
-                          <img className="image" src={media.mediaPoster} />
-                        )}
-                        <div className="backlog-info">{media.mediaTitle}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              <div className="flex justify-center p-6">
-                <CustomTooltip
-                  title={
-                    backlog.length === user.totalBacklogs &&
-                    "All backlogged media loaded"
-                  }
-                  arrow
-                >
-                  <span>
-                    <button
-                      className="load-btn"
-                      disabled={backlog.length === user.totalBacklogs}
-                      onClick={() => LoadMoreBacklogs()}
-                    >
-                      Load More <FontAwesomeIcon icon={faSpinner} />
-                    </button>
-                  </span>
-                </CustomTooltip>
-              </div>
+            <div className="header">
+              <h1>PREFERENCES</h1>
+            </div>
+            <div className="account-details">
+              <ThemePreference />
+              <PalettePreference />
             </div>
           </div>
-        )}
-      </div>
-    </>
+          <div className="tab-panel" tabIndex={1} hidden={activeTab !== 1}>
+            <div className="header">
+              <h1>REVIEWS</h1>
+              <Select
+                className="select"
+                variant="standard"
+                value={selectedReviewFilter}
+                onChange={(e) =>
+                  setSelectedReviewFilter(Number(e.target.value))
+                }
+              >
+                <MenuItem value={0}>None</MenuItem>
+                <MenuItem value={1}>Movies</MenuItem>
+                <MenuItem value={2}>Series</MenuItem>
+                <MenuItem value={3}>Games</MenuItem>
+                <MenuItem value={4}>Episodes</MenuItem>
+              </Select>
+            </div>
+            {filteredReviews().length === 0 ? (
+              <div className="media-reviews empty">No Media Reviewed</div>
+            ) : (
+              <div className="media-reviews">
+                {filteredReviews().map((review) => {
+                  return (
+                    <div
+                      key={review.mediaId}
+                      className="review"
+                      onClick={() =>
+                        navigate(
+                          `/media/${review.mediaId}/view-review/${review.id}}`,
+                          {
+                            state: { reviewId: review.id },
+                          }
+                        )
+                      }
+                    >
+                      <div className="tag">
+                        {CapitaliseFirstLetter(review.mediaType)}
+                      </div>
+                      {review.mediaPoster === "N/A" ? (
+                        <div className="image empty">
+                          <FontAwesomeIcon icon={faImage} />
+                        </div>
+                      ) : (
+                        <img className="image" src={review.mediaPoster} />
+                      )}
+                      <div className="review-info">
+                        <h3>
+                          {review.mediaParentTitle ?? review.mediaTitle}
+                          {review.mediaType === MediaType.Episode &&
+                            ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
+                        </h3>
+                        <p>
+                          {CapitaliseFirstLetter(
+                            formatDistanceToNowStrict(review.date) + " ago"
+                          )}
+                        </p>
+                        <Rating
+                          style={{ fontSize: "2rem" }}
+                          value={review.rating}
+                          precision={0.5}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="flex justify-center p-6">
+              <CustomTooltip
+                title={
+                  reviews.length === user.totalReviews &&
+                  "All reviewed media loaded"
+                }
+                arrow
+              >
+                <span>
+                  <button
+                    className="load-btn"
+                    disabled={reviews.length === user.totalReviews}
+                    onClick={() => LoadMoreReviews()}
+                  >
+                    Load More <FontAwesomeIcon icon={faSpinner} />
+                  </button>
+                </span>
+              </CustomTooltip>
+            </div>
+          </div>
+          <div className="tab-panel" tabIndex={2} hidden={activeTab !== 2}>
+            <div className="header">
+              <h1>REVIEWS</h1>
+              <Select
+                className="select"
+                variant="standard"
+                value={selectedBacklogFilter}
+                onChange={(e) =>
+                  setSelectedBacklogFilter(Number(e.target.value))
+                }
+              >
+                <MenuItem value={0}>None</MenuItem>
+                <MenuItem value={1}>Movies</MenuItem>
+                <MenuItem value={2}>Series</MenuItem>
+                <MenuItem value={3}>Games</MenuItem>
+              </Select>
+            </div>
+            {filteredBacklog().length === 0 ? (
+              <div className="backlog empty">No Backlogged Media</div>
+            ) : (
+              <div className="backlog">
+                {filteredBacklog().map((media) => {
+                  return (
+                    <div
+                      key={media.mediaId}
+                      className="media"
+                      onClick={() =>
+                        navigate(`/media/${media.mediaId}}`, {
+                          state: {
+                            mediaId: media.mediaId,
+                            mediaType: media.mediaType,
+                          },
+                        })
+                      }
+                    >
+                      <div className="tag">
+                        {CapitaliseFirstLetter(media.mediaType)}
+                      </div>
+                      {media.mediaPoster === "N/A" ? (
+                        <div className="image empty">
+                          <FontAwesomeIcon icon={faImage} />
+                        </div>
+                      ) : (
+                        <img className="image" src={media.mediaPoster} />
+                      )}
+                      <div className="backlog-info">{media.mediaTitle}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="flex justify-center p-6">
+              <CustomTooltip
+                title={
+                  backlog.length === user.totalBacklogs &&
+                  "All backlogged media loaded"
+                }
+                arrow
+              >
+                <span>
+                  <button
+                    className="load-btn"
+                    disabled={backlog.length === user.totalBacklogs}
+                    onClick={() => LoadMoreBacklogs()}
+                  >
+                    Load More <FontAwesomeIcon icon={faSpinner} />
+                  </button>
+                </span>
+              </CustomTooltip>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
