@@ -1,7 +1,7 @@
 import { MediaSearchModel } from "./MediaSearchModel"
 
 export interface MediaSearchResponse {
-    Response: string
-    Search: MediaSearchModel[]
+    response: string
+    search: MediaSearchModel[]
     totalResults: string
 }

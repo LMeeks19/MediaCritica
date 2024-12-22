@@ -1,3 +1,4 @@
+import { MediaType } from "../Enums/MediaType";
 import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
@@ -11,8 +12,6 @@ import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserModel } from "../Interfaces/UserModel";
-
-const mediaServiceApiKey = import.meta.env.VITE_SERVICE_API_KEY;
 
 export async function GetUser(email: string): Promise<UserModel> {
   const response = await fetch(`/User/GetUser/${email}`);
@@ -43,18 +42,31 @@ export async function GetSearchResults(
   searchTerm: string,
   page: number = 1
 ): Promise<MediaSearchResponse> {
-  const response = await fetch(
-    `https://www.omdbapi.com/?s=${searchTerm}&page=${page}&apikey=${mediaServiceApiKey}`
-  );
+  const response = await fetch(`/Media/GetMediaBySearch/${searchTerm}/${page}`);
   return response.json();
 }
 
 export async function GetMedia(
-  mediaId: string
+  mediId: string,
+  type: MediaType
 ): Promise<MovieModel | SeriesModel | GameModel> {
-  const response = await fetch(
-    `https://www.omdbapi.com/?i=${mediaId}&plot=full&apikey=${mediaServiceApiKey}`
-  );
+  if (type === MediaType.Movie) return await GetMovie(mediId);
+  else if (type === MediaType.Series) return await GetSeries(mediId);
+  return await GetGame(mediId);
+}
+
+export async function GetMovie(mediaId: string): Promise<MovieModel> {
+  const response = await fetch(`/Media/GetMovie/${mediaId}`);
+  return response.json();
+}
+
+export async function GetSeries(mediaId: string): Promise<SeriesModel> {
+  const response = await fetch(`/Media/GetSeries/${mediaId}`);
+  return response.json();
+}
+
+export async function GetGame(mediaId: string): Promise<GameModel> {
+  const response = await fetch(`/Media/GetGame/${mediaId}`);
   return response.json();
 }
 
@@ -62,16 +74,12 @@ export async function GetSeason(
   mediaId: string,
   season: number = 1
 ): Promise<SeasonModel> {
-  const response = await fetch(
-    `https://www.omdbapi.com/?i=${mediaId}&season=${season}&apikey=${mediaServiceApiKey}`
-  );
+  const response = await fetch(`/Media/GetSeason/${mediaId}/${season}`);
   return response.json();
 }
 
 export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
-  const response = await fetch(
-    `https://www.omdbapi.com/?i=${episodeId}&plot=full&apikey=${mediaServiceApiKey}`
-  );
+  const response = await fetch(`/Media/GetEpisode/${episodeId}`);
   return response.json();
 }
 
@@ -90,19 +98,12 @@ export async function GetUserReviews(
   return response.json();
 }
 
-export async function Get10MediaReviews(
-  mediaId: string
-): Promise<ReviewSummaryModel[]> {
-  const response = await fetch(`/Review/Get10MediaReviews/${mediaId}`);
-  return response.json();
-}
-
-export async function Get40MediaReviews(
+export async function GetMediaReviews(
   mediaId: string,
   offset: number = 0
 ): Promise<ReviewSummaryModel[]> {
   const response = await fetch(
-    `/Review/Get40MediaReviews/${mediaId}/${offset}`
+    `/Review/GetMediaReviews/${mediaId}/${offset}/${40}`
   );
   return response.json();
 }

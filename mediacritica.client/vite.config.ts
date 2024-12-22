@@ -54,6 +54,10 @@ export default defineConfig({
             '^/Backlog': {
                 target,
                 secure: false
+            },
+            '^/Media': {
+                target,
+                secure: false
             }
         },
         port: 5174,

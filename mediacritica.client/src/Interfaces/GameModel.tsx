@@ -1,8 +1,8 @@
 import { MediaModel } from "./MediaModel";
 
 export interface GameModel extends MediaModel {
-    BoxOffice: string;
-    DVD: string;
-    Website: string;
-    Production: string;
+    boxOffice: string;
+    dvd: string;
+    website: string;
+    production: string;
 }

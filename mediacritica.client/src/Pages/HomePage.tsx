@@ -31,7 +31,7 @@ function HomePage() {
       if (searchTerm.length > 0) {
         var mediaSearchResponse = await GetSearchResults(searchTerm);
         setTotalResults(Number(mediaSearchResponse.totalResults));
-        setMediaSearchResults(mediaSearchResponse.Search ?? []);
+        setMediaSearchResults(mediaSearchResponse.search ?? []);
       } else {
         setMediaSearchResults([]);
       }
@@ -46,7 +46,7 @@ function HomePage() {
     var mediaSearchResponse = await GetSearchResults(searchTerm, page + 1);
     setMediaSearchResults([
       ...mediaSearchResults,
-      ...(mediaSearchResponse.Search ?? []),
+      ...(mediaSearchResponse.search ?? []),
     ]);
     setPage(page + 1);
     setIsLoading(false);
@@ -92,21 +92,22 @@ function HomePage() {
                       navigate(`/media/${mediaSearchResult.imdbID}`, {
                         state: {
                           mediaId: mediaSearchResult.imdbID,
+                          mediaType: mediaSearchResult.type
                         },
                       })
                     }
                   >
                     <div className="tag type">
-                      {CapitaliseFirstLetter(mediaSearchResult.Type)}
+                      {CapitaliseFirstLetter(mediaSearchResult.type)}
                     </div>
-                    {mediaSearchResult.Poster === "N/A" ? (
+                    {mediaSearchResult.poster === "N/A" ? (
                       <div className="image empty">
                         <FontAwesomeIcon icon={faImage} />
                       </div>
                     ) : (
-                      <img className="image" src={mediaSearchResult.Poster} />
+                      <img className="image" src={mediaSearchResult.poster} />
                     )}
-                    <div className="title">{mediaSearchResult.Title}</div>
+                    <div className="title">{mediaSearchResult.title}</div>
                   </div>
                 );
               })}
