@@ -1,6 +1,8 @@
+import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import { MediaType } from "../Enums/MediaType";
 import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
+import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
 import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
@@ -149,11 +151,8 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
 }
 
 // Backlog API Calls
-export async function GetBacklog(
-  userId: number,
-  offset: number = 0
-): Promise<BacklogModel[]> {
-  const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}/${offset}`);
+export async function GetBacklog(userId: number): Promise<BacklogObjectModel> {
+  const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}`);
   return response.json();
 }
 
@@ -175,5 +174,14 @@ export async function DeleteBacklog(
 ): Promise<void> {
   await fetch(`/Backlog/DeleteBacklog/${mediaId}/${userId}`, {
     method: "DELETE",
+  });
+}
+
+export async function UpdateBacklogState(
+  backlogId: number,
+  newState: BacklogCategoryType
+): Promise<void> {
+  await fetch(`/Backlog/UpdateBacklogState/${backlogId}/${newState}`, {
+    method: "PUT",
   });
 }

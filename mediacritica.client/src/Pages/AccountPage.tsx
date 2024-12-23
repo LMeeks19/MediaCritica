@@ -2,7 +2,11 @@ import TopBar from "../Components/TopBar";
 import { userState } from "../State/GlobalState";
 import AccountLogin from "../Components/AccountLogin";
 import { useEffect, useState } from "react";
-import { GetBacklog, GetUserReviews } from "../Server/Server";
+import {
+  GetBacklog,
+  GetUserReviews,
+  UpdateBacklogState,
+} from "../Server/Server";
 import { AppBar, MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +14,6 @@ import { faSignOut, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
-import { BacklogModel } from "../Interfaces/BacklogModel";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { formatDistanceToNowStrict } from "date-fns";
 import { CustomTooltip } from "../Components/Tooltip";
@@ -22,6 +25,10 @@ import { UserModel } from "../Interfaces/UserModel";
 import ThemePreference from "../Components/ThemePreference";
 import $ from "jquery";
 import PalettePreference from "../Components/PalettePreference";
+import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
+import { BacklogModel } from "../Interfaces/BacklogModel";
+import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
+import { Snackbar } from "../Components/Snackbar";
 import "./AccountPage.scss";
 
 function AccountPage() {
@@ -31,14 +38,14 @@ function AccountPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
   const [selectedReviewFilter, setSelectedReviewFilter] = useState<number>(0);
-  const [backlog, setBacklog] = useState<BacklogModel[]>([] as BacklogModel[]);
-  const [selectedBacklogFilter, setSelectedBacklogFilter] = useState<number>(0);
+  const [backlog, setBacklog] = useState<BacklogObjectModel>(
+    {} as BacklogObjectModel
+  );
 
   useEffect(() => {
     if (activeTab === 1 && user.totalReviews !== reviews.length)
       FetchReviews(0);
-    else if (activeTab === 2 && user.totalBacklogs !== backlog.length)
-      FetchBacklog(0);
+    else if (activeTab === 2) FetchBacklog();
     else setIsLoading(false);
   }, [activeTab]);
 
@@ -49,9 +56,9 @@ function AccountPage() {
     setIsLoading(false);
   }
 
-  async function FetchBacklog(offset: number) {
+  async function FetchBacklog() {
     setIsLoading(true);
-    const backlogData = await GetBacklog(user.id, offset);
+    const backlogData = await GetBacklog(user.id);
     setBacklog(backlogData);
     setIsLoading(false);
   }
@@ -60,13 +67,6 @@ function AccountPage() {
     setIsLoading(true);
     const reviewsData = await GetUserReviews(user.id, reviews.length);
     setReviews([...reviews, ...reviewsData]);
-    setIsLoading(false);
-  }
-
-  async function LoadMoreBacklogs() {
-    setIsLoading(true);
-    const backlogData = await GetBacklog(user.id, backlog.length);
-    setBacklog([...backlog, ...backlogData]);
     setIsLoading(false);
   }
 
@@ -82,14 +82,126 @@ function AccountPage() {
     return reviews;
   }
 
-  function filteredBacklog() {
-    if (selectedBacklogFilter === 1)
-      return backlog.filter((media) => media.mediaType === MediaType.Movie);
-    else if (selectedBacklogFilter === 2)
-      return backlog.filter((media) => media.mediaType === MediaType.Series);
-    else if (selectedBacklogFilter === 3)
-      return backlog.filter((media) => media.mediaType === MediaType.Game);
-    return backlog;
+  const handleDragStart = (
+    e: React.DragEvent<HTMLDivElement>,
+    stage: keyof BacklogObjectModel,
+    index: number
+  ) => {
+    e.dataTransfer.setData("text/plain", JSON.stringify({ stage, index }));
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (
+    e: React.DragEvent<HTMLDivElement>,
+    targetStage: keyof BacklogObjectModel
+  ) => {
+    e.preventDefault();
+    const { stage: sourceStage, index: sourceIndex } = JSON.parse(
+      e.dataTransfer.getData("text/plain")
+    ) as {
+      stage: keyof BacklogObjectModel;
+      index: number;
+    };
+
+    if (sourceStage === targetStage) return;
+
+    const updatedBacklog = { ...backlog };
+    const [movedItem] = (updatedBacklog[sourceStage] as BacklogModel[]).splice(
+      sourceIndex,
+      1
+    );
+
+    const newCategory =
+      targetStage === "backlog"
+        ? BacklogCategoryType.Backlog
+        : targetStage === "inProgress"
+        ? BacklogCategoryType.InProgress
+        : BacklogCategoryType.Finished;
+
+    UpdateBacklogState(movedItem.id, newCategory);
+
+    (updatedBacklog[targetStage] as BacklogModel[]).push(movedItem);
+
+    ((updatedBacklog[targetStage] as BacklogModel[]) = (
+      updatedBacklog[targetStage] as BacklogModel[]
+    ).sort(
+      (a, b) =>
+        new Date(b.addedDate).getMilliseconds() -
+        new Date(a.addedDate).getMilliseconds()
+    )),
+      setBacklog(updatedBacklog);
+
+    Snackbar(`${movedItem.mediaTitle} Updated`, "success");
+  };
+
+  function filtered(items: BacklogModel[], filter: number): BacklogModel[] {
+    if (filter === 1) {
+      return items.filter((item) => item.mediaType === MediaType.Movie) ?? [];
+    } else if (filter === 2) {
+      return items.filter((item) => item.mediaType === MediaType.Series) ?? [];
+    } else if (filter === 3) {
+      return items.filter((item) => item.mediaType === MediaType.Game) ?? [];
+    }
+    return items ?? [];
+  }
+
+  function RenderSection({
+    title,
+    stage,
+    items,
+  }: {
+    title: string;
+    stage: keyof BacklogObjectModel;
+    items: BacklogModel[];
+  }) {
+    const [selectedFilter, setSelectedFilter] = useState<number>(0);
+
+    return (
+      <div className="grid-wrapper">
+        <div className="header">
+          <h1>{title.toUpperCase()}</h1>
+          <Select
+            className="select"
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(Number(e.target.value))}
+          >
+            <MenuItem value={0}>None</MenuItem>
+            <MenuItem value={1}>Movies</MenuItem>
+            <MenuItem value={2}>Series</MenuItem>
+            <MenuItem value={3}>Games</MenuItem>
+          </Select>
+        </div>
+        <div
+          className="grid"
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, stage)}
+        >
+          {filtered(items, selectedFilter).length === 0 ? (
+            <div className="flex items-center justify-center w-full h-[281.25px]">
+              No Media
+            </div>
+          ) : (
+            filtered(items, selectedFilter).map((item, index) => (
+              <div
+                key={item.id}
+                draggable
+                className="grid-item"
+                onDragStart={(e) => handleDragStart(e, stage, index)}
+                style={{ backgroundImage: `url(${item.mediaPoster})` }}
+              >
+                <div className="item-tag">
+                  {CapitaliseFirstLetter(item.mediaType)}
+                </div>
+                <div className="item-title">{item.mediaTitle}</div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -120,7 +232,10 @@ function AccountPage() {
                 onClick={() => {
                   setUser({} as UserModel);
                   $(":root").css("color-scheme", "light dark");
-                  $(":root").attr("style", `--palette-color:var(--primary-red)`);
+                  $(":root").attr(
+                    "style",
+                    `--palette-color:var(--primary-red)`
+                  );
                 }}
               >
                 Logout <FontAwesomeIcon icon={faSignOut} />
@@ -250,75 +365,21 @@ function AccountPage() {
             </div>
           </div>
           <div className="tab-panel" tabIndex={2} hidden={activeTab !== 2}>
-            <div className="header">
-              <h1>REVIEWS</h1>
-              <Select
-                className="select"
-                variant="standard"
-                value={selectedBacklogFilter}
-                onChange={(e) =>
-                  setSelectedBacklogFilter(Number(e.target.value))
-                }
-              >
-                <MenuItem value={0}>None</MenuItem>
-                <MenuItem value={1}>Movies</MenuItem>
-                <MenuItem value={2}>Series</MenuItem>
-                <MenuItem value={3}>Games</MenuItem>
-              </Select>
-            </div>
-            {filteredBacklog().length === 0 ? (
-              <div className="backlog empty">No Backlogged Media</div>
-            ) : (
-              <div className="backlog">
-                {filteredBacklog().map((media) => {
-                  return (
-                    <div
-                      key={media.mediaId}
-                      className="media"
-                      onClick={() =>
-                        navigate(`/media/${media.mediaId}}`, {
-                          state: {
-                            mediaId: media.mediaId,
-                            mediaType: media.mediaType,
-                          },
-                        })
-                      }
-                    >
-                      <div className="tag">
-                        {CapitaliseFirstLetter(media.mediaType)}
-                      </div>
-                      {media.mediaPoster === "N/A" ? (
-                        <div className="image empty">
-                          <FontAwesomeIcon icon={faImage} />
-                        </div>
-                      ) : (
-                        <img className="image" src={media.mediaPoster} />
-                      )}
-                      <div className="backlog-info">{media.mediaTitle}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <div className="flex justify-center p-6">
-              <CustomTooltip
-                title={
-                  backlog.length === user.totalBacklogs &&
-                  "All backlogged media loaded"
-                }
-                arrow
-              >
-                <span>
-                  <button
-                    className="load-btn"
-                    disabled={backlog.length === user.totalBacklogs}
-                    onClick={() => LoadMoreBacklogs()}
-                  >
-                    Load More <FontAwesomeIcon icon={faSpinner} />
-                  </button>
-                </span>
-              </CustomTooltip>
-            </div>
+            <RenderSection
+              title="Backlog"
+              stage="backlog"
+              items={backlog.backlog}
+            />
+            <RenderSection
+              title="In Progress"
+              stage="inProgress"
+              items={backlog.inProgress}
+            />
+            <RenderSection
+              title="Finished"
+              stage="finished"
+              items={backlog.finished}
+            />
           </div>
         </div>
       )}

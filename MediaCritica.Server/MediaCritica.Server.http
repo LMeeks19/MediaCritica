@@ -93,4 +93,10 @@ Accept: application/json
 DELETE {{MediaCritica.Server_HostAddress}}/Backlog/DeleteBacklog/
 Accept: application/json
 
+###
+
+PUT {{MediaCritica.Server_HostAddress}}/Backlog/UpdateBacklogState/
+Accept: application/json
+
+
 
