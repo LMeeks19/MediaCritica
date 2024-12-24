@@ -141,32 +141,34 @@ function AccountPage() {
 
     (updatedBacklog[targetStage] as BacklogModel[]).push(movedItem);
 
-    increaseTotalCount(updatedBacklog, targetStage);
-    decreaseTotalCount(updatedBacklog, sourceStage);
+    increaseTotalCount(updatedBacklog, targetStage, 1);
+    decreaseTotalCount(updatedBacklog, sourceStage, 1);
 
     setBacklog(updatedBacklog);
   };
 
   function increaseTotalCount(
     updatedBacklog: BacklogObjectModel,
-    stage: string
+    stage: string,
+    amount: number
   ): number {
     if (stage === "inProgress")
-      return (updatedBacklog.totalInProgressCount += 1);
+      return (updatedBacklog.totalInProgressCount += amount);
     else if (stage === "finished")
-      return (updatedBacklog.totalFinishedCount += 1);
-    return (updatedBacklog.totalBacklogCount += 1);
+      return (updatedBacklog.totalFinishedCount += amount);
+    return (updatedBacklog.totalBacklogCount += amount);
   }
 
   function decreaseTotalCount(
     updatedBacklog: BacklogObjectModel,
-    stage: string
+    stage: string,
+    amount: number
   ): number {
     if (stage === "inProgress")
-      return (updatedBacklog.totalInProgressCount -= 1);
+      return (updatedBacklog.totalInProgressCount -= amount);
     else if (stage === "finished")
-      return (updatedBacklog.totalFinishedCount -= 1);
-    return (updatedBacklog.totalBacklogCount -= 1);
+      return (updatedBacklog.totalFinishedCount -= amount);
+    return (updatedBacklog.totalBacklogCount -= amount);
   }
 
   function filtered(items: BacklogModel[], filter: number): BacklogModel[] {
@@ -293,7 +295,7 @@ function AccountPage() {
           </div>
           <div
             className={`flex justify-center items-center p-6 ${
-              items?.length === totalItems && "hidden" 
+              items?.length === totalItems && "hidden"
             }`}
           >
             <CustomTooltip title="load more" arrow>
