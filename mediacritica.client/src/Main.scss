@@ -8,8 +8,8 @@
   font-weight: 400;
   letter-spacing: 0.1rem;
 
-  --primary-red: rgba(151, 18, 18, 1);
-  --palette-color: rgba(151, 18, 18, 1);
+  --primary-red: #971212;
+  --palette-colour: #971212;
   --light-dark: light-dark(#141414, whitesmoke);
   --dark-light: light-dark(whitesmoke, #141414);
   --rating-star: #faaf00;
@@ -81,13 +81,28 @@ button:disabled {
   height: 100%;
 }
 
+.MuiToggleButtonGroup-root {
+  transition: none !important;
+  .MuiToggleButton-root {
+    color: var(--light-dark) !important;
+    border: 1px solid var(--light-dark) !important;
+    transition: none !important;
+
+    &.Mui-selected,
+    &.Mui-selected:hover {
+      background-color: var(--palette-colour) !important;
+      color: whitesmoke !important;
+    }
+  }
+}
+
 .MuiSwitch-root {
   .MuiSwitch-colorPrimary {
-    color: var(--palette-color) !important;
+    color: var(--palette-colour) !important;
   }
 
   .Mui-checked + .MuiSwitch-track {
-    background-color: var(--palette-color) !important;
+    background-color: var(--palette-colour) !important;
   }
 }
 
@@ -100,7 +115,7 @@ button:disabled {
 
   .MuiTab-root {
     color: var(--light-dark) !important;
-    background-color: var(--palette-color) !important;
+    background-color: var(--palette-colour) !important;
     padding: 20px !important;
     font-family: "orbitron" !important;
     font-size: 20px;
@@ -147,7 +162,7 @@ button:disabled {
 }
 
 .MuiTableHead-root {
-  background-color: var(--palette-color) !important;
+  background-color: var(--palette-colour) !important;
 }
 
 .MuiTableCell-root {
@@ -172,7 +187,7 @@ button:disabled {
 .MuiTableBody-root {
   .MuiTableRow-root:hover {
     .MuiTableCell-root {
-      background-color: var(--palette-color) !important;
+      background-color: var(--palette-colour) !important;
       cursor: pointer;
     }
   }
@@ -201,11 +216,12 @@ button:disabled {
     }
 
     .MuiMenuItem-root:hover {
-      background-color: var(--palette-color) !important;
+      background-color: var(--palette-colour) !important;
+      color: whitesmoke;
     }
 
     .MuiMenuItem-root[aria-selected="true"] {
-      background-color: var(--palette-color) !important;
+      background-color: var(--palette-colour) !important;
       color: whitesmoke;
     }
   }

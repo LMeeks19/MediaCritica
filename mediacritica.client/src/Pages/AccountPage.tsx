@@ -7,7 +7,17 @@ import {
   GetUserReviews,
   UpdateBacklogState,
 } from "../Server/Server";
-import { AppBar, MenuItem, Rating, Select, Tab, Tabs } from "@mui/material";
+import {
+  AppBar,
+  IconButton,
+  MenuItem,
+  Rating,
+  Select,
+  Tab,
+  Tabs,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -23,12 +33,13 @@ import AccountDetail from "../Components/AccountDetail";
 import { AccountFieldType } from "../Enums/AccountFieldType";
 import { UserModel } from "../Interfaces/UserModel";
 import ThemePreference from "../Components/ThemePreference";
-import $ from "jquery";
 import PalettePreference from "../Components/PalettePreference";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
-import { Snackbar } from "../Components/Snackbar";
+import ViewColumnIcon from "@mui/icons-material/ViewColumn";
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
 import "./AccountPage.scss";
 
 function AccountPage() {
@@ -41,6 +52,7 @@ function AccountPage() {
   const [backlog, setBacklog] = useState<BacklogObjectModel>(
     {} as BacklogObjectModel
   );
+  const [selectedBacklogLayout, setSelectedBacklogLayout] = useState<number>(0);
 
   useEffect(() => {
     if (activeTab === 1 && user.totalReviews !== reviews.length)
@@ -87,7 +99,11 @@ function AccountPage() {
     stage: keyof BacklogObjectModel,
     index: number
   ) => {
-    e.dataTransfer.setData("text/plain", JSON.stringify({ stage, index }));
+    (e as React.DragEvent<HTMLDivElement>).dataTransfer.setData(
+      "text/plain",
+      JSON.stringify({ stage, index })
+    );
+    return false;
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -125,17 +141,33 @@ function AccountPage() {
 
     (updatedBacklog[targetStage] as BacklogModel[]).push(movedItem);
 
-    ((updatedBacklog[targetStage] as BacklogModel[]) = (
-      updatedBacklog[targetStage] as BacklogModel[]
-    ).sort(
-      (a, b) =>
-        new Date(b.addedDate).getMilliseconds() -
-        new Date(a.addedDate).getMilliseconds()
-    )),
-      setBacklog(updatedBacklog);
+    increaseTotalCount(updatedBacklog, targetStage);
+    decreaseTotalCount(updatedBacklog, sourceStage);
 
-    Snackbar(`${movedItem.mediaTitle} Updated`, "success");
+    setBacklog(updatedBacklog);
   };
+
+  function increaseTotalCount(
+    updatedBacklog: BacklogObjectModel,
+    stage: string
+  ): number {
+    if (stage === "inProgress")
+      return (updatedBacklog.totalInProgressCount += 1);
+    else if (stage === "finished")
+      return (updatedBacklog.totalFinishedCount += 1);
+    return (updatedBacklog.totalBacklogCount += 1);
+  }
+
+  function decreaseTotalCount(
+    updatedBacklog: BacklogObjectModel,
+    stage: string
+  ): number {
+    if (stage === "inProgress")
+      return (updatedBacklog.totalInProgressCount -= 1);
+    else if (stage === "finished")
+      return (updatedBacklog.totalFinishedCount -= 1);
+    return (updatedBacklog.totalBacklogCount -= 1);
+  }
 
   function filtered(items: BacklogModel[], filter: number): BacklogModel[] {
     if (filter === 1) {
@@ -148,57 +180,133 @@ function AccountPage() {
     return items ?? [];
   }
 
+  function sorted(items: BacklogModel[], sorter: number): BacklogModel[] {
+    if (sorter === 1) {
+      return (
+        items.sort(
+          (a, b) =>
+            new Date(a.addedDate).getTime() - new Date(b.addedDate).getTime()
+        ) ?? []
+      );
+    } else if (sorter === 2) {
+      return (
+        items.sort((a, b) => a.mediaTitle.localeCompare(b.mediaTitle)) ?? []
+      );
+    } else if (sorter === 3) {
+      return (
+        items.sort((a, b) => b.mediaTitle.localeCompare(a.mediaTitle)) ?? []
+      );
+    }
+    return (
+      items.sort(
+        (a, b) =>
+          new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime()
+      ) ?? []
+    );
+  }
+
   function RenderSection({
     title,
     stage,
     items,
+    totalItems,
   }: {
     title: string;
     stage: keyof BacklogObjectModel;
     items: BacklogModel[];
+    totalItems: number;
   }) {
     const [selectedFilter, setSelectedFilter] = useState<number>(0);
+    const [selectedSorter, setSelectedSorter] = useState<number>(0);
 
     return (
-      <div className="grid-wrapper">
-        <div className="header">
-          <h1>{title.toUpperCase()}</h1>
-          <Select
-            className="select"
-            value={selectedFilter}
-            onChange={(e) => setSelectedFilter(Number(e.target.value))}
-          >
-            <MenuItem value={0}>None</MenuItem>
-            <MenuItem value={1}>Movies</MenuItem>
-            <MenuItem value={2}>Series</MenuItem>
-            <MenuItem value={3}>Games</MenuItem>
-          </Select>
+      <div className="backlog-section">
+        <div className="sub-header palette">
+          <h2>{title}</h2>
+          <div className="actions">
+            <Select
+              className="select"
+              value={selectedSorter}
+              onChange={(e) => setSelectedSorter(Number(e.target.value))}
+              disabled={items?.length === 0}
+            >
+              <MenuItem value={0}>Date (New - Old)</MenuItem>
+              <MenuItem value={1}>Date (Old - New)</MenuItem>
+              <MenuItem value={2}>Alphabetical (A-Z)</MenuItem>
+              <MenuItem value={3}>Aplhabetical (Z-A)</MenuItem>
+            </Select>
+            <Select
+              className="select"
+              value={selectedFilter}
+              onChange={(e) => setSelectedFilter(Number(e.target.value))}
+              disabled={items?.length === 0}
+            >
+              <MenuItem value={0}>None</MenuItem>
+              <MenuItem value={1}>Movies</MenuItem>
+              <MenuItem value={2}>Series</MenuItem>
+              <MenuItem value={3}>Games</MenuItem>
+            </Select>
+          </div>
         </div>
-        <div
-          className="grid"
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, stage)}
-        >
-          {filtered(items, selectedFilter).length === 0 ? (
-            <div className="flex items-center justify-center w-full h-[281.25px]">
-              No Media
-            </div>
-          ) : (
-            filtered(items, selectedFilter).map((item, index) => (
+        <div className="items-container">
+          <div
+            className={`items ${
+              filtered(items, selectedFilter).length === 0 && "empty"
+            }`}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, stage)}
+          >
+            {filtered(items, selectedFilter).length === 0 ? (
               <div
-                key={item.id}
-                draggable
-                className="grid-item"
-                onDragStart={(e) => handleDragStart(e, stage, index)}
-                style={{ backgroundImage: `url(${item.mediaPoster})` }}
+                className={`flex items-center justify-center w-full ${
+                  selectedBacklogLayout === 0 && "h-[281.25px]"
+                }`}
               >
-                <div className="item-tag">
-                  {CapitaliseFirstLetter(item.mediaType)}
-                </div>
-                <div className="item-title">{item.mediaTitle}</div>
+                No {title} Media
               </div>
-            ))
-          )}
+            ) : (
+              filtered(sorted(items, selectedSorter), selectedFilter).map(
+                (item, index) => (
+                  <div
+                    key={item.id}
+                    draggable
+                    className="item"
+                    onDragStart={(e) => handleDragStart(e, stage, index)}
+                    onClick={() =>
+                      navigate(`/media/${item.mediaId}`, {
+                        state: {
+                          mediaId: item.mediaId,
+                          mediaType: item.mediaType,
+                        },
+                      })
+                    }
+                    style={{ backgroundImage: `url(${item.mediaPoster})` }}
+                  >
+                    <div className="item-tag">
+                      {CapitaliseFirstLetter(item.mediaType)}
+                    </div>
+                    <div className="item-title">{item.mediaTitle}</div>
+                  </div>
+                )
+              )
+            )}
+          </div>
+          <div
+            className={`flex justify-center items-center p-6 ${
+              items?.length === totalItems && "hidden" 
+            }`}
+          >
+            <CustomTooltip title="load more" arrow>
+              <span>
+                <IconButton
+                  className="load-btn"
+                  disabled={items?.length === totalItems}
+                >
+                  <FontAwesomeIcon icon={faSpinner}></FontAwesomeIcon>
+                </IconButton>
+              </span>
+            </CustomTooltip>
+          </div>
         </div>
       </div>
     );
@@ -219,23 +327,19 @@ function AccountPage() {
               onChange={(_e, v) => setActiveTab(v)}
               variant="fullWidth"
             >
-              <Tab label="Details" />
-              <Tab label="Reviews" />
-              <Tab label="Backlog" />
+              <Tab value={0} label="Details" />
+              <Tab value={1} label="Reviews" />
+              <Tab value={2} label="Backlog" />
             </Tabs>
           </AppBar>
-          <div className="tab-panel" tabIndex={0} hidden={activeTab !== 0}>
-            <div className="header">
+          <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
+            <div className="header dark-shade">
               <h1>DETAILS</h1>
               <button
                 className="logout-btn"
                 onClick={() => {
                   setUser({} as UserModel);
-                  $(":root").css("color-scheme", "light dark");
-                  $(":root").attr(
-                    "style",
-                    `--palette-color:var(--primary-red)`
-                  );
+                  resetThemePalette();
                 }}
               >
                 Logout <FontAwesomeIcon icon={faSignOut} />
@@ -267,7 +371,7 @@ function AccountPage() {
                 inputType="password"
               />
             </div>
-            <div className="header">
+            <div className="header dark-shade">
               <h1>PREFERENCES</h1>
             </div>
             <div className="account-details">
@@ -275,111 +379,142 @@ function AccountPage() {
               <PalettePreference />
             </div>
           </div>
-          <div className="tab-panel" tabIndex={1} hidden={activeTab !== 1}>
-            <div className="header">
-              <h1>REVIEWS</h1>
-              <Select
-                className="select"
-                variant="standard"
-                value={selectedReviewFilter}
-                onChange={(e) =>
-                  setSelectedReviewFilter(Number(e.target.value))
-                }
-              >
-                <MenuItem value={0}>None</MenuItem>
-                <MenuItem value={1}>Movies</MenuItem>
-                <MenuItem value={2}>Series</MenuItem>
-                <MenuItem value={3}>Games</MenuItem>
-                <MenuItem value={4}>Episodes</MenuItem>
-              </Select>
-            </div>
-            {filteredReviews().length === 0 ? (
-              <div className="media-reviews empty">No Media Reviewed</div>
-            ) : (
-              <div className="media-reviews">
-                {filteredReviews().map((review) => {
-                  return (
-                    <div
-                      key={review.mediaId}
-                      className="review"
-                      onClick={() =>
-                        navigate(
-                          `/media/${review.mediaId}/view-review/${review.id}}`,
-                          {
-                            state: { reviewId: review.id },
-                          }
-                        )
-                      }
-                    >
-                      <div className="tag">
-                        {CapitaliseFirstLetter(review.mediaType)}
-                      </div>
-                      {review.mediaPoster === "N/A" ? (
-                        <div className="image empty">
-                          <FontAwesomeIcon icon={faImage} />
-                        </div>
-                      ) : (
-                        <img className="image" src={review.mediaPoster} />
-                      )}
-                      <div className="review-info">
-                        <h3>
-                          {review.mediaParentTitle ?? review.mediaTitle}
-                          {review.mediaType === MediaType.Episode &&
-                            ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
-                        </h3>
-                        <p>
-                          {CapitaliseFirstLetter(
-                            formatDistanceToNowStrict(review.date) + " ago"
-                          )}
-                        </p>
-                        <Rating
-                          style={{ fontSize: "2rem" }}
-                          value={review.rating}
-                          precision={0.5}
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <div className="flex justify-center p-6">
-              <CustomTooltip
-                title={
-                  reviews.length === user.totalReviews &&
-                  "All reviewed media loaded"
-                }
-                arrow
-              >
-                <span>
-                  <button
-                    className="load-btn"
-                    disabled={reviews.length === user.totalReviews}
-                    onClick={() => LoadMoreReviews()}
+          <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
+            <div className="reviews-container">
+              <div className="header dark-shade">
+                <h1>REVIEWS</h1>
+                <div className="actions">
+                  <Select
+                    className="select"
+                    variant="standard"
+                    value={selectedReviewFilter}
+                    onChange={(e) =>
+                      setSelectedReviewFilter(Number(e.target.value))
+                    }
                   >
-                    Load More <FontAwesomeIcon icon={faSpinner} />
-                  </button>
-                </span>
-              </CustomTooltip>
+                    <MenuItem value={0}>None</MenuItem>
+                    <MenuItem value={1}>Movies</MenuItem>
+                    <MenuItem value={2}>Series</MenuItem>
+                    <MenuItem value={3}>Games</MenuItem>
+                    <MenuItem value={4}>Episodes</MenuItem>
+                  </Select>
+                </div>
+              </div>
+              {filteredReviews().length === 0 ? (
+                <div className="reviews empty">No Media Reviewed</div>
+              ) : (
+                <div className="reviews">
+                  {filteredReviews().map((review) => {
+                    return (
+                      <div
+                        key={review.mediaId}
+                        className="review"
+                        onClick={() =>
+                          navigate(
+                            `/media/${review.mediaId}/view-review/${review.id}}`,
+                            {
+                              state: { reviewId: review.id },
+                            }
+                          )
+                        }
+                      >
+                        <div className="tag">
+                          {CapitaliseFirstLetter(review.mediaType)}
+                        </div>
+                        {review.mediaPoster === "N/A" ? (
+                          <div className="image empty">
+                            <FontAwesomeIcon icon={faImage} />
+                          </div>
+                        ) : (
+                          <img className="image" src={review.mediaPoster} />
+                        )}
+                        <div className="review-info">
+                          <h3>
+                            {review.mediaParentTitle ?? review.mediaTitle}
+                            {review.mediaType === MediaType.Episode &&
+                              ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
+                          </h3>
+                          <p>
+                            {CapitaliseFirstLetter(
+                              formatDistanceToNowStrict(review.date) + " ago"
+                            )}
+                          </p>
+                          <Rating
+                            style={{ fontSize: "2rem" }}
+                            value={review.rating}
+                            precision={0.5}
+                            readOnly
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              <div className="flex justify-center p-6">
+                <CustomTooltip
+                  title={
+                    reviews.length === user.totalReviews &&
+                    "All reviewed media loaded"
+                  }
+                  arrow
+                >
+                  <span>
+                    <button
+                      className="load-btn"
+                      disabled={reviews.length === user.totalReviews}
+                      onClick={() => LoadMoreReviews()}
+                    >
+                      Load More <FontAwesomeIcon icon={faSpinner} />
+                    </button>
+                  </span>
+                </CustomTooltip>
+              </div>
             </div>
           </div>
-          <div className="tab-panel" tabIndex={2} hidden={activeTab !== 2}>
-            <RenderSection
-              title="Backlog"
-              stage="backlog"
-              items={backlog.backlog}
-            />
-            <RenderSection
-              title="In Progress"
-              stage="inProgress"
-              items={backlog.inProgress}
-            />
-            <RenderSection
-              title="Finished"
-              stage="finished"
-              items={backlog.finished}
-            />
+          <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
+            <div className="backlog-container">
+              <div className="header dark-shade">
+                <h1>BACKLOG</h1>
+                <ToggleButtonGroup
+                  value={selectedBacklogLayout}
+                  onChange={(_e, v) => setSelectedBacklogLayout(v)}
+                  exclusive
+                >
+                  <ToggleButton value={0}>
+                    <TableRowsIcon />
+                  </ToggleButton>
+                  <ToggleButton value={1}>
+                    <ViewColumnIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </div>
+              <div
+                className={`layout ${
+                  selectedBacklogLayout === 0 ? "row" : "col"
+                }`}
+              >
+                <RenderSection
+                  title="Not Started"
+                  stage="backlog"
+                  items={backlog.backlog}
+                  totalItems={backlog.totalBacklogCount}
+                />
+                <RenderSection
+                  title="In Progress"
+                  stage="inProgress"
+                  items={backlog.inProgress}
+                  totalItems={backlog.totalInProgressCount}
+                />
+
+                <RenderSection
+                  title="Finished"
+                  stage="finished"
+                  items={backlog.finished}
+                  totalItems={backlog.totalFinishedCount}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

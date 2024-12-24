@@ -1,12 +1,11 @@
 import { faCancel, faEdit, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
 import { Circle } from "@uiw/react-color";
-import $ from "jquery";
 
 function PalettePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -14,18 +13,12 @@ function PalettePreference() {
 
   const [palette, setPalette] = useState<string>(user.preference.palette);
 
-  useEffect(() => {
-    $(":root").attr("style", `--palette-color:${user.preference.palette}`);
-  });
-
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
       id: user.preference.id,
       theme: user.preference.theme,
       palette: palette,
     } as PreferenceModel);
-
-    $(":root").attr("style", `--palette-color:${preference.palette}`);
 
     setUser({ ...user, preference: preference });
     setIsEditing(false);

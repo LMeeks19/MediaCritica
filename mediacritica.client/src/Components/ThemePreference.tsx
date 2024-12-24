@@ -1,12 +1,11 @@
 import { faCancel, faEdit, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MenuItem, Select } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
-import $ from "jquery";
+import { Select, MenuItem } from "@mui/material";
 
 function ThemePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -14,21 +13,13 @@ function ThemePreference() {
 
   const [theme, setTheme] = useState<string>(user.preference.theme);
 
-  useEffect(() => {
-    if (user.preference.theme === "System")
-      $(":root").css("color-scheme", "light dark");
-    else $(":root").css("color-scheme", user.preference.theme);
-  });
-
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
       id: user.preference.id,
       theme: theme,
       palette: user.preference.palette,
     } as PreferenceModel);
-    if (preference.theme === "System")
-      $(":root").css("color-scheme", "light dark");
-    else $(":root").css("color-scheme", preference.theme.toLowerCase());
+
     setUser({ ...user, preference: preference });
     setIsEditing(false);
   }

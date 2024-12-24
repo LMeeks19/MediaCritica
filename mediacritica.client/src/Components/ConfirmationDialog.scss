@@ -10,7 +10,7 @@
 /* Modal Box Styling */
 .modal {
   background-color: var(--dark-light);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px #0000001a;
   border-radius: 20px;
   padding: 0;
   min-width: 400px;
@@ -24,14 +24,14 @@
 
   /* Modal Header */
   .header {
-    background-color: var(--palette-color);
+    background-color: var(--palette-colour);
     color: whitesmoke;
     margin: 0;
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px #0000001a;
 
     .title {
       margin: 0;
@@ -53,8 +53,8 @@
   /* Divider */
   .divider {
     border-color: light-dark(
-      rgba(0, 0, 0, 0.12),
-      rgba(255, 255, 255, 0.12)
+      #0000001f,
+      #ffffff1f
     ) !important;
   }
 
@@ -84,11 +84,11 @@
 
     .confirm-btn {
       color: var(--light-dark);
-      border-color: var(--palette-color);
+      border-color: var(--palette-colour);
     }
 
     .confirm-btn:hover {
-      background-color: var(--palette-color);
+      background-color: var(--palette-colour);
       color: whitesmoke;
     }
   }

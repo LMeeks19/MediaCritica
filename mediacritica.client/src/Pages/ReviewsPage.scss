@@ -13,7 +13,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--palette-color);
+      background-color: var(--palette-colour);
       padding: 6rem 2rem 2rem 2rem;
 
       h1 {
@@ -33,7 +33,7 @@
       .review-card {
         background-color: light-dark(whitesmoke, #242424);
         padding: 1rem 1.5rem;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 5px #0000004d;
         border-radius: 20px;
         transition: transform 0.3s ease-in-out;
         min-width: 200px;
@@ -73,7 +73,7 @@
 
       .review-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 5px 15px #00000080;
       }
     }
 
@@ -83,8 +83,8 @@
       justify-content: center;
       
       .load-btn {
-        background-color: var(--palette-color);
-        border-color: var(--palette-color);
+        background-color: var(--palette-colour);
+        border-color: var(--palette-colour);
         color: whitesmoke;
       }
 
