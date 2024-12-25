@@ -70,10 +70,6 @@
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
-
-        .select {
-          width: 250px;
-        }
       }
 
       .logout-btn {
@@ -88,28 +84,6 @@
     }
 
     .sub-header {
-      .actions {
-        .select {
-          .MuiSelect-select {
-            color: whitesmoke !important;
-
-            &.Mui-disabled {
-              -webkit-text-fill-color: whitesmoke;
-              opacity: 50%;
-              cursor: not-allowed;
-            }
-          }
-
-          .MuiSvgIcon-root {
-            color: whitesmoke !important;
-
-            &.Mui-disabled {
-              opacity: 50%;
-            }
-          }
-        }
-      }
-
       h2 {
         margin: 0;
         font-size: 1.5rem;
@@ -145,84 +119,87 @@
         flex-direction: column;
         height: 100%;
 
-        .reviews {
-          padding: 2rem;
-          display: flex;
-          gap: 2rem;
-          overflow: hidden auto;
+        .layout {
+          flex: 1;
+          overflow: auto;
 
-          &.empty {
+          .reviews {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 225px);
             justify-content: center;
-            align-items: center;
-          }
+            gap: 2rem;
+            padding: 2rem;
 
-          .review {
-            background-color: light-dark(whitesmoke, #242424);
-            border-radius: 20px;
-            box-shadow: 0 4px 8px #00000066;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            text-wrap: nowrap;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.3s ease-in-out;
-            width: fit-content;
-            min-width: fit-content;
-            max-width: 400px;
-
-            .tag {
-              position: absolute;
-              background-color: var(--palette-colour);
-              top: 0;
-              left: 0;
-              padding: 0.75rem;
-              font-size: 0.75rem;
-              border-radius: 0 0 20px;
-              box-shadow: 0 2px 5px #00000080;
-              color: whitesmoke;
-            }
-
-            .review-info {
+            .review-card {
+              background-color: light-dark(whitesmoke, #1c1c1c);
+              border-radius: 20px;
               overflow: hidden;
-              display: flex;
-              flex-direction: column;
-              padding: 0 1.5rem;
-              gap: 0.5rem;
+              width: 225px;
+              min-width: 225px;
+              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+              transition: transform 0.3s ease-in-out,
+                box-shadow 0.3s ease-in-out;
+              cursor: pointer;
 
-              h3 {
-                font-size: 2rem;
-                margin: 0;
-                overflow: hidden;
-                text-wrap: nowrap;
-                text-overflow: ellipsis;
+              .review-image {
+                height: 180px;
+                width: 225px;
+                position: relative;
+                background-size: cover;
+                background-position: center;
+                transition: transform 0.3s ease-in-out;
+
+                &.empty {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+
+                .tag {
+                  position: absolute;
+                  left: 0;
+                  bottom: 0;
+                  padding: 5px 10px;
+                  border-radius: 5px;
+                  font-size: 0.8rem;
+                  background: var(--palette-colour);
+                  margin: 0.5rem;
+                }
               }
 
-              p {
-                margin: 0;
-                font-size: 1rem;
-                color: light-dark(grey, #ccc);
+              .review-content {
+                padding: 0.5rem 1rem 1rem 1rem;
+
+                h2 {
+                  font-size: 1.5rem;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  margin: 0;
+                }
+
+                .review-time {
+                  font-size: 0.9rem;
+                  color: light-dark(grey, #aaa);
+                  margin: 0;
+                  margin-bottom: 5px;
+                }
+
+                .rating {
+                  display: flex;
+                  font-size: 1.2rem;
+                }
               }
             }
 
-            .image {
-              height: 100%;
-              width: 150px;
-              min-width: 150px;
-              color: whitesmoke;
-              text-align: center;
+            .review-card:hover {
+              transform: scale(1.1);
+              box-shadow: 0 15px 25px rgba(0, 0, 0, 0.8);
 
-              &.empty {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+              .review-image {
+                transform: scale(1.05);
               }
             }
-          }
-
-          .review:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px #00000099;
           }
         }
       }
@@ -244,15 +221,17 @@
 
             .backlog-section {
               .items-container {
-                width: 100%;
-
                 .items {
                   width: 100%;
                   overflow: auto hidden;
-                  display: flex;
+                  scroll-snap-type: x mandatory;
 
                   &.empty {
                     width: 100%;
+                  }
+
+                  .item {
+                    scroll-snap-align: start;
                   }
                 }
               }
@@ -261,7 +240,7 @@
 
           &.col {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(364px, 1fr));
             overflow: hidden;
 
             .backlog-section {
@@ -277,7 +256,7 @@
                 .actions {
                   width: 100%;
                   justify-content: space-around !important;
-                  gap: 0;
+                  gap: 0.5rem;
                 }
               }
 
@@ -290,29 +269,29 @@
                   overflow: hidden auto;
                   align-items: center;
                   flex-direction: column;
+                  scroll-snap-type: y mandatory;
 
                   &.empty {
                     justify-content: center;
                   }
 
                   .item {
-                    width: 300px;
-                    height: 375px;
-                    min-width: 300px;
-                    min-height: 375px;
+                    scroll-snap-align: start;
                   }
                 }
               }
             }
           }
+
           .items-container {
             display: flex;
             overflow: hidden;
+            padding: 2rem;
 
             .items {
               display: flex;
-              gap: 1rem;
-              padding: 2rem;
+              padding: 1rem;
+              gap: 2rem;
 
               .item {
                 position: relative;
@@ -320,29 +299,28 @@
                 background-color: light-dark(whitesmoke, #242424);
                 color: var(--dark-light);
                 border-radius: 20px;
-                min-width: 225px;
-                min-height: 281.25px;
-                width: 225px;
-                height: 281.25px;
-                transition: transform 0.3s ease-in-out;
+                width: 300px;
+                height: 375px;
+                min-width: 300px;
+                min-height: 375px;
+                transition: transform 0.3s ease-in-out,
+                  box-shadow 0.3s ease-in-out;
                 background-size: 100% 100%;
                 overflow: hidden;
 
                 .item-tag,
                 .item-title {
                   position: absolute;
-                  background-color: var(--palette-colour);
                   opacity: 0;
                   visibility: hidden;
-                  padding: 0.75rem;
                   color: whitesmoke;
+                  padding: 7.5px 15px;
                   font-size: 1rem;
+                  background: var(--palette-colour);
                 }
 
                 .item-tag {
-                  top: 0;
-                  left: 0;
-                  border-radius: 0 0 20px;
+                  border-bottom-right-radius: 20px;
                 }
 
                 .item-title {
@@ -350,7 +328,7 @@
                   text-overflow: ellipsis;
                   overflow: hidden;
                   white-space: nowrap;
-                  width: calc(100% - 1.5rem);
+                  width: calc(100% - 30px);
                 }
               }
 
@@ -359,8 +337,8 @@
               }
 
               .item:not(:active):hover {
-                transform: translateY(-5px);
-                box-shadow: 0 6px 12px #00000099;
+                transform: scale(1.05);
+                box-shadow: 0 15px 25px #000000cc;
                 cursor: pointer;
 
                 .item-tag,
@@ -384,6 +362,62 @@
     .load-btn:not(:disabled):hover {
       background-color: var(--light-dark);
       color: var(--palette-colour);
+    }
+  }
+}
+
+@media screen and (max-width: 1092px) {
+  .reviews-tab {
+    .reviews-container {
+      .header {
+        justify-content: center;
+      }
+    }
+  }
+
+  .backlog-tab {
+    .backlog-container {
+      .layout {
+        &.row {
+          display: flex;
+          flex-direction: column;
+
+          .backlog-section {
+            .sub-header {
+              justify-content: center;
+
+              .actions {
+                width: 100%;
+                justify-content: space-around;
+                gap: 0.5rem;
+              }
+            }
+          }
+        }
+
+        &.col {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          overflow: hidden auto !important;
+
+          .backlog-section {
+            width: 100%;
+            overflow: hidden;
+
+            .items-container {
+              .items {
+                flex-direction: row !important;
+                overflow: auto hidden !important;
+                scroll-snap-type: x mandatory !important;
+
+                .item {
+                  scroll-snap-align: start !important;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

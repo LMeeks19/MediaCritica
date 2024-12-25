@@ -1,15 +1,20 @@
+import "./AccountPage.scss";
 import TopBar from "../Components/TopBar";
 import { userState } from "../State/GlobalState";
-import AccountLogin from "../Components/AccountLogin";
 import { useEffect, useState } from "react";
 import {
   GetBacklog,
+  GetBackloggedBacklog,
+  GetFinishedBacklog,
+  GetInProgressBacklog,
   GetUserReviews,
   UpdateBacklogState,
 } from "../Server/Server";
 import {
   AppBar,
+  FormControl,
   IconButton,
+  InputLabel,
   MenuItem,
   Rating,
   Select,
@@ -20,18 +25,16 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignOut, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { formatDistanceToNowStrict } from "date-fns";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import AccountDetail from "../Components/AccountDetail";
 import { AccountFieldType } from "../Enums/AccountFieldType";
-import { UserModel } from "../Interfaces/UserModel";
 import ThemePreference from "../Components/ThemePreference";
 import PalettePreference from "../Components/PalettePreference";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
@@ -39,11 +42,11 @@ import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import TableRowsIcon from "@mui/icons-material/TableRows";
-import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
-import "./AccountPage.scss";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
+import DeleteAccountAction from "../Components/DeleteAccountAction";
 
 function AccountPage() {
-  const [user, setUser] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -55,11 +58,19 @@ function AccountPage() {
   const [selectedBacklogLayout, setSelectedBacklogLayout] = useState<number>(0);
 
   useEffect(() => {
-    if (activeTab === 1 && user.totalReviews !== reviews.length)
-      FetchReviews(0);
-    else if (activeTab === 2) FetchBacklog();
+    if (user.id === null || user.id === undefined) navigate("/login");
+    if (activeTab === 1 && reviews.length === 0) FetchReviews(0);
+    else if (activeTab === 2 && getTotalLoadedBacklogs() === 0) FetchBacklog();
     else setIsLoading(false);
   }, [activeTab]);
+
+  function getTotalLoadedBacklogs() {
+    return (
+      (backlog.backlog?.length ?? 0) +
+      (backlog.inProgress?.length ?? 0) +
+      (backlog.finished?.length ?? 0)
+    );
+  }
 
   async function FetchReviews(offset: number) {
     setIsLoading(true);
@@ -82,6 +93,42 @@ function AccountPage() {
     setIsLoading(false);
   }
 
+  async function FetchMoreBacklogs(
+    stage: keyof BacklogObjectModel,
+    offset: number,
+    limit: number
+  ): Promise<BacklogModel[]> {
+    if (stage === "inProgress")
+      return await GetInProgressBacklog(user.id, offset, limit);
+    else if (stage === "finished")
+      return await GetFinishedBacklog(user.id, offset, limit);
+    return await GetBackloggedBacklog(user.id, offset, limit);
+  }
+
+  async function LoadMoreBacklogs(
+    stage: keyof BacklogObjectModel,
+    limit: number
+  ) {
+    setIsLoading(true);
+
+    const updatedBacklog = { ...backlog };
+    const stageToUpdate = updatedBacklog[stage] as BacklogModel[];
+
+    const newBacklogData = await FetchMoreBacklogs(
+      stage,
+      stageToUpdate.length,
+      limit
+    );
+
+    (updatedBacklog[stage] as BacklogModel[]) = [
+      ...stageToUpdate,
+      ...newBacklogData,
+    ];
+
+    setBacklog(updatedBacklog);
+    setIsLoading(false);
+  }
+
   function filteredReviews() {
     if (selectedReviewFilter === 1)
       return reviews.filter((review) => review.mediaType === MediaType.Movie);
@@ -89,8 +136,6 @@ function AccountPage() {
       return reviews.filter((review) => review.mediaType === MediaType.Series);
     else if (selectedReviewFilter === 3)
       return reviews.filter((review) => review.mediaType === MediaType.Game);
-    else if (selectedReviewFilter === 4)
-      return reviews.filter((review) => review.mediaType === MediaType.Episode);
     return reviews;
   }
 
@@ -141,34 +186,32 @@ function AccountPage() {
 
     (updatedBacklog[targetStage] as BacklogModel[]).push(movedItem);
 
-    increaseTotalCount(updatedBacklog, targetStage, 1);
-    decreaseTotalCount(updatedBacklog, sourceStage, 1);
+    increaseTotalCount(updatedBacklog, targetStage);
+    decreaseTotalCount(updatedBacklog, sourceStage);
 
     setBacklog(updatedBacklog);
   };
 
   function increaseTotalCount(
     updatedBacklog: BacklogObjectModel,
-    stage: string,
-    amount: number
+    stage: string
   ): number {
     if (stage === "inProgress")
-      return (updatedBacklog.totalInProgressCount += amount);
+      return (updatedBacklog.totalInProgressCount += 1);
     else if (stage === "finished")
-      return (updatedBacklog.totalFinishedCount += amount);
-    return (updatedBacklog.totalBacklogCount += amount);
+      return (updatedBacklog.totalFinishedCount += 1);
+    return (updatedBacklog.totalBacklogCount += 1);
   }
 
   function decreaseTotalCount(
     updatedBacklog: BacklogObjectModel,
-    stage: string,
-    amount: number
+    stage: string
   ): number {
     if (stage === "inProgress")
-      return (updatedBacklog.totalInProgressCount -= amount);
+      return (updatedBacklog.totalInProgressCount -= 1);
     else if (stage === "finished")
-      return (updatedBacklog.totalFinishedCount -= amount);
-    return (updatedBacklog.totalBacklogCount -= amount);
+      return (updatedBacklog.totalFinishedCount -= 1);
+    return (updatedBacklog.totalBacklogCount -= 1);
   }
 
   function filtered(items: BacklogModel[], filter: number): BacklogModel[] {
@@ -207,7 +250,7 @@ function AccountPage() {
     );
   }
 
-  function RenderSection({
+  function BacklogSection({
     title,
     stage,
     items,
@@ -220,34 +263,74 @@ function AccountPage() {
   }) {
     const [selectedFilter, setSelectedFilter] = useState<number>(0);
     const [selectedSorter, setSelectedSorter] = useState<number>(0);
+    const [selectedLimit, setSelectedLimit] = useState<number>(10);
 
     return (
       <div className="backlog-section">
         <div className="sub-header palette">
           <h2>{title}</h2>
           <div className="actions">
-            <Select
-              className="select"
-              value={selectedSorter}
-              onChange={(e) => setSelectedSorter(Number(e.target.value))}
+            <FormControl
+              variant="filled"
+              sx={{ width: "250px" }}
               disabled={items?.length === 0}
             >
-              <MenuItem value={0}>Date (New - Old)</MenuItem>
-              <MenuItem value={1}>Date (Old - New)</MenuItem>
-              <MenuItem value={2}>Alphabetical (A-Z)</MenuItem>
-              <MenuItem value={3}>Aplhabetical (Z-A)</MenuItem>
-            </Select>
-            <Select
-              className="select"
-              value={selectedFilter}
-              onChange={(e) => setSelectedFilter(Number(e.target.value))}
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                label="Sort By"
+                value={selectedSorter}
+                onChange={(e) => setSelectedSorter(Number(e.target.value))}
+                autoWidth
+              >
+                <MenuItem value={0}>Date (New - Old)</MenuItem>
+                <MenuItem value={1}>Date (Old - New)</MenuItem>
+                <MenuItem value={2}>Alphabetical (A-Z)</MenuItem>
+                <MenuItem value={3}>Aplhabetical (Z-A)</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl
+              variant="filled"
+              sx={{ width: "150px" }}
               disabled={items?.length === 0}
             >
-              <MenuItem value={0}>None</MenuItem>
-              <MenuItem value={1}>Movies</MenuItem>
-              <MenuItem value={2}>Series</MenuItem>
-              <MenuItem value={3}>Games</MenuItem>
-            </Select>
+              <InputLabel>Filter By</InputLabel>
+              <Select
+                label="Filter By"
+                value={selectedFilter}
+                onChange={(e) => setSelectedFilter(Number(e.target.value))}
+                autoWidth
+              >
+                <MenuItem value={0}>All</MenuItem>
+                <MenuItem value={1}>Movies</MenuItem>
+                <MenuItem value={2}>Series</MenuItem>
+                <MenuItem value={3}>Games</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl
+              variant="filled"
+              sx={{ width: "100px" }}
+              disabled={items?.length === 0 || items?.length !== totalItems}
+            >
+              <InputLabel>Load Limit</InputLabel>
+              <Select
+                label="Load Limit"
+                value={selectedLimit}
+                onChange={(e) => setSelectedLimit(Number(e.target.value))}
+                autoWidth
+              >
+                <MenuItem disabled={totalItems - items?.length < 10} value={10}>
+                  10
+                </MenuItem>
+                <MenuItem disabled={totalItems - items?.length < 20} value={20}>
+                  20
+                </MenuItem>
+                <MenuItem disabled={totalItems - items?.length < 40} value={40}>
+                  40
+                </MenuItem>
+              </Select>
+            </FormControl>
           </div>
         </div>
         <div className="items-container">
@@ -292,22 +375,24 @@ function AccountPage() {
                 )
               )
             )}
-          </div>
-          <div
-            className={`flex justify-center items-center p-6 ${
-              items?.length === totalItems && "hidden"
-            }`}
-          >
-            <CustomTooltip title="load more" arrow>
-              <span>
-                <IconButton
-                  className="load-btn"
-                  disabled={items?.length === totalItems}
-                >
-                  <FontAwesomeIcon icon={faSpinner}></FontAwesomeIcon>
-                </IconButton>
-              </span>
-            </CustomTooltip>
+            <div
+              className={`flex justify-center items-center p-6 ${
+                items?.length === totalItems && "hidden"
+              }`}
+            >
+              <CustomTooltip title="Load more" arrow>
+                <span>
+                  <IconButton
+                    className="load-btn"
+                    sx={{ padding: "1rem" }}
+                    disabled={items?.length === totalItems}
+                    onClick={() => LoadMoreBacklogs(stage, selectedLimit)}
+                  >
+                    <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+                  </IconButton>
+                </span>
+              </CustomTooltip>
+            </div>
           </div>
         </div>
       </div>
@@ -319,8 +404,6 @@ function AccountPage() {
       <TopBar hideAccount />
       {isLoading ? (
         <Loader />
-      ) : user.id === null || user.id === undefined ? (
-        <AccountLogin />
       ) : (
         <div className="account">
           <AppBar position="static">
@@ -340,8 +423,7 @@ function AccountPage() {
               <button
                 className="logout-btn"
                 onClick={() => {
-                  setUser({} as UserModel);
-                  resetThemePalette();
+                  navigate("/login");
                 }}
               >
                 Logout <FontAwesomeIcon icon={faSignOut} />
@@ -380,97 +462,110 @@ function AccountPage() {
               <ThemePreference />
               <PalettePreference />
             </div>
+            <div className="header dark-shade">
+              <h1>ACTIONS</h1>
+            </div>
+            <div className="account-details">
+              <DeleteAccountAction />
+            </div>
           </div>
           <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
             <div className="reviews-container">
               <div className="header dark-shade">
                 <h1>REVIEWS</h1>
                 <div className="actions">
-                  <Select
-                    className="select"
-                    variant="standard"
-                    value={selectedReviewFilter}
-                    onChange={(e) =>
-                      setSelectedReviewFilter(Number(e.target.value))
-                    }
-                  >
-                    <MenuItem value={0}>None</MenuItem>
-                    <MenuItem value={1}>Movies</MenuItem>
-                    <MenuItem value={2}>Series</MenuItem>
-                    <MenuItem value={3}>Games</MenuItem>
-                    <MenuItem value={4}>Episodes</MenuItem>
-                  </Select>
+                  <FormControl variant="filled" sx={{ width: "250px" }}>
+                    <InputLabel>Filter By</InputLabel>
+                    <Select
+                      value={selectedReviewFilter}
+                      onChange={(e) =>
+                        setSelectedReviewFilter(Number(e.target.value))
+                      }
+                      autoWidth
+                    >
+                      <MenuItem value={0}>None</MenuItem>
+                      <MenuItem value={1}>Movies</MenuItem>
+                      <MenuItem value={2}>Series</MenuItem>
+                      <MenuItem value={3}>Games</MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
-              {filteredReviews().length === 0 ? (
-                <div className="reviews empty">No Media Reviewed</div>
-              ) : (
-                <div className="reviews">
-                  {filteredReviews().map((review) => {
-                    return (
-                      <div
-                        key={review.mediaId}
-                        className="review"
-                        onClick={() =>
-                          navigate(
-                            `/media/${review.mediaId}/view-review/${review.id}}`,
-                            {
-                              state: { reviewId: review.id },
-                            }
-                          )
-                        }
-                      >
-                        <div className="tag">
-                          {CapitaliseFirstLetter(review.mediaType)}
-                        </div>
-                        {review.mediaPoster === "N/A" ? (
-                          <div className="image empty">
-                            <FontAwesomeIcon icon={faImage} />
+              <div className="layout">
+                {filteredReviews().length === 0 ? (
+                  <div className="reviews empty">No Media Reviewed</div>
+                ) : (
+                  <div className="reviews">
+                    {filteredReviews().map((review) => {
+                      return (
+                        <div
+                          key={review.mediaId}
+                          className="review-card"
+                          onClick={() =>
+                            navigate(
+                              `/media/${review.mediaId}/view-review/${review.id}}`,
+                              {
+                                state: { reviewId: review.id },
+                              }
+                            )
+                          }
+                        >
+                          {review.mediaPoster !== null ? (
+                            <div
+                              className="review-image "
+                              style={{
+                                backgroundImage: `url(${review.mediaPoster})`,
+                              }}
+                            >
+                              <span className="tag">
+                                {CapitaliseFirstLetter(review.mediaType)}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="review-image empty">
+                              <FontAwesomeIcon
+                                className="text-9xl"
+                                icon={faImage}
+                              />
+                              <span className="tag">
+                                {CapitaliseFirstLetter(review.mediaType)}
+                              </span>
+                            </div>
+                          )}
+                          <div className="review-content">
+                            <h2>{review.mediaTitle}</h2>
+                            <p className="review-time">
+                              {formatDistanceToNowStrict(review.date)} ago
+                            </p>
+                            <Rating
+                              className="rating"
+                              value={review.rating}
+                              readOnly
+                            />
                           </div>
-                        ) : (
-                          <img className="image" src={review.mediaPoster} />
-                        )}
-                        <div className="review-info">
-                          <h3>
-                            {review.mediaParentTitle ?? review.mediaTitle}
-                            {review.mediaType === MediaType.Episode &&
-                              ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
-                          </h3>
-                          <p>
-                            {CapitaliseFirstLetter(
-                              formatDistanceToNowStrict(review.date) + " ago"
-                            )}
-                          </p>
-                          <Rating
-                            style={{ fontSize: "2rem" }}
-                            value={review.rating}
-                            precision={0.5}
-                            readOnly
-                          />
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              <div className="flex justify-center p-6">
-                <CustomTooltip
-                  title={
-                    reviews.length === user.totalReviews &&
-                    "All reviewed media loaded"
-                  }
-                  arrow
-                >
-                  <span>
-                    <button
-                      className="load-btn"
-                      disabled={reviews.length === user.totalReviews}
-                      onClick={() => LoadMoreReviews()}
+                      );
+                    })}
+                    <div
+                      className={`flex justify-center items-center p-6 ${
+                        reviews.length === user.totalReviews && "hidden"
+                      }`}
                     >
-                      Load More <FontAwesomeIcon icon={faSpinner} />
-                    </button>
-                  </span>
-                </CustomTooltip>
+                      <CustomTooltip title="All reviewed media loaded" arrow>
+                        <span>
+                          <IconButton
+                            className="load-btn"
+                            sx={{ padding: "1rem" }}
+                            disabled={reviews.length === user.totalReviews}
+                            onClick={() => LoadMoreReviews()}
+                          >
+                            <FontAwesomeIcon icon={faPlus} />
+                          </IconButton>
+                        </span>
+                      </CustomTooltip>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -496,20 +591,20 @@ function AccountPage() {
                   selectedBacklogLayout === 0 ? "row" : "col"
                 }`}
               >
-                <RenderSection
+                <BacklogSection
                   title="Not Started"
                   stage="backlog"
                   items={backlog.backlog}
                   totalItems={backlog.totalBacklogCount}
                 />
-                <RenderSection
+                <BacklogSection
                   title="In Progress"
                   stage="inProgress"
                   items={backlog.inProgress}
                   totalItems={backlog.totalInProgressCount}
                 />
 
-                <RenderSection
+                <BacklogSection
                   title="Finished"
                   stage="finished"
                   items={backlog.finished}

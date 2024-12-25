@@ -1,3 +1,4 @@
+import "./AccountDetail.scss";
 import { faCancel, faSave, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -11,7 +12,6 @@ import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { UpdateUser } from "../Server/Server";
 import { Snackbar } from "./Snackbar";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
-import "./AccountDetail.scss";
 
 function AccountDetail(props: AccountDetailsProps) {
   const [user, setUser] = useRecoilState(userState);
@@ -42,7 +42,7 @@ function AccountDetail(props: AccountDetailsProps) {
     ResetAccountField();
   }
 
-  const cancelEditReviewDialog = {
+  const cancelEditDetailDialog = {
     show: true,
     title: "Discard unsaved changes",
     dialog: "This will delete all edits since you last saved",
@@ -51,7 +51,7 @@ function AccountDetail(props: AccountDetailsProps) {
     confirm_action: () => ResetAccountField(),
   } as unknown as ConfirmationDialogModel;
 
-  const saveReviewDialog = {
+  const saveDetailDialog = {
     show: true,
     title: "Save changes",
     dialog: "This will save your changes",
@@ -62,15 +62,15 @@ function AccountDetail(props: AccountDetailsProps) {
 
   return (
     <div className="info-item">
-      <span className="info-label w-1/3">{props.accountFieldName}</span>
+      <span className="info-label">{props.accountFieldName}</span>
       {accountEditState.isEditing ? (
         <form
-          className="info-value w-1/3"
+          className="info-value"
           id={`${props.accountFieldName}-form`}
           onSubmit={(e) => {
             e.preventDefault();
             setConfirmationDialog({
-              ...saveReviewDialog,
+              ...saveDetailDialog,
               confirm_action: () => UpdateAccountField(),
             });
           }}
@@ -92,14 +92,14 @@ function AccountDetail(props: AccountDetailsProps) {
           />
         </form>
       ) : (
-        <span className="info-value w-1/3">{props.accountFieldValue}</span>
+        <span className="info-value">{props.accountFieldValue}</span>
       )}
-      <div className="info-action w-1/3">
+      <div className="info-action">
         {accountEditState.isEditing && (
           <button
             disabled={!accountEditState.isEditing}
             className="cancel-btn"
-            onClick={() => setConfirmationDialog(cancelEditReviewDialog)}
+            onClick={() => setConfirmationDialog(cancelEditDetailDialog)}
           >
             Cancel <FontAwesomeIcon icon={faCancel} />
           </button>

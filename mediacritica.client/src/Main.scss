@@ -32,10 +32,6 @@
     box-shadow 0.3s ease-in-out;
 }
 
-.animate-transform {
-  transition: transform 0.3s ease-in-out;
-}
-
 body {
   margin: 0;
 }
@@ -96,16 +92,6 @@ button:disabled {
   }
 }
 
-.MuiSwitch-root {
-  .MuiSwitch-colorPrimary {
-    color: var(--palette-colour) !important;
-  }
-
-  .Mui-checked + .MuiSwitch-track {
-    background-color: var(--palette-colour) !important;
-  }
-}
-
 .MuiAppBar-root {
   border-radius: 20px !important;
 }
@@ -145,15 +131,6 @@ button:disabled {
   .MuiSvgIcon-root {
     color: var(--light-dark) !important;
   }
-}
-
-.MuiSelect-select {
-  padding: 0 !important;
-  color: var(--light-dark) !important;
-  font-family: "orbitron" !important;
-  border-color: var(--light-dark) !important;
-  font-size: 1rem !important;
-  letter-spacing: 0.1rem !important;
 }
 
 .MuiInput-underline::before,
@@ -203,6 +180,40 @@ button:disabled {
   }
 }
 
+.Mui-disabled {
+  opacity: 50% !important;
+  -webkit-text-fill-color: whitesmoke !important;
+}
+
+.MuiFormControl-root {
+  .MuiFormLabel-root {
+    color: whitesmoke !important;
+    width: 100%;
+  }
+
+  .MuiSelect-select {
+    color: whitesmoke !important;
+
+    &.Mui-disabled {
+      opacity: 100% !important;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    color: whitesmoke !important;
+  }
+
+  .Mui-disabled::before {
+    border-bottom-style: solid !important;
+  }
+
+  .MuiInputBase-root:hover,
+  .MuiInputBase-root::before,
+  .MuiInputBase-root::after {
+    border-bottom-color: whitesmoke !important;
+  }
+}
+
 .MuiPaper-root {
   background-color: var(--dark-light) !important;
   color: var(--light-dark) !important;
@@ -211,7 +222,7 @@ button:disabled {
     padding: 0 !important;
 
     .MuiMenuItem-root {
-      padding: 10px !important;
+      padding: 1rem !important;
       font-family: "orbitron" !important;
     }
 

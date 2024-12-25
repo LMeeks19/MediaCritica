@@ -41,6 +41,11 @@ export async function UpdateUser(
   return await response.json();
 }
 
+export async function DeleteUser(userId: number): Promise<boolean> {
+  const response = await fetch(`/User/DeleteUser/${userId}`);
+  return response.json();
+}
+
 export async function UpdateUserPreference(
   preference: PreferenceModel
 ): Promise<PreferenceModel> {
@@ -153,6 +158,39 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
 // Backlog API Calls
 export async function GetBacklog(userId: number): Promise<BacklogObjectModel> {
   const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}`);
+  return response.json();
+}
+
+export async function GetBackloggedBacklog(
+  userId: number,
+  offset: number,
+  limit: number
+): Promise<BacklogModel[]> {
+  const response = await fetch(
+    `/Backlog/GetBackloggedBacklog/${userId ?? -1}/${offset}/${limit}`
+  );
+  return response.json();
+}
+
+export async function GetInProgressBacklog(
+  userId: number,
+  offset: number,
+  limit: number
+): Promise<BacklogModel[]> {
+  const response = await fetch(
+    `/Backlog/GetInProgressBacklog/${userId ?? -1}/${offset}/${limit}`
+  );
+  return response.json();
+}
+
+export async function GetFinishedBacklog(
+  userId: number,
+  offset: number,
+  limit: number
+): Promise<BacklogModel[]> {
+  const response = await fetch(
+    `/Backlog/GetFinishedBacklog/${userId ?? -1}/${offset}/${limit}`
+  );
   return response.json();
 }
 

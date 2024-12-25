@@ -11,12 +11,12 @@ function PalettePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [user, setUser] = useRecoilState(userState);
 
-  const [palette, setPalette] = useState<string>(user.preference.palette);
+  const [palette, setPalette] = useState<string>(user.preference?.palette);
 
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
       id: user.preference.id,
-      theme: user.preference.theme,
+      theme: user.preference?.theme,
       palette: palette,
     } as PreferenceModel);
 
@@ -26,9 +26,9 @@ function PalettePreference() {
 
   return (
     <div className="info-item">
-      <span className="info-label w-1/3">Palette</span>
+      <span className="info-label">Palette</span>
       {isEditing ? (
-        <div className="info-value w-1/3">
+        <div className="info-value">
           <Circle
             style={{
               backgroundColor: "transparent",
@@ -52,9 +52,9 @@ function PalettePreference() {
           />
         </div>
       ) : (
-        <div className="info-value w-1/3">{user.preference.palette}</div>
+        <div className="info-value">{user.preference?.palette}</div>
       )}
-      <div className="info-action w-1/3">
+      <div className="info-action">
         {isEditing && (
           <button
             disabled={!isEditing}

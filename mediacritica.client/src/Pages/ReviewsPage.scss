@@ -35,7 +35,7 @@
         padding: 1rem 1.5rem;
         box-shadow: 0 2px 5px #0000004d;
         border-radius: 20px;
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         min-width: 200px;
         flex: 1 1 calc(25% - 1.5rem);
         cursor: pointer;

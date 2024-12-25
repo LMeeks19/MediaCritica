@@ -11,13 +11,13 @@ function ThemePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [user, setUser] = useRecoilState(userState);
 
-  const [theme, setTheme] = useState<string>(user.preference.theme);
+  const [theme, setTheme] = useState<string>(user.preference?.theme);
 
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
       id: user.preference.id,
       theme: theme,
-      palette: user.preference.palette,
+      palette: user.preference?.palette,
     } as PreferenceModel);
 
     setUser({ ...user, preference: preference });
@@ -26,10 +26,11 @@ function ThemePreference() {
 
   return (
     <div className="info-item">
-      <span className="info-label w-1/3">Theme</span>
+      <span className="info-label">Theme</span>
       {isEditing ? (
-        <div className="info-value w-1/3">
+        <div className="info-value">
           <Select
+            className="select"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
             fullWidth
@@ -40,9 +41,9 @@ function ThemePreference() {
           </Select>
         </div>
       ) : (
-        <div className="info-value w-1/3">{user.preference.theme}</div>
+        <div className="info-value">{user.preference?.theme}</div>
       )}
-      <div className="info-action w-1/3">
+      <div className="info-action">
         {isEditing && (
           <button
             disabled={!isEditing}

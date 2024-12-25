@@ -6,39 +6,65 @@
   padding: 1rem 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px #00000080;
-}
+  flex-wrap: wrap;
+  gap: 1rem;
+  min-width: 200px;
 
-input {
+  .select {
+    padding: 0 !important;
+    color: var(--light-dark) !important;
+    font-family: "orbitron" !important;
+    border-color: var(--light-dark) !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.1rem !important;
+
+    .MuiSelect-select {
+      padding: 0 !important;
+    }
+  }
+
+  .info-label,
+  .info-value,
+  input,
+  .info-action {
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+  }
+
+  input {
     font-size: inherit;
     border: none;
     outline: none;
     background-color: transparent;
     font-family: inherit;
-}
+  }
 
-.info-action {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
+  .info-action {
+    display: flex;
+    gap: 1rem;
+  }
 
-.cancel-btn {
-  border-color: var(--light-dark);
-}
+  .cancel-btn {
+    border-color: var(--light-dark);
+  }
 
-.cancel-btn:not(:disabled):hover {
-  background-color: var(--light-dark);
-  color: var(--dark-light);
-}
+  .cancel-btn:not(:disabled):hover {
+    background-color: var(--light-dark);
+    color: var(--dark-light);
+  }
 
-.edit-btn,
-.save-btn {
-  background-color: var(--palette-colour);
-  color: whitesmoke;
-}
+  .edit-btn,
+  .save-btn,
+  .delete-btn {
+    background-color: var(--palette-colour);
+    color: whitesmoke;
+  }
 
-.edit-btn:not(:disabled):hover,
-.save-btn:not(:disabled):hover {
-  background-color: light-dark(#242424, whitesmoke);
-  color: var(--palette-colour);
+  .edit-btn:not(:disabled):hover,
+  .save-btn:not(:disabled):hover,
+  .delete-btn:not(:disabled):hover {
+    background-color: light-dark(#242424, whitesmoke);
+    color: var(--palette-colour);
+  }
 }
