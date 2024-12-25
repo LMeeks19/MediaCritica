@@ -1,3 +1,4 @@
+import "./ViewReviewPage.scss";
 import { Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useState } from "react";
@@ -21,7 +22,6 @@ import { Snackbar } from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
-import "./ViewReviewPage.scss";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);

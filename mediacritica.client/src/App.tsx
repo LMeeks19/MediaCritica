@@ -1,3 +1,4 @@
+import "./App.scss";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router/Router";
 import { SnackbarProvider } from "notistack";
@@ -5,7 +6,6 @@ import ConfirmationDialog from "./Components/ConfirmationDialog";
 import { useEffect } from "react";
 import { userState } from "./State/GlobalState";
 import { useRecoilValue } from "recoil";
-import "./App.scss";
 import { setThemePalette } from "./Helpers/ThemePaletteHelper";
 
 function App() {

@@ -129,5 +129,21 @@ namespace MediaCritica.Server.Controllers
                 Palette = preference.Palette
             };
         }
+
+        [HttpDelete(Name = "DeleteUser")]
+        [Route("[action]/{userId}")]
+        public async Task<bool> DeleteUser(int userId)
+        {
+            var user = _databaseContext.Users
+                .Include(user => user.Preference)
+                .Include(user => user.Reviews)
+                .Include(user => user.Backlogs)
+                .Single(user => user.Id == userId);
+
+            _databaseContext.Users.Remove(user);
+            await _databaseContext.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

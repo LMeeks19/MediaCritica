@@ -1,14 +1,26 @@
+import "./LoginPage.scss";
 import { AppBar, Tabs, Tab } from "@mui/material";
 import { LoginFormType } from "../Enums/LoginFormType";
-import LoginForm from "./LoginForm";
-import { useState } from "react";
-import "./AccountLogin.scss";
+import LoginForm from "../Components/LoginForm";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
+import { UserModel } from "../Interfaces/UserModel";
+import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
+import TopBar from "../Components/TopBar";
 
-function AccountLogin() {
+function LoginPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const setUser = useSetRecoilState(userState);
+
+  useEffect(() => {
+    resetThemePalette();
+    setUser({} as UserModel);
+  }, []);
 
   return (
     <div className="login-container">
+      <TopBar hideAccount />
       <AppBar className="login" position="static">
         <Tabs
           value={activeTab}
@@ -30,4 +42,4 @@ function AccountLogin() {
   );
 }
 
-export default AccountLogin;
+export default LoginPage;

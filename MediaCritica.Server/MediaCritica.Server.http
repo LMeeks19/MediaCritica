@@ -15,6 +15,11 @@ Accept: application/json
 
 ###
 
+DELETE {{MediaCritica.Server_HostAddress}}/User/DeleteUser
+Accept: application/json
+
+###
+
 PUT {{MediaCritica.Server_HostAddress}}/User/UpdateUserPreference
 Accept: application/json
 

@@ -1,3 +1,4 @@
+import "./WriteReviewPage.scss";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
@@ -15,7 +16,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faRotate, faShare } from "@fortawesome/free-solid-svg-icons";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
-import "./WriteReviewPage.scss";
 
 function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);

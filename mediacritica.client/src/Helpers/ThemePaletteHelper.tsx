@@ -2,8 +2,8 @@ import { PreferenceModel } from "../Interfaces/UserModel";
 import $ from "jquery";
 
 export function setThemePalette(preference: PreferenceModel) {
-  $(":root").css("--palette-colour", preference.palette);
-  $(":root").css("color-scheme", getTheme(preference.theme));
+  $(":root").css("--palette-colour", preference?.palette);
+  $(":root").css("color-scheme", getTheme(preference?.theme));
 }
 
 export function resetThemePalette() {
