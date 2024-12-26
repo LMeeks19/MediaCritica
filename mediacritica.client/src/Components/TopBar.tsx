@@ -1,3 +1,4 @@
+import "./TopBar.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,10 +7,18 @@ import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconButton } from "@mui/material";
-import "./TopBar.scss";
+import { useRecoilValue } from "recoil";
+import { userState } from "../State/GlobalState";
 
 function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
+  const user = useRecoilValue(userState);
+
+  function DetermineNavigate() {
+    return user.id === null || user.id === undefined
+      ? navigate("/login")
+      : navigate("/account");
+  }
 
   return (
     <div className="topbar">
@@ -26,7 +35,7 @@ function TopBar(props: TopBarProps) {
       {!props.hideAccount && (
         <IconButton
           className="button account"
-          onClick={() => navigate("/account")}
+          onClick={() => DetermineNavigate()}
         >
           <FontAwesomeIcon className="icon" icon={faUserCircle} />
         </IconButton>

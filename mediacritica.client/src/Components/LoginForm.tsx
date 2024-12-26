@@ -1,10 +1,11 @@
+import "./LoginForm.scss";
 import { FormEvent, useState } from "react";
 import { LoginFormType } from "../Enums/LoginFormType";
 import { GetUser, PostUser } from "../Server/Server";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UserModel } from "../Interfaces/UserModel";
-import "./LoginForm.scss";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm(props: LoginFormProps) {
   const [forename, setForename] = useState<string>("");
@@ -13,6 +14,7 @@ function LoginForm(props: LoginFormProps) {
   const [password, setPassword] = useState<string>("");
   const [confirmPassowrd, setConfirmPassword] = useState<string>("");
   const setUser = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   function Submit(event: FormEvent) {
     event.preventDefault();
@@ -23,6 +25,7 @@ function LoginForm(props: LoginFormProps) {
     const userData = await GetUser(email);
     if (userData.password === password) {
       setUser(userData);
+      navigate("/account");
     }
   }
 
@@ -35,6 +38,7 @@ function LoginForm(props: LoginFormProps) {
         password: password,
       } as UserModel);
       setUser(userData);
+      navigate("/account");
     }
   }
 

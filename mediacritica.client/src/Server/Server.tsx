@@ -1,6 +1,8 @@
+import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import { MediaType } from "../Enums/MediaType";
 import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
+import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
 import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
@@ -37,6 +39,11 @@ export async function UpdateUser(
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
   return await response.json();
+}
+
+export async function DeleteUser(userId: number): Promise<boolean> {
+  const response = await fetch(`/User/DeleteUser/${userId}`);
+  return response.json();
 }
 
 export async function UpdateUserPreference(
@@ -149,11 +156,41 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
 }
 
 // Backlog API Calls
-export async function GetBacklog(
+export async function GetBacklog(userId: number): Promise<BacklogObjectModel> {
+  const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}`);
+  return response.json();
+}
+
+export async function GetBackloggedBacklog(
   userId: number,
-  offset: number = 0
+  offset: number,
+  limit: number
 ): Promise<BacklogModel[]> {
-  const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}/${offset}`);
+  const response = await fetch(
+    `/Backlog/GetBackloggedBacklog/${userId ?? -1}/${offset}/${limit}`
+  );
+  return response.json();
+}
+
+export async function GetInProgressBacklog(
+  userId: number,
+  offset: number,
+  limit: number
+): Promise<BacklogModel[]> {
+  const response = await fetch(
+    `/Backlog/GetInProgressBacklog/${userId ?? -1}/${offset}/${limit}`
+  );
+  return response.json();
+}
+
+export async function GetFinishedBacklog(
+  userId: number,
+  offset: number,
+  limit: number
+): Promise<BacklogModel[]> {
+  const response = await fetch(
+    `/Backlog/GetFinishedBacklog/${userId ?? -1}/${offset}/${limit}`
+  );
   return response.json();
 }
 
@@ -175,5 +212,14 @@ export async function DeleteBacklog(
 ): Promise<void> {
   await fetch(`/Backlog/DeleteBacklog/${mediaId}/${userId}`, {
     method: "DELETE",
+  });
+}
+
+export async function UpdateBacklogState(
+  backlogId: number,
+  newState: BacklogCategoryType
+): Promise<void> {
+  await fetch(`/Backlog/UpdateBacklogState/${backlogId}/${newState}`, {
+    method: "PUT",
   });
 }

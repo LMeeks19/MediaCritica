@@ -1,3 +1,4 @@
+import "./HomePage.scss";
 import { useEffect, useState } from "react";
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
@@ -12,7 +13,6 @@ import { CustomTooltip } from "../Components/Tooltip";
 import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
-import "./HomePage.scss";
 import Loader from "../Components/Loader";
 
 function HomePage() {

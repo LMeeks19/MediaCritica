@@ -21,8 +21,8 @@
       flex-wrap: wrap;
       gap: 1rem;
       color: whitesmoke;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      background-color: var(--palette-color);
+      box-shadow: 0 2px 5px #00000080;
+      background-color: var(--palette-colour);
     }
 
     .episode-info h2 {
@@ -47,7 +47,7 @@
 
       h2 {
         font-size: 1.8rem;
-        color: var(--palette-color);
+        color: var(--palette-colour);
         margin: 0;
       }
     }
@@ -77,18 +77,18 @@
       background-color: light-dark(whitesmoke, #242424);
       padding: 1.5rem;
       border-radius: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 8px #00000033;
       flex-grow: 1;
       flex-basis: 400px;
     }
 
     .details-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 6px 12px #00000099;
     }
 
     .details-card h3 {
-      color: var(--palette-color);
+      color: var(--palette-colour);
       border-bottom: 1px solid #333;
       margin: 0;
     }

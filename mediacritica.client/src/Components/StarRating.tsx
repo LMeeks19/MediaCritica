@@ -1,3 +1,4 @@
+import "./StarRating.scss";
 import { Rating } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { userState } from "../State/GlobalState";
@@ -6,7 +7,6 @@ import { CustomTooltip } from "./Tooltip";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import "./StarRating.scss";
 import { MediaType } from "../Enums/MediaType";
 
 function StarRating(props: StarRatingProps) {

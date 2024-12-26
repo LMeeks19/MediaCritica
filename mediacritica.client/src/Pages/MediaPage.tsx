@@ -1,3 +1,4 @@
+import "./MediaPage.scss";
 import { ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -33,7 +34,6 @@ import { Snackbar } from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import ScrollContainer from "react-indiana-drag-scroll";
-import "./MediaPage.scss";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel>(

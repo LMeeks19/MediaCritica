@@ -1,3 +1,4 @@
+import "./ReviewsPage.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
@@ -9,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import "./ReviewsPage.scss";
 
 function ReviewsPage() {
   const location = useLocation();

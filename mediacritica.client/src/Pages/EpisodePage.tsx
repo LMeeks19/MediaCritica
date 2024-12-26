@@ -1,3 +1,4 @@
+import "./EpisodePage.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
@@ -7,7 +8,6 @@ import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
 import { SeriesModel } from "../Interfaces/SeriesModel";
-import "./EpisodePage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import Loader from "../Components/Loader";

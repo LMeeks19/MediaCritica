@@ -23,7 +23,7 @@
         justify-content: center;
         align-items: center;
         font-size: 30rem;
-        color: var(--palette-color);
+        color: var(--palette-colour);
       }
     }
 
@@ -37,14 +37,14 @@
 
       .hero {
         padding: 4rem 2rem 2rem 2rem;
-        background-color: var(--palette-color);
+        background-color: var(--palette-colour);
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         color: whitesmoke;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 5px #00000080;
 
         .parent-title {
           font-size: 3rem;
@@ -70,7 +70,7 @@
         .delete-btn:not(:disabled):hover,
         .save-btn:not(:disabled):hover {
           background-color: whitesmoke;
-          color: var(--palette-color);
+          color: var(--palette-colour);
         }
       }
 

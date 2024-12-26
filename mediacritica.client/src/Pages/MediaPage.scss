@@ -21,7 +21,7 @@
         justify-content: center;
         align-items: center;
         font-size: 30rem;
-        color: var(--palette-color);
+        color: var(--palette-colour);
       }
     }
 
@@ -36,14 +36,14 @@
 
     /* Hero Section */
     .hero {
-      background-color: var(--palette-color);
+      background-color: var(--palette-colour);
       color: whitesmoke;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 2rem 2rem 2rem;
       flex-wrap: wrap;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 2px 5px #00000080;
       z-index: 997;
       padding-top: 4rem;
     }
@@ -65,7 +65,7 @@
       }
 
       .MuiIconButton-root:hover {
-        background-color: rgba(219, 112, 147, 0.25);
+        background-color: #db709340;
       }
 
       .heart {
@@ -92,7 +92,7 @@
 
       .summary h2 {
         font-size: 1.8rem;
-        color: var(--palette-color);
+        color: var(--palette-colour);
         margin: 0;
       }
 
@@ -108,20 +108,20 @@
         .card {
           background-color: light-dark(whitesmoke, #242424);
           padding: 1.2rem;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 2px 5px #0000004d;
           border-radius: 20px;
           flex-grow: 1;
-          transition: transform 0.3s ease-in-out;
+          transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
         .card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 5px 15px #00000080;
         }
 
         .card h3 {
           margin-bottom: 0.5rem;
-          color: var(--palette-color);
+          color: var(--palette-colour);
           margin: 0;
           border-bottom: 1px solid #333;
         }
@@ -152,12 +152,12 @@
           h2 {
             margin: 0;
             font-size: 1.8rem;
-            color: var(--palette-color);
+            color: var(--palette-colour);
           }
 
           .view-btn {
-            border-color: var(--palette-color);
-            background-color: var(--palette-color);
+            border-color: var(--palette-colour);
+            background-color: var(--palette-colour);
             color: whitesmoke;
           }
 
@@ -176,9 +176,9 @@
           .review-card {
             background-color: light-dark(whitesmoke, #242424);
             padding: 1rem 1.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 5px #0000004d;
             border-radius: 20px;
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             max-width: 400px;
             min-width: 200px;
             cursor: pointer;
@@ -215,7 +215,7 @@
 
           .review-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px #00000080;
           }
         }
       }
@@ -234,7 +234,7 @@
         }
 
         .season-header h2 {
-          color: var(--palette-color);
+          color: var(--palette-colour);
           font-size: 1.8rem;
           margin: 0;
         }
@@ -261,7 +261,7 @@
         .episode-card {
           background-color: light-dark(whitesmoke, #242424);
           border-radius: 20px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 4px 8px #00000066;
           display: flex;
           align-items: center;
           padding: 1rem;
@@ -270,16 +270,16 @@
           overflow: hidden;
           text-wrap: nowrap;
           cursor: pointer;
-          transition: transform 0.3s ease-in-out;
+          transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
         .episode-card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+          box-shadow: 0 6px 12px #00000099;
         }
 
         .episode-number {
-          background-color: var(--palette-color);
+          background-color: var(--palette-colour);
           color: whitesmoke;
           font-size: 1.5rem;
           font-weight: bold;

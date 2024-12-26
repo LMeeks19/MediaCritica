@@ -1,8 +1,8 @@
+import "./ConfirmationDialog.scss";
 import { Divider } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { ConfirmationDialogState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
-import "./ConfirmationDialog.scss";
 
 function ConfirmationDialog() {
   const [confirmationDialog, setConfirmationDialog] = useRecoilState(

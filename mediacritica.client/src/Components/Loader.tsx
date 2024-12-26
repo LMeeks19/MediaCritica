@@ -5,7 +5,7 @@ function Loader() {
     <div className="loader">
       <BeatLoader
         speedMultiplier={0.5}
-        color="var(--palette-color)"
+        color="var(--palette-colour)"
         size={20}
       />
     </div>

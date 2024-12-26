@@ -1,11 +1,22 @@
+import "./App.scss";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router/Router";
 import { SnackbarProvider } from "notistack";
 import ConfirmationDialog from "./Components/ConfirmationDialog";
-import "./App.scss";
-
+import { useEffect } from "react";
+import { userState } from "./State/GlobalState";
+import { useRecoilValue } from "recoil";
+import { setThemePalette } from "./Helpers/ThemePaletteHelper";
 
 function App() {
+  const user = useRecoilValue(userState);
+
+  useEffect(() => {
+    if (user.id !== undefined) {
+      setThemePalette(user.preference);
+    }
+  }, [user]);
+
   return (
     <SnackbarProvider
       maxSnack={3}
