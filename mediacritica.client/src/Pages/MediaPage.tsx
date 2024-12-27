@@ -36,8 +36,8 @@ import Loader from "../Components/Loader";
 import ScrollContainer from "react-indiana-drag-scroll";
 
 function MediaPage() {
-  const [media, setMedia] = useState<MovieModel | SeriesModel>(
-    {} as MovieModel | SeriesModel
+  const [media, setMedia] = useState<MovieModel | SeriesModel | GameModel>(
+    {} as MovieModel | SeriesModel | GameModel
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
@@ -206,7 +206,7 @@ function MediaPage() {
         <Loader />
       ) : (
         <div className="media">
-          <TopBar />
+          <TopBar whiteText />
           {media.poster !== "N/A" ? (
             <img className="media-poster" src={media.poster}></img>
           ) : (
@@ -276,11 +276,7 @@ function MediaPage() {
                 <div className="card">
                   <h3>Cast</h3>
                   {media.actors.split(",").map((actor) => {
-                    return (
-                      <p key={actor}>
-                        {actor}
-                      </p>
-                    );
+                    return <p key={actor}>{actor}</p>;
                   })}
                 </div>
                 <div className="card">

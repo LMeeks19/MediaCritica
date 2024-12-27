@@ -14,6 +14,7 @@ import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import Loader from "../Components/Loader";
+import TravelExploreRoundedIcon from "@mui/icons-material/TravelExploreRounded";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -80,6 +81,10 @@ function HomePage() {
             </CustomTooltip>
           )}
         </div>
+        <button className="explore-btn" onClick={() => navigate("/explore")}>
+          <TravelExploreRoundedIcon />
+          Explore
+        </button>
         {mediaSearchResults.length > 0 ? (
           <div className="overflow-y-auto flex flex-col items-center">
             <div className="homepage-results">
@@ -92,7 +97,7 @@ function HomePage() {
                       navigate(`/media/${mediaSearchResult.imdbID}`, {
                         state: {
                           mediaId: mediaSearchResult.imdbID,
-                          mediaType: mediaSearchResult.type
+                          mediaType: mediaSearchResult.type,
                         },
                       })
                     }

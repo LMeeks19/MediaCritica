@@ -36,7 +36,7 @@ function EpisodePage() {
           <Loader />
         ) : (
           <div className="episode">
-            <TopBar showReturn />
+            <TopBar showReturn whiteText />
             <div className="episode-info">
               <div className="flex flex-col gap-4">
                 <h2>

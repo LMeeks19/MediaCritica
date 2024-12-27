@@ -21,7 +21,7 @@ function TopBar(props: TopBarProps) {
   }
 
   return (
-    <div className="topbar">
+    <div className={`topbar ${props.whiteText ? "white-text" : ""}`}>
       {props.showReturn && (
         <IconButton className="button return" onClick={() => history.back()}>
           <FontAwesomeIcon className="icon" icon={faChevronCircleLeft} />
@@ -50,4 +50,5 @@ interface TopBarProps {
   showReturn?: boolean;
   hideHome?: boolean;
   hideAccount?: boolean;
+  whiteText?: boolean
 }

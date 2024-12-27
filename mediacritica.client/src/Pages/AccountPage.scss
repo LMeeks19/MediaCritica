@@ -36,40 +36,43 @@
     /* Headers */
     .header,
     .sub-header {
-      width: calc(100% - 4rem);
-      padding: 1.5rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      border-top: 1px solid light-dark(grey, #333);
-      border-bottom: 1px solid light-dark(grey, #333);
+      .MuiFormControl-root {
+        .MuiFormLabel-root {
+          color: whitesmoke !important;
+        }
 
-      &.palette {
-        background-color: var(--palette-colour);
-      }
+        .MuiOutlinedInput-notchedOutline {
+          border-color: whitesmoke !important;
+        }
 
-      &.dark-shade {
-        background-color: light-dark(whitesmoke, #1a1a1a);
-      }
+        .MuiSelect-select {
+          color: whitesmoke !important;
+        }
 
-      &.light-shade {
-        background-color: light-dark(whitesmoke, #242424);
-      }
+        .MuiSvgIcon-root {
+          color: whitesmoke !important;
+        }
 
-      h1 {
-        margin: 0;
-        font-size: 2rem;
-        color: var(--light-dark);
-        text-wrap: nowrap;
-        text-align: center;
-      }
+        .MuiInputBase-root {
+          color: whitesmoke !important;
+          overflow: hidden !important;
 
-      .actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
+          .MuiAutocomplete-input {
+            padding: 0 !important;
+          }
+
+          .MuiInputBase-input {
+            padding: 12px 15px;
+            display: flex !important;
+            gap: 0.5rem !important;
+            overflow: hidden !important;
+            font-family: "Orbitron" !important;
+          }
+
+          .MuiInputBase-inputAdornedStart {
+            padding: 12px 15px 12px 0 !important;
+          }
+        }
       }
 
       .logout-btn {
@@ -80,15 +83,6 @@
       .logout-btn:not(:disabled):hover {
         background-color: var(--light-dark);
         color: var(--palette-colour);
-      }
-    }
-
-    .sub-header {
-      h2 {
-        margin: 0;
-        font-size: 1.5rem;
-        color: whitesmoke;
-        text-wrap: nowrap;
       }
     }
 
@@ -162,7 +156,8 @@
                   padding: 5px 10px;
                   border-radius: 5px;
                   font-size: 0.8rem;
-                  background: var(--palette-colour);
+                  background-color: var(--palette-colour);
+                  color: whitesmoke;
                   margin: 0.5rem;
                 }
               }
@@ -256,7 +251,6 @@
                 .actions {
                   width: 100%;
                   justify-content: space-around !important;
-                  gap: 0.5rem;
                 }
               }
 
@@ -367,32 +361,12 @@
 }
 
 @media screen and (max-width: 1092px) {
-  .reviews-tab {
-    .reviews-container {
-      .header {
-        justify-content: center;
-      }
-    }
-  }
-
   .backlog-tab {
     .backlog-container {
       .layout {
         &.row {
           display: flex;
           flex-direction: column;
-
-          .backlog-section {
-            .sub-header {
-              justify-content: center;
-
-              .actions {
-                width: 100%;
-                justify-content: space-around;
-                gap: 0.5rem;
-              }
-            }
-          }
         }
 
         &.col {

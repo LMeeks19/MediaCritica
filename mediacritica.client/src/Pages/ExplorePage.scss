@@ -1,0 +1,171 @@
+.explorepage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .explore {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      padding-top: 5rem;
+      background-color: var(--palette-colour);
+
+      h1 {
+        color: whitesmoke !important;
+      }
+
+      .actions {
+        .MuiFormControl-root {
+          .MuiFormLabel-root {
+            color: whitesmoke !important;
+          }
+
+          .MuiOutlinedInput-notchedOutline {
+            border-color: whitesmoke !important;
+          }
+
+          .MuiSelect-select {
+            color: whitesmoke !important;
+          }
+
+          .MuiSvgIcon-root {
+            color: whitesmoke !important;
+          }
+
+          .MuiInputBase-root {
+            color: whitesmoke !important;
+            overflow: hidden !important;
+
+            .MuiAutocomplete-input {
+              padding: 0 !important;
+            }
+
+            .MuiInputBase-input {
+              padding: 12px 15px;
+              display: flex !important;
+              gap: 0.5rem !important;
+              overflow: hidden !important;
+              font-family: "Orbitron" !important;
+            }
+
+            .MuiInputBase-inputAdornedStart {
+              padding: 12px 15px 12px 0 !important;
+            }
+          }
+        }
+      }
+    }
+
+    .content {
+      flex: 1;
+      overflow: hidden auto;
+
+      .items {
+        padding: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+
+        .MuiCard-root {
+          border-radius: 20px;
+          background-color: light-dark(whitesmoke, #242424) !important;
+          min-width: 225;
+          min-height: 281.25;
+          width: 225px;
+          height: 281.25px;
+
+          .MuiCardActionArea-root {
+            height: inherit;
+
+            .MuiCardHeader-root {
+              background-color: var(--palette-colour);
+              transition: display 0.5s ease-in-out;
+              transition-behavior: allow-discrete;
+              display: none;
+              padding: 0.5rem 1rem;
+
+              .MuiCardHeader-content {
+                overflow: hidden;
+
+                .MuiCardHeader-title,
+                .MuiCardHeader-subheader {
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  font-family: "Orbitron";
+                }
+
+                .MuiCardHeader-title {
+                  color: whitesmoke;
+                }
+
+                .MuiCardHeader-subheader {
+                  color: #ccc;
+                }
+              }
+            }
+
+            .MuiCardMedia-root {
+              transition: height 0.5s ease-in-out;
+              height: 281.25px;
+              width: 225px;
+            }
+
+            .MuiCardContent-root {
+              transition: display 0.5s ease-in-out;
+              transition-behavior: allow-discrete;
+              display: none;
+              padding: 0.5rem 1rem;
+              flex-direction: column;
+              gap: 0.25rem;
+
+              .MuiTypography-root {
+                font-family: "Orbitron";
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: .75rem;
+              }
+
+              .chips {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: .75rem;
+
+                .rating {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.25rem;
+
+                  .icon {
+                    color: var(--rating-star);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .MuiCard-root:hover {
+          .MuiCardActionArea-root {
+            .MuiCardHeader-root {
+              display: block;
+            }
+
+            .MuiCardMedia-root {
+              height: calc(281.25px - 134.02px);
+            }
+
+            .MuiCardContent-root {
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+  }
+}

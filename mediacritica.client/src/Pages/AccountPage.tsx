@@ -12,8 +12,9 @@ import {
 } from "../Server/Server";
 import {
   AppBar,
+  Fab,
   FormControl,
-  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Rating,
@@ -25,7 +26,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
@@ -44,6 +45,9 @@ import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import DeleteAccountAction from "../Components/DeleteAccountAction";
+import AddIcon from "@mui/icons-material/Add";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import SortIcon from "@mui/icons-material/Sort";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -95,30 +99,22 @@ function AccountPage() {
 
   async function FetchMoreBacklogs(
     stage: keyof BacklogObjectModel,
-    offset: number,
-    limit: number
+    offset: number
   ): Promise<BacklogModel[]> {
     if (stage === "inProgress")
-      return await GetInProgressBacklog(user.id, offset, limit);
+      return await GetInProgressBacklog(user.id, offset, 10);
     else if (stage === "finished")
-      return await GetFinishedBacklog(user.id, offset, limit);
-    return await GetBackloggedBacklog(user.id, offset, limit);
+      return await GetFinishedBacklog(user.id, offset, 10);
+    return await GetBackloggedBacklog(user.id, offset, 10);
   }
 
-  async function LoadMoreBacklogs(
-    stage: keyof BacklogObjectModel,
-    limit: number
-  ) {
+  async function LoadMoreBacklogs(stage: keyof BacklogObjectModel) {
     setIsLoading(true);
 
     const updatedBacklog = { ...backlog };
     const stageToUpdate = updatedBacklog[stage] as BacklogModel[];
 
-    const newBacklogData = await FetchMoreBacklogs(
-      stage,
-      stageToUpdate.length,
-      limit
-    );
+    const newBacklogData = await FetchMoreBacklogs(stage, stageToUpdate.length);
 
     (updatedBacklog[stage] as BacklogModel[]) = [
       ...stageToUpdate,
@@ -263,7 +259,6 @@ function AccountPage() {
   }) {
     const [selectedFilter, setSelectedFilter] = useState<number>(0);
     const [selectedSorter, setSelectedSorter] = useState<number>(0);
-    const [selectedLimit, setSelectedLimit] = useState<number>(10);
 
     return (
       <div className="backlog-section">
@@ -271,16 +266,21 @@ function AccountPage() {
           <h2>{title}</h2>
           <div className="actions">
             <FormControl
-              variant="filled"
-              sx={{ width: "250px" }}
+              variant="outlined"
+              sx={{ width: 250 }}
               disabled={items?.length === 0}
+              fullWidth
             >
-              <InputLabel>Sort By</InputLabel>
+              <InputLabel>Sort</InputLabel>
               <Select
-                label="Sort By"
+                label="Sort"
                 value={selectedSorter}
                 onChange={(e) => setSelectedSorter(Number(e.target.value))}
-                autoWidth
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SortIcon />
+                  </InputAdornment>
+                }
               >
                 <MenuItem value={0}>Date (New - Old)</MenuItem>
                 <MenuItem value={1}>Date (Old - New)</MenuItem>
@@ -290,45 +290,26 @@ function AccountPage() {
             </FormControl>
 
             <FormControl
-              variant="filled"
-              sx={{ width: "150px" }}
+              variant="outlined"
+              sx={{ width: 150 }}
               disabled={items?.length === 0}
+              fullWidth
             >
-              <InputLabel>Filter By</InputLabel>
+              <InputLabel>Type</InputLabel>
               <Select
-                label="Filter By"
+                label="Type"
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(Number(e.target.value))}
-                autoWidth
+                startAdornment={
+                  <InputAdornment position="start">
+                    <FilterAltOutlinedIcon />
+                  </InputAdornment>
+                }
               >
                 <MenuItem value={0}>All</MenuItem>
                 <MenuItem value={1}>Movies</MenuItem>
                 <MenuItem value={2}>Series</MenuItem>
                 <MenuItem value={3}>Games</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl
-              variant="filled"
-              sx={{ width: "100px" }}
-              disabled={items?.length === 0 || items?.length !== totalItems}
-            >
-              <InputLabel>Load Limit</InputLabel>
-              <Select
-                label="Load Limit"
-                value={selectedLimit}
-                onChange={(e) => setSelectedLimit(Number(e.target.value))}
-                autoWidth
-              >
-                <MenuItem disabled={totalItems - items?.length < 10} value={10}>
-                  10
-                </MenuItem>
-                <MenuItem disabled={totalItems - items?.length < 20} value={20}>
-                  20
-                </MenuItem>
-                <MenuItem disabled={totalItems - items?.length < 40} value={40}>
-                  40
-                </MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -382,14 +363,13 @@ function AccountPage() {
             >
               <CustomTooltip title="Load more" arrow>
                 <span>
-                  <IconButton
+                  <Fab
                     className="load-btn"
-                    sx={{ padding: "1rem" }}
                     disabled={items?.length === totalItems}
-                    onClick={() => LoadMoreBacklogs(stage, selectedLimit)}
+                    onClick={() => LoadMoreBacklogs(stage)}
                   >
-                    <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
-                  </IconButton>
+                    <AddIcon />
+                  </Fab>
                 </span>
               </CustomTooltip>
             </div>
@@ -401,11 +381,11 @@ function AccountPage() {
 
   return (
     <div className="accountpage-container">
-      <TopBar hideAccount />
       {isLoading ? (
         <Loader />
       ) : (
         <div className="account">
+          <TopBar hideAccount whiteText />
           <AppBar position="static">
             <Tabs
               value={activeTab}
@@ -474,9 +454,10 @@ function AccountPage() {
               <div className="header dark-shade">
                 <h1>REVIEWS</h1>
                 <div className="actions">
-                  <FormControl variant="filled" sx={{ width: "250px" }}>
-                    <InputLabel>Filter By</InputLabel>
+                  <FormControl variant="outlined" sx={{ width: 250 }}>
+                    <InputLabel>Filter</InputLabel>
                     <Select
+                      label="Filter"
                       value={selectedReviewFilter}
                       onChange={(e) =>
                         setSelectedReviewFilter(Number(e.target.value))
@@ -553,14 +534,13 @@ function AccountPage() {
                     >
                       <CustomTooltip title="All reviewed media loaded" arrow>
                         <span>
-                          <IconButton
+                          <Fab
                             className="load-btn"
-                            sx={{ padding: "1rem" }}
                             disabled={reviews.length === user.totalReviews}
                             onClick={() => LoadMoreReviews()}
                           >
-                            <FontAwesomeIcon icon={faPlus} />
-                          </IconButton>
+                            <AddIcon />
+                          </Fab>
                         </span>
                       </CustomTooltip>
                     </div>

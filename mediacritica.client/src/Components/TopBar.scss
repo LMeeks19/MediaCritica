@@ -4,15 +4,22 @@
   z-index: 999;
   height: 4rem;
   text-wrap: nowrap;
-  background-color: transparent;
-  color: whitesmoke;
+  color: var(--light-dark) !important;
   position: absolute;
+
+  &.white-text {
+    color: whitesmoke !important;
+  }
+
+  &.palette-bg {
+    background-color: var(--palette-colour) !important;
+  }
 
   .button {
     position: absolute;
     top: 0.5rem;
     font-size: 2rem;
-    color: whitesmoke;
+    color: inherit;
     cursor: pointer;
 
     &.return {

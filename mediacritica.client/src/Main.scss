@@ -8,8 +8,8 @@
   font-weight: 400;
   letter-spacing: 0.1rem;
 
-  --primary-red: #971212;
   --palette-colour: #971212;
+  --palette-colour-faded: #97121240;
   --light-dark: light-dark(#141414, whitesmoke);
   --dark-light: light-dark(whitesmoke, #141414);
   --rating-star: #faaf00;
@@ -23,7 +23,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "orbitron";
+  font-family: "Orbitron" ;
 }
 
 * {
@@ -46,13 +46,74 @@ button {
   font-size: 15px;
   cursor: pointer;
   background-color: transparent;
-  font-family: "orbitron";
+  font-family: "Orbitron" ;
   border: 1px solid transparent;
 }
 
 button:disabled {
   opacity: 50%;
   cursor: default;
+}
+
+/* Headers */
+.header,
+.sub-header {
+  width: calc(100% - 4rem);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  border-top: 1px solid light-dark(grey, #333);
+  border-bottom: 1px solid light-dark(grey, #333);
+
+  &.palette {
+    background-color: var(--palette-colour);
+  }
+
+  &.dark-shade {
+    background-color: light-dark(whitesmoke, #1a1a1a);
+  }
+
+  &.light-shade {
+    background-color: light-dark(whitesmoke, #242424);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--light-dark);
+    text-wrap: nowrap;
+    text-align: center;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+}
+
+.sub-header {
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: whitesmoke;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1092px) {
+  .header,
+  .sub-header {
+    justify-content: center;
+
+    .actions {
+      width: 100%;
+      justify-content: space-around;
+    }
+  }
 }
 
 ::-webkit-scrollbar {
@@ -103,7 +164,7 @@ button:disabled {
     color: var(--light-dark) !important;
     background-color: var(--palette-colour) !important;
     padding: 20px !important;
-    font-family: "orbitron" !important;
+    font-family: "Orbitron"  !important;
     font-size: 20px;
     border-bottom: 4px solid transparent !important;
     color: whitesmoke !important;
@@ -117,10 +178,6 @@ button:disabled {
     background-color: var(--light-dark) !important;
     height: 4px !important;
   }
-}
-
-.MuiOutlinedInput-notchedOutline {
-  border: none !important;
 }
 
 .MuiRating-icon {
@@ -144,7 +201,7 @@ button:disabled {
 
 .MuiTableCell-root {
   color: var(--light-dark) !important;
-  font-family: "orbitron" !important;
+  font-family: "Orbitron"  !important;
   text-wrap: nowrap !important;
   border-bottom-color: var(--light-dark) !important;
 }
@@ -187,30 +244,51 @@ button:disabled {
 
 .MuiFormControl-root {
   .MuiFormLabel-root {
-    color: whitesmoke !important;
-    width: 100%;
+    color: var(--light-dark) !important;
+    font-family: "Orbitron"  !important;
   }
 
   .MuiSelect-select {
-    color: whitesmoke !important;
+    color: var(--light-dark) !important;
+    font-family: "Orbitron" !important;
 
     &.Mui-disabled {
       opacity: 100% !important;
     }
   }
 
+  .MuiOutlinedInput-notchedOutline {
+    letter-spacing: 0.1rem !important;
+    border-color: var(--light-dark) !important;
+  }
+
   .MuiSvgIcon-root {
-    color: whitesmoke !important;
+    color: var(--light-dark) !important;
   }
 
   .Mui-disabled::before {
     border-bottom-style: solid !important;
   }
 
+  .MuiInputBase-root {
+    background-color: transparent !important;
+  }
+
   .MuiInputBase-root:hover,
   .MuiInputBase-root::before,
   .MuiInputBase-root::after {
-    border-bottom-color: whitesmoke !important;
+    border-bottom-color: var(--light-dark) !important;
+  }
+}
+
+.MuiButton-root {
+  border-color: whitesmoke !important;
+  color: whitesmoke !important;
+  min-width: fit-content !important;
+  padding: 0 0.75rem !important;
+
+  .MuiSvgIcon-root {
+    font-size: 1.75rem;
   }
 }
 
@@ -218,22 +296,150 @@ button:disabled {
   background-color: var(--dark-light) !important;
   color: var(--light-dark) !important;
 
-  .MuiList-root {
-    padding: 0 !important;
+  .MuiList-root,
+  .MuiAutocomplete-listbox {
+    background-color: var(--dark-light);
 
-    .MuiMenuItem-root {
+    .MuiMenuItem-root,
+    .MuiAutocomplete-option {
+      padding: 0.75rem 1rem !important;
+      font-family: "Orbitron"  !important;
+      font-size: 1rem;
+      display: flex;
+    }
+
+    .MuiMenuItem-root:hover,
+    .MuiAutocomplete-option:hover {
+      background-color: var(--palette-colour-faded) !important;
+    }
+
+    .MuiMenuItem-root[aria-selected="true"],
+    .MuiAutocomplete-option[aria-selected="true"] {
+      background-color: var(--palette-colour) !important;
+      color: whitesmoke !important;
+    }
+  }
+}
+
+.MuiDialog-container {
+  .MuiPaper-root {
+    .MuiDialogTitle-root {
+      background-color: var(--palette-colour) !important;
+      color: whitesmoke;
+      padding: 1rem 2rem;
+      font-family: "Orbitron" ;
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .MuiFab-root {
+        background-color: whitesmoke !important;
+        color: var(--palette-colour) !important;
+      }
+    }
+
+    .MuiDialogContent-root {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 3rem !important;
+      gap: 2rem;
+
+      &.MuiDialogContent-dividers {
+        border-color: light-dark(gray, #333) !important;
+      }
+
+      .MuiFormControl-root {
+        .MuiInputBase-root {
+          color: var(--light-dark) !important;
+          overflow: hidden !important;
+
+          .MuiAutocomplete-input {
+            padding: 0 !important;
+          }
+
+          .MuiInputBase-input {
+            padding: 12px 15px !important;
+            display: flex !important;
+            gap: 0.5rem !important;
+            overflow: hidden !important;
+          }
+        }
+      }
+
+      .MuiAutocomplete-root {
+        border-color: var(--light-dark) !important;
+        .MuiInputBase-root {
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+          padding-left: 14px;
+          color: var(--light-dark) !important;
+
+          .MuiChip-root {
+            color: var(--light-dark) !important;
+            background-color: var(--palette-colour) !important;
+          }
+
+          .MuiInputBase-input {
+            padding: 12px 15px !important;
+            color: var(--light-dark) !important;
+          }
+        }
+      }
+
+      .MuiSlider-root {
+        .MuiSlider-markLabel {
+          color: var(--light-dark) !important;
+        }
+        .MuiSlider-rail {
+          background-color: var(--light-dark) !important;
+        }
+
+        .MuiSlider-track {
+          background-color: var(--palette-colour) !important;
+        }
+
+        .MuiSlider-mark {
+          background-color: var(--light-dark) !important;
+        }
+
+        .MuiSlider-thumb {
+          background-color: var(--light-dark) !important;
+        }
+      }
+    }
+
+    .MuiDialogActions-root {
+      padding: 1rem 2rem;
+
+      .reset-btn, .cancel-btn {
+        border-color: var(--light-dark);
+      }
+
+      .reset-btn:not(:disabled):hover,
+      .cancel-btn:not(:disabled):hover {
+        background-color: var(--light-dark);
+        color: var(--dark-light);
+      }
+
+      .apply-btn {
+        background-color: var(--palette-colour);
+        color: whitesmoke;
+      }
+
+      .apply-btn:not(:disabled):hover {
+        background-color: light-dark(#242424, whitesmoke);
+        color: var(--palette-colour);
+      }
+    }
+  }
+}
+
+.MuiPickersLayout-root {
+  .MuiPickersLayout-contentWrapper {
+    .MuiDateCalendar-root {
       padding: 1rem !important;
-      font-family: "orbitron" !important;
-    }
-
-    .MuiMenuItem-root:hover {
-      background-color: var(--palette-colour) !important;
-      color: whitesmoke;
-    }
-
-    .MuiMenuItem-root[aria-selected="true"] {
-      background-color: var(--palette-colour) !important;
-      color: whitesmoke;
+      height: fit-content !important;
     }
   }
 }
