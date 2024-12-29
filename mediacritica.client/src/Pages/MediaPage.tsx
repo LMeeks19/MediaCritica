@@ -91,7 +91,7 @@ function MediaPage() {
   async function AddToBacklog() {
     const backlog = {
       userId: user.id,
-      mediaId: media.imdbID,
+      mediaId: media.id,
       mediaType: media.type,
       mediaPoster: media.poster,
       mediaTitle: media.title,
@@ -109,12 +109,12 @@ function MediaPage() {
   }
 
   async function RemoveFromBacklog() {
-    await DeleteBacklog(media.imdbID, user.id);
+    await DeleteBacklog(media.id, user.id);
 
     setUser({
       ...user,
       backlogSummary: user.backlogSummary.filter(
-        (backlog) => backlog.mediaId !== media.imdbID
+        (backlog) => backlog.mediaId !== media.id
       ),
       totalBacklogs: user.totalBacklogs - 1,
     });
@@ -163,14 +163,14 @@ function MediaPage() {
             .map((episode) => {
               return (
                 <div
-                  key={episode.imdbID}
+                  key={episode.id}
                   className="episode-card"
                   onClick={() =>
                     navigate(
-                      `seasons/${selectedSeason}/episodes/${episode.imdbID}`,
+                      `seasons/${selectedSeason}/episodes/${episode.id}`,
                       {
                         state: {
-                          episodeId: episode.imdbID,
+                          episodeId: episode.id,
                           series: series as SeriesModel,
                         },
                       }
@@ -189,7 +189,7 @@ function MediaPage() {
                     <p>
                       Rating:{" "}
                       <FontAwesomeIcon className="star-icon" icon={faStar} />{" "}
-                      {episode.imdbRating}
+                      {episode.imdbRating === "" ? "N/A" : episode.imdbRating}
                     </p>
                   </div>
                 </div>
@@ -220,7 +220,7 @@ function MediaPage() {
                 <div className="flex items-center gap-5 flex-wrap justify-center">
                   <h1>{media.title}</h1>
                   {user.backlogSummary?.some(
-                    (backlog) => backlog.mediaId === media.imdbID
+                    (backlog) => backlog.mediaId === media.id
                   ) ? (
                     <CustomTooltip title="Remove from backlog" arrow>
                       <span>
@@ -342,7 +342,7 @@ function MediaPage() {
                       onClick={() =>
                         navigate("reviews", {
                           state: {
-                            mediaId: media.imdbID,
+                            mediaId: media.id,
                             mediaTitle: media.title,
                           },
                         })

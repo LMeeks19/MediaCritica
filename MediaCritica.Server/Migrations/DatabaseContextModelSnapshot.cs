@@ -64,26 +64,19 @@ namespace MediaCritica.Server.Migrations
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Actors")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Awards")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Countries")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Directors")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -92,47 +85,34 @@ namespace MediaCritica.Server.Migrations
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Genres")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImdbID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("ImdbRating")
+                    b.Property<double?>("ImdbRating")
                         .HasColumnType("float");
 
-                    b.Property<int>("ImdbVotes")
+                    b.Property<int?>("ImdbVotes")
                         .HasColumnType("int");
 
                     b.Property<string>("Languages")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Metascore")
+                    b.Property<int?>("Metascore")
                         .HasColumnType("int");
 
                     b.Property<string>("Plot")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Poster")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rated")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Released")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Runtime")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SeasonId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -143,16 +123,12 @@ namespace MediaCritica.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Writers")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Year")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SeasonId");
 
                     b.ToTable("Media");
 
@@ -196,15 +172,17 @@ namespace MediaCritica.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
+                    b.Property<string>("MediaId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -228,25 +206,13 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MediaEpisode")
-                        .HasColumnType("int");
-
                     b.Property<string>("MediaId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MediaParentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MediaParentTitle")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MediaPoster")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MediaSeason")
-                        .HasColumnType("int");
 
                     b.Property<string>("MediaTitle")
                         .IsRequired()
@@ -268,6 +234,8 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MediaId");
+
                     b.HasIndex("ReviewerId");
 
                     b.ToTable("Reviews");
@@ -284,8 +252,9 @@ namespace MediaCritica.Server.Migrations
                     b.Property<int>("SeasonNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeriesId")
-                        .HasColumnType("int");
+                    b.Property<string>("SeriesId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -334,8 +303,13 @@ namespace MediaCritica.Server.Migrations
                     b.Property<int>("EpisodeNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("Season")
+                    b.Property<int>("SeasonId")
                         .HasColumnType("int");
+
+                    b.Property<int>("SeasonNo")
+                        .HasColumnType("int");
+
+                    b.HasIndex("SeasonId");
 
                     b.HasDiscriminator().HasValue("Episode");
                 });
@@ -391,13 +365,6 @@ namespace MediaCritica.Server.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
-                {
-                    b.HasOne("MediaCritica.Server.Objects.Season", null)
-                        .WithMany("Episodes")
-                        .HasForeignKey("SeasonId");
-                });
-
             modelBuilder.Entity("MediaCritica.Server.Objects.Preference", b =>
                 {
                     b.HasOne("MediaCritica.Server.Objects.User", null)
@@ -418,6 +385,12 @@ namespace MediaCritica.Server.Migrations
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Review", b =>
                 {
+                    b.HasOne("MediaCritica.Server.Objects.Media", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MediaCritica.Server.Objects.User", "Reviewer")
                         .WithMany("Reviews")
                         .HasForeignKey("ReviewerId")
@@ -436,9 +409,20 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MediaCritica.Server.Objects.Episode", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.Season", null)
+                        .WithMany("Episodes")
+                        .HasForeignKey("SeasonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
                 {
                     b.Navigation("Ratings");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Season", b =>

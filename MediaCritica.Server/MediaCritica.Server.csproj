@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>8.*-*</Version>
@@ -32,7 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Mappers\" />
   </ItemGroup>
 
 </Project>

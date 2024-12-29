@@ -6,5 +6,6 @@
         public string DVD { get; set; }
         public string Production { get; set; }
         public string Website { get; set; }
+        public List<ReviewSummaryModel> Reviews { get; set; } = [];
     }
 }

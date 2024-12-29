@@ -31,8 +31,8 @@ function StarRating(props: StarRatingProps) {
             <button
               className="review-btn"
               onClick={() =>
-                navigate(`/media/${props.media.imdbID}/write-review`, {
-                  state: { media: props.media, parent: props.parent },
+                navigate(`/media/${props.media.id}/write-review`, {
+                  state: { media: props.media },
                 })
               }
               disabled={user.id === null}

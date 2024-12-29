@@ -10,6 +10,7 @@ namespace MediaCritica.Server
         public DbSet<Backlog> Backlogs { get; set; }
         public DbSet<Preference> Preferences { get; set; }
 
+        public DbSet<Media> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Series> Series { get; set; }

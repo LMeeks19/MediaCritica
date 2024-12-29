@@ -8,14 +8,9 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UserController(DatabaseContext databaseContext) : ControllerBase
     {
-        private readonly DatabaseContext _databaseContext;
-
-        public UserController(DatabaseContext databaseContext)
-        {
-            _databaseContext = databaseContext;
-        }
+        private readonly DatabaseContext _databaseContext = databaseContext;
 
         [HttpGet(Name = "GetUser")]
         [Route("[action]/{email}")]

@@ -1,6 +1,6 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
-using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,14 +8,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BacklogController : ControllerBase
+    public class BacklogController(DatabaseContext databaseContext, IMapper mapper) : ControllerBase
     {
-        private readonly DatabaseContext _databaseContext;
-
-        public BacklogController(DatabaseContext databaseContext)
-        {
-            _databaseContext = databaseContext;
-        }
+        private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet(Name = "GetBacklog")]
         [Route("[action]/{userId}")]
@@ -47,17 +43,8 @@ namespace MediaCritica.Server.Controllers
         {
             var backlog = await _databaseContext.Backlogs
               .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.Backlog)
-              .Select(media => new BacklogModel()
-              {
-                  Id = media.Id,
-                  UserId = media.UserId,
-                  MediaId = media.MediaId,
-                  MediaPoster = media.MediaPoster,
-                  MediaTitle = media.MediaTitle,
-                  MediaType = media.MediaType,
-                  Category = media.Category,
-                  AddedDate = media.AddedDate,
-              }).OrderByDescending(media => media.AddedDate)
+              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
+              .OrderByDescending(media => media.AddedDate)
               .ThenBy(media => media.MediaTitle)
               .Skip(offset)
               .Take(limit)
@@ -72,17 +59,8 @@ namespace MediaCritica.Server.Controllers
         {
             var backlog = await _databaseContext.Backlogs
               .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.InProgress)
-              .Select(media => new BacklogModel()
-              {
-                  Id = media.Id,
-                  UserId = media.UserId,
-                  MediaId = media.MediaId,
-                  MediaPoster = media.MediaPoster,
-                  MediaTitle = media.MediaTitle,
-                  MediaType = media.MediaType,
-                  Category = media.Category,
-                  AddedDate = media.AddedDate,
-              }).OrderByDescending(media => media.AddedDate)
+              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
+              .OrderByDescending(media => media.AddedDate)
               .ThenBy(media => media.MediaTitle)
               .Skip(offset)
               .Take(limit)
@@ -97,17 +75,7 @@ namespace MediaCritica.Server.Controllers
         {
             var backlog = await _databaseContext.Backlogs
               .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.Finished)
-              .Select(media => new BacklogModel()
-              {
-                  Id = media.Id,
-                  UserId = media.UserId,
-                  MediaId = media.MediaId,
-                  MediaPoster = media.MediaPoster,
-                  MediaTitle = media.MediaTitle,
-                  MediaType = media.MediaType,
-                  Category = media.Category,
-                  AddedDate = media.AddedDate,
-              }).OrderByDescending(media => media.AddedDate)
+              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media)).OrderByDescending(media => media.AddedDate)
               .ThenBy(media => media.MediaTitle)
               .Skip(offset)
               .Take(limit)
@@ -120,27 +88,14 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]")]
         public async Task<BacklogSummaryModel> PostBacklog([FromBody] BacklogModel backlogModel)
         {
-            var backlogData = new Backlog()
-            {
-                UserId = backlogModel.UserId,
-                MediaId = backlogModel.MediaId,
-                MediaPoster = backlogModel.MediaPoster,
-                MediaTitle = backlogModel.MediaTitle,
-                MediaType = backlogModel.MediaType,
-                Category = BacklogCategoryType.Backlog,
-                AddedDate = DateTime.UtcNow,
-            };
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();
 
             var newBacklog = await _databaseContext.Backlogs.SingleAsync(backlog => backlog.MediaId == backlogData.MediaId && backlog.UserId == backlogData.UserId);
 
-            return new BacklogSummaryModel()
-            {
-                Id = newBacklog.Id,
-                MediaId = newBacklog.MediaId,
-            };
+            return _mapper.BacklogMapper.MapBacklogSummaryModel(newBacklog);
         }
 
         [HttpDelete(Name = "DeleteBacklog")]

@@ -2,6 +2,7 @@
 {
     public class EpisodeSummaryModel
     {
+        public string Id { get; set; }
         public string Episode { get; set; }
         public string Released { get; set; }
         public string Title { get; set; }
