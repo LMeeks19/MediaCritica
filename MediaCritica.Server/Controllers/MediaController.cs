@@ -10,13 +10,13 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MediaController(DatabaseContext databaseContext, ReviewController reviewController, IMapper mapper, ExternalApiHelper externalApiHelper) : ControllerBase
+    public class MediaController(DatabaseContext databaseContext, ReviewController reviewController, IMapper mapper, ExternalApiHelper externalApiHelper, InternalApiHelper internalApiHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly ReviewController _reviewController = reviewController;
-        private readonly IMapper _mapper = mapper;
         private readonly ExternalApiHelper _externalApiHelper = externalApiHelper;
-
+        private readonly InternalApiHelper _internalApiHelper = internalApiHelper;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet(Name = "GetMediaBySearch")]
         [Route("[action]/{searchTerm}/{page}")]
@@ -31,36 +31,41 @@ namespace MediaCritica.Server.Controllers
         {
             var media = await _databaseContext.Media
                 .Where(media => media.Type != MediaType.Episode)
+                .OrderBy(media => media.Title)
                 .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
                 .Skip(offset)
                 .Take(100)
-                .OrderBy(media => media.Title)
                 .ToListAsync();
 
             return media;
-
         }
 
         [HttpGet(Name = "GetMovie")]
-        [Route("[action]/{mediaId}")]
-        public async Task<MovieModel> GetMovie(string mediaId)
+        [Route("[action]/{movieId}")]
+        public async Task<MovieModel> GetMovie(string movieId)
         {
-            // TODO:
-            var movieModel = await _externalApiHelper.GetMovieMedia(mediaId);
-            movieModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10));
-            return movieModel!;
+            var movie = await _internalApiHelper.GetMovieMedia(movieId);
+
+            if (movie != null)
+                return _mapper.MovieMapper.MapMovieModel(movie);
+
+            var movieModel = await _externalApiHelper.GetMovieMedia(movieId);
+
+            movie = _mapper.MovieMapper.MapMovie(movieModel);
+
+            await _databaseContext.Movies.AddAsync(movie);
+            await _databaseContext.SaveChangesAsync();
+
+            movie = await _internalApiHelper.GetMovieMedia(movieId);
+
+            return _mapper.MovieMapper.MapMovieModel(movie!);
         }
 
         [HttpGet(Name = "GetSeries")]
         [Route("[action]/{seriesId}")]
         public async Task<SeriesModel> GetSeries(string seriesId)
         {
-            var series = _databaseContext.Series
-                .Include(series => series.Ratings)
-                .Include(series => series.Seasons)
-                    .ThenInclude(season => season.Episodes)
-                .Include(series => series.Reviews)
-                .SingleOrDefault(series => series.Id == seriesId);
+            var series = await _internalApiHelper.GetSeriesMedia(seriesId);
 
             if (series != null)
                 return _mapper.SeriesMapper.MapSeriesModel(series);
@@ -70,28 +75,21 @@ namespace MediaCritica.Server.Controllers
 
             series = _mapper.SeriesMapper.MapSeries(seriesModel);
 
-            _databaseContext.Series.Add(series);
+            await _databaseContext.Series.AddAsync(series);
             await _databaseContext.SaveChangesAsync();
 
             await GetSeason(seriesId);
 
-            series = _databaseContext.Series
-                .Include(series => series.Ratings)
-                .Include(series => series.Seasons)
-                    .ThenInclude(season => season.Episodes)
-                .Include(series => series.Reviews)
-                .Single(series => series.Id == seriesId);
+            series = await _internalApiHelper.GetSeriesMedia(seriesId);
 
-            return _mapper.SeriesMapper.MapSeriesModel(series);
+            return _mapper.SeriesMapper.MapSeriesModel(series!);
         }
 
         [HttpGet(Name = "GetSeason")]
         [Route("[action]/{seriesId}/{seasonNo}")]
         public async Task<SeasonModel> GetSeason(string seriesId, int seasonNo = 1)
         {
-            var season = _databaseContext.Seasons
-                .Include(s => s.Episodes)
-                .SingleOrDefault(season => season.SeriesId == seriesId && season.SeasonNo == seasonNo);
+            var season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
 
             if (season != null)
                 return _mapper.SeasonMapper.MapSeasonModel(season);
@@ -100,30 +98,64 @@ namespace MediaCritica.Server.Controllers
 
             season = _mapper.SeasonMapper.MapSeason(seasonModel!, seriesId);
 
-            _databaseContext.Seasons.Add(season);
+            await _databaseContext.Seasons.AddAsync(season);
             await _databaseContext.SaveChangesAsync();
 
-            return _mapper.SeasonMapper.MapSeasonModel(season);
+            season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+
+            return _mapper.SeasonMapper.MapSeasonModel(season!);
         }
 
         [HttpGet(Name = "GetGame")]
-        [Route("[action]/{mediaId}")]
-        public async Task<GameModel> GetGame(string mediaId)
+        [Route("[action]/{gameId}")]
+        public async Task<GameModel> GetGame(string gameId)
         {
-            // TODO:
-            var gameModel = await _externalApiHelper.GetGameMedia(mediaId);
-            gameModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10)); ;
+            var game = await _internalApiHelper.GetGameMedia(gameId);
 
-            return gameModel!;
+            if (game != null)
+                return _mapper.GameMapper.MapGameModel(game);
+
+            var gameModel = await _externalApiHelper.GetGameMedia(gameId);
+
+            game = _mapper.GameMapper.MapGame(gameModel);
+
+            await _databaseContext.Games.AddAsync(game);
+            await _databaseContext.SaveChangesAsync();
+
+            game = await _internalApiHelper.GetGameMedia(gameId);
+
+            return _mapper.GameMapper.MapGameModel(game!);
         }
 
         [HttpGet(Name = "GetEpisode")]
-        [Route("[action]/{mediaId}")]
-        public async Task<EpisodeModel> GetEpisode(string mediaId)
+        [Route("[action]/{episodeId}")]
+        public async Task<EpisodeModel> GetEpisode(string episodeId)
         {
-            // TODO:
-            var episodeModel = await _externalApiHelper.GetEpisodeMedia(mediaId);
-            return episodeModel!;
+            var episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
+
+            if (episode != null && episode.IsFullyPopulated)
+                return _mapper.EpisodeMapper.MapEpisodeModel(episode);
+
+            var episodeModel = await _externalApiHelper.GetEpisodeMedia(episodeId);
+
+            if (episode != null)
+            {
+                episodeModel.Id = episode.Id;
+                episodeModel.SeasonId = episode.SeasonId;
+            }
+
+            episode = _mapper.EpisodeMapper.MapEpisode(episodeModel);
+
+            if (episode.Id == null)
+                await _databaseContext.Episodes.AddAsync(episode);
+            else
+                _databaseContext.Episodes.Update(episode);
+
+            await _databaseContext.SaveChangesAsync();
+
+            episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
+
+            return _mapper.EpisodeMapper.MapEpisodeModel(episode!);
         }
     }
 }

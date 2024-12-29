@@ -37,7 +37,7 @@ namespace MediaCritica.Server.Mappers
             movieModel.DVD = movie.DVD;
             movieModel.Production = movie.Production;
             movieModel.Website = movie.Website;
-            movieModel.Reviews = movie.Reviews.Select(_reviewMapper.MapReviewSummaryModel).ToList();
+            movieModel.Reviews = movie.Reviews!.Select(_reviewMapper.MapReviewSummaryModel).ToList();
 
             return movieModel;
         }

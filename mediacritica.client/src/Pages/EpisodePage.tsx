@@ -94,10 +94,10 @@ function EpisodePage() {
                 </div>
 
                 {(episode.ratings.length > 0 ||
-                  episode.metascore !== "N/A") && (
+                  episode.metascore !== "") && (
                   <div className="details-card">
                     <h3>Ratings</h3>
-                    {episode.metascore !== "N/A" && (
+                    {episode.metascore !== "" && (
                       <p className="flex gap-4">
                         Metascore:{" "}
                         <Rating

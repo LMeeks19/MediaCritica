@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241229030000_Add-Media-Tables")]
+    [Migration("20241229194158_Add-Media-Tables")]
     partial class AddMediaTables
     {
         /// <inheritdoc />
@@ -305,6 +305,9 @@ namespace MediaCritica.Server.Migrations
 
                     b.Property<int>("EpisodeNo")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsFullyPopulated")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");

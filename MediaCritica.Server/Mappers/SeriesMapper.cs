@@ -4,10 +4,11 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class SeriesMapper(MediaMapper mediaMapper, SeasonMapper seasonMapper)
+    public class SeriesMapper(MediaMapper mediaMapper, SeasonMapper seasonMapper, ReviewMapper reviewMapper)
     {
         private readonly MediaMapper _mediaMapper = mediaMapper;
         private readonly SeasonMapper _seasonMapper = seasonMapper;
+        private readonly ReviewMapper _reviewMapper = reviewMapper;
 
         public Series MapSeries(SeriesModel seriesModel)
         {
@@ -33,6 +34,7 @@ namespace MediaCritica.Server.Mappers
 
             seriesModel.totalSeasons = series.TotalSeasons.ToString();
             seriesModel.Seasons = series.Seasons.Select(_seasonMapper.MapSeasonModel).ToList();
+            seriesModel.Reviews = series.Reviews!.Select(_reviewMapper.MapReviewSummaryModel).Take(10).ToList();
 
             return seriesModel;
         }

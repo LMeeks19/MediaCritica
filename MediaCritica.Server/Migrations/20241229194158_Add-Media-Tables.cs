@@ -61,6 +61,7 @@ namespace MediaCritica.Server.Migrations
                     EpisodeNo = table.Column<int>(type: "int", nullable: true),
                     SeasonNo = table.Column<int>(type: "int", nullable: true),
                     SeasonId = table.Column<int>(type: "int", nullable: true),
+                    IsFullyPopulated = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
                     BoxOffice = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DVD = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Website = table.Column<string>(type: "nvarchar(max)", nullable: true),

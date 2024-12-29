@@ -18,9 +18,10 @@ namespace MediaCritica.Server.Mappers
 
             episode.EpisodeNo = int.Parse(episodeModel.Episode);
             episode.SeasonNo = int.Parse(episodeModel.Season);
+            episode.SeasonId = episodeModel.SeasonId;
+            episode.IsFullyPopulated = true;
 
             return episode;
-
         }
 
         public EpisodeModel MapEpisodeModel(Episode episode)

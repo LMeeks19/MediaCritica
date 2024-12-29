@@ -4,9 +4,10 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class GameMapper(MediaMapper mediaMapper)
+    public class GameMapper(MediaMapper mediaMapper, ReviewMapper reviewMapper)
     {
         private readonly MediaMapper _mediaMapper = mediaMapper;
+        private readonly ReviewMapper _reviewMapper = reviewMapper;
 
         public Game MapGame(GameModel gameModel)
         {
@@ -26,7 +27,7 @@ namespace MediaCritica.Server.Mappers
 
         public GameModel MapGameModel(Game game)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, MovieModel>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, GameModel>());
             var mapper = config.CreateMapper();
 
             MediaModel mediaModel = _mediaMapper.MapMediaModel(game);
@@ -36,6 +37,7 @@ namespace MediaCritica.Server.Mappers
             gameModel.DVD = game.DVD;
             gameModel.Production = game.Production;
             gameModel.Website = game.Website;
+            gameModel.Reviews = game.Reviews!.Select(_reviewMapper.MapReviewSummaryModel).Take(10).ToList();
 
             return gameModel;
         }

@@ -75,7 +75,7 @@ namespace MediaCritica.Server.Mappers
                 Title = media.Title,
                 Type = media.Type,
                 Poster = media.Poster,
-                Gnere = media.Genres,
+                Genre = media.Genres,
                 Released = media.Released,
                 ImdbRating = media.ImdbRating,
                 ImdbId = media.Id,

@@ -303,7 +303,7 @@ function MediaPage() {
                 </div>
                 <div className="card">
                   <h3>Ratings</h3>
-                  {media.metascore !== "N/A" && (
+                  {media.metascore !== "" && (
                     <p className="flex items-center gap-2">
                       Metascore:{" "}
                       <Rating
@@ -311,7 +311,6 @@ function MediaPage() {
                         value={ConvertRatingStringToFiveScale(media.metascore)}
                         readOnly
                       />
-                      \{" "}
                     </p>
                   )}
                   {media.ratings.map((rating) => {

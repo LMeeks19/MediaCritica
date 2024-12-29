@@ -66,6 +66,11 @@ export async function GetSearchResults(
   return response.json();
 }
 
+export async function GetExploreMedia(offset: number = 0) {
+  const response = await fetch(`/Media/GetExploreMedia/${offset}`);
+  return response.json();
+}
+
 export async function GetMedia(
   mediId: string,
   type: MediaType

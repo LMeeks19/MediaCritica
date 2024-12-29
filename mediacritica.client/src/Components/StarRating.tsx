@@ -35,7 +35,7 @@ function StarRating(props: StarRatingProps) {
                   state: { media: props.media },
                 })
               }
-              disabled={user.id === null}
+              disabled={user.id === null || user.id === undefined}
             >
               Review
             </button>

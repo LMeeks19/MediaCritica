@@ -30,6 +30,11 @@ Accept: application/json
 
 ###
 
+GET {{MediaCritica.Server_HostAddress}}/Media/GetExploreMedia/
+Accept: application/json
+
+###
+
 GET {{MediaCritica.Server_HostAddress}}/Media/GetMovie/
 Accept: application/json
 

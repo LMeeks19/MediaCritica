@@ -32,8 +32,8 @@ namespace MediaCritica.Server.Controllers
         {
             return await _databaseContext.Reviews
                 .Where(review => review.ReviewerId == reviewerId)
-                .Select(review => _mapper.ReviewMapper.MapReviewModel(review))
                 .OrderByDescending(review => review.Date)
+                .Select(review => _mapper.ReviewMapper.MapReviewModel(review))
                 .Skip(offset)
                 .Take(20)
                 .ToListAsync();
@@ -46,8 +46,8 @@ namespace MediaCritica.Server.Controllers
             return await _databaseContext.Reviews
                 .Include(review => review.Reviewer)
                 .Where(review => review.MediaId == mediaId)
-                .Select(review => _mapper.ReviewMapper.MapReviewSummaryModel(review))
                 .OrderByDescending(review => review.Date)
+                .Select(review => _mapper.ReviewMapper.MapReviewSummaryModel(review))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();

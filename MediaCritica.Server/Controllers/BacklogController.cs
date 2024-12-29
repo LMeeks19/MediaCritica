@@ -43,9 +43,9 @@ namespace MediaCritica.Server.Controllers
         {
             var backlog = await _databaseContext.Backlogs
               .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.Backlog)
-              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
               .OrderByDescending(media => media.AddedDate)
-              .ThenBy(media => media.MediaTitle)
+                .ThenBy(media => media.MediaTitle)
+              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
               .Skip(offset)
               .Take(limit)
               .ToListAsync();
@@ -59,9 +59,9 @@ namespace MediaCritica.Server.Controllers
         {
             var backlog = await _databaseContext.Backlogs
               .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.InProgress)
-              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
               .OrderByDescending(media => media.AddedDate)
-              .ThenBy(media => media.MediaTitle)
+                .ThenBy(media => media.MediaTitle)
+              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
               .Skip(offset)
               .Take(limit)
               .ToListAsync();
@@ -75,8 +75,9 @@ namespace MediaCritica.Server.Controllers
         {
             var backlog = await _databaseContext.Backlogs
               .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.Finished)
-              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media)).OrderByDescending(media => media.AddedDate)
-              .ThenBy(media => media.MediaTitle)
+              .OrderByDescending(media => media.AddedDate)
+                .ThenBy(media => media.MediaTitle)
+              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
               .Skip(offset)
               .Take(limit)
               .ToListAsync();

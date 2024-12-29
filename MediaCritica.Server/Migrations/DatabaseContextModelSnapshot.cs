@@ -303,6 +303,9 @@ namespace MediaCritica.Server.Migrations
                     b.Property<int>("EpisodeNo")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsFullyPopulated")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
 
