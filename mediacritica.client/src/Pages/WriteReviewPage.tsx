@@ -53,6 +53,7 @@ function WriteReviewPage() {
       mediaTitle: media.title,
       mediaType: media.type,
       reviewerId: user.id,
+      reviewerName: `${user.forename} ${user.surname}`,
       title: title,
       rating: rating,
       description: description,

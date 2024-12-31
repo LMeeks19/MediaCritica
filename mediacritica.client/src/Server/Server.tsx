@@ -7,6 +7,8 @@ import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
+import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
+import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
@@ -66,7 +68,12 @@ export async function GetSearchResults(
   return response.json();
 }
 
-export async function GetExploreMedia(offset: number = 0) {
+export async function GetExploreMediaBySearch(searchTerm: string): Promise<MediaSummaryModel[]> {
+  const response = await fetch(`/Media/GetExploreMediaBySearch/${searchTerm}`);
+  return response.json();
+}
+
+export async function GetExploreMedia(offset: number = 0): Promise<MediaSummaryModelResponse> {
   const response = await fetch(`/Media/GetExploreMedia/${offset}`);
   return response.json();
 }

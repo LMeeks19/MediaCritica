@@ -49,7 +49,6 @@ namespace MediaCritica.Server.Mappers
                 Genre = media.Genres,
                 imdbRating = media.ImdbRating.ToString(),
                 imdbVotes = media.ImdbVotes.ToString(),
-                imdbID = media.Id,
                 Language = media.Languages,
                 Metascore = media.Metascore.ToString(),
                 Plot = media.Plot,
@@ -78,7 +77,6 @@ namespace MediaCritica.Server.Mappers
                 Genre = media.Genres,
                 Released = media.Released,
                 ImdbRating = media.ImdbRating,
-                ImdbId = media.Id,
             };
 
             return mediaSummaryModel;

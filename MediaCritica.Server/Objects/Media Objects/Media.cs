@@ -22,7 +22,7 @@
         public string? Year { get; set; }
         public double? ImdbRating { get; set; }
         public int? ImdbVotes { get; set; }
-        public virtual List<Review>? Reviews { get; set; }
+        public virtual List<Review> Reviews { get; set; }
     }
 
     public class Rating

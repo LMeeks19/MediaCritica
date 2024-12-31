@@ -21,7 +21,7 @@ import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
-import { MediaModel } from "../Interfaces/MediaModel";
+import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 
 function ExploreFiltersDialog(props: ExploreFiltersDialogProps) {
   const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>("all");
@@ -45,7 +45,7 @@ function ExploreFiltersDialog(props: ExploreFiltersDialogProps) {
     "Romance",
     "Sci-Fi",
     "Thriller",
-    "Historical",
+    "History",
     "War",
     "Western",
     "Musical",
@@ -54,24 +54,7 @@ function ExploreFiltersDialog(props: ExploreFiltersDialogProps) {
     "Documentary",
     "Family",
     "Sport",
-    "Reality-TV",
-    "Talk-Show",
-    "Game-Show",
-    "News",
-    "Role-Playing (RPG)",
-    "Shooter",
-    "Strategy",
-    "Simulation",
-    "Fighting",
-    "Platformer",
-    "Stealth",
-    "Survival",
-    "Sandbox",
-    "Racing",
-    "Rhythm",
-    "Party",
-    "Puzzle",
-  ];
+  ].sort((a, b) => a.localeCompare(b));
 
   function ResetFields() {
     setSelectedTypeFilter("all");
@@ -197,7 +180,6 @@ function ExploreFiltersDialog(props: ExploreFiltersDialogProps) {
           multiple
           limitTags={3}
           options={genres}
-          disableCloseOnSelect
           fullWidth
           value={selectedGenreFilter}
           onChange={(_e, values) => setSelectedGenreFilter(values)}
@@ -286,8 +268,8 @@ function ExploreFiltersDialog(props: ExploreFiltersDialogProps) {
 export default ExploreFiltersDialog;
 
 interface ExploreFiltersDialogProps {
-  items: MediaModel[];
-  setItems: SetterOrUpdater<MediaModel[]>;
+  items: MediaSummaryModel[];
+  setItems: SetterOrUpdater<MediaSummaryModel[]>;
   isOpen: boolean;
   setIsOpen: SetterOrUpdater<boolean>;
 }

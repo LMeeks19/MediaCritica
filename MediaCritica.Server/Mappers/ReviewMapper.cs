@@ -16,7 +16,7 @@ namespace MediaCritica.Server.Mappers
                 MediaTitle = reviewModel.MediaTitle,
                 MediaType = reviewModel.MediaType,
                 Rating = reviewModel.Rating,
-                ReviewerId = reviewModel.ReviewerId,
+                UserId = reviewModel.ReviewerId,
                 Title = reviewModel.Title,
             };
         }
@@ -33,8 +33,8 @@ namespace MediaCritica.Server.Mappers
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
                 Rating = review.Rating,
-                ReviewerId = review.ReviewerId,
-                ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}",
+                ReviewerId = review.UserId,
+                ReviewerName = review.ReviewerName,
                 Title = review.Title,
             };
         }
@@ -46,7 +46,7 @@ namespace MediaCritica.Server.Mappers
                 Id = review.Id,
                 Date = review.Date,
                 Rating = review.Rating,
-                ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}",
+                ReviewerName = review.ReviewerName,
                 Title = review.Title,
             };
         }

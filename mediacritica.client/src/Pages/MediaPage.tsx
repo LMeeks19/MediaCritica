@@ -217,7 +217,7 @@ function MediaPage() {
           <div className="info">
             <div className="hero">
               <div className="title-section">
-                <div className="flex items-center gap-5 flex-wrap justify-center">
+                <div className="title flex items-center gap-5 flex-wrap">
                   <h1>{media.title}</h1>
                   {user.backlogSummary?.some(
                     (backlog) => backlog.mediaId === media.id

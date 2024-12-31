@@ -3,6 +3,7 @@ using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.Media_Models;
+using MediaCritica.Server.Objects.Media_Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,9 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MediaController(DatabaseContext databaseContext, ReviewController reviewController, IMapper mapper, ExternalApiHelper externalApiHelper, InternalApiHelper internalApiHelper) : ControllerBase
+    public class MediaController(DatabaseContext databaseContext, IMapper mapper, ExternalApiHelper externalApiHelper, InternalApiHelper internalApiHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly ReviewController _reviewController = reviewController;
         private readonly ExternalApiHelper _externalApiHelper = externalApiHelper;
         private readonly InternalApiHelper _internalApiHelper = internalApiHelper;
         private readonly IMapper _mapper = mapper;
@@ -25,19 +25,37 @@ namespace MediaCritica.Server.Controllers
             return await _externalApiHelper.GetSearchMedia(searchTerm, page);
         }
 
-        [HttpGet(Name = "GetExploreMedia")]
-        [Route("[action]/{offset}")]
-        public async Task<List<MediaSummaryModel>> GetExploreMedia(int offset)
+        [HttpGet(Name = "GetExploreMediaBySearch")]
+        [Route("[action]/{searchTerm}")]
+        public async Task<List<MediaSummaryModel>> GetExploreMediaBySearch(string searchTerm)
         {
-            var media = await _databaseContext.Media
-                .Where(media => media.Type != MediaType.Episode)
+            return await _databaseContext.Media
+                .Where(media => media.Type != MediaType.Episode && media.Title.StartsWith(searchTerm))
                 .OrderBy(media => media.Title)
                 .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
-                .Skip(offset)
-                .Take(100)
+                .Take(10)
                 .ToListAsync();
+        }
 
-            return media;
+        [HttpGet(Name = "GetExploreMedia")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetExploreMedia(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode)
+                    .OrderBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(100)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
         }
 
         [HttpGet(Name = "GetMovie")]

@@ -39,6 +39,10 @@
             color: whitesmoke !important;
             overflow: hidden !important;
 
+            &.Mui-focused {
+              background-color: rgba($color: black, $alpha: 0.1) !important;
+            }
+
             .MuiAutocomplete-input {
               padding: 0 !important;
             }
@@ -56,6 +60,20 @@
             }
           }
         }
+
+        .MuiButton-root {
+          &.active,
+          &:hover {
+            background-color: rgba($color: black, $alpha: 0.1);
+          }
+        }
+
+        .MuiFormControl-root {
+          &:focus-within,
+          &:hover {
+            background-color: rgba($color: black, $alpha: 0.1);
+          }
+        }
       }
     }
 
@@ -65,15 +83,34 @@
 
       .items {
         padding: 2rem;
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 225px);
+        justify-content: center;
         gap: 2rem;
+
+        &.empty {
+          display: flex;
+          width: calc(100% - 4rem);
+          height: calc(100% - 4rem);
+          align-items: center;
+          font-size: 1.5rem;
+        }
+
+        .load-btn {
+          background-color: var(--palette-colour);
+          color: whitesmoke;
+        }
+
+        .load-btn:not(:disabled):hover {
+          background-color: var(--light-dark);
+          color: var(--palette-colour);
+        }
 
         .MuiCard-root {
           border-radius: 20px;
           background-color: light-dark(whitesmoke, #242424) !important;
-          min-width: 225;
-          min-height: 281.25;
+          min-width: 225px;
+          min-height: 281.25px;
           width: 225px;
           height: 281.25px;
 
@@ -92,6 +129,7 @@
 
                 .MuiCardHeader-title,
                 .MuiCardHeader-subheader {
+                  text-align: center;
                   text-overflow: ellipsis;
                   white-space: nowrap;
                   overflow: hidden;
@@ -121,20 +159,21 @@
               padding: 0.5rem 1rem;
               flex-direction: column;
               gap: 0.25rem;
+              text-align: center;
 
               .MuiTypography-root {
                 font-family: "Orbitron";
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                font-size: .75rem;
+                font-size: 0.75rem;
               }
 
               .chips {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                font-size: .75rem;
+                font-size: 0.75rem;
 
                 .rating {
                   display: flex;
@@ -157,7 +196,7 @@
             }
 
             .MuiCardMedia-root {
-              height: calc(281.25px - 134.02px);
+              height: calc(281.25px - 133.02px);
             }
 
             .MuiCardContent-root {

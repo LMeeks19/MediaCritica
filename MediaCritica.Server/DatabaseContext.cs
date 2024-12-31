@@ -18,6 +18,9 @@ namespace MediaCritica.Server
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
-        public DatabaseContext(DbContextOptions options) : base(options) { }
+        public DatabaseContext(DbContextOptions options) : base(options)
+        {
+        }
+
     }
 }

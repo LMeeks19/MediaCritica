@@ -9,9 +9,8 @@
         public string MediaTitle { get; set; }
         public string MediaType { get; set; }
 
-        public int ReviewerId { get; set; }
-        public virtual User Reviewer { get; set; }
-
+        public int UserId { get; set; }
+        public string ReviewerName { get; set; }
         public double Rating { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

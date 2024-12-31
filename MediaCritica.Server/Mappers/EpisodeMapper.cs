@@ -48,9 +48,6 @@ namespace MediaCritica.Server.Mappers
                 Title = episode.Title,
                 Released = episode.Released.ToLongDateString(),
                 imdbRating = episode.ImdbRating.ToString(),
-                imdbID = episode.Id,
-
-
             };
         }
     }

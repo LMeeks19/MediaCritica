@@ -136,6 +136,7 @@ button:disabled {
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
 }
 
 .MuiToggleButtonGroup-root {
@@ -323,6 +324,8 @@ button:disabled {
 
 .MuiDialog-container {
   .MuiPaper-root {
+    border-radius: 20px !important;
+
     .MuiDialogTitle-root {
       background-color: var(--palette-colour) !important;
       color: whitesmoke;

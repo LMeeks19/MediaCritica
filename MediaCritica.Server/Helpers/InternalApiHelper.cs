@@ -1,39 +1,67 @@
-﻿using MediaCritica.Server.Objects;
+﻿using MediaCritica.Server.Controllers;
+using MediaCritica.Server.Objects;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class InternalApiHelper(DatabaseContext databaseContext)
+    public class InternalApiHelper(DatabaseContext databaseContext, ReviewController reviewController)
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly ReviewController _reviewController = reviewController;
 
         public async Task<Movie?> GetMovieMedia(string movieId)
         {
-            return await _databaseContext.Movies
+            var movie = await _databaseContext.Movies
                 .Include(movie => movie.Ratings)
-                .Include(movie => movie.Reviews!)
-                    .ThenInclude(review => review.Reviewer)
+                .Include(movie => movie.Reviews)
                 .SingleOrDefaultAsync(movie => movie.Id == movieId);
+
+            if (movie != null)
+                movie.Reviews = await _databaseContext.Reviews
+                .Where(review => review.MediaId == movieId)
+                .OrderByDescending(review => review.Date)
+                .Select(review => review)
+                .Take(10)
+                .ToListAsync();
+
+            return movie;
         }
 
         public async Task<Game?> GetGameMedia(string gameId)
         {
-            return await _databaseContext.Games
+            var game = await _databaseContext.Games
                 .Include(game => game.Ratings)
-                .Include(game => game.Reviews!)
-                    .ThenInclude(review => review.Reviewer)
+                .Include(game => game.Reviews)
                 .SingleOrDefaultAsync(game => game.Id == gameId);
+
+            if (game != null)
+                game.Reviews = await _databaseContext.Reviews
+                .Where(review => review.MediaId == gameId)
+                .OrderByDescending(review => review.Date)
+                .Select(review => review)
+                .Take(10)
+                .ToListAsync();
+
+            return game;
         }
 
         public async Task<Series?> GetSeriesMedia(string seriesId)
         {
-            return await _databaseContext.Series
+            var series = await _databaseContext.Series
                 .Include(series => series.Ratings)
                 .Include(series => series.Seasons)
                     .ThenInclude(season => season.Episodes)
-                .Include(series => series.Reviews!)
-                    .ThenInclude(review => review.Reviewer)
                 .SingleOrDefaultAsync(series => series.Id == seriesId);
+
+            if (series != null)
+                series.Reviews = await _databaseContext.Reviews
+                .Where(review => review.MediaId == seriesId)
+                .OrderByDescending(review => review.Date)
+                .Select(review => review)
+                .Take(10)
+                .ToListAsync();
+
+            return series;
         }
 
         public async Task<Season?> GetSeasonMedia(string seriesId, int seasonNo)

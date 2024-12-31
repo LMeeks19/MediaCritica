@@ -17,7 +17,6 @@ namespace MediaCritica.Server.Controllers
         public async Task<ReviewModel?> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
-                .Include(review => review.Reviewer)
                 .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)
@@ -31,7 +30,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<List<ReviewModel>> GetUserReviews(int reviewerId, int offset)
         {
             return await _databaseContext.Reviews
-                .Where(review => review.ReviewerId == reviewerId)
+                .Where(review => review.UserId == reviewerId)
                 .OrderByDescending(review => review.Date)
                 .Select(review => _mapper.ReviewMapper.MapReviewModel(review))
                 .Skip(offset)
@@ -44,7 +43,6 @@ namespace MediaCritica.Server.Controllers
         public async Task<List<ReviewSummaryModel>> GetMediaReviews(string mediaId, int offset, int limit)
         {
             return await _databaseContext.Reviews
-                .Include(review => review.Reviewer)
                 .Where(review => review.MediaId == mediaId)
                 .OrderByDescending(review => review.Date)
                 .Select(review => _mapper.ReviewMapper.MapReviewSummaryModel(review))

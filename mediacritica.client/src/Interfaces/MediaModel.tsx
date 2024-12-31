@@ -17,7 +17,6 @@ export interface MediaModel {
   type: string;
   writer: string;
   year: string;
-  imdbID: string;
   imdbRating: string;
   imdbVotes: string;
 }

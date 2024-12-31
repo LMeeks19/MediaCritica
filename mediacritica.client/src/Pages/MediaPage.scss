@@ -15,7 +15,7 @@
 
     .media-poster {
       width: 40%;
-      
+
       &.empty {
         display: flex;
         justify-content: center;
@@ -359,13 +359,17 @@
   }
 
   @media screen and (max-width: 768px) {
+    .title {
+      justify-content: center !important;
+    }
+
     .episode-card {
       flex: 1 1 calc(50% - 1.5rem);
     }
   }
 
   @media screen and (max-width: 480px) {
-    .title-section h1 {
+    .title h1 {
       font-size: 2rem !important;
     }
 
@@ -394,8 +398,6 @@
         }
       }
     }
-
-
 
     .season-header {
       flex-direction: column;
