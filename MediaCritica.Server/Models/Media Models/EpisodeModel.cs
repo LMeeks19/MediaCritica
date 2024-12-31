@@ -4,6 +4,6 @@
     {
         public string Episode { get; set; }
         public string Season { get; set; }
-        public string seriesID { get; set; }
+        public int SeasonId { get; set; }
     }
 }

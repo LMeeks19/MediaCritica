@@ -6,13 +6,13 @@ namespace MediaCritica.Server.Objects
     {
         public int Id { get; set; }
 
-        public required int UserId { get; set; }
+        public int UserId { get; set; }
         public virtual User User { get; set; }
 
-        public required string MediaId { get; set; }
-        public required string MediaType { get; set; }
-        public required string MediaPoster { get; set; }
-        public required string MediaTitle { get; set; }
+        public string MediaId { get; set; }
+        public string MediaType { get; set; }
+        public string MediaPoster { get; set; }
+        public string MediaTitle { get; set; }
 
         public BacklogCategoryType Category { get; set; }
         public DateTime AddedDate { get; set; }

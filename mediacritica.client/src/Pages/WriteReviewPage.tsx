@@ -8,7 +8,6 @@ import { Rating } from "@mui/material";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import { MediaType } from "../Enums/MediaType";
 import { PostReview } from "../Server/Server";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { Snackbar } from "../Components/Snackbar";
@@ -31,7 +30,6 @@ function WriteReviewPage() {
     | MovieModel
     | SeriesModel
     | EpisodeModel;
-  const parent = location.state?.parent as SeriesModel;
 
   useEffect(() => {
     (media === undefined || user.id === null) && navigate("/");
@@ -50,21 +48,12 @@ function WriteReviewPage() {
   async function SubmitReview() {
     setIsLoading(true);
     const review = {
-      mediaId: media.imdbID,
+      mediaId: media.id,
       mediaPoster: media.poster,
       mediaTitle: media.title,
       mediaType: media.type,
-      mediaSeason:
-        media.type === MediaType.Episode
-          ? Number((media as EpisodeModel).season)
-          : null,
-      mediaEpisode:
-        media.type === MediaType.Episode
-          ? Number((media as EpisodeModel).episode)
-          : null,
-      mediaParentId: parent?.imdbID,
-      mediaParentTitle: parent?.title,
       reviewerId: user.id,
+      reviewerName: `${user.forename} ${user.surname}`,
       title: title,
       rating: rating,
       description: description,
@@ -74,7 +63,7 @@ function WriteReviewPage() {
     const reviewId = await PostReview(review);
     setUser({ ...user, totalReviews: user.totalReviews + 1 });
     Snackbar("Review Created", "success");
-    navigate(`/media/${media.imdbID}/view-review/${reviewId}`, {
+    navigate(`/media/${media.id}/view-review/${reviewId}`, {
       state: { reviewId: reviewId },
     });
     setIsLoading(false);
@@ -92,17 +81,10 @@ function WriteReviewPage() {
         <Loader />
       ) : (
         <div className="review">
-          <TopBar showReturn />
+          <TopBar showReturn whiteText />
           <div className="info">
             <div className="hero">
-              <div className="parent-title">
-                {parent?.title ?? media.title}
-                {media.type === MediaType.Episode &&
-                  ` | S${(media as EpisodeModel).season}:E${
-                    (media as EpisodeModel).episode
-                  }`}
-                <div className="sub-title">{parent?.title && media.title}</div>
-              </div>
+              <div className="parent-title">{media.title}</div>
               <div className="flex flex-col justify-center items-center gap-2">
                 <Rating
                   value={rating}

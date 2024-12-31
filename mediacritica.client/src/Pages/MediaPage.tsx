@@ -36,8 +36,8 @@ import Loader from "../Components/Loader";
 import ScrollContainer from "react-indiana-drag-scroll";
 
 function MediaPage() {
-  const [media, setMedia] = useState<MovieModel | SeriesModel>(
-    {} as MovieModel | SeriesModel
+  const [media, setMedia] = useState<MovieModel | SeriesModel | GameModel>(
+    {} as MovieModel | SeriesModel | GameModel
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
@@ -91,7 +91,7 @@ function MediaPage() {
   async function AddToBacklog() {
     const backlog = {
       userId: user.id,
-      mediaId: media.imdbID,
+      mediaId: media.id,
       mediaType: media.type,
       mediaPoster: media.poster,
       mediaTitle: media.title,
@@ -109,12 +109,12 @@ function MediaPage() {
   }
 
   async function RemoveFromBacklog() {
-    await DeleteBacklog(media.imdbID, user.id);
+    await DeleteBacklog(media.id, user.id);
 
     setUser({
       ...user,
       backlogSummary: user.backlogSummary.filter(
-        (backlog) => backlog.mediaId !== media.imdbID
+        (backlog) => backlog.mediaId !== media.id
       ),
       totalBacklogs: user.totalBacklogs - 1,
     });
@@ -163,14 +163,14 @@ function MediaPage() {
             .map((episode) => {
               return (
                 <div
-                  key={episode.imdbID}
+                  key={episode.id}
                   className="episode-card"
                   onClick={() =>
                     navigate(
-                      `seasons/${selectedSeason}/episodes/${episode.imdbID}`,
+                      `seasons/${selectedSeason}/episodes/${episode.id}`,
                       {
                         state: {
-                          episodeId: episode.imdbID,
+                          episodeId: episode.id,
                           series: series as SeriesModel,
                         },
                       }
@@ -189,7 +189,7 @@ function MediaPage() {
                     <p>
                       Rating:{" "}
                       <FontAwesomeIcon className="star-icon" icon={faStar} />{" "}
-                      {episode.imdbRating}
+                      {episode.imdbRating === "" ? "N/A" : episode.imdbRating}
                     </p>
                   </div>
                 </div>
@@ -206,7 +206,7 @@ function MediaPage() {
         <Loader />
       ) : (
         <div className="media">
-          <TopBar />
+          <TopBar whiteText />
           {media.poster !== "N/A" ? (
             <img className="media-poster" src={media.poster}></img>
           ) : (
@@ -217,10 +217,10 @@ function MediaPage() {
           <div className="info">
             <div className="hero">
               <div className="title-section">
-                <div className="flex items-center gap-5 flex-wrap justify-center">
+                <div className="title flex items-center gap-5 flex-wrap">
                   <h1>{media.title}</h1>
                   {user.backlogSummary?.some(
-                    (backlog) => backlog.mediaId === media.imdbID
+                    (backlog) => backlog.mediaId === media.id
                   ) ? (
                     <CustomTooltip title="Remove from backlog" arrow>
                       <span>
@@ -276,11 +276,7 @@ function MediaPage() {
                 <div className="card">
                   <h3>Cast</h3>
                   {media.actors.split(",").map((actor) => {
-                    return (
-                      <p key={actor}>
-                        {actor}
-                      </p>
-                    );
+                    return <p key={actor}>{actor}</p>;
                   })}
                 </div>
                 <div className="card">
@@ -307,7 +303,7 @@ function MediaPage() {
                 </div>
                 <div className="card">
                   <h3>Ratings</h3>
-                  {media.metascore !== "N/A" && (
+                  {media.metascore !== "" && (
                     <p className="flex items-center gap-2">
                       Metascore:{" "}
                       <Rating
@@ -315,7 +311,6 @@ function MediaPage() {
                         value={ConvertRatingStringToFiveScale(media.metascore)}
                         readOnly
                       />
-                      \{" "}
                     </p>
                   )}
                   {media.ratings.map((rating) => {
@@ -346,7 +341,7 @@ function MediaPage() {
                       onClick={() =>
                         navigate("reviews", {
                           state: {
-                            mediaId: media.imdbID,
+                            mediaId: media.id,
                             mediaTitle: media.title,
                           },
                         })

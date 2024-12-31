@@ -115,7 +115,7 @@ function ViewReviewPage() {
           <Loader />
         ) : (
           <div className="review">
-            <TopBar />
+            <TopBar whiteText />
             <div className="info">
               <div className="hero">
                 <div className="parent-title">

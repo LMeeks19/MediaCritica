@@ -2,10 +2,10 @@
 {
     public class ReviewSummaryModel
     {
-        public required int Id { get; set; }
-        public required string ReviewerName { get; set; }
-        public required string Title { get; set; }
-        public required double Rating { get; set; }
-        public required DateTime Date { get; set; }
+        public int Id { get; set; }
+        public string ReviewerName { get; set; }
+        public string Title { get; set; }
+        public double Rating { get; set; }
+        public DateTime Date { get; set; }
     }
 }

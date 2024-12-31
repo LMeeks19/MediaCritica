@@ -1,95 +1,179 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Mappers;
+using MediaCritica.Server.Models;
+using MediaCritica.Server.Models.Media_Models;
+using MediaCritica.Server.Objects.Media_Objects;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MediaController : ControllerBase
+    public class MediaController(DatabaseContext databaseContext, IMapper mapper, ExternalApiHelper externalApiHelper, InternalApiHelper internalApiHelper) : ControllerBase
     {
-        private readonly DatabaseContext _databaseContext;
-        private readonly ReviewController _reviewController;
-        private readonly string _apiKey;
-
-        public MediaController(DatabaseContext databaseContext, IConfiguration configuration, ReviewController reviewController)
-        {
-            _databaseContext = databaseContext;
-            _reviewController = reviewController;
-            _apiKey = configuration.GetSection("API_KEYS:MEDIA_SERIVE").Value!;
-        }
+        private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly ExternalApiHelper _externalApiHelper = externalApiHelper;
+        private readonly InternalApiHelper _internalApiHelper = internalApiHelper;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet(Name = "GetMediaBySearch")]
         [Route("[action]/{searchTerm}/{page}")]
         public async Task<MediaSearchResultResponse> GetMediaBySearch(string searchTerm, int page)
         {
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?s={searchTerm}&page={page}&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var mediaSearchResultResponse = JsonSerializer.Deserialize<MediaSearchResultResponse>(stringResponse);
+            return await _externalApiHelper.GetSearchMedia(searchTerm, page);
+        }
 
-            return mediaSearchResultResponse!;
+        [HttpGet(Name = "GetExploreMediaBySearch")]
+        [Route("[action]/{searchTerm}")]
+        public async Task<List<MediaSummaryModel>> GetExploreMediaBySearch(string searchTerm)
+        {
+            return await _databaseContext.Media
+                .Where(media => media.Type != MediaType.Episode && media.Title.StartsWith(searchTerm))
+                .OrderBy(media => media.Title)
+                .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                .Take(10)
+                .ToListAsync();
+        }
+
+        [HttpGet(Name = "GetExploreMedia")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetExploreMedia(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode)
+                    .OrderBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(100)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
         }
 
         [HttpGet(Name = "GetMovie")]
-        [Route("[action]/{mediaId}")]
-        public async Task<MovieModel> GetMovie(string mediaId)
+        [Route("[action]/{movieId}")]
+        public async Task<MovieModel> GetMovie(string movieId)
         {
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={mediaId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var movieModel = JsonSerializer.Deserialize<MovieModel>(stringResponse);
+            var movie = await _internalApiHelper.GetMovieMedia(movieId);
 
-            movieModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10));
+            if (movie != null)
+                return _mapper.MovieMapper.MapMovieModel(movie);
 
-            return movieModel!;
+            var movieModel = await _externalApiHelper.GetMovieMedia(movieId);
+
+            movie = _mapper.MovieMapper.MapMovie(movieModel);
+
+            await _databaseContext.Movies.AddAsync(movie);
+            await _databaseContext.SaveChangesAsync();
+
+            movie = await _internalApiHelper.GetMovieMedia(movieId);
+
+            return _mapper.MovieMapper.MapMovieModel(movie!);
         }
 
         [HttpGet(Name = "GetSeries")]
-        [Route("[action]/{mediaId}")]
-        public async Task<SeriesModel> GetSeries(string mediaId)
+        [Route("[action]/{seriesId}")]
+        public async Task<SeriesModel> GetSeries(string seriesId)
         {
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={mediaId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var seriesModel = JsonSerializer.Deserialize<SeriesModel>(stringResponse);
+            var series = await _internalApiHelper.GetSeriesMedia(seriesId);
 
-            seriesModel!.Seasons.Add(await GetSeason(mediaId));
-            seriesModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10));
+            if (series != null)
+                return _mapper.SeriesMapper.MapSeriesModel(series);
 
-            return seriesModel!;
+
+            var seriesModel = await _externalApiHelper.GetSeriesMedia(seriesId);
+
+            series = _mapper.SeriesMapper.MapSeries(seriesModel);
+
+            await _databaseContext.Series.AddAsync(series);
+            await _databaseContext.SaveChangesAsync();
+
+            await GetSeason(seriesId);
+
+            series = await _internalApiHelper.GetSeriesMedia(seriesId);
+
+            return _mapper.SeriesMapper.MapSeriesModel(series!);
         }
 
         [HttpGet(Name = "GetSeason")]
-        [Route("[action]/{mediaId}/{season}")]
-        public async Task<SeasonModel> GetSeason(string mediaId, int season = 1)
+        [Route("[action]/{seriesId}/{seasonNo}")]
+        public async Task<SeasonModel> GetSeason(string seriesId, int seasonNo = 1)
         {
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={mediaId}&season={season}&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var seasonModel = JsonSerializer.Deserialize<SeasonModel>(stringResponse);
+            var season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
 
-            return seasonModel!;
+            if (season != null)
+                return _mapper.SeasonMapper.MapSeasonModel(season);
+
+            var seasonModel = await _externalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+
+            season = _mapper.SeasonMapper.MapSeason(seasonModel!, seriesId);
+
+            await _databaseContext.Seasons.AddAsync(season);
+            await _databaseContext.SaveChangesAsync();
+
+            season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+
+            return _mapper.SeasonMapper.MapSeasonModel(season!);
         }
 
         [HttpGet(Name = "GetGame")]
-        [Route("[action]/{mediaId}")]
-        public async Task<GameModel> GetGame(string mediaId)
+        [Route("[action]/{gameId}")]
+        public async Task<GameModel> GetGame(string gameId)
         {
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={mediaId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var gameModel = JsonSerializer.Deserialize<GameModel>(stringResponse);
+            var game = await _internalApiHelper.GetGameMedia(gameId);
 
-            gameModel!.Reviews.AddRange(await _reviewController.GetMediaReviews(mediaId, 0, 10)); ;
+            if (game != null)
+                return _mapper.GameMapper.MapGameModel(game);
 
-            return gameModel!;
+            var gameModel = await _externalApiHelper.GetGameMedia(gameId);
+
+            game = _mapper.GameMapper.MapGame(gameModel);
+
+            await _databaseContext.Games.AddAsync(game);
+            await _databaseContext.SaveChangesAsync();
+
+            game = await _internalApiHelper.GetGameMedia(gameId);
+
+            return _mapper.GameMapper.MapGameModel(game!);
         }
 
         [HttpGet(Name = "GetEpisode")]
-        [Route("[action]/{mediaId}")]
-        public async Task<EpisodeModel> GetEpisode(string mediaId)
+        [Route("[action]/{episodeId}")]
+        public async Task<EpisodeModel> GetEpisode(string episodeId)
         {
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={mediaId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var episodeModel = JsonSerializer.Deserialize<EpisodeModel>(stringResponse);
+            var episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
 
-            return episodeModel!;
+            if (episode != null && episode.IsFullyPopulated)
+                return _mapper.EpisodeMapper.MapEpisodeModel(episode);
+
+            var episodeModel = await _externalApiHelper.GetEpisodeMedia(episodeId);
+
+            if (episode != null)
+            {
+                episodeModel.Id = episode.Id;
+                episodeModel.SeasonId = episode.SeasonId;
+            }
+
+            episode = _mapper.EpisodeMapper.MapEpisode(episodeModel);
+
+            if (episode.Id == null)
+                await _databaseContext.Episodes.AddAsync(episode);
+            else
+                _databaseContext.Episodes.Update(episode);
+
+            await _databaseContext.SaveChangesAsync();
+
+            episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
+
+            return _mapper.EpisodeMapper.MapEpisodeModel(episode!);
         }
     }
 }

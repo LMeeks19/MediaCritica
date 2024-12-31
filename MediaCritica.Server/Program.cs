@@ -1,4 +1,6 @@
 using MediaCritica.Server;
+using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Mappers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,24 @@ builder.Configuration.AddInMemoryCollection(new Dictionary<string, string> { { "
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddMvc().AddControllersAsServices();
+
+// Add Mappers to Servies
+builder.Services.AddScoped<SeasonMapper>();
+builder.Services.AddScoped<SeriesMapper>();
+builder.Services.AddScoped<EpisodeMapper>();
+builder.Services.AddScoped<MovieMapper>();
+builder.Services.AddScoped<MediaMapper>();
+builder.Services.AddScoped<GameMapper>();
+builder.Services.AddScoped<ReviewMapper>();
+builder.Services.AddScoped<BacklogMapper>();
+builder.Services.AddScoped<RatingMapper>();
+
+builder.Services.AddScoped<IMapper, Mapper>();
+
+// Add Helpers to Services
+builder.Services.AddScoped<ExternalApiHelper>();
+builder.Services.AddScoped<InternalApiHelper>();
+
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));

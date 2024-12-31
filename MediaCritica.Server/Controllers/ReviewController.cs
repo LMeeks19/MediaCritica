@@ -1,5 +1,5 @@
-﻿using MediaCritica.Server.Models;
-using MediaCritica.Server.Objects;
+﻿using MediaCritica.Server.Mappers;
+using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,119 +7,55 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMapper mapper) : ControllerBase
     {
-        private readonly DatabaseContext _databaseContext;
-
-        public ReviewController(DatabaseContext databaseContext)
-        {
-            _databaseContext = databaseContext;
-        }
+        private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet(Name = "GetReview")]
         [Route("[action]/{reviewId}")]
         public async Task<ReviewModel?> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
-                .Include(review => review.Reviewer)
                 .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)
                 return null;
 
-            return new ReviewModel()
-            {
-                Id = review.Id,
-                MediaId = review.MediaId,
-                MediaPoster = review.MediaPoster,
-                MediaTitle = review.MediaTitle,
-                MediaType = review.MediaType,
-                MediaSeason = review.MediaSeason,
-                MediaEpisode = review.MediaEpisode,
-                MediaParentId = review.MediaParentId,
-                MediaParentTitle = review.MediaParentTitle,
-                ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
-                ReviewerId = review.ReviewerId,
-                Title = review.Title,
-                Rating = review.Rating,
-                Description = review.Description,
-                Date = review.Date
-            };
+            return _mapper.ReviewMapper.MapReviewModel(review);
         }
 
         [HttpGet(Name = "GetUserReviews")]
         [Route("[action]/{reviewerId}/{offset}")]
         public async Task<List<ReviewModel>> GetUserReviews(int reviewerId, int offset)
         {
-            var reviews = await _databaseContext.Reviews
-                .Where(review => review.ReviewerId == reviewerId)
-                .Select(review => new ReviewModel()
-                {
-                    Id = review.Id,
-                    MediaId = review.MediaId,
-                    MediaPoster = review.MediaPoster,
-                    MediaTitle = review.MediaTitle,
-                    MediaType = review.MediaType,
-                    MediaSeason = review.MediaSeason,
-                    MediaEpisode = review.MediaEpisode,
-                    MediaParentId = review.MediaParentId,
-                    MediaParentTitle = review.MediaParentTitle,
-                    ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
-                    ReviewerId = review.ReviewerId,
-                    Title = review.Title,
-                    Rating = review.Rating,
-                    Description = review.Description,
-                    Date = review.Date
-                }).OrderByDescending(review => review.Date)
+            return await _databaseContext.Reviews
+                .Where(review => review.UserId == reviewerId)
+                .OrderByDescending(review => review.Date)
+                .Select(review => _mapper.ReviewMapper.MapReviewModel(review))
                 .Skip(offset)
                 .Take(20)
                 .ToListAsync();
-
-            return reviews;
         }
 
         [HttpGet(Name = "GeMediaReviews")]
         [Route("[action]/{mediaId}/{offset}/{limit}")]
         public async Task<List<ReviewSummaryModel>> GetMediaReviews(string mediaId, int offset, int limit)
         {
-            var reviews = await _databaseContext.Reviews
-                .Include(review => review.Reviewer)
+            return await _databaseContext.Reviews
                 .Where(review => review.MediaId == mediaId)
-                .Select(review => new ReviewSummaryModel()
-                {
-                    Id = review.Id,
-                    ReviewerName = $"{review.Reviewer.Forename} {review.Reviewer.Surname}".Trim(),
-                    Title = review.Title,
-                    Rating = review.Rating,
-                    Date = review.Date
-                }).OrderByDescending(review => review.Date)
+                .OrderByDescending(review => review.Date)
+                .Select(review => _mapper.ReviewMapper.MapReviewSummaryModel(review))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();
-
-            return reviews;
         }
 
         [HttpPost(Name = "PostReview")]
         [Route("[action]")]
         public async Task<int> PostReview([FromBody] ReviewModel reviewModel)
         {
-            var review = new Review()
-            {
-                MediaId = reviewModel.MediaId,
-                MediaPoster = reviewModel.MediaPoster,
-                MediaTitle = reviewModel.MediaTitle,
-                MediaType = reviewModel.MediaType,
-                MediaSeason = reviewModel.MediaSeason,
-                MediaEpisode = reviewModel.MediaEpisode,
-                MediaParentId = reviewModel.MediaParentId,
-                MediaParentTitle = reviewModel.MediaParentTitle,
-                ReviewerId = reviewModel.ReviewerId,
-                Title = reviewModel.Title,
-                Rating = reviewModel.Rating,
-                Description = reviewModel.Description,
-                Date = reviewModel.Date
-            };
+            var review = _mapper.ReviewMapper.MapReview(reviewModel);
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();

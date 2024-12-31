@@ -6,10 +6,6 @@ export interface ReviewModel {
   mediaPoster: string;
   mediaTitle: string;
   mediaType: MediaType;
-  mediaSeason?: number;
-  mediaEpisode?: number;
-  mediaParentId?: string;
-  mediaParentTitle?: string;
   reviewerName: string;
   reviewerId: number;
   title: string;

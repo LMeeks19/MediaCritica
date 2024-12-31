@@ -17,9 +17,8 @@
       padding-top: 6rem;
       text-shadow: 0 6px 0 var(--palette-colour), 0 7px 0 var(--palette-colour),
         0 8px 0 var(--palette-colour), 0 9px 0 var(--palette-colour),
-        0 10px 0 var(--palette-colour), 0 6px 1px #0000001a,
-        0 0 5px #0000001a, 0 1px 3px #0000004d,
-        0 3px 5px #00000033, 0 5px 10px #00000040,
+        0 10px 0 var(--palette-colour), 0 6px 1px #0000001a, 0 0 5px #0000001a,
+        0 1px 3px #0000004d, 0 3px 5px #00000033, 0 5px 10px #00000040,
         0 10px 10px #00000033, 0 20px 20px #00000026;
     }
 
@@ -39,7 +38,7 @@
         border: none;
         border-radius: 20px;
         width: 85%;
-        font-family: inherit;
+        font-family: "Orbitron" ;
       }
 
       .homepage-input:focus-visible {
@@ -70,13 +69,15 @@
       color: whitesmoke;
     }
 
-    .load-btn {
+    .load-btn,
+    .explore-btn {
       background-color: var(--palette-colour);
       color: whitesmoke;
       margin: 2rem;
     }
 
-    .load-btn:not(:disabled):hover {
+    .load-btn:not(:disabled):hover,
+    .explore-btn:not(:disabled):hover {
       color: var(--dark-light);
       background-color: var(--light-dark);
     }
@@ -225,7 +226,7 @@
     .homepage {
       .homepage-searchbar {
         height: auto;
-        padding: 1rem .5rem;
+        padding: 1rem 0.5rem;
 
         .homepage-input {
           height: auto;
