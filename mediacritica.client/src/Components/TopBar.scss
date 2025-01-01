@@ -15,6 +15,14 @@
     background-color: var(--palette-colour) !important;
   }
 
+  .title {
+    position: absolute;
+    top: .5rem;
+    font-size: 1.75rem;
+    color: inherit;
+    left: 1rem;
+  }
+
   .button {
     position: absolute;
     top: 0.5rem;
