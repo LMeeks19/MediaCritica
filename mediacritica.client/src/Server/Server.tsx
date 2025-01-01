@@ -78,6 +78,21 @@ export async function GetExploreMedia(offset: number = 0): Promise<MediaSummaryM
   return response.json();
 }
 
+export async function GetBestOfPrevYear(offset: number = 0): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetBestOfPrevYear/${offset}`);
+  return response.json();
+}
+
+export async function GetBestOfCurYear(offset: number = 0): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetBestOfCurYear/${offset}`);
+  return response.json();
+}
+
+export async function GetUpcoming(offset: number = 0): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetUpcoming/${offset}`);
+  return response.json();
+}
+
 export async function GetMedia(
   mediId: string,
   type: MediaType

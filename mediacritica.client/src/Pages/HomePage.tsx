@@ -4,12 +4,18 @@ import { TextField, InputAdornment, Autocomplete, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import Collapsible from "../Components/Collapsible";
-import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
-import { GetSearchResults } from "../Server/Server";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import {
+  GetBestOfCurYear,
+  GetBestOfPrevYear,
+  GetSearchResults,
+  GetUpcoming,
+} from "../Server/Server";
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { useNavigate } from "react-router-dom";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import ImageIcon from "@mui/icons-material/Image";
+import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,20 +40,45 @@ function HomePage() {
     return () => clearTimeout(timeout);
   }, [searchTerm]);
 
-  function GetTrendingMedia(): MediaSummaryModel[] {
-    return [] as MediaSummaryModel[];
+  async function GetUpcomingMedia(
+    offset: number = 0
+  ): Promise<MediaSummaryModelResponse> {
+    const data = await GetUpcoming(offset);
+    return data;
   }
 
-  function GetUpcomingMedia(): MediaSummaryModel[] {
-    return [] as MediaSummaryModel[];
+  function GetSeasonalPicksMedia(): Promise<MediaSummaryModelResponse> {
+    return {} as Promise<MediaSummaryModelResponse>;
   }
 
-  function GetPrevYearMedia(): MediaSummaryModel[] {
-    return [] as MediaSummaryModel[];
+  function GetLatestMedia(): Promise<MediaSummaryModelResponse> {
+    return {} as Promise<MediaSummaryModelResponse>;
   }
 
-  function GetCurYearMedia(): MediaSummaryModel[] {
-    return [] as MediaSummaryModel[];
+  function GetRecentlyReviewedMedia(): Promise<MediaSummaryModelResponse> {
+    return {} as Promise<MediaSummaryModelResponse>;
+  }
+
+  function GetMostReviewedMedia(): Promise<MediaSummaryModelResponse> {
+    return {} as Promise<MediaSummaryModelResponse>;
+  }
+
+  async function GetPrevYearMedia(
+    offset: number = 0
+  ): Promise<MediaSummaryModelResponse> {
+    const data = await GetBestOfPrevYear(offset);
+    return data;
+  }
+
+  async function GetCurYearMedia(
+    offset: number = 0
+  ): Promise<MediaSummaryModelResponse> {
+    const data = await GetBestOfCurYear(offset);
+    return data;
+  }
+
+  function GetBestMediaOfAllTime(): Promise<MediaSummaryModelResponse> {
+    return {} as Promise<MediaSummaryModelResponse>;
   }
 
   return (
@@ -81,7 +112,12 @@ function HomePage() {
                     {result.poster === "N/A" ? (
                       <ImageIcon style={{ width: 60, height: 75 }} />
                     ) : (
-                      <img loading="lazy" width="60" height="75" src={result.poster} />
+                      <img
+                        loading="lazy"
+                        width="60"
+                        height="75"
+                        src={result.poster}
+                      />
                     )}
                     <div className="flex justify-between items-center w-full px-4 gap-2 overflow-hidden">
                       <div className="flex flex-col overflow-hidden">
@@ -121,22 +157,43 @@ function HomePage() {
         </div>
         <div className="sections">
           <Collapsible
-            title="Trending Media"
-            request={() => GetTrendingMedia()}
+            title="Seasonal Picks"
+            request={() => GetSeasonalPicksMedia()}
           />
           <Collapsible
-            title="Upcoming Media"
+            title="Latest Releases"
+            request={() => GetLatestMedia()}
+          />
+          <Collapsible
+            title="Upcoming Releases"
             request={() => GetUpcomingMedia()}
           />
-
           <Collapsible
-            title={`Best of ${currentYear} (So Far)`}
+            title="Recently Reviewed"
+            request={() => GetRecentlyReviewedMedia()}
+          />
+          <Collapsible
+            title="Most Reviewed"
+            request={() => GetMostReviewedMedia()}
+          />
+          <Collapsible
+            title={`Best of ${currentYear} So Far`}
             request={() => GetCurYearMedia()}
           />
           <Collapsible
             title={`Best of ${currentYear - 1}`}
             request={() => GetPrevYearMedia()}
           />
+          <Collapsible
+            title="Best of All Time"
+            request={() => GetBestMediaOfAllTime()}
+          />
+        </div>
+        <div className="sub-header explore">
+          <button className="explore-btn" onClick={() => navigate("/explore")}>
+            <TravelExploreIcon />
+            Explore
+          </button>
         </div>
       </div>
     </div>

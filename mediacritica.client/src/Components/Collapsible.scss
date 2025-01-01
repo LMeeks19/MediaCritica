@@ -10,22 +10,12 @@
     cursor: pointer;
     transition: background-color 0.3s;
     display: flex;
-    justify-content: space-between;
-    background-color: light-dark(whitesmoke, #1b1b1b);
+    justify-content: space-between !important;
+    background-color: light-dark(whitesmoke, #1b1b1b) !important;
   }
 
   .collapsible:hover {
-    background-color: light-dark(grey, #242424);
-  }
-
-  .collapsible:after {
-    content: "\002B"; /* Plus sign */
-    font-size: 1.5rem;
-    float: right;
-  }
-
-  .collapsible.active:after {
-    content: "\2212"; /* Minus sign */
+    background-color: light-dark(grey, #242424) !important;
   }
 
   .content {
@@ -33,6 +23,7 @@
     overflow: hidden;
     padding: 2rem;
     border-radius: 5px;
+    background-color: light-dark(whitesmoke, black);
   }
 
   .media-grid {

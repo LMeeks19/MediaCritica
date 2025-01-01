@@ -40,6 +40,21 @@ Accept: application/json
 
 ###
 
+GET {{MediaCritica.Server_HostAddress}}/Media/GetBestOfPrevYear/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Media/GetBestOfCurYear/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Media/GetUpcoming/
+Accept: application/json
+
+###
+
 GET {{MediaCritica.Server_HostAddress}}/Media/GetMovie/
 Accept: application/json
 

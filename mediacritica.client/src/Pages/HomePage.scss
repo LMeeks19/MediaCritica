@@ -18,7 +18,7 @@
         .MuiFormLabel-root {
           color: whitesmoke !important;
         }
-        
+
         .MuiInputBase-root {
           color: whitesmoke !important;
           overflow: hidden !important;
@@ -59,8 +59,22 @@
       }
     }
 
+    .explore {
+      align-items: baseline;
+      justify-content: center;
+      border-bottom: none !important;
+
+      .explore-btn {
+        border-color: var(--palette-colour);
+        color: whitesmoke;
+      }
+
+      .explore-btn:not(:disabled):hover {
+        background-color: var(--palette-colour);
+      }
+    }
+
     .sections {
-      flex: 1;
       overflow: hidden auto;
     }
   }

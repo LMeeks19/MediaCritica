@@ -4,10 +4,14 @@ import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { format } from "date-fns";
 
 const Collapsible = (props: CollapsibleProps) => {
   const [isActive, setIsActive] = useState(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [totalResults, setTotalResults] = useState<number>(1);
   const [media, setMedia] = useState<MediaSummaryModel[]>(
     [] as MediaSummaryModel[]
   );
@@ -16,24 +20,22 @@ const Collapsible = (props: CollapsibleProps) => {
     ExecuteRequest();
   }, []);
 
-  function ExecuteRequest() {
+  async function ExecuteRequest() {
     setIsLoading(true);
-    const mediaData = props.request() as MediaSummaryModelResponse;
+    const mediaData = (await props.request()) as MediaSummaryModelResponse;
     setMedia(mediaData.mediaSummaryModels);
+    setTotalResults(mediaData.totalMediaCount);
     setIsLoading(false);
   }
-
-  const handleToggle = () => {
-    setIsActive(!isActive);
-  };
 
   return (
     <div className="section">
       <div
-        className={`sub-header collapsible ${isActive ? "active" : ""}`}
-        onClick={handleToggle}
+        className="sub-header collapsible"
+        onClick={() => setIsActive(!isActive)}
       >
         <h1>{props.title}</h1>
+        {isActive ? <RemoveIcon /> : <AddIcon />}
       </div>
 
       <div
@@ -44,6 +46,8 @@ const Collapsible = (props: CollapsibleProps) => {
       >
         {isActive && isLoading ? (
           <Loader />
+        ) : media?.length === 0 ? (
+          <div className="text-center">No Media</div>
         ) : (
           <div className="media-grid">
             {media?.map((item) => {
@@ -55,7 +59,9 @@ const Collapsible = (props: CollapsibleProps) => {
                     className="media-image"
                   />
                   <div className="media-title">{item.title}</div>
-                  <div className="media-year">{item.released.toString()}</div>
+                  <div className="media-year">
+                    {format(item.released, "do MMM yyyy")}
+                  </div>
                   <div className="media-year">
                     {CapitaliseFirstLetter(item.type)}
                   </div>
