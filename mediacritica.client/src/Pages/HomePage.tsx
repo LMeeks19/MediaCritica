@@ -3,19 +3,26 @@ import TopBar from "../Components/TopBar";
 import { TextField, InputAdornment, Autocomplete, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import Collapsible from "../Components/Collapsible";
+import {
+  CollapsibleSection,
+  CollapsibleTabSection,
+} from "../Components/CollapsibleSections";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import {
+  GetBestOfAllTime,
   GetBestOfCurYear,
   GetBestOfPrevYear,
+  GetLatest,
+  GetMostReviewed,
+  GetRecentlyReviewed,
   GetSearchResults,
+  GetSeasonalPicks,
   GetUpcoming,
 } from "../Server/Server";
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { useNavigate } from "react-router-dom";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import ImageIcon from "@mui/icons-material/Image";
-import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -40,153 +47,134 @@ function HomePage() {
     return () => clearTimeout(timeout);
   }, [searchTerm]);
 
-  async function GetUpcomingMedia(
-    offset: number = 0
-  ): Promise<MediaSummaryModelResponse> {
-    const data = await GetUpcoming(offset);
-    return data;
-  }
-
-  function GetSeasonalPicksMedia(): Promise<MediaSummaryModelResponse> {
-    return {} as Promise<MediaSummaryModelResponse>;
-  }
-
-  function GetLatestMedia(): Promise<MediaSummaryModelResponse> {
-    return {} as Promise<MediaSummaryModelResponse>;
-  }
-
-  function GetRecentlyReviewedMedia(): Promise<MediaSummaryModelResponse> {
-    return {} as Promise<MediaSummaryModelResponse>;
-  }
-
-  function GetMostReviewedMedia(): Promise<MediaSummaryModelResponse> {
-    return {} as Promise<MediaSummaryModelResponse>;
-  }
-
-  async function GetPrevYearMedia(
-    offset: number = 0
-  ): Promise<MediaSummaryModelResponse> {
-    const data = await GetBestOfPrevYear(offset);
-    return data;
-  }
-
-  async function GetCurYearMedia(
-    offset: number = 0
-  ): Promise<MediaSummaryModelResponse> {
-    const data = await GetBestOfCurYear(offset);
-    return data;
-  }
-
-  function GetBestMediaOfAllTime(): Promise<MediaSummaryModelResponse> {
-    return {} as Promise<MediaSummaryModelResponse>;
-  }
-
   return (
     <div className="homepage-container">
       <div className="homepage">
         <TopBar hideHome whiteText />
         <div className="header">
-          <div className="actions">
-            <Autocomplete
-              sx={{ minWidth: 300, width: 1250 }}
-              fullWidth
-              autoComplete
-              loading={isLoading}
-              filterOptions={(x) => x}
-              options={mediaSearchResults}
-              getOptionLabel={(result) => result.title}
-              onClose={() => setMediaSearchResults([])}
-              onInputChange={(_e, v) => setSearchTerm(v)}
-              onChange={(_e, result) =>
-                navigate(`/media/${result?.imdbID}`, {
-                  state: {
-                    mediaId: result?.imdbID,
-                    mediaType: result?.type,
-                  },
-                })
-              }
-              renderOption={(props, result) => {
-                const { key, ...resultProps } = props;
-                return (
-                  <Box key={result.imdbID} component="li" {...resultProps}>
-                    {result.poster === "N/A" ? (
-                      <ImageIcon style={{ width: 60, height: 75 }} />
-                    ) : (
-                      <img
-                        loading="lazy"
-                        width="60"
-                        height="75"
-                        src={result.poster}
-                      />
-                    )}
-                    <div className="flex justify-between items-center w-full px-4 gap-2 overflow-hidden">
-                      <div className="flex flex-col overflow-hidden">
-                        <div className="text-2xl truncate">{result.title}</div>
-                        {CapitaliseFirstLetter(result.type)}
-                      </div>
-                      {result.year.endsWith("–")
-                        ? `${result.year}Present`
-                        : result.year}
+          <Autocomplete
+            sx={{ minWidth: 300, width: 1500 }}
+            fullWidth
+            autoComplete
+            loading={isLoading}
+            filterOptions={(x) => x}
+            options={mediaSearchResults}
+            getOptionLabel={(result) => result.title}
+            onClose={() => setMediaSearchResults([])}
+            onInputChange={(_e, v) => setSearchTerm(v)}
+            onChange={(_e, result) =>
+              navigate(`/media/${result?.imdbID}`, {
+                state: {
+                  mediaId: result?.imdbID,
+                  mediaType: result?.type,
+                },
+              })
+            }
+            renderOption={(props, result) => {
+              const { key, ...resultProps } = props;
+              return (
+                <Box key={result.imdbID} component="li" {...resultProps}>
+                  {result.poster === "N/A" ? (
+                    <ImageIcon style={{ width: 60, height: 75 }} />
+                  ) : (
+                    <img
+                      loading="lazy"
+                      width="60"
+                      height="75"
+                      src={result.poster}
+                    />
+                  )}
+                  <div className="flex justify-between items-center w-full px-4 gap-2 overflow-hidden">
+                    <div className="flex flex-col overflow-hidden">
+                      <div className="text-2xl truncate">{result.title}</div>
+                      {CapitaliseFirstLetter(result.type)}
                     </div>
-                  </Box>
-                );
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Search"
-                  placeholder="Search..."
-                  slotProps={{
-                    input: {
-                      ...params.InputProps,
-                      startAdornment: (
-                        <>
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                          {params.InputProps.startAdornment}
-                        </>
-                      ),
-                    },
-                  }}
-                />
-              )}
-            />
-          </div>
+                    {result.year.endsWith("–")
+                      ? `${result.year}Present`
+                      : result.year}
+                  </div>
+                </Box>
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Search"
+                placeholder="Search..."
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  },
+                }}
+              />
+            )}
+          />
         </div>
         <div className="sections">
-          <Collapsible
+          <CollapsibleSection
             title="Seasonal Picks"
-            request={() => GetSeasonalPicksMedia()}
+            request={() => GetSeasonalPicks()}
+            defaultIsOpen={true}
           />
-          <Collapsible
-            title="Latest Releases"
-            request={() => GetLatestMedia()}
+
+          <CollapsibleTabSection
+            title="New & Upcoming"
+            tabs={[
+              {
+                label: "Latest Releases",
+                request: () => GetLatest(),
+              },
+              {
+                label: "Upcoming Releases",
+                request: () => GetUpcoming(),
+              },
+            ]}
+            defaultIsOpen={true}
           />
-          <Collapsible
-            title="Upcoming Releases"
-            request={() => GetUpcomingMedia()}
+
+          <CollapsibleTabSection
+            title="Yearly Highlights"
+            tabs={[
+              {
+                label: `Best of ${currentYear - 1}`,
+                request: () => GetBestOfPrevYear(),
+              },
+              {
+                label: `Best of ${currentYear} (So Far)`,
+                request: () => GetBestOfCurYear(),
+              },
+            ]}
+            defaultIsOpen={false}
           />
-          <Collapsible
-            title="Recently Reviewed"
-            request={() => GetRecentlyReviewedMedia()}
+
+          <CollapsibleTabSection
+            title="Community Highlights"
+            tabs={[
+              {
+                label: "Recently Reviewed",
+                request: () => GetRecentlyReviewed(),
+              },
+              {
+                label: "Most Reviewed",
+                request: () => GetMostReviewed(),
+              },
+            ]}
+            defaultIsOpen={false}
           />
-          <Collapsible
-            title="Most Reviewed"
-            request={() => GetMostReviewedMedia()}
-          />
-          <Collapsible
-            title={`Best of ${currentYear} So Far`}
-            request={() => GetCurYearMedia()}
-          />
-          <Collapsible
-            title={`Best of ${currentYear - 1}`}
-            request={() => GetPrevYearMedia()}
-          />
-          <Collapsible
+
+          <CollapsibleSection
             title="Best of All Time"
-            request={() => GetBestMediaOfAllTime()}
+            request={() => GetBestOfAllTime()}
+            defaultIsOpen={false}
           />
         </div>
         <div className="sub-header explore">

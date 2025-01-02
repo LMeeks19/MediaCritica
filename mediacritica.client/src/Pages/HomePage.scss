@@ -14,48 +14,46 @@
       background-color: var(--palette-colour);
       justify-content: center;
 
-      .actions {
-        .MuiFormLabel-root {
-          color: whitesmoke !important;
-        }
+      .MuiFormLabel-root {
+        color: whitesmoke !important;
+      }
 
-        .MuiInputBase-root {
-          color: whitesmoke !important;
-          overflow: hidden !important;
-          padding-left: 15px;
-        }
+      .MuiInputBase-root {
+        color: whitesmoke !important;
+        overflow: hidden !important;
+        padding-left: 15px;
+      }
 
-        .MuiOutlinedInput-notchedOutline {
-          border-color: whitesmoke !important;
-        }
+      .MuiOutlinedInput-notchedOutline {
+        border-color: whitesmoke !important;
+      }
 
-        .MuiSelect-select {
-          color: whitesmoke !important;
-        }
+      .MuiSelect-select {
+        color: whitesmoke !important;
+      }
 
-        .MuiSvgIcon-root {
-          color: whitesmoke !important;
-        }
+      .MuiSvgIcon-root {
+        color: whitesmoke !important;
+      }
 
-        .MuiAutocomplete-endAdornment {
-          right: 15px !important;
-        }
+      .MuiAutocomplete-endAdornment {
+        right: 15px !important;
+      }
 
-        .MuiAutocomplete-input {
-          padding: 0 !important;
-        }
+      .MuiAutocomplete-input {
+        padding: 0 !important;
+      }
 
-        .MuiInputBase-input {
-          font-family: "Orbitron" !important;
-        }
+      .MuiInputBase-input {
+        font-family: "Orbitron" !important;
+      }
 
-        .MuiInputBase-inputAdornedStart {
-          padding: 5px 0 5px 0 !important;
-        }
+      .MuiInputBase-inputAdornedStart {
+        padding: 5px 0 5px 0 !important;
+      }
 
-        .MuiIconButton-root {
-          color: var(--light-dark);
-        }
+      .MuiIconButton-root {
+        color: var(--light-dark);
       }
     }
 
@@ -65,12 +63,13 @@
       border-bottom: none !important;
 
       .explore-btn {
-        border-color: var(--palette-colour);
+        background-color: var(--palette-colour);
         color: whitesmoke;
       }
 
       .explore-btn:not(:disabled):hover {
-        background-color: var(--palette-colour);
+        background-color: var(--light-dark);
+        color: var(--dark-light);
       }
     }
 

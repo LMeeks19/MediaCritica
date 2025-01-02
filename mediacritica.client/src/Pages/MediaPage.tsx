@@ -208,7 +208,7 @@ function MediaPage() {
         <div className="media">
           <TopBar whiteText />
           {media.poster !== "N/A" ? (
-            <img className="media-poster" src={media.poster}></img>
+            <img className="media-poster" src={media.poster.replace("300.jpg", "752.jpg")}></img>
           ) : (
             <div className="media-poster empty">
               <FontAwesomeIcon icon={faImage} />

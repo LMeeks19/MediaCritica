@@ -50,7 +50,32 @@ Accept: application/json
 
 ###
 
+GET {{MediaCritica.Server_HostAddress}}/Media/GetBestOfAllTime/
+Accept: application/json
+
+###
+
 GET {{MediaCritica.Server_HostAddress}}/Media/GetUpcoming/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Media/GetLatest/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Media/GetSeasonalPicks/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Media/GetMostReviewed/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Media/GetRecentlyReviewed/
 Accept: application/json
 
 ###

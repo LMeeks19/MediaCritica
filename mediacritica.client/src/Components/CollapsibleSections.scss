@@ -1,0 +1,137 @@
+.section {
+  .sub-header {
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .collapsible {
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between !important;
+    background-color: light-dark(whitesmoke, #1b1b1b) !important;
+  }
+
+  .collapsible:hover {
+    background-color: light-dark(lightgrey, #242424) !important;
+  }
+}
+
+// Tabbed Sections
+.tab-section {
+  width: 100%;
+  .tabs {
+    display: flex;
+    width: 100%;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+
+    .tab {
+      width: 50%;
+      padding: 1.5rem 0;
+      cursor: pointer;
+      text-align: center;
+      border-bottom: 2px solid transparent;
+      background-color: transparent;
+      transition: border-bottom-color 0.3s ease-in-out,
+        background-color 0.3s ease-in-out;
+
+      &.active {
+        background-color: var(--palette-colour);
+        border-bottom-color: var(--light-dark);
+      }
+
+      &:not(.active):hover {
+        background-color: var(--palette-colour-faded);
+        border-bottom-color: var(--light-dark);
+      }
+    }
+  }
+}
+
+// Media Container
+.media-container {
+  display: flex;
+  padding: 2rem;
+  overflow: auto hidden;
+  gap: 20px;
+
+  .MuiCard-root {
+    border-radius: 8px;
+    background-color: light-dark(whitesmoke, #242424) !important;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+    min-width: 180px;
+    min-height: 225px;
+    width: 180px;
+    height: 225px;
+
+    .MuiCardActionArea-root {
+      height: inherit;
+
+      .MuiCardHeader-root {
+        background-color: var(--palette-colour);
+        transition: display 0.5s ease-in-out;
+        transition-behavior: allow-discrete;
+        display: none;
+        padding: 0.5rem;
+
+        .MuiCardHeader-content {
+          overflow: hidden;
+
+          .MuiCardHeader-title {
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            font-family: "Orbitron";
+            font-size: 0.8rem;
+          }
+
+          .MuiCardHeader-title {
+            color: whitesmoke;
+          }
+        }
+      }
+
+      .MuiCardMedia-root {
+        transition: height 0.5s ease-in-out;
+        height: 225px;
+        width: 180px;
+      }
+
+      .MuiCardContent-root {
+        transition: display 0.5s ease-in-out;
+        transition-behavior: allow-discrete;
+        display: none;
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        gap: 0.25rem;
+        text-align: center;
+
+        .MuiTypography-root {
+          font-family: "Orbitron";
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          font-size: 0.6rem;
+        }
+      }
+    }
+  }
+
+  .MuiCard-root:hover {
+    .MuiCardActionArea-root {
+      .MuiCardHeader-root {
+        display: block;
+      }
+
+      .MuiCardMedia-root {
+        height: calc(225px - 101.23px);
+      }
+
+      .MuiCardContent-root {
+        display: flex;
+      }
+    }
+  }
+}

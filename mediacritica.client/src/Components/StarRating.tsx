@@ -13,6 +13,9 @@ function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
 
+  console.log(new Date().getTime())
+  console.log(new Date(props.media.released).getTime())
+
   return (
     <div className="flex items-center flex-col gap-2 my-auto">
       <Rating
@@ -22,9 +25,9 @@ function StarRating(props: StarRatingProps) {
         readOnly
       />
       <div className="text-base text-center flex flex-col flex-wrap justify-center">
-        <div>{props.reviews} Reviews</div>
+        {props.reviews !== "" && <div>{props.reviews} Reviews</div>}
         <CustomTooltip
-          title={user.id === null ? "Login to review" : "Write a review"}
+          title={(user.id !== undefined || user.id !== null) ? new Date(props.media.released).getTime() > new Date().getTime() ? "Media not out yet" : "Write a review" : "Login to review"} 
           arrow
         >
           <span hidden={props.media.type === MediaType.Episode}>
@@ -35,7 +38,7 @@ function StarRating(props: StarRatingProps) {
                   state: { media: props.media },
                 })
               }
-              disabled={user.id === null || user.id === undefined}
+              disabled={user.id === null || user.id === undefined || new Date(props.media.released).getTime() > new Date().getTime()}
             >
               Review
             </button>
@@ -52,5 +55,4 @@ interface StarRatingProps {
   rating: string;
   reviews: string;
   media: MovieModel | SeriesModel | EpisodeModel;
-  parent?: SeriesModel;
 }

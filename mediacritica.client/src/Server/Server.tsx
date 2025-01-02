@@ -68,28 +68,73 @@ export async function GetSearchResults(
   return response.json();
 }
 
-export async function GetExploreMediaBySearch(searchTerm: string): Promise<MediaSummaryModel[]> {
+export async function GetExploreMediaBySearch(
+  searchTerm: string
+): Promise<MediaSummaryModel[]> {
   const response = await fetch(`/Media/GetExploreMediaBySearch/${searchTerm}`);
   return response.json();
 }
 
-export async function GetExploreMedia(offset: number = 0): Promise<MediaSummaryModelResponse> {
+export async function GetExploreMedia(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
   const response = await fetch(`/Media/GetExploreMedia/${offset}`);
   return response.json();
 }
 
-export async function GetBestOfPrevYear(offset: number = 0): Promise<MediaSummaryModelResponse> {
+export async function GetBestOfPrevYear(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
   const response = await fetch(`/Media/GetBestOfPrevYear/${offset}`);
   return response.json();
 }
 
-export async function GetBestOfCurYear(offset: number = 0): Promise<MediaSummaryModelResponse> {
+export async function GetBestOfCurYear(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
   const response = await fetch(`/Media/GetBestOfCurYear/${offset}`);
   return response.json();
 }
 
-export async function GetUpcoming(offset: number = 0): Promise<MediaSummaryModelResponse> {
+export async function GetUpcoming(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
   const response = await fetch(`/Media/GetUpcoming/${offset}`);
+  return response.json();
+}
+
+export async function GetSeasonalPicks(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetSeasonalPicks/${offset}`);
+  return response.json();
+}
+
+export async function GetLatest(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetLatest/${offset}`);
+  return response.json();
+}
+
+export async function GetRecentlyReviewed(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetRecentlyReviewed/${offset}`);
+  return response.json();
+}
+
+export async function GetMostReviewed(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetMostReviewed/${offset}`);
+  return response.json();
+}
+
+export async function GetBestOfAllTime(
+  offset: number = 0
+): Promise<MediaSummaryModelResponse> {
+  const response = await fetch(`/Media/GetBestOfAllTime/${offset}`);
   return response.json();
 }
 

@@ -17,6 +17,7 @@ namespace MediaCritica.Server.Mappers
                 MediaType = reviewModel.MediaType,
                 Rating = reviewModel.Rating,
                 UserId = reviewModel.ReviewerId,
+                ReviewerName = reviewModel.ReviewerName,
                 Title = reviewModel.Title,
             };
         }
