@@ -204,7 +204,8 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await _databaseContext.Media
                     .Where(media => media.Type != MediaType.Episode)
                     .Where(media => (isWinter ? (media.Released.Month >= currentSeasonStartMonth || media.Released.Month <= currentSeasonEndMonth) : (media.Released.Month >= currentSeasonStartMonth && media.Released.Month <= currentSeasonEndMonth)) && media.Released <= DateTime.Now)
-                    .OrderByDescending(media => media.Title)
+                    .OrderByDescending(media => media.ImdbRating)
+                    .ThenBy(media => media.Title)
                     .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
                     .Skip(offset)
                     .Take(10)

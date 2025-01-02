@@ -3,6 +3,16 @@
     h2 {
       font-size: 1.5rem;
     }
+
+    .actions {
+      gap: 2rem;
+      
+      .MuiSvgIcon-root {
+        color: var(--light-dark) !important;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    }
   }
 
   .collapsible {

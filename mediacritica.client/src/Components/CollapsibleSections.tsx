@@ -12,12 +12,17 @@ import {
   Divider,
   CardContent,
   Typography,
+  ToggleButtonGroup,
+  ToggleButton,
+  IconButton,
 } from "@mui/material";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
 import Loader from "./Loader";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { MediaType } from "../Enums/MediaType";
+import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 
 interface SectionProps {
   title: string;
@@ -27,18 +32,24 @@ interface SectionProps {
 
 const MediaGrid: FC<{
   media: MediaSummaryModelResponse;
+  filter: string;
   isLoading: boolean;
-}> = ({ media, isLoading }) => {
+}> = ({ media, filter, isLoading }) => {
   const navigate = useNavigate();
+
+  function filtered(items: MediaSummaryModel[]) {
+    if (filter === "all") return items;
+    return items.filter((item) => item.type === filter);
+  }
 
   return (
     <ScrollContainer className="media-container">
-      {isLoading || media.mediaSummaryModels.length === 0 ? (
+      {isLoading || filtered(media.mediaSummaryModels).length === 0 ? (
         <div className="w-full flex items-center justify-center h-[225px]">
           {isLoading ? <Loader /> : "No Media"}
         </div>
       ) : (
-        media.mediaSummaryModels?.map((item) => (
+        filtered(media.mediaSummaryModels).map((item) => (
           <Card key={item.id}>
             <CardActionArea
               onClick={() =>
@@ -91,6 +102,7 @@ export const CollapsibleSection: FC<SectionProps> = ({
     totalMediaCount: -1,
   } as MediaSummaryModelResponse);
   const [isLaoding, setIsLoading] = useState<boolean>(true);
+  const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   useEffect(() => {
     GetMedia();
@@ -115,9 +127,30 @@ export const CollapsibleSection: FC<SectionProps> = ({
         onClick={() => setIsOpen(!isOpen)}
       >
         <h2>{title}</h2>
-        {isOpen ? <RemoveIcon /> : <AddIcon />}
+        <div className="actions">
+          <ToggleButtonGroup
+            value={selectedFilter}
+            onChange={(e, v) => {
+              e.stopPropagation();
+              setSelectedFilter(v);
+            }}
+            exclusive
+          >
+            <ToggleButton value="all">All</ToggleButton>
+            <ToggleButton value={MediaType.Movie}>Movies</ToggleButton>
+            <ToggleButton value={MediaType.Series}>Series</ToggleButton>
+            <ToggleButton value={MediaType.Game}>Games</ToggleButton>
+          </ToggleButtonGroup>
+          {isOpen ? <RemoveIcon /> : <AddIcon />}
+        </div>
       </div>
-      {isOpen && <MediaGrid media={media} isLoading={isLaoding} />}
+      {isOpen && (
+        <MediaGrid
+          media={media}
+          isLoading={isLaoding}
+          filter={selectedFilter}
+        />
+      )}
     </section>
   );
 };
@@ -138,6 +171,7 @@ export const CollapsibleTabSection: FC<{
     totalMediaCount: -1,
   } as MediaSummaryModelResponse);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   useEffect(() => {
     GetMedia();
@@ -170,7 +204,22 @@ export const CollapsibleTabSection: FC<{
         onClick={() => setIsOpen(!isOpen)}
       >
         <h2>{title}</h2>
-        {isOpen ? <RemoveIcon /> : <AddIcon />}
+        <div className="actions">
+          <ToggleButtonGroup
+            value={selectedFilter}
+            onChange={(e, v) => {
+              e.stopPropagation();
+              setSelectedFilter(v);
+            }}
+            exclusive
+          >
+            <ToggleButton value="all">All</ToggleButton>
+            <ToggleButton value={MediaType.Movie}>Movies</ToggleButton>
+            <ToggleButton value={MediaType.Series}>Series</ToggleButton>
+            <ToggleButton value={MediaType.Game}>Games</ToggleButton>
+          </ToggleButtonGroup>
+          {isOpen ? <RemoveIcon /> : <AddIcon />}
+        </div>
       </div>
       {isOpen && (
         <div className="tab-section">
@@ -186,10 +235,18 @@ export const CollapsibleTabSection: FC<{
             ))}
           </div>
           <div tabIndex={0} hidden={activeTab !== 0}>
-            <MediaGrid media={tab1Media} isLoading={isLoading} />
+            <MediaGrid
+              media={tab1Media}
+              isLoading={isLoading}
+              filter={selectedFilter}
+            />
           </div>
           <div tabIndex={1} hidden={activeTab !== 1}>
-            <MediaGrid media={tab2Media} isLoading={isLoading} />
+            <MediaGrid
+              media={tab2Media}
+              isLoading={isLoading}
+              filter={selectedFilter}
+            />
           </div>
         </div>
       )}

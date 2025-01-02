@@ -141,15 +141,22 @@ button:disabled {
 
 .MuiToggleButtonGroup-root {
   transition: none !important;
+  
   .MuiToggleButton-root {
     color: var(--light-dark) !important;
     border: 1px solid var(--light-dark) !important;
     transition: none !important;
+    font-family: "Orbitron";
+    font-size: 0.6rem;
 
     &.Mui-selected,
     &.Mui-selected:hover {
       background-color: var(--palette-colour) !important;
       color: whitesmoke !important;
+    }
+
+    &:hover {
+      background-color: var(--palette-colour-faded);
     }
   }
 }
@@ -316,7 +323,8 @@ button:disabled {
     }
 
     .MuiMenuItem-root:hover,
-    .MuiAutocomplete-option:hover, .Mui-focused {
+    .MuiAutocomplete-option:hover,
+    .Mui-focused {
       background-color: var(--palette-colour-faded) !important;
     }
 
