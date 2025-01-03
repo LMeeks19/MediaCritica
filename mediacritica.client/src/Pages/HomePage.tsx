@@ -23,6 +23,7 @@ import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { useNavigate } from "react-router-dom";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import ImageIcon from "@mui/icons-material/Image";
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -177,10 +178,14 @@ function HomePage() {
             defaultIsOpen={false}
           />
         </div>
-        <div className="sub-header explore">
+        <div className="sub-header actions">
           <button className="explore-btn" onClick={() => navigate("/explore")}>
             <TravelExploreIcon />
             Explore
+          </button>
+          <button className="leaderboards-btn" onClick={() => navigate("/leaderboards")}>
+            <LeaderboardIcon />
+            Leaderboards
           </button>
         </div>
       </div>
