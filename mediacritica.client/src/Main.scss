@@ -141,7 +141,7 @@ button:disabled {
 
 .MuiToggleButtonGroup-root {
   transition: none !important;
-  
+
   .MuiToggleButton-root {
     color: var(--light-dark) !important;
     border: 1px solid var(--light-dark) !important;
@@ -328,10 +328,21 @@ button:disabled {
       background-color: var(--palette-colour-faded) !important;
     }
 
-    .MuiMenuItem-root[aria-selected="true"],
-    .MuiAutocomplete-option[aria-selected="true"] {
+    .MuiMenuItem-root[aria-selected="true"] {
       background-color: var(--palette-colour) !important;
       color: whitesmoke !important;
+    }
+
+    .MuiAutocomplete-option {
+      .MuiCheckbox-root {
+        .MuiSvgIcon-root {
+          color: var(--light-dark);
+        }
+      }
+    }
+
+    .MuiAutocomplete-option[aria-selected="true"] {
+      background-color: var(--palette-colour-faded);
     }
   }
 }

@@ -29,6 +29,45 @@
         &:hover {
           background-color: light-dark(whitesmoke, #242424);
         }
+
+        .actions {
+          .MuiFormControl-root {
+            .MuiInputBase-root {
+              color: var(--light-dark) !important;
+              overflow: hidden !important;
+              padding: 5px;
+              padding-left: 14px;
+
+              .MuiInputBase-input {
+                padding: 10px;
+                display: flex !important;
+                gap: 0.5rem !important;
+                overflow: hidden !important;
+              }
+            }
+          }
+
+          .MuiAutocomplete-root {
+            border-color: var(--light-dark) !important;
+            .MuiInputBase-root {
+              padding: 5px;
+              padding-left: 14px;
+
+              .MuiChip-root {
+                color: whitesmoke !important;
+                background-color: var(--palette-colour) !important;
+
+                .MuiSvgIcon-root {
+                  color: whitesmoke !important;
+                }
+              }
+
+              .MuiInputBase-input {
+                color: var(--light-dark) !important;
+              }
+            }
+          }
+        }
       }
 
       .rankings {
@@ -142,7 +181,8 @@
           th,
           td {
             text-align: center;
-            padding: 1em;
+            padding: 1rem;
+            width: 33%;
           }
 
           th {

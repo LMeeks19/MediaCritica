@@ -58,6 +58,10 @@ export default defineConfig({
             '^/Media': {
                 target,
                 secure: false
+            },
+            '^/Leaderboards': {
+                target,
+                secure: false
             }
         },
         port: 5174,

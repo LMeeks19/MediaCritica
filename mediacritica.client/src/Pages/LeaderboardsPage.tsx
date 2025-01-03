@@ -1,7 +1,57 @@
+import {
+  Autocomplete,
+  Box,
+  Checkbox,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import TopBar from "../Components/TopBar";
 import "./LeaderboardsPage.scss";
+import { useEffect, useState } from "react";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import { UserRankingModelObject } from "../Interfaces/UserRankingModel";
+import { GetUserRankings } from "../Server/Server";
 
 function LeaderboardsPage() {
+  const [rankings, setRankings] = useState<UserRankingModelObject>(
+    {} as UserRankingModelObject
+  );
+  const [selectedTrendFilters, setSelectedTrendFilters] = useState<string[]>(
+    []
+  );
+  const [selectedTrendTimeFrame, setSelectedTrendTimeFrame] =
+    useState<string>("week");
+  const [selectedRankingTimeFrame, setSelectedRankingTimeFrame] =
+    useState<string>("week");
+
+  const awards = [
+    "Rising",
+    "Falling",
+    "Surprise",
+    "Most Reviewed",
+    "Highest Rated",
+    "Genre Standout",
+    "Comeback",
+  ];
+
+  useEffect(() => {
+    GetRankings();
+  }, [selectedRankingTimeFrame]);
+
+  async function GetRankings() {
+    var rankingData = await GetUserRankings(selectedRankingTimeFrame);
+    setRankings({
+      first: rankingData.at(0)!,
+      second: rankingData.at(1)!,
+      third: rankingData.at(2)!,
+      other: rankingData.slice(3, rankingData.length),
+    });
+  }
+
   return (
     <div className="leaderboards-container">
       <div className="leaderboards">
@@ -11,28 +61,58 @@ function LeaderboardsPage() {
         </div>
         <div className="content">
           <div className="sub-header">
-            <h2>Global Rankings</h2>
+            <h2>Global Review Rankings</h2>
+            <div className="actions">
+              <FormControl
+                variant="outlined"
+                sx={{ minWidth: 225, width: 400 }}
+              >
+                <InputLabel>Time Frame</InputLabel>
+                <Select
+                  label="Time Frame"
+                  value={selectedRankingTimeFrame}
+                  onChange={(e) => setSelectedRankingTimeFrame(e.target.value)}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <FilterAltOutlinedIcon />
+                    </InputAdornment>
+                  }
+                >
+                  <MenuItem value="week">This Week</MenuItem>
+                  <MenuItem value="month">This Month</MenuItem>
+                  <MenuItem value="year">This Year</MenuItem>
+                  <MenuItem value="all">All Time</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
           </div>
           <div className="rankings">
             <div className="podium">
-              <div className="podium-place gold">
-                <div className="podium-rank gold">1</div>
-                <h3>CriticKing</h3>
-                <p>145 Reviews</p>
-                <p>980 Likes</p>
-              </div>
-              <div className="podium-place silver">
-                <div className="podium-rank silver">2</div>
-                <h3>MediaGuru</h3>
-                <p>130 Reviews</p>
-                <p>860 Likes</p>
-              </div>
-              <div className="podium-place bronze">
-                <div className="podium-rank bronze">3</div>
-                <h3>FilmFanatic</h3>
-                <p>120 Reviews</p>
-                <p>750 Likes</p>
-              </div>
+              {rankings.first && (
+                <div className="podium-place gold">
+                  <div className="podium-rank gold">{rankings.first?.rank}</div>
+                  <h3>{rankings.first?.name}</h3>
+                  <p>{rankings.first?.reviews} Reviews</p>
+                </div>
+              )}
+              {rankings.second && (
+                <div className="podium-place silver">
+                  <div className="podium-rank silver">
+                    {rankings.second?.rank}
+                  </div>
+                  <h3>{rankings.second?.name}</h3>
+                  <p>{rankings.second?.reviews} Reviews</p>
+                </div>
+              )}
+              {rankings.third && (
+                <div className="podium-place bronze">
+                  <div className="podium-rank bronze">
+                    {rankings.third?.rank}
+                  </div>
+                  <h3>{rankings.third?.name}</h3>
+                  <p>{rankings.third?.reviews} Reviews</p>
+                </div>
+              )}
             </div>
 
             <table className="ranking-table">
@@ -41,58 +121,96 @@ function LeaderboardsPage() {
                   <th>Rank</th>
                   <th>Name</th>
                   <th>Reviews</th>
-                  <th>Likes</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>4</td>
-                  <td>ReviewMaster</td>
-                  <td>110</td>
-                  <td>680</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>MovieBuff99</td>
-                  <td>95</td>
-                  <td>620</td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>CinemaLover</td>
-                  <td>90</td>
-                  <td>590</td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>CinemaLover</td>
-                  <td>90</td>
-                  <td>590</td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>CinemaLover</td>
-                  <td>90</td>
-                  <td>590</td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>CinemaLover</td>
-                  <td>90</td>
-                  <td>590</td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>CinemaLover</td>
-                  <td>90</td>
-                  <td>590</td>
-                </tr>
+                {rankings.other?.length !== 0 ? (
+                  rankings.other?.map((ranking) => {
+                    return (
+                      <tr key={ranking.rank}>
+                        <td>{ranking.rank}</td>
+                        <td>{ranking.name}</td>
+                        <td>{ranking.reviews}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={4}>No Other Rankings</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
 
           <div className="sub-header">
             <h2>Media Trends</h2>
+            <div className="actions">
+              <FormControl
+                variant="outlined"
+                sx={{ minWidth: 225, width: 400 }}
+              >
+                <InputLabel>Time Frame</InputLabel>
+                <Select
+                  label="Time Frame"
+                  value={selectedTrendTimeFrame}
+                  onChange={(e) => setSelectedTrendTimeFrame(e.target.value)}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <FilterAltOutlinedIcon />
+                    </InputAdornment>
+                  }
+                >
+                  <MenuItem value="week">This Week</MenuItem>
+                  <MenuItem value="month">This Month</MenuItem>
+                  <MenuItem value="year">This Year</MenuItem>
+                  <MenuItem value="all">All Time</MenuItem>
+                </Select>
+              </FormControl>
+              <Autocomplete
+                multiple
+                fullWidth
+                disableCloseOnSelect
+                limitTags={1}
+                options={awards}
+                getOptionLabel={(award) => award}
+                value={selectedTrendFilters}
+                onChange={(_e, values) => setSelectedTrendFilters(values)}
+                sx={{ minWidth: 225, width: 500 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="Award Type"
+                    placeholder="Add Award..."
+                    slotProps={{
+                      input: {
+                        ...params.InputProps,
+                        startAdornment: (
+                          <>
+                            <InputAdornment position="start">
+                              <FilterAltOutlinedIcon />
+                            </InputAdornment>
+                            {params.InputProps.startAdornment}
+                          </>
+                        ),
+                      },
+                    }}
+                  />
+                )}
+                renderOption={(props, award) => {
+                  const { key, ...awardProps } = props;
+                  return (
+                    <Box key={award} component="li" {...awardProps}>
+                      <Checkbox
+                        checked={selectedTrendFilters.includes(award)}
+                      />
+                      {award}
+                    </Box>
+                  );
+                }}
+              />
+            </div>
           </div>
           <div className="trends">
             <div className="trends-list">

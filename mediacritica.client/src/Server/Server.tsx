@@ -16,6 +16,7 @@ import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
+import { UserRankingModel } from "../Interfaces/UserRankingModel";
 
 // User API Calls
 export async function GetUser(email: string): Promise<UserModel> {
@@ -294,4 +295,10 @@ export async function UpdateBacklogState(
   await fetch(`/Backlog/UpdateBacklogState/${backlogId}/${newState}`, {
     method: "PUT",
   });
+}
+
+// Leaderboards API Calls
+export async function GetUserRankings(timeframe: string): Promise<UserRankingModel[]> {
+  const response = await fetch(`/Leaderboards/GetUserRankings/${timeframe}`);
+  return response.json();
 }
