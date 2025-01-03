@@ -147,7 +147,7 @@ function WriteReviewPage() {
           {media.poster !== "N/A" ? (
             <div
               className="media-poster"
-              style={{ backgroundImage: `url(${media.poster})` }}
+              style={{ backgroundImage: `url(${media.poster.replace("300.jpg", "752.jpg")})` }}
             ></div>
           ) : (
             <div className="media-poster empty">

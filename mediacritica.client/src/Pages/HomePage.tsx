@@ -1,26 +1,33 @@
 import "./HomePage.scss";
-import { useEffect, useState } from "react";
-import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faSpinner,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
-import { CustomTooltip } from "../Components/Tooltip";
-import { GetSearchResults } from "../Server/Server";
 import TopBar from "../Components/TopBar";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
-import Loader from "../Components/Loader";
-import TravelExploreRoundedIcon from "@mui/icons-material/TravelExploreRounded";
+import { TextField, InputAdornment, Autocomplete, Box } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useEffect, useState } from "react";
+import {
+  CollapsibleSection,
+  CollapsibleTabSection,
+} from "../Components/CollapsibleSections";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import {
+  GetBestOfAllTime,
+  GetBestOfCurYear,
+  GetBestOfPrevYear,
+  GetLatest,
+  GetMostReviewed,
+  GetRecentlyReviewed,
+  GetSearchResults,
+  GetSeasonalPicks,
+  GetUpcoming,
+} from "../Server/Server";
+import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
+import { useNavigate } from "react-router-dom";
+import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
+import ImageIcon from "@mui/icons-material/Image";
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [searchTerm, setSerarchTerm] = useState<string>("");
-  const [totalResults, setTotalResults] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
+  const currentYear = new Date().getFullYear();
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [mediaSearchResults, setMediaSearchResults] = useState<
     MediaSearchModel[]
   >([] as MediaSearchModel[]);
@@ -29,118 +36,153 @@ function HomePage() {
   useEffect(() => {
     setIsLoading(true);
     const timeout = setTimeout(async () => {
-      if (searchTerm.length > 0) {
+      if (searchTerm.length > 2) {
         var mediaSearchResponse = await GetSearchResults(searchTerm);
-        setTotalResults(Number(mediaSearchResponse.totalResults));
         setMediaSearchResults(mediaSearchResponse.search ?? []);
       } else {
         setMediaSearchResults([]);
       }
-      setPage(1);
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timeout);
   }, [searchTerm]);
 
-  async function LoadMoreResults() {
-    setIsLoading(true);
-    var mediaSearchResponse = await GetSearchResults(searchTerm, page + 1);
-    setMediaSearchResults([
-      ...mediaSearchResults,
-      ...(mediaSearchResponse.search ?? []),
-    ]);
-    setPage(page + 1);
-    setIsLoading(false);
-  }
-
   return (
     <div className="homepage-container">
-      <TopBar hideHome />
       <div className="homepage">
-        <div className="homepage-title">MEDIA CRITICA</div>
-        <div className="homepage-searchbar">
-          <FontAwesomeIcon
-            className="icon"
-            icon={faMagnifyingGlass}
-            flip="horizontal"
-          />
-          <input
-            className="homepage-input"
-            value={searchTerm}
-            onChange={(e) => setSerarchTerm(e.target.value)}
-            placeholder="Search for media..."
-          />
-          {searchTerm.length > 0 && (
-            <CustomTooltip title="Clear Search" arrow>
-              <FontAwesomeIcon
-                className="icon clear"
-                icon={faTimes}
-                flip="horizontal"
-                onClick={() => setSerarchTerm("")}
-              />
-            </CustomTooltip>
-          )}
-        </div>
-        <button className="explore-btn" onClick={() => navigate("/explore")}>
-          <TravelExploreRoundedIcon />
-          Explore
-        </button>
-        {mediaSearchResults.length > 0 ? (
-          <div className="overflow-y-auto flex flex-col items-center">
-            <div className="homepage-results">
-              {mediaSearchResults.map((mediaSearchResult) => {
-                return (
-                  <div
-                    className="media"
-                    key={mediaSearchResult.imdbID}
-                    onClick={() =>
-                      navigate(`/media/${mediaSearchResult.imdbID}`, {
-                        state: {
-                          mediaId: mediaSearchResult.imdbID,
-                          mediaType: mediaSearchResult.type,
-                        },
-                      })
-                    }
-                  >
-                    <div className="tag type">
-                      {CapitaliseFirstLetter(mediaSearchResult.type)}
+        <TopBar hideHome whiteText />
+        <div className="header">
+          <Autocomplete
+            sx={{ minWidth: 300, width: 1500 }}
+            fullWidth
+            autoComplete
+            loading={isLoading}
+            filterOptions={(x) => x}
+            options={mediaSearchResults}
+            getOptionLabel={(result) => result.title}
+            onClose={() => setMediaSearchResults([])}
+            onInputChange={(_e, v) => setSearchTerm(v)}
+            onChange={(_e, result) =>
+              navigate(`/media/${result?.imdbID}`, {
+                state: {
+                  mediaId: result?.imdbID,
+                  mediaType: result?.type,
+                },
+              })
+            }
+            renderOption={(props, result) => {
+              const { key, ...resultProps } = props;
+              return (
+                <Box key={result.imdbID} component="li" {...resultProps}>
+                  {result.poster === "N/A" ? (
+                    <ImageIcon style={{ width: 60, height: 75 }} />
+                  ) : (
+                    <img
+                      loading="lazy"
+                      width="60"
+                      height="75"
+                      src={result.poster}
+                    />
+                  )}
+                  <div className="flex justify-between items-center w-full px-4 gap-2 overflow-hidden">
+                    <div className="flex flex-col overflow-hidden">
+                      <div className="text-2xl truncate">{result.title}</div>
+                      {CapitaliseFirstLetter(result.type)}
                     </div>
-                    {mediaSearchResult.poster === "N/A" ? (
-                      <div className="image empty">
-                        <FontAwesomeIcon icon={faImage} />
-                      </div>
-                    ) : (
-                      <img className="image" src={mediaSearchResult.poster} />
-                    )}
-                    <div className="title">{mediaSearchResult.title}</div>
+                    {result.year.endsWith("–")
+                      ? `${result.year}Present`
+                      : result.year}
                   </div>
-                );
-              })}
-            </div>
-            <CustomTooltip
-              title={
-                mediaSearchResults.length === totalResults && "All media loaded"
-              }
-              arrow
-            >
-              <span>
-                <button
-                  className="load-btn"
-                  disabled={mediaSearchResults.length >= totalResults}
-                  onClick={() => LoadMoreResults()}
-                >
-                  Load More <FontAwesomeIcon icon={faSpinner} />
-                </button>
-              </span>
-            </CustomTooltip>
-          </div>
-        ) : isLoading ? (
-          <Loader />
-        ) : (
-          <div className="homepage-results empty">
-            {searchTerm.length > 0 ? "No Media Found" : "Type To Begin Search"}
-          </div>
-        )}
+                </Box>
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Search"
+                placeholder="Search..."
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  },
+                }}
+              />
+            )}
+          />
+        </div>
+        <div className="sections">
+          <CollapsibleSection
+            title="Seasonal Picks"
+            request={() => GetSeasonalPicks()}
+            defaultIsOpen={true}
+          />
+
+          <CollapsibleTabSection
+            title="New & Upcoming"
+            tabs={[
+              {
+                label: "Latest Releases",
+                request: () => GetLatest(),
+              },
+              {
+                label: "Upcoming Releases",
+                request: () => GetUpcoming(),
+              },
+            ]}
+            defaultIsOpen={true}
+          />
+
+          <CollapsibleTabSection
+            title="Yearly Highlights"
+            tabs={[
+              {
+                label: `Best of ${currentYear - 1}`,
+                request: () => GetBestOfPrevYear(),
+              },
+              {
+                label: `Best of ${currentYear} (So Far)`,
+                request: () => GetBestOfCurYear(),
+              },
+            ]}
+            defaultIsOpen={false}
+          />
+
+          <CollapsibleTabSection
+            title="Community Highlights"
+            tabs={[
+              {
+                label: "Recently Reviewed",
+                request: () => GetRecentlyReviewed(),
+              },
+              {
+                label: "Most Reviewed",
+                request: () => GetMostReviewed(),
+              },
+            ]}
+            defaultIsOpen={false}
+          />
+
+          <CollapsibleSection
+            title="Best of All Time"
+            request={() => GetBestOfAllTime()}
+            defaultIsOpen={false}
+          />
+        </div>
+        <div className="sub-header explore">
+          <button className="explore-btn" onClick={() => navigate("/explore")}>
+            <TravelExploreIcon />
+            Explore
+          </button>
+        </div>
       </div>
     </div>
   );

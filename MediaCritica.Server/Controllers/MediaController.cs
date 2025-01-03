@@ -58,6 +58,212 @@ namespace MediaCritica.Server.Controllers
             return mediaResponse;
         }
 
+        [HttpGet(Name = "GetBestOfPrevYear")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetBestOfPrevYear(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released.Year == DateTime.Now.Year - 1)
+                    .OrderByDescending(media => media.ImdbRating)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released.Year == DateTime.Now.Year - 1)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+        [HttpGet(Name = "GetBestOfCurYear")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetBestOfCurYear(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released.Year == DateTime.Now.Year && media.Released < DateTime.Now)
+                    .OrderByDescending(media => media.ImdbRating)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released.Year == DateTime.Now.Year && media.Released < DateTime.Now)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+
+        [HttpGet(Name = "GetBestOfAllTime")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetBestOfAllTime(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released < DateTime.Now)
+                    .OrderByDescending(media => media.ImdbRating)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released < DateTime.Now)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+        [HttpGet(Name = "GetUpcoming")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetUpcoming(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released > DateTime.Now)
+                    .OrderBy(media => media.Released)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released > DateTime.Now)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+        [HttpGet(Name = "GetLatest")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetLatest(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now)
+                    .OrderByDescending(media => media.Released)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+        [HttpGet(Name = "GetSeasonalPicks")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetSeasonalPicks(int offset)
+        {
+            var currentSeasonStartMonth = 0;
+            var currentSeasonEndMonth = 0;
+
+            switch (DateTime.Now.Month)
+            {
+                case >= 12:
+                case <= 2:
+                    currentSeasonStartMonth = 12;
+                    currentSeasonEndMonth = 2;
+                    break;
+                case >= 3 and <= 5:
+                    currentSeasonStartMonth = 3;
+                    currentSeasonEndMonth = 5;
+                    break;
+                case >= 6 and <= 8:
+                    currentSeasonStartMonth = 6;
+                    currentSeasonEndMonth = 8;
+                    break;
+                default:
+                    currentSeasonStartMonth = 9;
+                    currentSeasonEndMonth = 11;
+                    break;
+            }
+
+            var isWinter = currentSeasonStartMonth == 12 && currentSeasonEndMonth == 2;
+
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode)
+                    .Where(media => (isWinter ? (media.Released.Month >= currentSeasonStartMonth || media.Released.Month <= currentSeasonEndMonth) : (media.Released.Month >= currentSeasonStartMonth && media.Released.Month <= currentSeasonEndMonth)) && media.Released <= DateTime.Now)
+                    .OrderByDescending(media => media.ImdbRating)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode)
+                    .Where(media => (isWinter ? (media.Released.Month >= currentSeasonStartMonth || media.Released.Month <= currentSeasonEndMonth) : (media.Released.Month >= currentSeasonStartMonth && media.Released.Month <= currentSeasonEndMonth)) && media.Released <= DateTime.Now)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+        [HttpGet(Name = "GetMostReviewed")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetMostReviewed(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Include(media => media.Reviews)
+                    .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now && media.Reviews.Count != 0)
+                    .OrderByDescending(media => media.Reviews.Count)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now && media.Reviews.Count != 0)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
+        [HttpGet(Name = "GetRecentlyReviewed")]
+        [Route("[action]/{offset}")]
+        public async Task<MediaSummaryModelResponse> GetRecentlyReviewed(int offset)
+        {
+            var mediaResponse = new MediaSummaryModelResponse()
+            {
+                MediaSummaryModels = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now && media.Reviews.Count != 0)
+                    .OrderByDescending(media => media.Reviews.Select(review => review).OrderByDescending(review => review.Date).First().Date)
+                    .ThenBy(media => media.Title)
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Skip(offset)
+                    .Take(10)
+                    .ToListAsync(),
+                TotalMediaCount = await _databaseContext.Media
+                    .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now && media.Reviews.Count != 0)
+                    .CountAsync()
+            };
+
+            return mediaResponse;
+        }
+
         [HttpGet(Name = "GetMovie")]
         [Route("[action]/{movieId}")]
         public async Task<MovieModel> GetMovie(string movieId)

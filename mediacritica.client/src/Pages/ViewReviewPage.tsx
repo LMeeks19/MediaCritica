@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { DeleteReview, GetReview, UpdateReview } from "../Server/Server";
 import { useLocation, useNavigate } from "react-router-dom";
-import { MediaType } from "../Enums/MediaType";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { formatRelative } from "date-fns";
@@ -110,147 +109,137 @@ function ViewReviewPage() {
   } as unknown as ConfirmationDialogModel;
 
   return (
-      <div className="viewreviewpage-container">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div className="review">
-            <TopBar whiteText />
-            <div className="info">
-              <div className="hero">
-                <div className="parent-title">
-                  {review.mediaParentTitle ?? review.mediaTitle}
-                  {review.mediaType === MediaType.Episode &&
-                    ` | S${review.mediaSeason}:E${review.mediaEpisode}`}
-                  <div className="sub-title">
-                    {review.mediaParentTitle && review.mediaTitle}
-                  </div>
+    <div className="viewreviewpage-container">
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="review">
+          <TopBar whiteText />
+          <div className="info">
+            <div className="hero">
+              <div className="parent-title">{review.mediaTitle}</div>
+              <div className="flex flex-col justify-center items-center gap-2">
+                <Rating
+                  value={rating}
+                  precision={0.5}
+                  sx={{ fontSize: "2.5rem" }}
+                  readOnly={!isEditing}
+                  onChange={(_event, value) => setRating(value!)}
+                />
+                <div className="review-date">
+                  {CapitaliseFirstLetter(
+                    formatRelative(review.date, new Date())
+                  )}{" "}
+                  | {review.reviewerName}
                 </div>
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <Rating
-                    value={rating}
-                    precision={0.5}
-                    sx={{ fontSize: "2.5rem" }}
-                    readOnly={!isEditing}
-                    onChange={(_event, value) => setRating(value!)}
-                  />
-                  <div className="review-date">
-                    {CapitaliseFirstLetter(
-                      formatRelative(review.date, new Date())
-                    )}{" "}
-                    | {review.reviewerName}
+                {review.reviewerId === user.id && (
+                  <div className="flex gap-3 pt-2">
+                    {!isEditing ? (
+                      <>
+                        <button
+                          className="edit-btn"
+                          onClick={() => setIsEditing(true)}
+                        >
+                          Edit
+                          <FontAwesomeIcon className="icon" icon={faEdit} />
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() =>
+                            setConfirmationDialog(deleteReviewDialog)
+                          }
+                          disabled={isEditing}
+                        >
+                          Delete
+                          <FontAwesomeIcon className="icon" icon={faTrashCan} />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="cancel-btn"
+                          onClick={() =>
+                            setConfirmationDialog(cancelEditReviewDialog)
+                          }
+                        >
+                          Cancel
+                          <FontAwesomeIcon className="icon" icon={faCancel} />
+                        </button>
+                        <button
+                          className="save-btn"
+                          form="review-form"
+                          type="submit"
+                          disabled={
+                            review.description === description &&
+                            review.rating === rating &&
+                            review.title === title
+                          }
+                        >
+                          Save
+                          <FontAwesomeIcon icon={faFloppyDisk} />
+                        </button>
+                      </>
+                    )}
                   </div>
-                  {review.reviewerId === user.id && (
-                    <div className="flex gap-3 pt-2">
-                      {!isEditing ? (
-                        <>
-                          <button
-                            className="edit-btn"
-                            onClick={() => setIsEditing(true)}
-                          >
-                            Edit
-                            <FontAwesomeIcon className="icon" icon={faEdit} />
-                          </button>
-                          <button
-                            className="delete-btn"
-                            onClick={() =>
-                              setConfirmationDialog(deleteReviewDialog)
-                            }
-                            disabled={isEditing}
-                          >
-                            Delete
-                            <FontAwesomeIcon
-                              className="icon"
-                              icon={faTrashCan}
-                            />
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            className="cancel-btn"
-                            onClick={() =>
-                              setConfirmationDialog(cancelEditReviewDialog)
-                            }
-                          >
-                            Cancel
-                            <FontAwesomeIcon className="icon" icon={faCancel} />
-                          </button>
-                          <button
-                            className="save-btn"
-                            form="review-form"
-                            type="submit"
-                            disabled={
-                              review.description === description &&
-                              review.rating === rating &&
-                              review.title === title
-                            }
-                          >
-                            Save
-                            <FontAwesomeIcon icon={faFloppyDisk} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
-              {!isEditing ? (
-                <div className="review-details">
-                  <h2>{review.title}</h2>
-                  {review.description
-                    .trim()
-                    .split("\n\n")
-                    .map((paragraph) => {
-                      return <p key={paragraph}>{paragraph}</p>;
-                    })}
-                </div>
-              ) : (
-                <form
-                  id="review-form"
-                  className="review-form"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setConfirmationDialog({
-                      ...saveReviewDialog,
-                      confirm_action: () => PutReview(),
-                    });
-                  }}
-                >
-                  <input
-                    className="review-title"
-                    type="text"
-                    value={title}
-                    name="title"
-                    placeholder="Enter title..."
-                    required
-                    onChange={(e) => setTitle(e.target.value)}
-                    maxLength={50}
-                  />
-                  <textarea
-                    className="review-description"
-                    value={description}
-                    name="description"
-                    placeholder="Write review..."
-                    required
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </form>
-              )}
             </div>
-            {review.mediaPoster !== "N/A" ? (
-              <div
-                className="media-poster"
-                style={{ backgroundImage: `url(${review.mediaPoster})` }}
-              ></div>
-            ) : (
-              <div className="media-poster empty">
-                <FontAwesomeIcon icon={faImage} />
+            {!isEditing ? (
+              <div className="review-details">
+                <h2>{review.title}</h2>
+                {review.description
+                  .trim()
+                  .split("\n\n")
+                  .map((paragraph) => {
+                    return <p key={paragraph}>{paragraph}</p>;
+                  })}
               </div>
+            ) : (
+              <form
+                id="review-form"
+                className="review-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setConfirmationDialog({
+                    ...saveReviewDialog,
+                    confirm_action: () => PutReview(),
+                  });
+                }}
+              >
+                <input
+                  className="review-title"
+                  type="text"
+                  value={title}
+                  name="title"
+                  placeholder="Enter title..."
+                  required
+                  onChange={(e) => setTitle(e.target.value)}
+                  maxLength={50}
+                />
+                <textarea
+                  className="review-description"
+                  value={description}
+                  name="description"
+                  placeholder="Write review..."
+                  required
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </form>
             )}
           </div>
-        )}
-      </div>
+          {review.mediaPoster !== "N/A" ? (
+            <div
+              className="media-poster"
+              style={{ backgroundImage: `url(${review.mediaPoster.replace("300.jpg", "752.jpg")})` }}
+            ></div>
+          ) : (
+            <div className="media-poster empty">
+              <FontAwesomeIcon icon={faImage} />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 

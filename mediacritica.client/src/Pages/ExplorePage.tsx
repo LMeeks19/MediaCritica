@@ -195,7 +195,7 @@ function ExplorePage() {
                     >
                       <CardMedia
                         component="img"
-                        image={item.poster}
+                        image={item.poster?.replace("300.jpg", "225.jpg")}
                         alt={`${item.title}} cover art`}
                       />
                       <CardHeader title={item.title} />
@@ -208,7 +208,7 @@ function ExplorePage() {
                         <div className="chips">
                           <div className="rating">
                             <GradeIcon className="icon" />
-                            <div className="value">{item.imdbRating}</div>
+                            <div className="value">{item.imdbRating ?? "N/A"}</div>
                           </div>
                           <div>{CapitaliseFirstLetter(item.type)}</div>
                         </div>

@@ -27,10 +27,12 @@ function TopBar(props: TopBarProps) {
           <FontAwesomeIcon className="icon" icon={faChevronCircleLeft} />
         </IconButton>
       )}
-      {!props.hideHome && (
+      {!props.hideHome ? (
         <IconButton className="button home" onClick={() => navigate("/")}>
           <FontAwesomeIcon className="icon" icon={faHouse} />
         </IconButton>
+      ) : (
+        <div className="title">MEDIA CRITICA</div>
       )}
       {!props.hideAccount && (
         <IconButton
@@ -50,5 +52,5 @@ interface TopBarProps {
   showReturn?: boolean;
   hideHome?: boolean;
   hideAccount?: boolean;
-  whiteText?: boolean
+  whiteText?: boolean;
 }

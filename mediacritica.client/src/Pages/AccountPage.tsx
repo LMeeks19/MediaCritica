@@ -462,7 +462,6 @@ function AccountPage() {
                       onChange={(e) =>
                         setSelectedReviewFilter(Number(e.target.value))
                       }
-                      autoWidth
                     >
                       <MenuItem value={0}>None</MenuItem>
                       <MenuItem value={1}>Movies</MenuItem>

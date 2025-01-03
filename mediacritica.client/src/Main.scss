@@ -23,7 +23,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Orbitron" ;
+  font-family: "Orbitron";
 }
 
 * {
@@ -46,7 +46,7 @@ button {
   font-size: 15px;
   cursor: pointer;
   background-color: transparent;
-  font-family: "Orbitron" ;
+  font-family: "Orbitron";
   border: 1px solid transparent;
 }
 
@@ -65,8 +65,8 @@ button:disabled {
   justify-content: space-between;
   gap: 0.5rem;
   flex-wrap: wrap;
-  border-top: 1px solid light-dark(grey, #333);
-  border-bottom: 1px solid light-dark(grey, #333);
+  border-top: 1px solid light-dark(grey, #333) !important;
+  border-bottom: 1px solid light-dark(grey, #333) !important;
 
   &.palette {
     background-color: var(--palette-colour);
@@ -141,15 +141,22 @@ button:disabled {
 
 .MuiToggleButtonGroup-root {
   transition: none !important;
+  
   .MuiToggleButton-root {
     color: var(--light-dark) !important;
     border: 1px solid var(--light-dark) !important;
     transition: none !important;
+    font-family: "Orbitron";
+    font-size: 0.6rem;
 
     &.Mui-selected,
     &.Mui-selected:hover {
       background-color: var(--palette-colour) !important;
       color: whitesmoke !important;
+    }
+
+    &:hover {
+      background-color: var(--palette-colour-faded);
     }
   }
 }
@@ -165,7 +172,7 @@ button:disabled {
     color: var(--light-dark) !important;
     background-color: var(--palette-colour) !important;
     padding: 20px !important;
-    font-family: "Orbitron"  !important;
+    font-family: "Orbitron" !important;
     font-size: 20px;
     border-bottom: 4px solid transparent !important;
     color: whitesmoke !important;
@@ -202,7 +209,7 @@ button:disabled {
 
 .MuiTableCell-root {
   color: var(--light-dark) !important;
-  font-family: "Orbitron"  !important;
+  font-family: "Orbitron" !important;
   text-wrap: nowrap !important;
   border-bottom-color: var(--light-dark) !important;
 }
@@ -246,7 +253,7 @@ button:disabled {
 .MuiFormControl-root {
   .MuiFormLabel-root {
     color: var(--light-dark) !important;
-    font-family: "Orbitron"  !important;
+    font-family: "Orbitron" !important;
   }
 
   .MuiSelect-select {
@@ -297,6 +304,12 @@ button:disabled {
   background-color: var(--dark-light) !important;
   color: var(--light-dark) !important;
 
+  .MuiAutocomplete-noOptions,
+  .MuiAutocomplete-loading {
+    color: var(--light-dark) !important;
+    font-family: "Orbitron" !important;
+  }
+
   .MuiList-root,
   .MuiAutocomplete-listbox {
     background-color: var(--dark-light);
@@ -304,13 +317,14 @@ button:disabled {
     .MuiMenuItem-root,
     .MuiAutocomplete-option {
       padding: 0.75rem 1rem !important;
-      font-family: "Orbitron"  !important;
+      font-family: "Orbitron" !important;
       font-size: 1rem;
       display: flex;
     }
 
     .MuiMenuItem-root:hover,
-    .MuiAutocomplete-option:hover {
+    .MuiAutocomplete-option:hover,
+    .Mui-focused {
       background-color: var(--palette-colour-faded) !important;
     }
 
@@ -330,7 +344,7 @@ button:disabled {
       background-color: var(--palette-colour) !important;
       color: whitesmoke;
       padding: 1rem 2rem;
-      font-family: "Orbitron" ;
+      font-family: "Orbitron";
       font-size: 1.5rem;
       display: flex;
       justify-content: space-between;
@@ -376,7 +390,7 @@ button:disabled {
           padding-top: 0 !important;
           padding-bottom: 0 !important;
           padding-left: 14px;
-          color: var(--light-dark) !important;
+          color: whitesmoke !important;
 
           .MuiChip-root {
             color: var(--light-dark) !important;
@@ -415,7 +429,8 @@ button:disabled {
     .MuiDialogActions-root {
       padding: 1rem 2rem;
 
-      .reset-btn, .cancel-btn {
+      .reset-btn,
+      .cancel-btn {
         border-color: var(--light-dark);
       }
 
