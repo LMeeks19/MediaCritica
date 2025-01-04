@@ -335,7 +335,6 @@ function AccountPage() {
                 (item, index) => (
                   <div
                     key={item.id}
-                    draggable
                     className="item"
                     onDragStart={(e) => handleDragStart(e, stage, index)}
                     onClick={() =>

@@ -26,14 +26,16 @@ namespace MediaCritica.Server.Controllers
 
             var rankings = await _databaseContext.Users
                 .Include(user => user.Reviews)
+                .Where(user => user.Reviews.Count > 0)
+                .OrderByDescending(user => user.Reviews.Count)
+                    .ThenBy(user => user.Surname)
+                        .ThenBy(user => user.Forename)
                 .Select(user => new UserRankingModel()
                 {
                     Name = $"{user.Forename} {user.Surname}",
                     Reviews = user.Reviews.Where(review => review.Date >= startDate && review.Date <= endDate).Count(),
                     Timeframe = timeframe,
                 })
-                .Where(r => r.Reviews > 0)
-                .OrderByDescending(r => r.Reviews)
                 .Take(10)
                 .ToListAsync();
 
@@ -46,31 +48,38 @@ namespace MediaCritica.Server.Controllers
         }
 
         [HttpGet(Name = "GetMediaTrends")]
-        [Route("[action]")]
-        public async Task<List<MediaTrendModel>> GetMediaTrends()
+        [Route("[action]/{timeframe}")]
+        public async Task<List<MediaTrendModel>> GetMediaTrends(string timeframe)
         {
-            var timeframes = new[]
-            {
-                new { Label = "week", Range = _dateRangeCalculatorHelper.GetThisWeekRange() },
-                new { Label = "month", Range = _dateRangeCalculatorHelper.GetThisMonthRange() },
-                new { Label = "year", Range = _dateRangeCalculatorHelper.GetThisYearRange() },
-            };
+            (DateTime start, DateTime end) =
+                timeframe == "week" ? _dateRangeCalculatorHelper.GetThisWeekRange() :
+                timeframe == "month" ? _dateRangeCalculatorHelper.GetThisMonthRange() :
+                timeframe == "year" ? _dateRangeCalculatorHelper.GetThisYearRange() :
+                _dateRangeCalculatorHelper.GetAllTimeRange();
 
             var trends = new List<MediaTrendModel>();
 
-            foreach (var timeframe in timeframes)
-            {
-                var (start, end) = timeframe.Range;
+            var media = await _databaseContext.Media
+                .Include(media => media.Reviews)
+                .Include(media => media.Backlogs)
+                .ToListAsync();
 
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetRisingStar(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetFallingStar(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetSurprise(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetMostReviewed(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetHighestRated(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetComeback(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetMostActiveGenre(start, end, timeframe.Label));
-                trends.AddIfNotNull(await _trendCalculatorHelper.GetMostBacklogged(start, end, timeframe.Label));
-            }
+            trends.AddIfNotNull(_trendCalculatorHelper.GetRisingStar(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetFallingStar(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetSurprise(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostReviewed(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetHighestRated(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetComeback(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostActiveGenre(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostBacklogged(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostUnfinished(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostAbandoned(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetFanFavourite(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetHiddenGem(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetDirectorsSpotlight(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetActorsSpotlight(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostAnticipated(media, start, end, timeframe));
+            trends.AddIfNotNull(_trendCalculatorHelper.GetMostPolarising(media, start, end, timeframe));
 
             return trends;
         }

@@ -304,7 +304,7 @@ export async function GetUserRankings(timeframe: string): Promise<UserRankingMod
   return response.json();
 }
 
-export async function GetMediaTrends(): Promise<MediaTrendModel[]> {
-  const response = await fetch(`/Leaderboards/GetMediaTrends`);
+export async function GetMediaTrends(timeframe: string): Promise<MediaTrendModel[]> {
+  const response = await fetch(`/Leaderboards/GetMediaTrends/${timeframe}`);
   return response.json();
 }

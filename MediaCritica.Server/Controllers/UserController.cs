@@ -74,7 +74,7 @@ namespace MediaCritica.Server.Controllers
                 Preference = new Preference()
                 {
                     Theme = "System",
-                    Palette = "Default"
+                    Palette = "#971212"
                 }
             };
 

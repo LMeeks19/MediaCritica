@@ -13,15 +13,15 @@ import TopBar from "../Components/TopBar";
 import "./LeaderboardsPage.scss";
 import { useEffect, useState } from "react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import { UserRankingModelObject } from "../Interfaces/UserRankingModel";
+import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { GetMediaTrends, GetUserRankings } from "../Server/Server";
 import Loader from "../Components/Loader";
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 
 function LeaderboardsPage() {
   const [isRankingsLoading, setIsRankingsLoading] = useState<boolean>(true);
-  const [rankings, setRankings] = useState<UserRankingModelObject>(
-    {} as UserRankingModelObject
+  const [rankings, setRankings] = useState<UserRankingModel[]>(
+    [] as UserRankingModel[]
   );
   const [selectedRankingTimeFrame, setSelectedRankingTimeFrame] =
     useState<string>("week");
@@ -32,25 +32,14 @@ function LeaderboardsPage() {
 
   async function GetRankings() {
     setIsRankingsLoading(true);
-    var rankingData = await GetUserRankings(selectedRankingTimeFrame);
-    setRankings({
-      first: rankingData.at(0)!,
-      second: rankingData.at(1)!,
-      third: rankingData.at(2)!,
-      other: rankingData.slice(3, rankingData.length),
-    });
+    if (
+      rankings.filter((item) => item.timeframe === selectedRankingTimeFrame)
+        .length === 0
+    ) {
+      var rankingData = await GetUserRankings(selectedRankingTimeFrame);
+      setRankings([...rankings, ...rankingData]);
+    }
     setIsRankingsLoading(false);
-  }
-
-  useEffect(() => {
-    GetTrends();
-  }, []);
-
-  async function GetTrends() {
-    setIsTrendsLoading(true);
-    var trendData = await GetMediaTrends();
-    setTrends(trendData);
-    setIsTrendsLoading(false);
   }
 
   const [isTrendsLoading, setIsTrendsLoading] = useState<boolean>(true);
@@ -71,8 +60,31 @@ function LeaderboardsPage() {
     "Highest Rated",
     "Comeback",
     "Most Active Genre",
-    "Most Backlogged"
+    "Most Backlogged",
+    "Most Unfinished",
+    "Most Abandoned",
+    "Fan Favourite",
+    "Hidden Gem",
+    "Director Spotlight",
+    "Actor Spotlight",
+    "Most Anticipated",
   ];
+
+  useEffect(() => {
+    GetTrends();
+  }, [selectedTrendTimeFrame]);
+
+  async function GetTrends() {
+    setIsTrendsLoading(true);
+    if (
+      trends.filter((item) => item.timeframe === selectedTrendTimeFrame)
+        .length === 0
+    ) {
+      var trendData = await GetMediaTrends(selectedTrendTimeFrame);
+      setTrends([...trends, ...trendData]);
+    }
+    setIsTrendsLoading(false);
+  }
 
   function filterByAward(items: MediaTrendModel[]): MediaTrendModel[] {
     if (selectedTrendFilters.length === 0) return items;
@@ -122,36 +134,6 @@ function LeaderboardsPage() {
             </div>
           ) : (
             <div className="rankings">
-              <div className="podium">
-                {rankings.first && (
-                  <div className="podium-place gold">
-                    <div className="podium-rank gold">
-                      {rankings.first?.rank}
-                    </div>
-                    <h3>{rankings.first?.name}</h3>
-                    <p>{rankings.first?.reviews} Reviews</p>
-                  </div>
-                )}
-                {rankings.second && (
-                  <div className="podium-place silver">
-                    <div className="podium-rank silver">
-                      {rankings.second?.rank}
-                    </div>
-                    <h3>{rankings.second?.name}</h3>
-                    <p>{rankings.second?.reviews} Reviews</p>
-                  </div>
-                )}
-                {rankings.third && (
-                  <div className="podium-place bronze">
-                    <div className="podium-rank bronze">
-                      {rankings.third?.rank}
-                    </div>
-                    <h3>{rankings.third?.name}</h3>
-                    <p>{rankings.third?.reviews} Reviews</p>
-                  </div>
-                )}
-              </div>
-
               <table className="ranking-table">
                 <thead>
                   <tr>
@@ -161,16 +143,20 @@ function LeaderboardsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {rankings.other?.length !== 0 ? (
-                    rankings.other?.map((ranking) => {
-                      return (
-                        <tr key={ranking.rank}>
-                          <td>{ranking.rank}</td>
-                          <td>{ranking.name}</td>
-                          <td>{ranking.reviews}</td>
-                        </tr>
-                      );
-                    })
+                  {rankings?.length !== 0 ? (
+                    rankings
+                      ?.filter(
+                        (item) => item.timeframe === selectedRankingTimeFrame
+                      )
+                      .map((ranking) => {
+                        return (
+                          <tr key={ranking.rank}>
+                            <td>{ranking.rank}</td>
+                            <td>{ranking.name}</td>
+                            <td>{ranking.reviews}</td>
+                          </tr>
+                        );
+                      })
                   ) : (
                     <tr>
                       <td colSpan={4}>No Other Rankings</td>

@@ -31,7 +31,7 @@
         public (DateTime start, DateTime end) GetAllTimeRange()
         {
             DateTime startOfAllTime = DateTime.MinValue; // The earliest possible date
-            DateTime endOfAllTime = DateTime.Today; // Current date
+            DateTime endOfAllTime = DateTime.Now; // Current date
             return (startOfAllTime, endOfAllTime);
         }
     }

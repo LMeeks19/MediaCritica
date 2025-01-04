@@ -1,5 +1,7 @@
-﻿using MediaCritica.Server.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Extensions;
+using MediaCritica.Server.Models;
+using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
@@ -7,10 +9,9 @@ namespace MediaCritica.Server.Helpers
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
 
-        public async Task<MediaTrendModel?> GetRisingStar(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetRisingStar(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var trend = await _databaseContext.Media
-                .Include(media => media.Reviews)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
@@ -19,7 +20,7 @@ namespace MediaCritica.Server.Helpers
                 })
                 .Where(x => x.RecentReviews > x.PreviousReviews)
                 .OrderByDescending(x => x.RecentReviews - x.PreviousReviews)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (trend == null) return null;
 
@@ -31,10 +32,9 @@ namespace MediaCritica.Server.Helpers
                 Description = $"{trend.RecentReviews - trend.PreviousReviews} more reviews than the previous {timeframe}!"
             };
         }
-        public async Task<MediaTrendModel?> GetFallingStar(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetFallingStar(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var trend = await _databaseContext.Media
-                .Include(media => media.Reviews)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
@@ -43,7 +43,7 @@ namespace MediaCritica.Server.Helpers
                 })
                 .Where(x => x.PreviousReviews > x.RecentReviews)
                 .OrderByDescending(x => x.PreviousReviews - x.RecentReviews)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (trend == null) return null;
 
@@ -56,12 +56,11 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
-        public async Task<MediaTrendModel?> GetSurprise(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetSurprise(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
             var timeframeLengthInDays = (end - start).Days;
 
-            var trend = await _databaseContext.Media
-                .Include(media => media.Reviews)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
@@ -71,8 +70,7 @@ namespace MediaCritica.Server.Helpers
                         .ToList(),
                 })
                 .OrderByDescending(x => x.RecentReviews)
-                .FirstOrDefaultAsync();
-
+                .FirstOrDefault();
 
             if (trend == null) return null;
 
@@ -84,24 +82,23 @@ namespace MediaCritica.Server.Helpers
 
             return new MediaTrendModel
             {
-                AwardType = "Surprise",
+                AwardType = "Sleeper Hit",
                 Timeframe = timeframe,
                 Title = trend.Title,
                 Description = $"{trend.RecentReviews} reviews this {timeframe}! More than its average of {averageReviewsForPreviousTimeframes} per {timeframe}"
             };
         }
 
-        public async Task<MediaTrendModel?> GetMostReviewed(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetMostReviewed(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var trend = await _databaseContext.Media
-                .Include(media => media.Reviews)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
                     ReviewCount = media.Reviews.Count(r => r.Date >= start && r.Date <= end)
                 })
                 .OrderByDescending(x => x.ReviewCount)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (trend == null || trend.ReviewCount == 0) return null;
 
@@ -114,10 +111,9 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
-        public async Task<MediaTrendModel?> GetHighestRated(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetHighestRated(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var trend = await _databaseContext.Media
-                .Include(media => media.Reviews)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
@@ -126,7 +122,7 @@ namespace MediaCritica.Server.Helpers
                         .Average(r => (double?)r.Rating) ?? 0
                 })
                 .OrderByDescending(x => x.AverageRating)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (trend == null || trend.AverageRating < 4.5) return null;
 
@@ -139,10 +135,9 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
-        public async Task<MediaTrendModel?> GetComeback(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetComeback(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var trend = await _databaseContext.Media
-                .Include(media => media.Reviews)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
@@ -151,7 +146,7 @@ namespace MediaCritica.Server.Helpers
                 })
                 .Where(x => x.RecentReviews > 0 && x.PastReviews == 0)
                 .OrderByDescending(x => x.RecentReviews)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (trend == null) return null;
 
@@ -164,12 +159,11 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
-        public async Task<MediaTrendModel?> GetMostActiveGenre(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetMostActiveGenre(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var mediaWithReviews = await _databaseContext.Media
-                 .Include(media => media.Reviews)
-                 .Include(media => media.Backlogs)
+            var mediaWithReviews = media
                  .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end) || media.Backlogs.Any(r => r.AddedDate >= start && r.AddedDate <= end))
+                 .Where(media => media.Genres != "N/A" || media.Genres != null)
                  .Select(media => new
                  {
                      media.Title,
@@ -177,7 +171,7 @@ namespace MediaCritica.Server.Helpers
                      ReviewCount = media.Reviews.Count(r => r.Date >= start && r.Date <= end),
                      BacklogCount = media.Backlogs.Count(b => b.AddedDate >= start && b.AddedDate <= end)
                  })
-                 .ToListAsync();
+                 .ToList();
 
             var trend = mediaWithReviews
                 .SelectMany(media => (media.Genres ?? "").Split(','),
@@ -199,21 +193,20 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Active Genre",
                 Timeframe = timeframe,
                 Title = trend.Genre,
-                Description = $"{trend.Genre} is the most active genre this {timeframe}"
+                Description = $"{trend.Genre} is the most active genre this {timeframe}!"
             };
         }
 
-        public async Task<MediaTrendModel?> GetMostBacklogged(DateTime start, DateTime end, string timeframe)
+        public MediaTrendModel? GetMostBacklogged(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var trend = await _databaseContext.Media
-                .Include(media => media.Backlogs)
+            var trend = media
                 .Select(media => new
                 {
                     media.Title,
                     BacklogCount = media.Backlogs.Count(b => b.AddedDate >= start && b.AddedDate <= end)
                 })
                 .OrderByDescending(x => x.BacklogCount)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (trend == null || trend.BacklogCount == 0) return null;
 
@@ -222,7 +215,256 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Backlogged",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"Added to backlogs 1 time(s) this week!"
+                Description = $"Added to backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s " : "")} this week!"
+            };
+        }
+
+        public MediaTrendModel? GetMostUnfinished(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var trend = media
+                .Where(media => media.Backlogs.Any(b => b.AddedDate >= start && b.AddedDate <= end))
+                .Select(media => new
+                {
+                    media.Title,
+                    StartedCount = media.Backlogs.Count(b => b.AddedDate >= start && b.AddedDate <= end && b.Category != BacklogCategoryType.Backlog),
+                    FinishedCount = media.Backlogs.Count(b => b.AddedDate >= start && b.AddedDate <= end && b.Category == BacklogCategoryType.Finished),
+                })
+                .OrderByDescending(x => x.StartedCount - x.FinishedCount)
+                .FirstOrDefault();
+
+            if (trend == null || (trend.StartedCount - trend.FinishedCount) == 0) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Most Unfinished",
+                Timeframe = timeframe,
+                Title = trend.Title,
+                Description = $"{trend.StartedCount - trend.FinishedCount} user{(trend.StartedCount - trend.FinishedCount > 1 ? "s " : "")} didn’t complete it this {timeframe}!"
+            };
+        }
+
+        public MediaTrendModel? GetMostAbandoned(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var trend = media
+                .Where(media => media.Backlogs.Any(b => b.AddedDate >= start && b.AddedDate <= end))
+                .Select(media => new
+                {
+                    media.Title,
+                    AbandonedCount = media.Backlogs.Count(b => b.AddedDate >= start && b.AddedDate <= end && b.Category != BacklogCategoryType.Finished),
+                    FinishedCount = media.Backlogs.Count(b => b.AddedDate >= start && b.AddedDate <= end && b.Category == BacklogCategoryType.Finished),
+                })
+                .OrderByDescending(x => x.AbandonedCount - x.FinishedCount)
+                .FirstOrDefault();
+
+            if (trend == null || (trend.AbandonedCount - trend.FinishedCount) == 0) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Most Abandoned",
+                Timeframe = timeframe,
+                Title = trend.Title,
+                Description = $"{trend.AbandonedCount - trend.FinishedCount} user{(trend.AbandonedCount - trend.FinishedCount > 1 ? "s " : "")} either abandoned it early or never started it this {timeframe}!"
+            };
+        }
+
+        public MediaTrendModel? GetFanFavourite(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var trend = media
+                .Where(media => media.Reviews.Any(review => review.Date >= start && review.Date <= end))
+                .Select(media => new
+                {
+                    media.Title,
+                    ReEngagementCount = media.Reviews
+                        .GroupBy(review => review.UserId)
+                        .Where(g => g.Count() > 1) // Users who reviewed the same media multiple times
+                        .Count()
+                })
+                .OrderByDescending(x => x.ReEngagementCount)
+                .FirstOrDefault();
+
+            if (trend == null) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Fan Favourite",
+                Timeframe = timeframe,
+                Title = trend.Title,
+                Description = $"{trend.ReEngagementCount} re-reviews this {timeframe}!"
+            };
+        }
+
+        public MediaTrendModel? GetHiddenGem(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var averageReviewCount = media
+                .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end))
+                .Select(media => media.Reviews.Count(r => r.Date >= start && r.Date <= end))
+                .Average();
+
+            var trend = media
+                .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end))
+                .Select(media => new
+                {
+                    media.Title,
+                    ReviewCount = media.Reviews.Count(r => r.Date >= start && r.Date <= end),
+                    AverageRating = media.Reviews
+                        .Where(r => r.Date >= start && r.Date <= end)
+                        .Average(r => (double?)r.Rating) ?? 0
+                })
+                .Where(x => x.ReviewCount < averageReviewCount && x.AverageRating >= 4.5)
+                .OrderByDescending(x => x.AverageRating)
+                .FirstOrDefault();
+
+            if (trend == null) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Hidden Gem",
+                Timeframe = timeframe,
+                Title = trend.Title,
+                Description = $"{trend.ReviewCount} reviews with an average rating of {trend.AverageRating:F1}!"
+            };
+        }
+
+        public MediaTrendModel? GetDirectorsSpotlight(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var mediaWithReviews = media
+                 .Where(media => media.Directors != "N/A" && media.Directors != null)
+                 .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end) || media.Backlogs.Any(r => r.AddedDate >= start && r.AddedDate <= end))
+                 .Select(media => new
+                 {
+                     media.Title,
+                     media.Directors,
+                     ReviewCount = media.Reviews.Count(r => r.Date >= start && r.Date <= end),
+                     AverageRating = media.Reviews
+                        .Where(r => r.Date >= start && r.Date <= end)
+                        .Average(r => (double?)r.Rating) ?? 0
+                 })
+                 .ToList();
+
+            var trend = mediaWithReviews
+                .SelectMany(media => (media.Directors ?? "").Split(','),
+                    (media, director) => new { Director = director.Trim(), media.ReviewCount, media.AverageRating })
+                .GroupBy(x => x.Director)
+                .Select(g => new
+                {
+                    Director = g.Key,
+                    TotalReviews = g.Sum(x => x.ReviewCount),
+                    AverageRating = g.Average(x => x.AverageRating)
+                })
+                .Where(x => x.TotalReviews > 0 && x.AverageRating >= 4.0)
+                .OrderByDescending(x => x.TotalReviews)
+                .ThenByDescending(x => x.AverageRating)
+                .FirstOrDefault();
+
+            if (trend == null) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Director Spotlight",
+                Timeframe = timeframe,
+                Title = trend.Director,
+                Description = $"{trend.TotalReviews} reviews on their media with an average rating of {trend.AverageRating:F1}!"
+            };
+        }
+
+        public MediaTrendModel? GetActorsSpotlight(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var mediaWithReviews = media
+                 .Where(media => media.Actors != "N/A" && media.Actors != null)
+                 .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end) || media.Backlogs.Any(r => r.AddedDate >= start && r.AddedDate <= end))
+                 .Select(media => new
+                 {
+                     media.Title,
+                     media.Actors,
+                     ReviewCount = media.Reviews.Count(r => r.Date >= start && r.Date <= end),
+                     AverageRating = media.Reviews
+                        .Where(r => r.Date >= start && r.Date <= end)
+                        .Average(r => (double?)r.Rating) ?? 0
+                 })
+                 .ToList();
+
+            var trend = mediaWithReviews
+                .SelectMany(media => (media.Actors ?? "").Split(','),
+                    (media, actor) => new { Actor = actor.Trim(), media.ReviewCount, media.AverageRating })
+                .GroupBy(x => x.Actor)
+                .Select(g => new
+                {
+                    Actor = g.Key,
+                    TotalReviews = g.Sum(x => x.ReviewCount),
+                    AverageRating = g.Average(x => x.AverageRating)
+                })
+                .Where(x => x.TotalReviews > 0 && x.AverageRating >= 4.0)
+                .OrderByDescending(x => x.TotalReviews)
+                .ThenByDescending(x => x.AverageRating)
+                .FirstOrDefault();
+
+            if (trend == null) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Actor Spotlight",
+                Timeframe = timeframe,
+                Title = trend.Actor,
+                Description = $"{trend.TotalReviews} reviews on their media with an average rating of {trend.AverageRating:F1}!"
+            };
+        }
+
+        public MediaTrendModel? GetMostAnticipated(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            var trend = media
+                .Where(media => media.Released > start && media.Released <= end)
+                .Select(media => new
+                {
+                    media.Title,
+                    media.Released,
+                    BacklogCount = media.Backlogs.Where(b => b.AddedDate >= start && b.AddedDate <= end).Count()
+                })
+                .OrderByDescending(x => x.BacklogCount)
+                .FirstOrDefault();
+
+            if (trend == null || trend.BacklogCount == 0) return null;
+
+            return new MediaTrendModel
+            {
+                AwardType = "Most Anticipated",
+                Timeframe = timeframe,
+                Title = trend.Title,
+                Description = $"Added to user backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} ahead of its release on {trend.Released.GetDateByTimeFrame(timeframe)} this {timeframe}!"
+            };
+        }
+
+        public MediaTrendModel? GetMostPolarising(List<Media> media, DateTime start, DateTime end, string timeframe)
+        {
+            // Fetch media with ratings within the specified date range
+            var mediaWithReviews = media
+                .Where(m => m.Reviews.Any(r => r.Date >= start && r.Date <= end))
+                .Select(m => new
+                {
+                    m.Title,
+                    Ratings = m.Reviews.Where(r => r.Date >= start && r.Date <= end).Select(r => r.Rating).ToList()
+                })
+                .ToList();
+
+            // Calculate the standard deviation of ratings for each media
+            var trend = mediaWithReviews
+                .Select(m => new
+                {
+                    m.Title,
+                    StandardDeviation = m.Ratings.CalculateStandardDeviation()
+                })
+                .OrderByDescending(m => m.StandardDeviation)
+                .FirstOrDefault();
+
+            if (trend == null || trend.StandardDeviation == 0)
+                return null; // No media with significant polarization
+
+            // Return the trend result
+            return new MediaTrendModel
+            {
+                AwardType = "Most Polarizing",
+                Timeframe = timeframe,
+                Title = trend.Title,
+                Description = $"{trend.Title} sparked a lot of debate this {timeframe}, with a variability score of {trend.StandardDeviation:F2}!"
             };
         }
     }
