@@ -9,6 +9,7 @@ import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
+import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
@@ -300,5 +301,10 @@ export async function UpdateBacklogState(
 // Leaderboards API Calls
 export async function GetUserRankings(timeframe: string): Promise<UserRankingModel[]> {
   const response = await fetch(`/Leaderboards/GetUserRankings/${timeframe}`);
+  return response.json();
+}
+
+export async function GetMediaTrends(): Promise<MediaTrendModel[]> {
+  const response = await fetch(`/Leaderboards/GetMediaTrends`);
   return response.json();
 }

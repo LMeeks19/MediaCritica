@@ -23,6 +23,7 @@
         public double? ImdbRating { get; set; }
         public int? ImdbVotes { get; set; }
         public virtual List<Review> Reviews { get; set; }
+        public virtual List<Backlog> Backlogs { get; set; }
     }
 
     public class Rating

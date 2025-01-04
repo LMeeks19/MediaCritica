@@ -158,6 +158,11 @@ Accept: application/json
 GET {{MediaCritica.Server_HostAddress}}/Leaderboards/GetUserRankings/
 Accept: application/json
 
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Leaderboards/GetMediaTrends/
+Accept: application/json
+
 
 
 

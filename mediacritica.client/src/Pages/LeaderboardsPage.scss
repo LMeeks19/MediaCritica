@@ -22,6 +22,7 @@
 
     .content {
       overflow: hidden auto;
+      flex: 1;
 
       .sub-header {
         background-color: light-dark(whitesmoke, #1b1b1b);
@@ -218,7 +219,7 @@
           gap: 2rem;
 
           .trend-item {
-            flex: 1 1 30%;
+            flex: 1 1 25%;
             background: var(--palette-colour);
             padding: 1.5rem;
             border-radius: 12px;

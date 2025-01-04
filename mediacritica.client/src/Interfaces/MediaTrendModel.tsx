@@ -1,6 +1,6 @@
 import { MediaTrendAwardTypeEnum, MediaTrendTimeFrameEnum } from "../Enums/MediaTrendTypes";
 
-export interface MediaTrend {
+export interface MediaTrendModel {
     awardType: MediaTrendAwardTypeEnum;
     timeframe: MediaTrendTimeFrameEnum;
     title: string;
