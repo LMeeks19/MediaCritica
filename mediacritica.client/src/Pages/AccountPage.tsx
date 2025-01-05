@@ -340,6 +340,7 @@ function AccountPage() {
               filtered(sorted(items, selectedSorter), selectedFilter).map(
                 (item, index) => (
                   <Card
+                    draggable={true}
                     onDragStart={(e) => handleDragStart(e, stage, index)}
                     key={item.id}
                     style={{
