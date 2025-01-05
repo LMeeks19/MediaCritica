@@ -49,7 +49,15 @@ const MediaGrid: FC<{
         </div>
       ) : (
         filtered(media.mediaSummaryModels).map((item) => (
-          <Card key={item.id}>
+          <Card
+            key={item.id}
+            style={{
+              backgroundImage: `url(${item.poster?.replace(
+                "300.jpg",
+                "180.jpg"
+              )})`,
+            }}
+          >
             <CardActionArea
               onClick={() =>
                 navigate(`/media/${item.id}`, {
@@ -60,11 +68,7 @@ const MediaGrid: FC<{
                 })
               }
             >
-              <CardMedia
-                component="img"
-                image={item.poster?.replace("300.jpg", "225.jpg")}
-                alt={`${item.title}} cover art`}
-              />
+              <CardMedia />
               <CardHeader title={item.title} />
               <Divider />
               <CardContent>

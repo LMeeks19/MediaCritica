@@ -164,6 +164,10 @@
 
               .review-content {
                 padding: 0.5rem 1rem 1rem 1rem;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
 
                 h2 {
                   font-size: 1.5rem;
@@ -183,6 +187,7 @@
                 .rating {
                   display: flex;
                   font-size: 1.2rem;
+                  margin: auto;
                 }
               }
             }
@@ -260,9 +265,10 @@
 
                 .items {
                   flex: 1;
+                  display: flex;
                   overflow: hidden auto;
-                  align-items: center;
-                  flex-direction: column;
+                  justify-content: center;
+                  flex-wrap: wrap;
                   scroll-snap-type: y mandatory;
 
                   &.empty {
@@ -284,61 +290,13 @@
 
             .items {
               display: flex;
-              padding: 1rem;
-              gap: 2rem;
+              gap: 1rem;
 
-              .item {
-                position: relative;
-                cursor: pointer;
-                background-color: light-dark(whitesmoke, #242424);
-                color: var(--dark-light);
-                border-radius: 20px;
-                width: 300px;
-                height: 375px;
-                min-width: 300px;
-                min-height: 375px;
-                transition: transform 0.3s ease-in-out,
-                  box-shadow 0.3s ease-in-out;
-                background-size: 100% 100%;
-                overflow: hidden;
-
-                .item-tag,
-                .item-title {
-                  position: absolute;
-                  opacity: 0;
-                  visibility: hidden;
-                  color: whitesmoke;
-                  padding: 7.5px 15px;
-                  font-size: 1rem;
-                  background: var(--palette-colour);
-                }
-
-                .item-tag {
-                  border-bottom-right-radius: 20px;
-                }
-
-                .item-title {
-                  bottom: 0;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  width: calc(100% - 30px);
-                }
-              }
-
-              .item:active {
-                cursor: grabbing !important;
-              }
-
-              .item:not(:active):hover {
-                transform: scale(1.05);
-                box-shadow: 0 15px 25px #000000cc;
-                cursor: pointer;
-
-                .item-tag,
-                .item-title {
-                  opacity: 1;
-                  visibility: visible;
+              .MuiCard-root:hover {
+                .MuiCardActionArea-root {
+                  .MuiCardMedia-root {
+                    height: calc(225px - 64.45px);
+                  }
                 }
               }
             }

@@ -20,20 +20,11 @@
 
   .MuiIconButton-root {
     color: inherit;
-    padding: 5px !important;
+    padding: 4px !important;
 
     &:hover {
       background-color: var(--light-dark) !important;
       color: var(--dark-light);
     }
-  }
-
-  .title {
-    font-size: 1.75rem;
-    color: inherit;
-    cursor: pointer;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 1.25rem;
   }
 }

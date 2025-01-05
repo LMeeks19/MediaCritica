@@ -182,7 +182,15 @@ function ExplorePage() {
             <div className="items">
               {Sorted(GetSearchFilteredItems()).map((item) => {
                 return (
-                  <Card key={item.id}>
+                  <Card
+                    key={item.id}
+                    style={{
+                      backgroundImage: `url(${item.poster?.replace(
+                        "300.jpg",
+                        "180.jpg"
+                      )})`,
+                    }}
+                  >
                     <CardActionArea
                       onClick={() =>
                         navigate(`/media/${item.id}`, {
@@ -193,11 +201,7 @@ function ExplorePage() {
                         })
                       }
                     >
-                      <CardMedia
-                        component="img"
-                        image={item.poster?.replace("300.jpg", "225.jpg")}
-                        alt={`${item.title}} cover art`}
-                      />
+                      <CardMedia />
                       <CardHeader title={item.title} />
                       <Divider />
                       <CardContent>
@@ -205,12 +209,24 @@ function ExplorePage() {
                         <Typography>
                           {format(item.released, "do MMMM yyyy")}
                         </Typography>
-                        <div className="chips">
-                          <div className="rating">
-                            <GradeIcon className="icon" />
-                            <div className="value">{item.imdbRating ?? "N/A"}</div>
-                          </div>
-                          <div>{CapitaliseFirstLetter(item.type)}</div>
+                        <div className="flex justify-around">
+                          <Typography>
+                            {CapitaliseFirstLetter(item.type)}
+                          </Typography>
+                          {item.imdbRating !== null && (
+                            <Typography
+                              component="div"
+                              className="flex items-center gap-1"
+                            >
+                              <GradeIcon
+                                style={{
+                                  fontSize: 14,
+                                  color: "var(--rating-star)",
+                                }}
+                              />
+                              <div className="">{item.imdbRating}</div>
+                            </Typography>
+                          )}
                         </div>
                       </CardContent>
                     </CardActionArea>

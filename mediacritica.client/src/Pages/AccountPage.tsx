@@ -12,6 +12,12 @@ import {
 } from "../Server/Server";
 import {
   AppBar,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Divider,
   Fab,
   FormControl,
   InputAdornment,
@@ -23,6 +29,7 @@ import {
   Tabs,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ReviewModel } from "../Interfaces/ReviewModel";
@@ -332,25 +339,38 @@ function AccountPage() {
             ) : (
               filtered(sorted(items, selectedSorter), selectedFilter).map(
                 (item, index) => (
-                  <div
-                    key={item.id}
-                    className="item"
+                  <Card
                     onDragStart={(e) => handleDragStart(e, stage, index)}
-                    onClick={() =>
-                      navigate(`/media/${item.mediaId}`, {
-                        state: {
-                          mediaId: item.mediaId,
-                          mediaType: item.mediaType,
-                        },
-                      })
-                    }
-                    style={{ backgroundImage: `url(${item.mediaPoster})` }}
+                    key={item.id}
+                    style={{
+                      backgroundImage: `url(${item.mediaPoster?.replace(
+                        "300.jpg",
+                        "180.jpg"
+                      )})`,
+                    }}
                   >
-                    <div className="item-tag">
-                      {CapitaliseFirstLetter(item.mediaType)}
-                    </div>
-                    <div className="item-title">{item.mediaTitle}</div>
-                  </div>
+                    <CardActionArea
+                      onClick={() =>
+                        navigate(`/media/${item.mediaId}`, {
+                          state: {
+                            mediaId: item.mediaId,
+                            mediaType: item.mediaType,
+                          },
+                        })
+                      }
+                    >
+                      <CardMedia />
+                      <CardHeader title={item.mediaTitle} />
+                      <Divider />
+                      <CardContent>
+                        <div className="flex justify-around">
+                          <Typography>
+                            {CapitaliseFirstLetter(item.mediaType)}
+                          </Typography>
+                        </div>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
                 )
               )
             )}
@@ -378,218 +398,220 @@ function AccountPage() {
   }
 
   return (
-    <div className="accountpage-container">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="account">
-          <TopBar whiteText />
-          <AppBar position="static">
-            <Tabs
-              value={activeTab}
-              onChange={(_e, v) => setActiveTab(v)}
-              variant="fullWidth"
-            >
-              <Tab value={0} label="Details" />
-              <Tab value={1} label="Reviews" />
-              <Tab value={2} label="Backlog" />
-            </Tabs>
-          </AppBar>
-          <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
-            <div className="header dark-shade">
-              <h1>DETAILS</h1>
-              <button
-                className="logout-btn"
-                onClick={() => {
-                  navigate("/login");
-                }}
+    user.id !== undefined && (
+      <div className="accountpage-container">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="account">
+            <TopBar whiteText />
+            <AppBar position="static">
+              <Tabs
+                value={activeTab}
+                onChange={(_e, v) => setActiveTab(v)}
+                variant="fullWidth"
               >
-                Logout <LogoutIcon fontSize="small" />
-              </button>
-            </div>
-            <div className="account-details">
-              <AccountDetail
-                accountFieldName="Forename"
-                accountFieldType={AccountFieldType.Forename}
-                accountFieldValue={user.forename}
-                inputType="text"
-              />
-              <AccountDetail
-                accountFieldName="Surname"
-                accountFieldType={AccountFieldType.Surname}
-                accountFieldValue={user.surname}
-                inputType="text"
-              />
-              <AccountDetail
-                accountFieldName="Email"
-                accountFieldType={AccountFieldType.Email}
-                accountFieldValue={user.email}
-                inputType="text"
-              />
-              <AccountDetail
-                accountFieldName="Password"
-                accountFieldType={AccountFieldType.Password}
-                accountFieldValue="********"
-                inputType="password"
-              />
-            </div>
-            <div className="header dark-shade">
-              <h1>PREFERENCES</h1>
-            </div>
-            <div className="account-details">
-              <ThemePreference />
-              <PalettePreference />
-            </div>
-            <div className="header dark-shade">
-              <h1>ACTIONS</h1>
-            </div>
-            <div className="account-details">
-              <DeleteAccountAction />
-            </div>
-          </div>
-          <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
-            <div className="reviews-container">
+                <Tab value={0} label="Details" />
+                <Tab value={1} label="Reviews" />
+                <Tab value={2} label="Backlog" />
+              </Tabs>
+            </AppBar>
+            <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
               <div className="header dark-shade">
-                <h1>REVIEWS</h1>
-                <div className="actions">
-                  <FormControl variant="outlined" sx={{ width: 250 }}>
-                    <InputLabel>Filter</InputLabel>
-                    <Select
-                      label="Filter"
-                      value={selectedReviewFilter}
-                      onChange={(e) =>
-                        setSelectedReviewFilter(Number(e.target.value))
-                      }
-                    >
-                      <MenuItem value={0}>None</MenuItem>
-                      <MenuItem value={1}>Movies</MenuItem>
-                      <MenuItem value={2}>Series</MenuItem>
-                      <MenuItem value={3}>Games</MenuItem>
-                    </Select>
-                  </FormControl>
+                <h1>DETAILS</h1>
+                <button
+                  className="logout-btn"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Logout <LogoutIcon fontSize="small" />
+                </button>
+              </div>
+              <div className="account-details">
+                <AccountDetail
+                  accountFieldName="Forename"
+                  accountFieldType={AccountFieldType.Forename}
+                  accountFieldValue={user.forename}
+                  inputType="text"
+                />
+                <AccountDetail
+                  accountFieldName="Surname"
+                  accountFieldType={AccountFieldType.Surname}
+                  accountFieldValue={user.surname}
+                  inputType="text"
+                />
+                <AccountDetail
+                  accountFieldName="Email"
+                  accountFieldType={AccountFieldType.Email}
+                  accountFieldValue={user.email}
+                  inputType="text"
+                />
+                <AccountDetail
+                  accountFieldName="Password"
+                  accountFieldType={AccountFieldType.Password}
+                  accountFieldValue="********"
+                  inputType="password"
+                />
+              </div>
+              <div className="header dark-shade">
+                <h1>PREFERENCES</h1>
+              </div>
+              <div className="account-details">
+                <ThemePreference />
+                <PalettePreference />
+              </div>
+              <div className="header dark-shade">
+                <h1>ACTIONS</h1>
+              </div>
+              <div className="account-details">
+                <DeleteAccountAction />
+              </div>
+            </div>
+            <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
+              <div className="reviews-container">
+                <div className="header dark-shade">
+                  <h1>REVIEWS</h1>
+                  <div className="actions">
+                    <FormControl variant="outlined" sx={{ width: 250 }}>
+                      <InputLabel>Filter</InputLabel>
+                      <Select
+                        label="Filter"
+                        value={selectedReviewFilter}
+                        onChange={(e) =>
+                          setSelectedReviewFilter(Number(e.target.value))
+                        }
+                      >
+                        <MenuItem value={0}>None</MenuItem>
+                        <MenuItem value={1}>Movies</MenuItem>
+                        <MenuItem value={2}>Series</MenuItem>
+                        <MenuItem value={3}>Games</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+                <div className="layout">
+                  {filteredReviews().length === 0 ? (
+                    <div className="reviews empty">No Media Reviewed</div>
+                  ) : (
+                    <div className="reviews">
+                      {filteredReviews().map((review) => {
+                        return (
+                          <div
+                            key={review.mediaId}
+                            className="review-card"
+                            onClick={() =>
+                              navigate(
+                                `/media/${review.mediaId}/view-review/${review.id}}`,
+                                {
+                                  state: { reviewId: review.id },
+                                }
+                              )
+                            }
+                          >
+                            {review.mediaPoster !== null ? (
+                              <div
+                                className="review-image "
+                                style={{
+                                  backgroundImage: `url(${review.mediaPoster})`,
+                                }}
+                              >
+                                <span className="tag">
+                                  {CapitaliseFirstLetter(review.mediaType)}
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="review-image empty">
+                                <ImageIcon className="text-9xl" />
+                                <span className="tag">
+                                  {CapitaliseFirstLetter(review.mediaType)}
+                                </span>
+                              </div>
+                            )}
+                            <div className="review-content">
+                              <h2>{review.mediaTitle}</h2>
+                              <p className="review-time">
+                                {formatDistanceToNowStrict(review.date)} ago
+                              </p>
+                              <Rating
+                                className="rating"
+                                value={review.rating}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                      <div
+                        className={`flex justify-center items-center p-6 ${
+                          reviews.length === user.totalReviews && "hidden"
+                        }`}
+                      >
+                        <CustomTooltip title="All reviewed media loaded" arrow>
+                          <span>
+                            <Fab
+                              className="load-btn"
+                              disabled={reviews.length === user.totalReviews}
+                              onClick={() => LoadMoreReviews()}
+                            >
+                              <AddIcon />
+                            </Fab>
+                          </span>
+                        </CustomTooltip>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="layout">
-                {filteredReviews().length === 0 ? (
-                  <div className="reviews empty">No Media Reviewed</div>
-                ) : (
-                  <div className="reviews">
-                    {filteredReviews().map((review) => {
-                      return (
-                        <div
-                          key={review.mediaId}
-                          className="review-card"
-                          onClick={() =>
-                            navigate(
-                              `/media/${review.mediaId}/view-review/${review.id}}`,
-                              {
-                                state: { reviewId: review.id },
-                              }
-                            )
-                          }
-                        >
-                          {review.mediaPoster !== null ? (
-                            <div
-                              className="review-image "
-                              style={{
-                                backgroundImage: `url(${review.mediaPoster})`,
-                              }}
-                            >
-                              <span className="tag">
-                                {CapitaliseFirstLetter(review.mediaType)}
-                              </span>
-                            </div>
-                          ) : (
-                            <div className="review-image empty">
-                              <ImageIcon className="text-9xl" />
-                              <span className="tag">
-                                {CapitaliseFirstLetter(review.mediaType)}
-                              </span>
-                            </div>
-                          )}
-                          <div className="review-content">
-                            <h2>{review.mediaTitle}</h2>
-                            <p className="review-time">
-                              {formatDistanceToNowStrict(review.date)} ago
-                            </p>
-                            <Rating
-                              className="rating"
-                              value={review.rating}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                    <div
-                      className={`flex justify-center items-center p-6 ${
-                        reviews.length === user.totalReviews && "hidden"
-                      }`}
-                    >
-                      <CustomTooltip title="All reviewed media loaded" arrow>
-                        <span>
-                          <Fab
-                            className="load-btn"
-                            disabled={reviews.length === user.totalReviews}
-                            onClick={() => LoadMoreReviews()}
-                          >
-                            <AddIcon />
-                          </Fab>
-                        </span>
-                      </CustomTooltip>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
-          </div>
-          <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
-            <div className="backlog-container">
-              <div className="header dark-shade">
-                <h1>BACKLOG</h1>
-                <ToggleButtonGroup
-                  value={selectedBacklogLayout}
-                  onChange={(_e, v) => setSelectedBacklogLayout(v)}
-                  exclusive
+            <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
+              <div className="backlog-container">
+                <div className="header dark-shade">
+                  <h1>BACKLOG</h1>
+                  <ToggleButtonGroup
+                    value={selectedBacklogLayout}
+                    onChange={(_e, v) => setSelectedBacklogLayout(v)}
+                    exclusive
+                  >
+                    <ToggleButton value={0}>
+                      <TableRowsIcon />
+                    </ToggleButton>
+                    <ToggleButton value={1}>
+                      <ViewColumnIcon />
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </div>
+                <div
+                  className={`layout ${
+                    selectedBacklogLayout === 0 ? "row" : "col"
+                  }`}
                 >
-                  <ToggleButton value={0}>
-                    <TableRowsIcon />
-                  </ToggleButton>
-                  <ToggleButton value={1}>
-                    <ViewColumnIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </div>
-              <div
-                className={`layout ${
-                  selectedBacklogLayout === 0 ? "row" : "col"
-                }`}
-              >
-                <BacklogSection
-                  title="Not Started"
-                  stage="backlog"
-                  items={backlog.backlog}
-                  totalItems={backlog.totalBacklogCount}
-                />
-                <BacklogSection
-                  title="In Progress"
-                  stage="inProgress"
-                  items={backlog.inProgress}
-                  totalItems={backlog.totalInProgressCount}
-                />
+                  <BacklogSection
+                    title="Not Started"
+                    stage="backlog"
+                    items={backlog.backlog}
+                    totalItems={backlog.totalBacklogCount}
+                  />
+                  <BacklogSection
+                    title="In Progress"
+                    stage="inProgress"
+                    items={backlog.inProgress}
+                    totalItems={backlog.totalInProgressCount}
+                  />
 
-                <BacklogSection
-                  title="Finished"
-                  stage="finished"
-                  items={backlog.finished}
-                  totalItems={backlog.totalFinishedCount}
-                />
+                  <BacklogSection
+                    title="Finished"
+                    stage="finished"
+                    items={backlog.finished}
+                    totalItems={backlog.totalFinishedCount}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    )
   );
 }
 
