@@ -25,8 +25,6 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
@@ -41,13 +39,14 @@ import PalettePreference from "../Components/PalettePreference";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
-import ViewColumnIcon from "@mui/icons-material/ViewColumn";
-import TableRowsIcon from "@mui/icons-material/TableRows";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
+import ViewColumnIcon from "@mui/icons-material/ViewColumnOutlined";
+import TableRowsIcon from "@mui/icons-material/TableRowsOutlined";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
 import DeleteAccountAction from "../Components/DeleteAccountAction";
 import AddIcon from "@mui/icons-material/Add";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortIcon from "@mui/icons-material/Sort";
+import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -62,7 +61,7 @@ function AccountPage() {
   const [selectedBacklogLayout, setSelectedBacklogLayout] = useState<number>(0);
 
   useEffect(() => {
-    if (user.id === null || user.id === undefined) navigate("/login");
+    if (user.id === undefined) navigate("/login");
     if (activeTab === 1 && reviews.length === 0) FetchReviews(0);
     else if (activeTab === 2 && getTotalLoadedBacklogs() === 0) FetchBacklog();
     else setIsLoading(false);
@@ -384,7 +383,7 @@ function AccountPage() {
         <Loader />
       ) : (
         <div className="account">
-          <TopBar hideAccount whiteText />
+          <TopBar whiteText />
           <AppBar position="static">
             <Tabs
               value={activeTab}
@@ -405,7 +404,7 @@ function AccountPage() {
                   navigate("/login");
                 }}
               >
-                Logout <FontAwesomeIcon icon={faSignOut} />
+                Logout <LogoutIcon fontSize="small" />
               </button>
             </div>
             <div className="account-details">
@@ -502,10 +501,7 @@ function AccountPage() {
                             </div>
                           ) : (
                             <div className="review-image empty">
-                              <FontAwesomeIcon
-                                className="text-9xl"
-                                icon={faImage}
-                              />
+                              <ImageIcon className="text-9xl" />
                               <span className="tag">
                                 {CapitaliseFirstLetter(review.mediaType)}
                               </span>

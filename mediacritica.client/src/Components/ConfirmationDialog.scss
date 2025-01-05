@@ -50,14 +50,6 @@
     }
   }
 
-  /* Divider */
-  .divider {
-    border-color: light-dark(
-      #0000001f,
-      #ffffff1f
-    ) !important;
-  }
-
   .dialog {
     font-size: 14px;
     color: var(--light-dark);

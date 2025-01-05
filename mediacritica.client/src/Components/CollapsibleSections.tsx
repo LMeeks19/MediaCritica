@@ -73,7 +73,10 @@ const MediaGrid: FC<{
                 <div className="flex justify-around">
                   <Typography>{CapitaliseFirstLetter(item.type)}</Typography>
                   {item.imdbRating !== null && (
-                    <Typography component="div" className="flex items-center gap-1">
+                    <Typography
+                      component="div"
+                      className="flex items-center gap-1"
+                    >
                       <GradeIcon
                         style={{ fontSize: 14, color: "var(--rating-star)" }}
                       />
@@ -127,6 +130,7 @@ export const CollapsibleSection: FC<SectionProps> = ({
       >
         <h2>{title}</h2>
         <div className="actions">
+          {isOpen ? <RemoveIcon /> : <AddIcon />}
           <ToggleButtonGroup
             value={selectedFilter}
             onChange={(e, v) => {
@@ -140,7 +144,6 @@ export const CollapsibleSection: FC<SectionProps> = ({
             <ToggleButton value={MediaType.Series}>Series</ToggleButton>
             <ToggleButton value={MediaType.Game}>Games</ToggleButton>
           </ToggleButtonGroup>
-          {isOpen ? <RemoveIcon /> : <AddIcon />}
         </div>
       </div>
       {isOpen && (
@@ -204,6 +207,7 @@ export const CollapsibleTabSection: FC<{
       >
         <h2>{title}</h2>
         <div className="actions">
+          {isOpen ? <RemoveIcon /> : <AddIcon />}
           <ToggleButtonGroup
             value={selectedFilter}
             onChange={(e, v) => {
@@ -217,7 +221,6 @@ export const CollapsibleTabSection: FC<{
             <ToggleButton value={MediaType.Series}>Series</ToggleButton>
             <ToggleButton value={MediaType.Game}>Games</ToggleButton>
           </ToggleButtonGroup>
-          {isOpen ? <RemoveIcon /> : <AddIcon />}
         </div>
       </div>
       {isOpen && (

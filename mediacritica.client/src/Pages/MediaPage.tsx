@@ -7,8 +7,6 @@ import {
 } from "../Helpers/StringHelper";
 import TopBar from "../Components/TopBar";
 import { IconButton, MenuItem, Rating, Select } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import {
   DeleteBacklog,
@@ -21,12 +19,6 @@ import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import StarRating from "../Components/StarRating";
 import { GameModel } from "../Interfaces/GameModel";
-import {
-  faEye,
-  faHeart as faHeartReg,
-  faImage,
-} from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
@@ -34,6 +26,11 @@ import { Snackbar } from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import ScrollContainer from "react-indiana-drag-scroll";
+import StarIcon from "@mui/icons-material/Star";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
+import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 
 function MediaPage() {
   const [media, setMedia] = useState<MovieModel | SeriesModel | GameModel>(
@@ -95,7 +92,7 @@ function MediaPage() {
       mediaType: media.type,
       mediaPoster: media.poster,
       mediaTitle: media.title,
-      addedDate: new Date()
+      addedDate: new Date(),
     } as unknown as BacklogModel;
 
     const newBacklogSummary = await PostBacklog(backlog);
@@ -188,8 +185,7 @@ function MediaPage() {
                         : episode.released}
                     </p>
                     <p>
-                      Rating:{" "}
-                      <FontAwesomeIcon className="star-icon" icon={faStar} />{" "}
+                      Rating: <StarIcon className="star-icon" />{" "}
                       {episode.imdbRating === "" ? "N/A" : episode.imdbRating}
                     </p>
                   </div>
@@ -209,10 +205,13 @@ function MediaPage() {
         <div className="media">
           <TopBar whiteText />
           {media.poster !== "N/A" ? (
-            <img className="media-poster" src={media.poster.replace("300.jpg", "752.jpg")}></img>
+            <img
+              className="media-poster"
+              src={media.poster.replace("300.jpg", "752.jpg")}
+            ></img>
           ) : (
             <div className="media-poster empty">
-              <FontAwesomeIcon icon={faImage} />
+              <ImageIcon />
             </div>
           )}
           <div className="info">
@@ -229,14 +228,14 @@ function MediaPage() {
                           className="heart"
                           onClick={() => RemoveFromBacklog()}
                         >
-                          <FontAwesomeIcon icon={faHeartSolid} />
+                          <FavoriteIcon />
                         </IconButton>
                       </span>
                     </CustomTooltip>
                   ) : (
                     <CustomTooltip
                       title={
-                        user.id === null || user === undefined
+                        user.id === undefined
                           ? "Login to update backlog status"
                           : "Add to backlog"
                       }
@@ -245,10 +244,10 @@ function MediaPage() {
                       <span>
                         <IconButton
                           className="heart"
-                          disabled={user.id === null || user === undefined}
+                          disabled={user.id === undefined}
                           onClick={() => AddToBacklog()}
                         >
-                          <FontAwesomeIcon icon={faHeartReg} />
+                          <FavoriteBorderIcon />
                         </IconButton>
                       </span>
                     </CustomTooltip>
@@ -348,7 +347,7 @@ function MediaPage() {
                         })
                       }
                     >
-                      View all <FontAwesomeIcon icon={faEye} />
+                      View all <VisibilityIcon />
                     </button>
                   </div>
                   <ScrollContainer className="review-cards">

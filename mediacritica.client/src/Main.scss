@@ -203,6 +203,16 @@ button:disabled {
   border-bottom: 1px solid var(--light-dark) !important;
 }
 
+.MuiListItemIcon-root {
+  .MuiSvgIcon-root {
+    color: var(--light-dark);
+  }
+}
+
+.MuiDivider-root {
+  border-color: light-dark(lightgrey, #333) !important;
+}
+
 .MuiTableHead-root {
   background-color: var(--palette-colour) !important;
 }

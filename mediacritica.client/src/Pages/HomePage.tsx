@@ -22,8 +22,8 @@ import {
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { useNavigate } from "react-router-dom";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import ImageIcon from "@mui/icons-material/Image";
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import ImageIcon from "@mui/icons-material/ImageOutlined";
+import LeaderboardIcon from '@mui/icons-material/LeaderboardOutlined';
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -51,7 +51,7 @@ function HomePage() {
   return (
     <div className="homepage-container">
       <div className="homepage">
-        <TopBar hideHome whiteText />
+        <TopBar whiteText />
         <div className="header">
           <Autocomplete
             sx={{ minWidth: 300, width: 1500 }}

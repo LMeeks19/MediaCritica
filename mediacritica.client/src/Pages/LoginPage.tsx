@@ -20,7 +20,7 @@ function LoginPage() {
 
   return (
     <div className="login-container">
-      <TopBar hideAccount />
+      <TopBar />
       <AppBar className="login" position="static">
         <Tabs
           value={activeTab}

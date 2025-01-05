@@ -1,47 +1,106 @@
 import "./TopBar.scss";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faChevronCircleLeft,
-  faHouse,
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { IconButton } from "@mui/material";
-import { useRecoilValue } from "recoil";
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
+import { useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/LogoutOutlined";
+import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
+import { UserModel } from "../Interfaces/UserModel";
 
 function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
 
-  function DetermineNavigate() {
-    return user.id === null || user.id === undefined
-      ? navigate("/login")
-      : navigate("/account");
-  }
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className={`topbar ${props.whiteText ? "white-text" : ""}`}>
-      {props.showReturn && (
-        <IconButton className="button return" onClick={() => history.back()}>
-          <FontAwesomeIcon className="icon" icon={faChevronCircleLeft} />
-        </IconButton>
-      )}
-      {!props.hideHome ? (
-        <IconButton className="button home" onClick={() => navigate("/")}>
-          <FontAwesomeIcon className="icon" icon={faHouse} />
-        </IconButton>
-      ) : (
-        <div className="title">MEDIA CRITICA</div>
-      )}
-      {!props.hideAccount && (
-        <IconButton
-          className="button account"
-          onClick={() => DetermineNavigate()}
-        >
-          <FontAwesomeIcon className="icon" icon={faUserCircle} />
-        </IconButton>
-      )}
+      <IconButton sx={{ ml: "1.25rem" }} onClick={() => navigate("/")}>
+        <HomeOutlinedIcon fontSize="large" />
+      </IconButton>
+      <IconButton sx={{ mr: "1.25rem" }} onClick={handleClick}>
+        <MenuIcon fontSize="large" />
+      </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={() => navigate("/")}>
+          <ListItemIcon>
+            <HomeOutlinedIcon />
+          </ListItemIcon>
+          Home
+        </MenuItem>
+        <MenuItem onClick={() => navigate("/explore")}>
+          <ListItemIcon>
+            <TravelExploreIcon />
+          </ListItemIcon>
+          Explore
+        </MenuItem>
+        <MenuItem onClick={() => navigate("/leaderboards")}>
+          <ListItemIcon>
+            <LeaderboardOutlinedIcon />
+          </ListItemIcon>
+          Leaderboards
+        </MenuItem>
+        <Divider />
+        {user.id === undefined && (
+          <MenuItem onClick={() => navigate("/login")}>
+            <ListItemIcon>
+              <LoginIcon />
+            </ListItemIcon>
+            Login
+          </MenuItem>
+        )}
+        {user.id !== undefined && (
+          <MenuItem onClick={() => navigate("/account")}>
+            <ListItemIcon>
+              <AccountCircleOutlinedIcon />
+            </ListItemIcon>
+            Account
+          </MenuItem>
+        )}
+        {user.id !== undefined && (
+          <MenuItem
+            onClick={() => {
+              resetThemePalette();
+              setUser({} as UserModel);
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        )}
+      </Menu>
     </div>
   );
 }
@@ -49,8 +108,5 @@ function TopBar(props: TopBarProps) {
 export default TopBar;
 
 interface TopBarProps {
-  showReturn?: boolean;
-  hideHome?: boolean;
-  hideAccount?: boolean;
   whiteText?: boolean;
 }
