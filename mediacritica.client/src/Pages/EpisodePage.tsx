@@ -8,9 +8,8 @@ import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
 import { SeriesModel } from "../Interfaces/SeriesModel";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
 import Loader from "../Components/Loader";
+import ImageIcon from '@mui/icons-material/ImageOutlined';
 
 function EpisodePage() {
   const location = useLocation();
@@ -36,7 +35,7 @@ function EpisodePage() {
         <Loader />
       ) : (
         <div className="episode">
-          <TopBar showReturn whiteText />
+          <TopBar whiteText />
           <div className="episode-info">
             <div className="flex flex-col gap-4">
               <h2>
@@ -54,7 +53,6 @@ function EpisodePage() {
                 rating={episode.imdbRating}
                 reviews={episode.imdbVotes}
                 media={episode}
-                parent={series}
               />
             </div>
           </div>
@@ -72,7 +70,7 @@ function EpisodePage() {
               />
             ) : (
               <div className="hero flex justify-center items-center">
-                <FontAwesomeIcon className="text-9xl" icon={faImage} />
+                <ImageIcon className="text-9xl" />
               </div>
             )}
 

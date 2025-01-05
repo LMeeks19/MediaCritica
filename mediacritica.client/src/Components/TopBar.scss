@@ -6,6 +6,9 @@
   text-wrap: nowrap;
   color: var(--light-dark) !important;
   position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &.white-text {
     color: whitesmoke !important;
@@ -15,48 +18,22 @@
     background-color: var(--palette-colour) !important;
   }
 
+  .MuiIconButton-root {
+    color: inherit;
+    padding: 5px !important;
+
+    &:hover {
+      background-color: var(--light-dark) !important;
+      color: var(--dark-light);
+    }
+  }
+
   .title {
-    position: absolute;
-    top: .5rem;
     font-size: 1.75rem;
     color: inherit;
-    left: 1rem;
-  }
-
-  .button {
-    position: absolute;
-    top: 0.5rem;
-    font-size: 2rem;
-    color: inherit;
     cursor: pointer;
-
-    &.return {
-      left: 1rem;
-    }
-
-    &.home {
-      left: 1rem;
-    }
-    
-    &.home:not(:first-child) {
-      left: 5rem;
-    }
-
-    &.account {
-      right: 1rem;
-    }
-
-    .icon {
-      width: 32px !important;
-      height: 32px !important;
-    }
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .topbar {
-    .icon {
-      font-size: 1.5rem;
-    }
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 1.25rem;
   }
 }

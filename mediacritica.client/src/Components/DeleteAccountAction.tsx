@@ -1,11 +1,10 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { DeleteUser } from "../Server/Server";
 import { UserModel } from "../Interfaces/UserModel";
 import { Snackbar } from "./Snackbar";
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 function DeleteAccountAction() {
   const [user, setUser] = useRecoilState(userState);
@@ -42,7 +41,7 @@ function DeleteAccountAction() {
             })
           }
         >
-          Delete <FontAwesomeIcon icon={faTrash} />
+          Delete <DeleteIcon fontSize="small" />
         </button>
       </div>
     </div>

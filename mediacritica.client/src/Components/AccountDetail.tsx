@@ -1,6 +1,4 @@
 import "./AccountDetail.scss";
-import { faCancel, faSave, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { AccountFieldType } from "../Enums/AccountFieldType";
 import {
@@ -12,6 +10,9 @@ import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { UpdateUser } from "../Server/Server";
 import { Snackbar } from "./Snackbar";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import CancelIcon from '@mui/icons-material/CancelOutlined';
+import SaveIcon from '@mui/icons-material/SaveOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 function AccountDetail(props: AccountDetailsProps) {
   const [user, setUser] = useRecoilState(userState);
@@ -101,12 +102,12 @@ function AccountDetail(props: AccountDetailsProps) {
             className="cancel-btn"
             onClick={() => setConfirmationDialog(cancelEditDetailDialog)}
           >
-            Cancel <FontAwesomeIcon icon={faCancel} />
+            Cancel <CancelIcon fontSize="small" />
           </button>
         )}
         {accountEditState.isEditing && (
           <button className="save-btn" form={`${props.accountFieldName}-form`}>
-            Save <FontAwesomeIcon icon={faSave} />
+            Save <SaveIcon fontSize="small" />
           </button>
         )}
         {!accountEditState.isEditing && (
@@ -120,7 +121,7 @@ function AccountDetail(props: AccountDetailsProps) {
               })
             }
           >
-            Edit <FontAwesomeIcon icon={faEdit} />
+            Edit <EditOutlinedIcon fontSize="small" />
           </button>
         )}
       </div>

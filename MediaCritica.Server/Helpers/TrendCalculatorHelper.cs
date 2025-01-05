@@ -295,10 +295,12 @@ namespace MediaCritica.Server.Helpers
 
         public MediaTrendModel? GetHiddenGem(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
-            var averageReviewCount = media
+            var reviews = media
                 .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end))
                 .Select(media => media.Reviews.Count(r => r.Date >= start && r.Date <= end))
-                .Average();
+                .ToList();
+
+            var averageReviewCount = reviews.Count == 0 ? 0 : reviews.Average();
 
             var trend = media
                 .Where(media => media.Reviews.Any(r => r.Date >= start && r.Date <= end))

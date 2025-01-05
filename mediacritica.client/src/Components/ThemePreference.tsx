@@ -1,11 +1,12 @@
-import { faCancel, faEdit, faSave } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
 import { Select, MenuItem } from "@mui/material";
+import CancelIcon from '@mui/icons-material/CancelOutlined';
+import SaveIcon from '@mui/icons-material/SaveOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 function ThemePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -50,17 +51,17 @@ function ThemePreference() {
             className="cancel-btn"
             onClick={() => setIsEditing(false)}
           >
-            Cancel <FontAwesomeIcon icon={faCancel} />
+            Cancel <CancelIcon fontSize="small" />
           </button>
         )}
         {isEditing && (
           <button className="save-btn" onClick={() => ChangePreference()}>
-            Save <FontAwesomeIcon icon={faSave} />
+            Save <SaveIcon fontSize="small" />
           </button>
         )}
         {!isEditing && (
           <button className="edit-btn" onClick={() => setIsEditing(true)}>
-            Edit <FontAwesomeIcon icon={faEdit} />
+            Edit <EditOutlinedIcon fontSize="small" />
           </button>
         )}
       </div>

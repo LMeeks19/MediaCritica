@@ -11,10 +11,11 @@ import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { PostReview } from "../Server/Server";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { Snackbar } from "../Components/Snackbar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faRotate, faShare } from "@fortawesome/free-solid-svg-icons";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
+import RestartAltIcon from "@mui/icons-material/RestartAltOutlined";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 
 function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -32,7 +33,7 @@ function WriteReviewPage() {
     | EpisodeModel;
 
   useEffect(() => {
-    (media === undefined || user.id === null) && navigate("/");
+    (media === undefined || user.id === undefined) && navigate("/");
     setIsLoading(false);
   });
 
@@ -81,7 +82,7 @@ function WriteReviewPage() {
         <Loader />
       ) : (
         <div className="review">
-          <TopBar showReturn whiteText />
+          <TopBar whiteText />
           <div className="info">
             <div className="hero">
               <div className="parent-title">{media.title}</div>
@@ -99,7 +100,7 @@ function WriteReviewPage() {
                     onClick={() => ResetFields()}
                   >
                     Reset
-                    <FontAwesomeIcon icon={faRotate} flip="horizontal" />
+                    <RestartAltIcon fontSize="small" />
                   </button>
                   <button
                     className="post-btn"
@@ -108,7 +109,7 @@ function WriteReviewPage() {
                     disabled={description === "" || title == ""}
                   >
                     Post
-                    <FontAwesomeIcon icon={faShare} />
+                    <PostAddIcon fontSize="small" />
                   </button>
                 </div>
               </div>
@@ -147,11 +148,16 @@ function WriteReviewPage() {
           {media.poster !== "N/A" ? (
             <div
               className="media-poster"
-              style={{ backgroundImage: `url(${media.poster.replace("300.jpg", "752.jpg")})` }}
+              style={{
+                backgroundImage: `url(${media.poster.replace(
+                  "300.jpg",
+                  "752.jpg"
+                )})`,
+              }}
             ></div>
           ) : (
             <div className="media-poster empty">
-              <FontAwesomeIcon icon={faImage} />
+              <ImageIcon />
             </div>
           )}
         </div>

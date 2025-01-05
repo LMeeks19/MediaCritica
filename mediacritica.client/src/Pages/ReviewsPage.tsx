@@ -6,10 +6,9 @@ import { GetMediaReviews } from "../Server/Server";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
+import AddIcon from '@mui/icons-material/Add';
 
 function ReviewsPage() {
   const location = useLocation();
@@ -41,7 +40,7 @@ function ReviewsPage() {
         <Loader />
       ) : (
         <div className="reviews">
-          <TopBar showReturn whiteText />
+          <TopBar whiteText />
           <div className="header">
             <h1>{mediaTitle} Reviews</h1>
           </div>
@@ -75,7 +74,7 @@ function ReviewsPage() {
                   disabled={isLoadDisabled}
                   onClick={() => FetchMediaReviews()}
                 >
-                  Load More <FontAwesomeIcon icon={faSpinner} />
+                  Load More <AddIcon />
                 </button>
               </span>
             </CustomTooltip>

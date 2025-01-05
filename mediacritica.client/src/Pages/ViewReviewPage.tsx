@@ -9,18 +9,15 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { formatRelative } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCancel,
-  faFloppyDisk,
-  faImage,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { faEdit } from "@fortawesome/free-regular-svg-icons";
 import { Snackbar } from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import SaveIcon from "@mui/icons-material/SaveOutlined";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
+import CancelIcon from "@mui/icons-material/CancelOutlined";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -141,7 +138,7 @@ function ViewReviewPage() {
                           onClick={() => setIsEditing(true)}
                         >
                           Edit
-                          <FontAwesomeIcon className="icon" icon={faEdit} />
+                          <EditOutlinedIcon fontSize="small" />
                         </button>
                         <button
                           className="delete-btn"
@@ -151,7 +148,7 @@ function ViewReviewPage() {
                           disabled={isEditing}
                         >
                           Delete
-                          <FontAwesomeIcon className="icon" icon={faTrashCan} />
+                          <DeleteIcon fontSize="small" />
                         </button>
                       </>
                     ) : (
@@ -163,7 +160,7 @@ function ViewReviewPage() {
                           }
                         >
                           Cancel
-                          <FontAwesomeIcon className="icon" icon={faCancel} />
+                          <CancelIcon fontSize="small" />
                         </button>
                         <button
                           className="save-btn"
@@ -176,7 +173,7 @@ function ViewReviewPage() {
                           }
                         >
                           Save
-                          <FontAwesomeIcon icon={faFloppyDisk} />
+                          <SaveIcon fontSize="small" />
                         </button>
                       </>
                     )}
@@ -230,11 +227,16 @@ function ViewReviewPage() {
           {review.mediaPoster !== "N/A" ? (
             <div
               className="media-poster"
-              style={{ backgroundImage: `url(${review.mediaPoster.replace("300.jpg", "752.jpg")})` }}
+              style={{
+                backgroundImage: `url(${review.mediaPoster.replace(
+                  "300.jpg",
+                  "752.jpg"
+                )})`,
+              }}
             ></div>
           ) : (
             <div className="media-poster empty">
-              <FontAwesomeIcon icon={faImage} />
+              <ImageIcon />
             </div>
           )}
         </div>
