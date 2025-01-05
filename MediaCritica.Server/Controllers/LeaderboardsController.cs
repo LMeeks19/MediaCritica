@@ -26,7 +26,7 @@ namespace MediaCritica.Server.Controllers
 
             var rankings = await _databaseContext.Users
                 .Include(user => user.Reviews)
-                .Where(user => user.Reviews.Count > 0)
+                .Where(user => user.Reviews.Any(r => r.Date >= startDate && r.Date <= endDate))
                 .OrderByDescending(user => user.Reviews.Count)
                     .ThenBy(user => user.Surname)
                         .ThenBy(user => user.Forename)

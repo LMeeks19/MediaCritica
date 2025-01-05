@@ -5,9 +5,11 @@
         public (DateTime start, DateTime end) GetThisWeekRange()
         {
             DateTime currentDate = DateTime.Today;
-            // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-            int dayOfWeek = (int)currentDate.DayOfWeek;
-            DateTime startOfWeek = currentDate.AddDays(-dayOfWeek + (int)DayOfWeek.Monday); // Move back to Monday
+
+            int daysSinceMonday = (int)currentDate.DayOfWeek - (int)DayOfWeek.Monday;
+            daysSinceMonday = daysSinceMonday < 0 ? 6 : daysSinceMonday;
+
+            DateTime startOfWeek = currentDate.AddDays(-daysSinceMonday); // Move back to Monday
             DateTime endOfWeek = startOfWeek.AddDays(7); // Add 6 days to get Sunday
             return (startOfWeek, endOfWeek);
         }

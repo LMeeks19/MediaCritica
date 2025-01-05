@@ -12,7 +12,7 @@
             if (scores == null || scores.Count == 0)
                 return 0;
 
-            double mean = scores.Average();
+            double mean = scores.Count == 0 ? 0 : scores.Average();
             double variance = scores.Sum(score => Math.Pow(score - mean, 2)) / scores.Count;
             return Math.Sqrt(variance);
         }
