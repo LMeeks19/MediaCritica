@@ -9,6 +9,7 @@ import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
+import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
@@ -16,6 +17,7 @@ import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
+import { UserRankingModel } from "../Interfaces/UserRankingModel";
 
 // User API Calls
 export async function GetUser(email: string): Promise<UserModel> {
@@ -294,4 +296,15 @@ export async function UpdateBacklogState(
   await fetch(`/Backlog/UpdateBacklogState/${backlogId}/${newState}`, {
     method: "PUT",
   });
+}
+
+// Leaderboards API Calls
+export async function GetUserRankings(timeframe: string): Promise<UserRankingModel[]> {
+  const response = await fetch(`/Leaderboards/GetUserRankings/${timeframe}`);
+  return response.json();
+}
+
+export async function GetMediaTrends(timeframe: string): Promise<MediaTrendModel[]> {
+  const response = await fetch(`/Leaderboards/GetMediaTrends/${timeframe}`);
+  return response.json();
 }

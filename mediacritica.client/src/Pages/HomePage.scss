@@ -57,17 +57,20 @@
       }
     }
 
-    .explore {
+    .actions {
       align-items: baseline;
       justify-content: center;
       border-bottom: none !important;
+      gap: 2rem;
 
-      .explore-btn {
+      .explore-btn,
+      .leaderboards-btn {
         background-color: var(--palette-colour);
         color: whitesmoke;
       }
 
-      .explore-btn:not(:disabled):hover {
+      .explore-btn:not(:disabled):hover,
+      .leaderboards-btn:not(:disabled):hover {
         background-color: var(--light-dark);
         color: var(--dark-light);
       }

@@ -8,11 +8,13 @@ import ViewReviewPage from "../Pages/ViewReviewPage";
 import ReviewsPage from "../Pages/ReviewsPage";
 import LoginPage from "../Pages/LoginPage";
 import ExplorePage from "../Pages/ExplorePage";
+import LeaderboardsPage from "../Pages/LeaderboardsPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/explore", element: <ExplorePage /> },
+  { path: "/leaderboards", element: <LeaderboardsPage /> },
   { path: "/media/:mediaId", element: <MediaPage /> },
   {
     path: "/media/:mediaId/seasons/:seasonId/episodes/:episodeId",

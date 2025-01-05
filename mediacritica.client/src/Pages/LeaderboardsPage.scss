@@ -1,0 +1,197 @@
+.leaderboards-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .leaderboards {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      padding-top: 5rem;
+      background-color: var(--palette-colour);
+
+      h1 {
+        color: whitesmoke !important;
+      }
+    }
+
+    /* Global Rankings */
+
+    .content {
+      overflow: hidden auto;
+      flex: 1;
+
+      .sub-header {
+        background-color: light-dark(whitesmoke, #1b1b1b);
+
+        .actions {
+          .MuiFormControl-root {
+            &:hover {
+              background-color: light-dark(whitesmoke, #242424);
+            }
+
+            .MuiInputBase-root {
+              color: var(--light-dark) !important;
+              overflow: hidden !important;
+              padding: 5px;
+              padding-left: 14px;
+
+              &.Mui-focused {
+                background-color: light-dark(whitesmoke, #242424) !important;
+              }
+
+              .MuiInputBase-input {
+                padding: 10px;
+                display: flex !important;
+                gap: 0.5rem !important;
+                overflow: hidden !important;
+              }
+            }
+          }
+
+          .MuiAutocomplete-root {
+            border-color: var(--light-dark) !important;
+
+            &:hover,
+            &:focus-within {
+              background-color: light-dark(whitesmoke, #242424);
+            }
+
+            .MuiInputBase-root {
+              padding: 5px;
+              padding-left: 14px;
+
+              .MuiChip-root {
+                color: whitesmoke !important;
+                background-color: var(--palette-colour) !important;
+
+                .MuiSvgIcon-root {
+                  color: whitesmoke !important;
+                }
+              }
+
+              .MuiInputBase-input {
+                color: var(--light-dark) !important;
+              }
+            }
+          }
+        }
+      }
+
+      .rankings {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        /* Rankings Table */
+        .ranking-table {
+          width: 100%;
+          border-collapse: collapse;
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+          border-radius: 8px;
+
+          thead tr th:first-child {
+            border-top-left-radius: 8px;
+          }
+
+          thead tr th:last-child {
+            border-top-right-radius: 8px;
+          }
+
+          tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 8px;
+          }
+
+          tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 8px;
+          }
+
+          th,
+          td {
+            text-align: center;
+            padding: 1rem;
+            width: 33%;
+          }
+
+          th {
+            background-color: var(--palette-colour);
+            color: whitesmoke;
+            text-transform: uppercase;
+          }
+
+          tbody tr {
+            background: light-dark(whitesmoke, #1b1b1b);
+            border-top: 1px solid light-dark(grey, #333);
+          }
+
+          tr:nth-child(1) {
+            background-color: goldenrod;
+          }
+
+          tr:nth-child(2) {
+            background-color: silver;
+          }
+
+          tr:nth-child(3) {
+            background-color: #cd7f32;
+          }
+
+          td {
+            border: none;
+          }
+        }
+      }
+
+      .trends {
+        padding: 2rem;
+        overflow: hidden auto;
+
+        .trends-list > .trend-item:last-child {
+          flex-grow: 1; /* The last item takes the remaining space */
+        }
+
+        .trends-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          .trend-item {
+            flex: 1 1 45%; /* Each item takes 1/3 of the space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--palette-colour);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+            &:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            }
+
+            h3 {
+              font-size: 1.4rem;
+              margin: 0;
+              color: var(--rating-star);
+            }
+
+            span {
+              color: whitesmoke;
+            }
+
+            p {
+              margin-bottom: 0;
+              color: whitesmoke;
+            }
+          }
+        }
+      }
+    }
+  }
+}

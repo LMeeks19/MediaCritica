@@ -95,6 +95,7 @@ function MediaPage() {
       mediaType: media.type,
       mediaPoster: media.poster,
       mediaTitle: media.title,
+      addedDate: new Date()
     } as unknown as BacklogModel;
 
     const newBacklogSummary = await PostBacklog(backlog);

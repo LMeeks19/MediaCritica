@@ -5,6 +5,7 @@
         public int Id { get; set; }
 
         public string MediaId { get; set; }
+        public virtual Media Media { get; set; }
         public string MediaPoster { get; set; }
         public string MediaTitle { get; set; }
         public string MediaType { get; set; }

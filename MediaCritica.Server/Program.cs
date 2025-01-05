@@ -34,7 +34,8 @@ builder.Services.AddScoped<IMapper, Mapper>();
 // Add Helpers to Services
 builder.Services.AddScoped<ExternalApiHelper>();
 builder.Services.AddScoped<InternalApiHelper>();
-
+builder.Services.AddScoped<DateRangeCalculatorHelper>();
+builder.Services.AddScoped<TrendCalculatorHelper>();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));

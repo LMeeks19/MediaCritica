@@ -73,7 +73,7 @@ const MediaGrid: FC<{
                 <div className="flex justify-around">
                   <Typography>{CapitaliseFirstLetter(item.type)}</Typography>
                   {item.imdbRating !== null && (
-                    <Typography className="flex items-center gap-1">
+                    <Typography component="div" className="flex items-center gap-1">
                       <GradeIcon
                         style={{ fontSize: 14, color: "var(--rating-star)" }}
                       />
