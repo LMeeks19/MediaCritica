@@ -10,11 +10,10 @@
   gap: 1rem;
   min-width: 200px;
 
-  .select {
+  .MuiInputBase-root {
     padding: 0 !important;
     color: var(--light-dark) !important;
     font-family: "Orbitron" !important;
-    border-color: var(--light-dark) !important;
     font-size: 1rem !important;
     letter-spacing: 0.1rem !important;
 
@@ -37,7 +36,7 @@
     border: none;
     outline: none;
     background-color: transparent;
-    font-family: "Orbitron" ;
+    font-family: "Orbitron";
   }
 
   .info-action {

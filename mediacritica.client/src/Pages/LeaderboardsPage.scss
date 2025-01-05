@@ -27,17 +27,21 @@
       .sub-header {
         background-color: light-dark(whitesmoke, #1b1b1b);
 
-        &:hover {
-          background-color: light-dark(whitesmoke, #242424);
-        }
-
         .actions {
           .MuiFormControl-root {
+            &:hover {
+              background-color: light-dark(whitesmoke, #242424);
+            }
+
             .MuiInputBase-root {
               color: var(--light-dark) !important;
               overflow: hidden !important;
               padding: 5px;
               padding-left: 14px;
+
+              &.Mui-focused {
+                background-color: light-dark(whitesmoke, #242424) !important;
+              }
 
               .MuiInputBase-input {
                 padding: 10px;
@@ -50,6 +54,12 @@
 
           .MuiAutocomplete-root {
             border-color: var(--light-dark) !important;
+
+            &:hover,
+            &:focus-within {
+              background-color: light-dark(whitesmoke, #242424);
+            }
+
             .MuiInputBase-root {
               padding: 5px;
               padding-left: 14px;
@@ -113,12 +123,9 @@
             text-transform: uppercase;
           }
 
-          tr:nth-child(odd) {
+          tbody tr {
             background: light-dark(whitesmoke, #1b1b1b);
-          }
-
-          tr:nth-child(even) {
-            background: light-dark(grey, #242424);
+            border-top: 1px solid light-dark(grey, #333);
           }
 
           tr:nth-child(1) {

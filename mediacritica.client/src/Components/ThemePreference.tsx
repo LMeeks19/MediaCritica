@@ -30,7 +30,7 @@ function ThemePreference() {
       {isEditing ? (
         <div className="info-value">
           <Select
-            className="select"
+            variant="standard"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
             fullWidth
