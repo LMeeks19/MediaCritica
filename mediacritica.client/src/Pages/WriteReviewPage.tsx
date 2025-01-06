@@ -77,92 +77,94 @@ function WriteReviewPage() {
   }
 
   return (
-    <div className="writereviewpage-container">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="review">
-          <TopBar whiteText />
-          <div className="info">
-            <div className="hero">
-              <div className="parent-title">{media.title}</div>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <Rating
-                  value={rating}
-                  precision={0.5}
-                  sx={{ fontSize: "3rem" }}
-                  onChange={(_event, value) => setRating(value)}
-                />
-                <div className="flex gap-3 pt-2">
-                  <button
-                    type="reset"
-                    className="reset-btn"
-                    onClick={() => ResetFields()}
-                  >
-                    Reset
-                    <RestartAltIcon fontSize="small" />
-                  </button>
-                  <button
-                    className="post-btn"
-                    form="review-form"
-                    type="submit"
-                    disabled={description === "" || title == ""}
-                  >
-                    Post
-                    <PostAddIcon fontSize="small" />
-                  </button>
+    user.id !== undefined && (
+      <div className="writereviewpage-container">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="review">
+            <TopBar whiteText />
+            <div className="info">
+              <div className="hero">
+                <div className="parent-title">{media.title}</div>
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "3rem" }}
+                    onChange={(_event, value) => setRating(value)}
+                  />
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="reset"
+                      className="reset-btn"
+                      onClick={() => ResetFields()}
+                    >
+                      Reset
+                      <RestartAltIcon fontSize="small" />
+                    </button>
+                    <button
+                      className="post-btn"
+                      form="review-form"
+                      type="submit"
+                      disabled={description === "" || title == ""}
+                    >
+                      Post
+                      <PostAddIcon fontSize="small" />
+                    </button>
+                  </div>
                 </div>
               </div>
+              <form
+                id="review-form"
+                className="review-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setConfirmationDialog({
+                    ...postReviewDialog,
+                    confirm_action: () => SubmitReview(),
+                  });
+                }}
+              >
+                <input
+                  className="review-title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  name="title"
+                  placeholder="Enter title..."
+                  maxLength={50}
+                  required
+                />
+                <textarea
+                  className="review-description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  name="description"
+                  placeholder="Write review..."
+                  required
+                />
+              </form>
             </div>
-            <form
-              id="review-form"
-              className="review-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setConfirmationDialog({
-                  ...postReviewDialog,
-                  confirm_action: () => SubmitReview(),
-                });
-              }}
-            >
-              <input
-                className="review-title"
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                name="title"
-                placeholder="Enter title..."
-                maxLength={50}
-                required
-              />
-              <textarea
-                className="review-description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                name="description"
-                placeholder="Write review..."
-                required
-              />
-            </form>
+            {media.poster !== "N/A" ? (
+              <div
+                className="media-poster"
+                style={{
+                  backgroundImage: `url(${media.poster.replace(
+                    "300.jpg",
+                    "752.jpg"
+                  )})`,
+                }}
+              ></div>
+            ) : (
+              <div className="media-poster empty">
+                <ImageIcon />
+              </div>
+            )}
           </div>
-          {media.poster !== "N/A" ? (
-            <div
-              className="media-poster"
-              style={{
-                backgroundImage: `url(${media.poster.replace(
-                  "300.jpg",
-                  "752.jpg"
-                )})`,
-              }}
-            ></div>
-          ) : (
-            <div className="media-poster empty">
-              <ImageIcon />
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    )
   );
 }
 

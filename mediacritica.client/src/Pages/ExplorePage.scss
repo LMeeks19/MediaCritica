@@ -84,9 +84,9 @@
       .items {
         padding: 2rem;
         display: grid;
-        grid-template-columns: repeat(auto-fit, 225px);
+        grid-template-columns: repeat(auto-fit, 180px);
         justify-content: center;
-        gap: 2rem;
+        gap: 1.5rem;
 
         &.empty {
           display: flex;
@@ -104,105 +104,6 @@
         .load-btn:not(:disabled):hover {
           background-color: var(--light-dark);
           color: var(--palette-colour);
-        }
-
-        .MuiCard-root {
-          border-radius: 20px;
-          background-color: light-dark(whitesmoke, #242424) !important;
-          min-width: 225px;
-          min-height: 281.25px;
-          width: 225px;
-          height: 281.25px;
-
-          .MuiCardActionArea-root {
-            height: inherit;
-
-            .MuiCardHeader-root {
-              background-color: var(--palette-colour);
-              transition: display 0.5s ease-in-out;
-              transition-behavior: allow-discrete;
-              display: none;
-              padding: 0.5rem 1rem;
-
-              .MuiCardHeader-content {
-                overflow: hidden;
-
-                .MuiCardHeader-title,
-                .MuiCardHeader-subheader {
-                  text-align: center;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  font-family: "Orbitron";
-                }
-
-                .MuiCardHeader-title {
-                  color: whitesmoke;
-                }
-
-                .MuiCardHeader-subheader {
-                  color: #ccc;
-                }
-              }
-            }
-
-            .MuiCardMedia-root {
-              transition: height 0.5s ease-in-out;
-              height: 281.25px;
-              width: 225px;
-            }
-
-            .MuiCardContent-root {
-              transition: display 0.5s ease-in-out;
-              transition-behavior: allow-discrete;
-              display: none;
-              padding: 0.5rem 1rem;
-              flex-direction: column;
-              gap: 0.25rem;
-              text-align: center;
-
-              .MuiTypography-root {
-                font-family: "Orbitron";
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                font-size: 0.75rem;
-              }
-
-              .chips {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 0.75rem;
-
-                .rating {
-                  display: flex;
-                  align-items: center;
-                  gap: 0.25rem;
-
-                  .icon {
-                    color: var(--rating-star);
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        .MuiCard-root:hover {
-          .MuiCardActionArea-root {
-            .MuiCardHeader-root {
-              display: block;
-            }
-
-            .MuiCardMedia-root {
-              height: calc(281.25px - 133.02px);
-            }
-
-            .MuiCardContent-root {
-              display: flex;
-            }
-          }
         }
       }
     }
