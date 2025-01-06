@@ -52,23 +52,11 @@ function LeaderboardsPage() {
   const [selectedTrendTimeFrame, setSelectedTrendTimeFrame] =
     useState<string>("week");
 
-  const awards = [
-    "Rising Star",
-    "Falling Star",
-    "Surprise",
-    "Most Reviewed",
-    "Highest Rated",
-    "Comeback",
-    "Most Active Genre",
-    "Most Backlogged",
-    "Most Unfinished",
-    "Most Abandoned",
-    "Fan Favourite",
-    "Hidden Gem",
-    "Director Spotlight",
-    "Actor Spotlight",
-    "Most Anticipated",
-  ];
+  const awards = trends
+    .filter((trend) => trend.timeframe === selectedTrendTimeFrame)
+    .map((trend) => {
+      return trend.awardType;
+    });
 
   useEffect(() => {
     GetTrends();
@@ -158,7 +146,7 @@ function LeaderboardsPage() {
                         );
                       })
                   ) : (
-                    <tr>
+                    <tr className="empty">
                       <td colSpan={4}>No Other Rankings</td>
                     </tr>
                   )}

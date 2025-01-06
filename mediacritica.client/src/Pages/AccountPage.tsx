@@ -23,7 +23,6 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
-  Rating,
   Select,
   Tab,
   Tabs,
@@ -35,7 +34,6 @@ import { useNavigate } from "react-router-dom";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
-import { formatDistanceToNowStrict } from "date-fns";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import { useRecoilValue } from "recoil";
@@ -48,12 +46,15 @@ import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import ViewColumnIcon from "@mui/icons-material/ViewColumnOutlined";
 import TableRowsIcon from "@mui/icons-material/TableRowsOutlined";
-import ImageIcon from "@mui/icons-material/ImageOutlined";
 import DeleteAccountAction from "../Components/DeleteAccountAction";
 import AddIcon from "@mui/icons-material/Add";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortIcon from "@mui/icons-material/Sort";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
+import GradeIcon from "@mui/icons-material/Grade";
+import { format } from "date-fns";
+import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
+import MilestonesAccordion from "../Components/MilestonesAccordion";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -61,7 +62,8 @@ function AccountPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
-  const [selectedReviewFilter, setSelectedReviewFilter] = useState<number>(0);
+  const [selectedReviewFilter, setSelectedReviewFilter] =
+    useState<string>("None");
   const [backlog, setBacklog] = useState<BacklogObjectModel>(
     {} as BacklogObjectModel
   );
@@ -132,11 +134,11 @@ function AccountPage() {
   }
 
   function filteredReviews() {
-    if (selectedReviewFilter === 1)
+    if (selectedReviewFilter === "Movies")
       return reviews.filter((review) => review.mediaType === MediaType.Movie);
-    else if (selectedReviewFilter === 2)
+    else if (selectedReviewFilter === "Series")
       return reviews.filter((review) => review.mediaType === MediaType.Series);
-    else if (selectedReviewFilter === 3)
+    else if (selectedReviewFilter === "Games")
       return reviews.filter((review) => review.mediaType === MediaType.Game);
     return reviews;
   }
@@ -398,6 +400,119 @@ function AccountPage() {
     );
   }
 
+  // const [milestones, setMilestones] = useState<UserMilestoneModel[]>([]);
+
+  const achievements = [
+    {
+      category: "General Reviews",
+      milestones: [
+        {
+          title: "Reviews Written",
+          description: "Write reviews for your favorite media.",
+          icon: "📝",
+          level: "bronze",
+          earnedDate: "2025-01-01",
+          progress: null,
+        },
+        {
+          title: "Movies Reviewed",
+          description: "Review movies to share your thoughts.",
+          icon: "🎥",
+          level: "silver",
+          earnedDate: "2025-01-05",
+          progress: null,
+        },
+        {
+          title: "Games Reviewed",
+          description: "Critique games and provide helpful feedback.",
+          icon: "🎮",
+          level: null,
+          earnedDate: null,
+          progress: { current: 30, target: 50 },
+        },
+        {
+          title: "Series Reviewed",
+          description: "Share your thoughts on TV shows and series.",
+          icon: "📺",
+          level: null,
+          earnedDate: null,
+          progress: { current: 5, target: 25 },
+        },
+      ],
+    },
+    {
+      category: "Media Interaction",
+      milestones: [
+        {
+          title: "Added to Backlog",
+          description: "Keep track of media you'd like to watch or play.",
+          icon: "📚",
+          level: "silver",
+          earnedDate: "2025-01-03",
+          progress: { current: 55, target: 75 },
+        },
+        {
+          title: "Finished Media",
+          description: "Complete watching or playing a piece of media.",
+          icon: "✔️",
+          level: null,
+          earnedDate: null,
+          progress: { current: 15, target: 25 },
+        },
+      ],
+    },
+    {
+      category: "Genres",
+      milestones: [
+        {
+          title: "Single Genre Reviewed",
+          description: "Focus on reviewing a single genre of media.",
+          icon: "🎭",
+          level: "platinum",
+          earnedDate: "2025-01-02",
+          progress: null,
+        },
+        {
+          title: "Genres Review Variety",
+          description: "Review media across multiple genres.",
+          icon: "🌈",
+          level: null,
+          earnedDate: null,
+          progress: { current: 8, target: 10 },
+        },
+      ],
+    },
+    {
+      category: "Activity Streaks",
+      milestones: [
+        {
+          title: "Monthly Reviews",
+          description: "Contribute reviews every month.",
+          icon: "📅",
+          level: "gold",
+          earnedDate: "2025-01-10",
+          progress: null,
+        },
+        {
+          title: "Yearly Reviews",
+          description: "Contribute reviews every year.",
+          icon: "📅",
+          level: "platinum",
+          earnedDate: "2025-01-14",
+          progress: null,
+        },
+        {
+          title: "Consecutive Activity",
+          description: "Stay active for consecutive days.",
+          icon: "🔥",
+          level: null,
+          earnedDate: null,
+          progress: { current: 15, target: 30 },
+        },
+      ],
+    },
+  ] as UserMilestoneModelObject[];
+
   return (
     user.id !== undefined && (
       <div className="accountpage-container">
@@ -415,6 +530,7 @@ function AccountPage() {
                 <Tab value={0} label="Details" />
                 <Tab value={1} label="Reviews" />
                 <Tab value={2} label="Backlog" />
+                <Tab value={3} label="Milestones" />
               </Tabs>
             </AppBar>
             <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
@@ -480,67 +596,73 @@ function AccountPage() {
                         label="Filter"
                         value={selectedReviewFilter}
                         onChange={(e) =>
-                          setSelectedReviewFilter(Number(e.target.value))
+                          setSelectedReviewFilter(e.target.value)
                         }
                       >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Movies</MenuItem>
-                        <MenuItem value={2}>Series</MenuItem>
-                        <MenuItem value={3}>Games</MenuItem>
+                        <MenuItem value="None">None</MenuItem>
+                        <MenuItem value="Movies">Movies</MenuItem>
+                        <MenuItem value="Series">Series</MenuItem>
+                        <MenuItem value="Games">Games</MenuItem>
                       </Select>
                     </FormControl>
                   </div>
                 </div>
                 <div className="layout">
                   {filteredReviews().length === 0 ? (
-                    <div className="reviews empty">No Media Reviewed</div>
+                    <div className="reviews empty">
+                      No {selectedReviewFilter} Reviewed
+                    </div>
                   ) : (
                     <div className="reviews">
                       {filteredReviews().map((review) => {
                         return (
-                          <div
-                            key={review.mediaId}
-                            className="review-card"
-                            onClick={() =>
-                              navigate(
-                                `/media/${review.mediaId}/view-review/${review.id}}`,
-                                {
-                                  state: { reviewId: review.id },
-                                }
-                              )
-                            }
+                          <Card
+                            key={review.id}
+                            style={{
+                              backgroundImage: `url(${review.mediaPoster?.replace(
+                                "300.jpg",
+                                "180.jpg"
+                              )})`,
+                            }}
                           >
-                            {review.mediaPoster !== null ? (
-                              <div
-                                className="review-image "
-                                style={{
-                                  backgroundImage: `url(${review.mediaPoster})`,
-                                }}
-                              >
-                                <span className="tag">
-                                  {CapitaliseFirstLetter(review.mediaType)}
-                                </span>
-                              </div>
-                            ) : (
-                              <div className="review-image empty">
-                                <ImageIcon className="text-9xl" />
-                                <span className="tag">
-                                  {CapitaliseFirstLetter(review.mediaType)}
-                                </span>
-                              </div>
-                            )}
-                            <div className="review-content">
-                              <h2>{review.mediaTitle}</h2>
-                              <p className="review-time">
-                                {formatDistanceToNowStrict(review.date)} ago
-                              </p>
-                              <Rating
-                                className="rating"
-                                value={review.rating}
-                                readOnly
-                              />
-                            </div>
-                          </div>
+                            <CardActionArea
+                              onClick={() =>
+                                navigate(
+                                  `/media/${review.mediaId}/view-review/${review.id}}`,
+                                  {
+                                    state: { reviewId: review.id },
+                                  }
+                                )
+                              }
+                            >
+                              <CardMedia />
+                              <CardHeader title={review.title} />
+                              <Divider />
+                              <CardContent>
+                                <Typography>{review.mediaTitle}</Typography>
+                                <Typography>
+                                  {format(review.date, "do MMMM yyyy")}
+                                </Typography>
+                                <div className="flex justify-around">
+                                  <Typography>
+                                    {CapitaliseFirstLetter(review.mediaType)}
+                                  </Typography>
+                                  <Typography
+                                    component="div"
+                                    className="flex items-center gap-1"
+                                  >
+                                    <GradeIcon
+                                      style={{
+                                        fontSize: 14,
+                                        color: "var(--rating-star)",
+                                      }}
+                                    />
+                                    <div className="">{review.rating}</div>
+                                  </Typography>
+                                </div>
+                              </CardContent>
+                            </CardActionArea>
+                          </Card>
                         );
                       })}
                       <div
@@ -606,6 +728,23 @@ function AccountPage() {
                     items={backlog.finished}
                     totalItems={backlog.totalFinishedCount}
                   />
+                </div>
+              </div>
+            </div>
+            <div
+              className="milestones-tab"
+              tabIndex={3}
+              hidden={activeTab !== 3}
+            >
+              <div className="milestones-container">
+                <div className="header">
+                  <h1>MILESTONES</h1>
+                </div>
+                <div className="layout">
+                  <MilestonesAccordion object={achievements.at(0)!} />
+                  <MilestonesAccordion object={achievements.at(1)!} />
+                  <MilestonesAccordion object={achievements.at(2)!} />
+                  <MilestonesAccordion object={achievements.at(3)!} />
                 </div>
               </div>
             </div>

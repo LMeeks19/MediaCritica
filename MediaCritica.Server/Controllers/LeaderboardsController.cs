@@ -81,7 +81,7 @@ namespace MediaCritica.Server.Controllers
             trends.AddIfNotNull(_trendCalculatorHelper.GetMostAnticipated(media, start, end, timeframe));
             trends.AddIfNotNull(_trendCalculatorHelper.GetMostPolarising(media, start, end, timeframe));
 
-            return trends;
+            return [.. trends.OrderBy(trend => trend.AwardType)];
         }
     }
 }

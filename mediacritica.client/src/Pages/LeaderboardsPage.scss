@@ -124,8 +124,12 @@
           }
 
           tbody tr {
-            background: light-dark(whitesmoke, #1b1b1b);
+            background-color: light-dark(whitesmoke, #1b1b1b);
             border-top: 1px solid light-dark(grey, #333);
+
+            &.empty {
+              background-color: light-dark(whitesmoke, #1b1b1b);
+            }
           }
 
           tr:nth-child(1) {
