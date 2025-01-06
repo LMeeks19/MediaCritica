@@ -16,6 +16,7 @@ import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
+import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 
@@ -306,5 +307,10 @@ export async function GetUserRankings(timeframe: string): Promise<UserRankingMod
 
 export async function GetMediaTrends(timeframe: string): Promise<MediaTrendModel[]> {
   const response = await fetch(`/Leaderboards/GetMediaTrends/${timeframe}`);
+  return response.json();
+}
+
+export async function GetUserMilestones(userId: number): Promise<UserMilestoneModelObject[]> {
+  const response = await fetch(`/Milestones/GetUserMilestones/${userId}`);
   return response.json();
 }

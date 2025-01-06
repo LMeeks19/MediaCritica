@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +9,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
 
         [HttpGet(Name = "GetUser")]
         [Route("[action]/{email}")]
@@ -75,7 +77,7 @@ namespace MediaCritica.Server.Controllers
                 {
                     Theme = "System",
                     Palette = "#971212"
-                }
+                },
             };
 
             await _databaseContext.Users.AddAsync(user);

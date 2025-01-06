@@ -107,11 +107,11 @@ button:disabled {
 @media screen and (max-width: 1092px) {
   .header,
   .sub-header {
-    justify-content: center;
+    justify-content: center !important;
 
     .actions {
-      width: 100%;
-      justify-content: space-around;
+      width: 100% !important;
+      justify-content: space-around !important;
     }
   }
 }

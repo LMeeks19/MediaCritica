@@ -10,16 +10,11 @@
     overflow: hidden;
 
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding-top: 5rem !important;
       background-color: var(--palette-colour);
-      padding: 6rem 2rem 2rem 2rem;
 
       h1 {
-        margin: 0;
-        color: whitesmoke;
-        text-align: center;
+        background-color: whitesmoke !important;
       }
     }
 
@@ -81,7 +76,7 @@
       padding: 1.5rem 2rem;
       display: flex;
       justify-content: center;
-      
+
       .load-btn {
         background-color: var(--palette-colour);
         border-color: var(--palette-colour);

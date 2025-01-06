@@ -7,6 +7,7 @@ import {
   GetBackloggedBacklog,
   GetFinishedBacklog,
   GetInProgressBacklog,
+  GetUserMilestones,
   GetUserReviews,
   UpdateBacklogState,
 } from "../Server/Server";
@@ -68,11 +69,15 @@ function AccountPage() {
     {} as BacklogObjectModel
   );
   const [selectedBacklogLayout, setSelectedBacklogLayout] = useState<number>(0);
+  const [milestones, setMilestones] = useState<UserMilestoneModelObject[]>(
+    [] as UserMilestoneModelObject[]
+  );
 
   useEffect(() => {
     if (user.id === undefined) navigate("/login");
     if (activeTab === 1 && reviews.length === 0) FetchReviews(0);
     else if (activeTab === 2 && getTotalLoadedBacklogs() === 0) FetchBacklog();
+    else if (activeTab === 3) FetchMilestones();
     else setIsLoading(false);
   }, [activeTab]);
 
@@ -82,6 +87,13 @@ function AccountPage() {
       (backlog.inProgress?.length ?? 0) +
       (backlog.finished?.length ?? 0)
     );
+  }
+
+  async function FetchMilestones() {
+    setIsLoading(true);
+    const milestoneData = await GetUserMilestones(user.id);
+    setMilestones(milestoneData);
+    setIsLoading(false);
   }
 
   async function FetchReviews(offset: number) {
@@ -400,213 +412,104 @@ function AccountPage() {
     );
   }
 
-  // const [milestones, setMilestones] = useState<UserMilestoneModel[]>([]);
-
-  const achievements = [
-    {
-      category: "General Reviews",
-      milestones: [
-        {
-          title: "Reviews Written",
-          description: "Write reviews for your favorite media.",
-          icon: "📝",
-          level: "bronze",
-          earnedDate: "2025-01-01",
-          progress: null,
-        },
-        {
-          title: "Movies Reviewed",
-          description: "Review movies to share your thoughts.",
-          icon: "🎥",
-          level: "silver",
-          earnedDate: "2025-01-05",
-          progress: null,
-        },
-        {
-          title: "Games Reviewed",
-          description: "Critique games and provide helpful feedback.",
-          icon: "🎮",
-          level: null,
-          earnedDate: null,
-          progress: { current: 30, target: 50 },
-        },
-        {
-          title: "Series Reviewed",
-          description: "Share your thoughts on TV shows and series.",
-          icon: "📺",
-          level: null,
-          earnedDate: null,
-          progress: { current: 5, target: 25 },
-        },
-      ],
-    },
-    {
-      category: "Media Interaction",
-      milestones: [
-        {
-          title: "Added to Backlog",
-          description: "Keep track of media you'd like to watch or play.",
-          icon: "📚",
-          level: "silver",
-          earnedDate: "2025-01-03",
-          progress: { current: 55, target: 75 },
-        },
-        {
-          title: "Finished Media",
-          description: "Complete watching or playing a piece of media.",
-          icon: "✔️",
-          level: null,
-          earnedDate: null,
-          progress: { current: 15, target: 25 },
-        },
-      ],
-    },
-    {
-      category: "Genres",
-      milestones: [
-        {
-          title: "Single Genre Reviewed",
-          description: "Focus on reviewing a single genre of media.",
-          icon: "🎭",
-          level: "platinum",
-          earnedDate: "2025-01-02",
-          progress: null,
-        },
-        {
-          title: "Genres Review Variety",
-          description: "Review media across multiple genres.",
-          icon: "🌈",
-          level: null,
-          earnedDate: null,
-          progress: { current: 8, target: 10 },
-        },
-      ],
-    },
-    {
-      category: "Activity Streaks",
-      milestones: [
-        {
-          title: "Monthly Reviews",
-          description: "Contribute reviews every month.",
-          icon: "📅",
-          level: "gold",
-          earnedDate: "2025-01-10",
-          progress: null,
-        },
-        {
-          title: "Yearly Reviews",
-          description: "Contribute reviews every year.",
-          icon: "📅",
-          level: "platinum",
-          earnedDate: "2025-01-14",
-          progress: null,
-        },
-        {
-          title: "Consecutive Activity",
-          description: "Stay active for consecutive days.",
-          icon: "🔥",
-          level: null,
-          earnedDate: null,
-          progress: { current: 15, target: 30 },
-        },
-      ],
-    },
-  ] as UserMilestoneModelObject[];
-
   return (
     user.id !== undefined && (
       <div className="accountpage-container">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div className="account">
-            <TopBar whiteText />
-            <AppBar position="static">
-              <Tabs
-                value={activeTab}
-                onChange={(_e, v) => setActiveTab(v)}
-                variant="fullWidth"
+        <div className="account">
+          <TopBar whiteText />
+          <AppBar position="static">
+            <Tabs
+              value={activeTab}
+              onChange={(_e, v) => setActiveTab(v)}
+              variant="fullWidth"
+            >
+              <Tab value={0} label="Details" />
+              <Tab value={1} label="Reviews" />
+              <Tab value={2} label="Backlog" />
+              <Tab value={3} label="Milestones" />
+            </Tabs>
+          </AppBar>
+          <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
+            <div className="header dark-shade">
+              <h1>DETAILS</h1>
+              <button
+                className="logout-btn"
+                onClick={() => {
+                  navigate("/login");
+                }}
               >
-                <Tab value={0} label="Details" />
-                <Tab value={1} label="Reviews" />
-                <Tab value={2} label="Backlog" />
-                <Tab value={3} label="Milestones" />
-              </Tabs>
-            </AppBar>
-            <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
-              <div className="header dark-shade">
-                <h1>DETAILS</h1>
-                <button
-                  className="logout-btn"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Logout <LogoutIcon fontSize="small" />
-                </button>
-              </div>
-              <div className="account-details">
-                <AccountDetail
-                  accountFieldName="Forename"
-                  accountFieldType={AccountFieldType.Forename}
-                  accountFieldValue={user.forename}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Surname"
-                  accountFieldType={AccountFieldType.Surname}
-                  accountFieldValue={user.surname}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Email"
-                  accountFieldType={AccountFieldType.Email}
-                  accountFieldValue={user.email}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Password"
-                  accountFieldType={AccountFieldType.Password}
-                  accountFieldValue="********"
-                  inputType="password"
-                />
-              </div>
-              <div className="header dark-shade">
-                <h1>PREFERENCES</h1>
-              </div>
-              <div className="account-details">
-                <ThemePreference />
-                <PalettePreference />
-              </div>
-              <div className="header dark-shade">
-                <h1>ACTIONS</h1>
-              </div>
-              <div className="account-details">
-                <DeleteAccountAction />
-              </div>
+                Logout <LogoutIcon fontSize="small" />
+              </button>
             </div>
-            <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
-              <div className="reviews-container">
-                <div className="header dark-shade">
-                  <h1>REVIEWS</h1>
-                  <div className="actions">
-                    <FormControl variant="outlined" sx={{ width: 250 }}>
-                      <InputLabel>Filter</InputLabel>
-                      <Select
-                        label="Filter"
-                        value={selectedReviewFilter}
-                        onChange={(e) =>
-                          setSelectedReviewFilter(e.target.value)
-                        }
-                      >
-                        <MenuItem value="None">None</MenuItem>
-                        <MenuItem value="Movies">Movies</MenuItem>
-                        <MenuItem value="Series">Series</MenuItem>
-                        <MenuItem value="Games">Games</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <>
+                <div className="account-details">
+                  <AccountDetail
+                    accountFieldName="Forename"
+                    accountFieldType={AccountFieldType.Forename}
+                    accountFieldValue={user.forename}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Surname"
+                    accountFieldType={AccountFieldType.Surname}
+                    accountFieldValue={user.surname}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Email"
+                    accountFieldType={AccountFieldType.Email}
+                    accountFieldValue={user.email}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Password"
+                    accountFieldType={AccountFieldType.Password}
+                    accountFieldValue="********"
+                    inputType="password"
+                  />
                 </div>
+                <div className="header dark-shade">
+                  <h1>PREFERENCES</h1>
+                </div>
+                <div className="account-details">
+                  <ThemePreference />
+                  <PalettePreference />
+                </div>
+                <div className="header dark-shade">
+                  <h1>ACTIONS</h1>
+                </div>
+                <div className="account-details">
+                  <DeleteAccountAction />
+                </div>
+              </>
+            )}
+          </div>
+          <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
+            <div className="reviews-container">
+              <div className="header dark-shade">
+                <h1>REVIEWS</h1>
+                <div className="actions">
+                  <FormControl variant="outlined" sx={{ width: 250 }}>
+                    <InputLabel>Filter</InputLabel>
+                    <Select
+                      label="Filter"
+                      value={selectedReviewFilter}
+                      onChange={(e) => setSelectedReviewFilter(e.target.value)}
+                    >
+                      <MenuItem value="None">None</MenuItem>
+                      <MenuItem value="Movies">Movies</MenuItem>
+                      <MenuItem value="Series">Series</MenuItem>
+                      <MenuItem value="Games">Games</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <div className="layout">
                   {filteredReviews().length === 0 ? (
                     <div className="reviews empty">
@@ -685,25 +588,29 @@ function AccountPage() {
                     </div>
                   )}
                 </div>
-              </div>
+              )}
             </div>
-            <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
-              <div className="backlog-container">
-                <div className="header dark-shade">
-                  <h1>BACKLOG</h1>
-                  <ToggleButtonGroup
-                    value={selectedBacklogLayout}
-                    onChange={(_e, v) => setSelectedBacklogLayout(v)}
-                    exclusive
-                  >
-                    <ToggleButton value={0}>
-                      <TableRowsIcon />
-                    </ToggleButton>
-                    <ToggleButton value={1}>
-                      <ViewColumnIcon />
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </div>
+          </div>
+          <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
+            <div className="backlog-container">
+              <div className="header dark-shade">
+                <h1>BACKLOG</h1>
+                <ToggleButtonGroup
+                  value={selectedBacklogLayout}
+                  onChange={(_e, v) => setSelectedBacklogLayout(v)}
+                  exclusive
+                >
+                  <ToggleButton value={0}>
+                    <TableRowsIcon />
+                  </ToggleButton>
+                  <ToggleButton value={1}>
+                    <ViewColumnIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </div>
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <div
                   className={`layout ${
                     selectedBacklogLayout === 0 ? "row" : "col"
@@ -729,27 +636,27 @@ function AccountPage() {
                     totalItems={backlog.totalFinishedCount}
                   />
                 </div>
-              </div>
-            </div>
-            <div
-              className="milestones-tab"
-              tabIndex={3}
-              hidden={activeTab !== 3}
-            >
-              <div className="milestones-container">
-                <div className="header">
-                  <h1>MILESTONES</h1>
-                </div>
-                <div className="layout">
-                  <MilestonesAccordion object={achievements.at(0)!} />
-                  <MilestonesAccordion object={achievements.at(1)!} />
-                  <MilestonesAccordion object={achievements.at(2)!} />
-                  <MilestonesAccordion object={achievements.at(3)!} />
-                </div>
-              </div>
+              )}
             </div>
           </div>
-        )}
+          <div className="milestones-tab" tabIndex={3} hidden={activeTab !== 3}>
+            <div className="milestones-container">
+              <div className="header">
+                <h1>MILESTONES</h1>
+              </div>
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <div className="layout">
+                  <MilestonesAccordion object={milestones.at(0)!} />
+                  <MilestonesAccordion object={milestones.at(1)!} />
+                  <MilestonesAccordion object={milestones.at(2)!} />
+                  <MilestonesAccordion object={milestones.at(3)!} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     )
   );

@@ -280,22 +280,22 @@
               align-items: center;
               gap: 1rem;
               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-              flex-grow: 1;
+              flex: 1 0 47.8%;
 
               &.bronze {
-                box-shadow: inset 0 0 10px #cd7f32;
+                background-color: #cd7f32;
               }
 
               &.silver {
-                box-shadow: inset 0 0 10px silver;
+                background-color: silver;
               }
 
               &.gold {
-                box-shadow: inset 0 0 10px goldenrod;
+                background-color: goldenrod;
               }
 
               &.platinum {
-                box-shadow: inset 0 0 10px #afeeee;
+                background-color: var(--palette-colour);
               }
 
               .icon {
@@ -333,7 +333,7 @@
                   .bar {
                     height: 100%;
                     flex-grow: 1;
-                    background-color: var(--dark-light);
+                    background-color: var(--light-dark);
                     border-radius: 8px;
 
                     .track {
@@ -345,7 +345,6 @@
 
                   .label {
                     font-size: 0.8em;
-                    color: #f1f5f9;
                   }
                 }
               }

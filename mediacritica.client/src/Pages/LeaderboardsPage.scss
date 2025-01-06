@@ -10,8 +10,8 @@
     flex-direction: column;
 
     .header {
-      padding-top: 5rem;
-      background-color: var(--palette-colour);
+      padding-top: 5rem !important;
+      background-color: var(--palette-colour) !important;
 
       h1 {
         color: whitesmoke !important;

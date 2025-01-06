@@ -1,0 +1,22 @@
+﻿using MediaCritica.Server.Enums;
+
+namespace MediaCritica.Server.Models
+{
+    public class MilestoneModel
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public MilestoneCategory Category { get; set; }
+        public MilestoneLevel EarnedLevel { get; set; }
+        public ProgressModel Progress { get; set; }
+        public DateTime? EarnedDate { get; set; }
+    }
+
+    public class ProgressModel
+    {
+        public double Current { get; set; }
+        public double Target { get; set; }
+        public double Percentage { get; set; }
+    }
+
+}

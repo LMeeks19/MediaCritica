@@ -2,28 +2,46 @@ import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers/icons";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { format } from "date-fns";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
+import { UserMilestoneLevelType } from "../Enums/UserMilestoneLevelType";
 
 function MilestonesAccordion(props: { object: UserMilestoneModelObject }) {
+  function GetLevelColour(level: UserMilestoneLevelType) {
+    switch (level) {
+      case UserMilestoneLevelType.Platinum:
+        return "platinum";
+      case UserMilestoneLevelType.Gold:
+        return "gold";
+      case UserMilestoneLevelType.Silver:
+        return "silver";
+      case UserMilestoneLevelType.Bronze:
+        return "bronze";
+      default:
+        return "";
+    }
+  }
+
   return (
     <Accordion disableGutters defaultExpanded>
       <AccordionSummary
         className="sub-header dark-shade"
         expandIcon={<ArrowDropDownIcon />}
       >
-        <h2>{props.object.category}</h2>
+        <h2>{props.object?.category}</h2>
       </AccordionSummary>
       <AccordionDetails className="milestones">
-        {props.object.milestones.map((milestone) => {
+        {props.object?.milestones.map((milestone) => {
           return (
-            <div key={milestone.title} className={`milestone ${milestone.level || ""}`}>
-              <div className="icon">{milestone.icon}</div>
+            <div
+              key={milestone.title}
+              className={`milestone ${GetLevelColour(milestone.earnedLevel)}`}
+            >
+              <div className="icon"></div>
               <div className="details">
                 <h3>{milestone.title}</h3>
                 <p>{milestone.description}</p>
                 {milestone.earnedDate && (
                   <p>
-                    {CapitaliseFirstLetter(milestone.level || "")} Earned:{" "}
+                    Earned:{" "}
                     {milestone.earnedDate &&
                       format(milestone.earnedDate, "do MMMM yyyy")}
                   </p>
@@ -34,11 +52,7 @@ function MilestonesAccordion(props: { object: UserMilestoneModelObject }) {
                       <div
                         className="track"
                         style={{
-                          width: `${
-                            (milestone.progress.current /
-                              milestone.progress.target) *
-                            100
-                          }%`,
+                          width: `${milestone.progress.percentage}%`,
                         }}
                       ></div>
                     </div>

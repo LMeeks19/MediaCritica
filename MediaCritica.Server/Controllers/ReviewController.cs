@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Mappers;
+﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +8,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, IMapper mapper) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMapper mapper, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMapper _mapper = mapper;
+        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
 
         [HttpGet(Name = "GetReview")]
         [Route("[action]/{reviewId}")]
@@ -60,6 +62,15 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
 
+            var user = await _databaseContext.Users
+                .Include(user => user.Reviews)
+                    .ThenInclude(review => review.Media)
+                .Include(user => user.Backlogs)
+                .Include(user => user.Milestones)
+                .FirstAsync(user => user.Id == review.UserId);
+
+            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+
             return review.Id;
         }
 
@@ -82,12 +93,23 @@ namespace MediaCritica.Server.Controllers
 
         [HttpDelete(Name = "DeleteReview")]
         [Route("[action]/{reviewId}")]
-        public void DeleteReview(int reviewId)
+        public async void DeleteReview(int reviewId)
         {
-            var review = _databaseContext.Reviews.Single(review => review.Id == reviewId);
+            var user = _databaseContext.Users
+                .Include(user => user.Reviews)
+                    .ThenInclude(review => review.Media)
+                .Include(user => user.Backlogs)
+                .Include(user => user.Milestones)
+                .Where(user => user.Reviews.Any(r => r.Id == reviewId))
+                .Single();
+
+            var review = user.Reviews.Single(r => r.Id == reviewId);
 
             _databaseContext.Reviews.Remove(review);
             _databaseContext.SaveChanges();
+
+            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+
         }
     }
 }

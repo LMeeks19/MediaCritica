@@ -163,6 +163,11 @@ Accept: application/json
 GET {{MediaCritica.Server_HostAddress}}/Leaderboards/GetMediaTrends/
 Accept: application/json
 
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Milestones/GetUserMilestones/
+Accept: application/json
+
 
 
 
