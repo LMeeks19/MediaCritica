@@ -374,7 +374,7 @@ function AccountPage() {
                         })
                       }
                     >
-                      <CardMedia />
+                      <CardMedia component="div" />
                       <CardHeader title={item.mediaTitle} />
                       <Divider />
                       <CardContent>
@@ -538,7 +538,7 @@ function AccountPage() {
                                 )
                               }
                             >
-                              <CardMedia />
+                              <CardMedia component="div" />
                               <CardHeader title={review.title} />
                               <Divider />
                               <CardContent>

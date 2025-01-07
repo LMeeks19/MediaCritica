@@ -10,8 +10,12 @@
         FinishedMedia,
         SingleGenreReviewed,
         GenreVariety,
+        SingleDirectorReviewed,
+        DirectorVariety,
+        SingleActorReviewed,
+        ActorVariety,
         MonthlyReviews,
         YearlyReviews,
-        ConsecutiveActivity
+        ConsecutiveActivity,
     }
 }

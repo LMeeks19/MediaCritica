@@ -1,0 +1,17 @@
+export enum UserMilestoneType {
+    ReviewsWritten,
+    MoviesReviewed,
+    GamesReviewed,
+    SeriesReviewed,
+    BacklogAdded,
+    FinishedMedia,
+    SingleGenreReviewed,
+    GenreVariety,
+    SingleDirectorReviewed,
+    DirectorVariety,
+    SingleActorReviewed,
+    ActorVariety,
+    MonthlyReviews,
+    YearlyReviews,
+    ConsecutiveActivity,
+}

@@ -103,7 +103,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == backlogData.UserId);
 
-            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+            await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
             var newBacklog = user.Backlogs.Single(backlog => backlog.MediaId == backlogData.MediaId);
 
@@ -127,7 +127,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Backlogs.Remove(media);
             _databaseContext.SaveChanges();
 
-            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+            await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
         }
 
         [HttpPut(Name = "UpdateBacklogState")]
@@ -148,7 +148,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Backlogs.Update(media);
             _databaseContext.SaveChanges();
 
-            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+            await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
         }
     }
 }

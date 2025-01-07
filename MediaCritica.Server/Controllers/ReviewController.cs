@@ -69,7 +69,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == review.UserId);
 
-            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+            await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
             return review.Id;
         }
@@ -108,7 +108,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Reviews.Remove(review);
             _databaseContext.SaveChanges();
 
-            await _milestoneCalculatorHelper.UpdateUserMilestones(user);
+            await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
         }
     }

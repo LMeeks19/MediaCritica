@@ -1,4 +1,4 @@
-export enum UserMilestoneLevelType {
+export enum UserMilestoneLevel {
     None,
     Bronze,
     Silver,

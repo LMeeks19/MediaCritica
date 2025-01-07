@@ -1,9 +1,11 @@
-import { UserMilestoneLevelType } from "../Enums/UserMilestoneLevelType";
+import { UserMilestoneLevel } from "../Enums/UserMilestoneLevel";
+import { UserMilestoneType } from "../Enums/UserMilestoneType";
 
 export interface UserMilestoneModel {
   title: string;
   description: string;
-  earnedLevel: UserMilestoneLevelType;
+  type: UserMilestoneType
+  earnedLevel: UserMilestoneLevel;
   progress: { current: number; target: number; percentage: number };
   earnedDate: Date | null;
 }

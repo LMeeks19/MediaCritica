@@ -78,6 +78,7 @@ namespace MediaCritica.Server.Controllers
                     Theme = "System",
                     Palette = "#971212"
                 },
+                Milestones = _milestoneCalculatorHelper.CreateMilestones()
             };
 
             await _databaseContext.Users.AddAsync(user);
