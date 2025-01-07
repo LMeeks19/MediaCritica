@@ -7,6 +7,7 @@ import {
   GetBackloggedBacklog,
   GetFinishedBacklog,
   GetInProgressBacklog,
+  GetUserMilestones,
   GetUserReviews,
   UpdateBacklogState,
 } from "../Server/Server";
@@ -23,7 +24,6 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
-  Rating,
   Select,
   Tab,
   Tabs,
@@ -35,7 +35,6 @@ import { useNavigate } from "react-router-dom";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
-import { formatDistanceToNowStrict } from "date-fns";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import { useRecoilValue } from "recoil";
@@ -48,12 +47,15 @@ import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import ViewColumnIcon from "@mui/icons-material/ViewColumnOutlined";
 import TableRowsIcon from "@mui/icons-material/TableRowsOutlined";
-import ImageIcon from "@mui/icons-material/ImageOutlined";
 import DeleteAccountAction from "../Components/DeleteAccountAction";
 import AddIcon from "@mui/icons-material/Add";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortIcon from "@mui/icons-material/Sort";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
+import GradeIcon from "@mui/icons-material/Grade";
+import { format } from "date-fns";
+import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
+import MilestonesAccordion from "../Components/MilestonesAccordion";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -61,16 +63,21 @@ function AccountPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
-  const [selectedReviewFilter, setSelectedReviewFilter] = useState<number>(0);
+  const [selectedReviewFilter, setSelectedReviewFilter] =
+    useState<string>("None");
   const [backlog, setBacklog] = useState<BacklogObjectModel>(
     {} as BacklogObjectModel
   );
   const [selectedBacklogLayout, setSelectedBacklogLayout] = useState<number>(0);
+  const [milestones, setMilestones] = useState<UserMilestoneModelObject[]>(
+    [] as UserMilestoneModelObject[]
+  );
 
   useEffect(() => {
     if (user.id === undefined) navigate("/login");
     if (activeTab === 1 && reviews.length === 0) FetchReviews(0);
     else if (activeTab === 2 && getTotalLoadedBacklogs() === 0) FetchBacklog();
+    else if (activeTab === 3) FetchMilestones();
     else setIsLoading(false);
   }, [activeTab]);
 
@@ -80,6 +87,13 @@ function AccountPage() {
       (backlog.inProgress?.length ?? 0) +
       (backlog.finished?.length ?? 0)
     );
+  }
+
+  async function FetchMilestones() {
+    setIsLoading(true);
+    const milestoneData = await GetUserMilestones(user.id);
+    setMilestones(milestoneData);
+    setIsLoading(false);
   }
 
   async function FetchReviews(offset: number) {
@@ -132,11 +146,11 @@ function AccountPage() {
   }
 
   function filteredReviews() {
-    if (selectedReviewFilter === 1)
+    if (selectedReviewFilter === "Movies")
       return reviews.filter((review) => review.mediaType === MediaType.Movie);
-    else if (selectedReviewFilter === 2)
+    else if (selectedReviewFilter === "Series")
       return reviews.filter((review) => review.mediaType === MediaType.Series);
-    else if (selectedReviewFilter === 3)
+    else if (selectedReviewFilter === "Games")
       return reviews.filter((review) => review.mediaType === MediaType.Game);
     return reviews;
   }
@@ -360,7 +374,7 @@ function AccountPage() {
                         })
                       }
                     >
-                      <CardMedia />
+                      <CardMedia component="div" />
                       <CardHeader title={item.mediaTitle} />
                       <Divider />
                       <CardContent>
@@ -401,146 +415,157 @@ function AccountPage() {
   return (
     user.id !== undefined && (
       <div className="accountpage-container">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div className="account">
-            <TopBar whiteText />
-            <AppBar position="static">
-              <Tabs
-                value={activeTab}
-                onChange={(_e, v) => setActiveTab(v)}
-                variant="fullWidth"
+        <div className="account">
+          <TopBar whiteText />
+          <AppBar position="static">
+            <Tabs
+              value={activeTab}
+              onChange={(_e, v) => setActiveTab(v)}
+              variant="fullWidth"
+            >
+              <Tab value={0} label="Details" />
+              <Tab value={1} label="Reviews" />
+              <Tab value={2} label="Backlog" />
+              <Tab value={3} label="Milestones" />
+            </Tabs>
+          </AppBar>
+          <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
+            <div className="header dark-shade">
+              <h1>DETAILS</h1>
+              <button
+                className="logout-btn"
+                onClick={() => {
+                  navigate("/login");
+                }}
               >
-                <Tab value={0} label="Details" />
-                <Tab value={1} label="Reviews" />
-                <Tab value={2} label="Backlog" />
-              </Tabs>
-            </AppBar>
-            <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
-              <div className="header dark-shade">
-                <h1>DETAILS</h1>
-                <button
-                  className="logout-btn"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Logout <LogoutIcon fontSize="small" />
-                </button>
-              </div>
-              <div className="account-details">
-                <AccountDetail
-                  accountFieldName="Forename"
-                  accountFieldType={AccountFieldType.Forename}
-                  accountFieldValue={user.forename}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Surname"
-                  accountFieldType={AccountFieldType.Surname}
-                  accountFieldValue={user.surname}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Email"
-                  accountFieldType={AccountFieldType.Email}
-                  accountFieldValue={user.email}
-                  inputType="text"
-                />
-                <AccountDetail
-                  accountFieldName="Password"
-                  accountFieldType={AccountFieldType.Password}
-                  accountFieldValue="********"
-                  inputType="password"
-                />
-              </div>
-              <div className="header dark-shade">
-                <h1>PREFERENCES</h1>
-              </div>
-              <div className="account-details">
-                <ThemePreference />
-                <PalettePreference />
-              </div>
-              <div className="header dark-shade">
-                <h1>ACTIONS</h1>
-              </div>
-              <div className="account-details">
-                <DeleteAccountAction />
-              </div>
+                Logout <LogoutIcon fontSize="small" />
+              </button>
             </div>
-            <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
-              <div className="reviews-container">
-                <div className="header dark-shade">
-                  <h1>REVIEWS</h1>
-                  <div className="actions">
-                    <FormControl variant="outlined" sx={{ width: 250 }}>
-                      <InputLabel>Filter</InputLabel>
-                      <Select
-                        label="Filter"
-                        value={selectedReviewFilter}
-                        onChange={(e) =>
-                          setSelectedReviewFilter(Number(e.target.value))
-                        }
-                      >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Movies</MenuItem>
-                        <MenuItem value={2}>Series</MenuItem>
-                        <MenuItem value={3}>Games</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <>
+                <div className="account-details">
+                  <AccountDetail
+                    accountFieldName="Forename"
+                    accountFieldType={AccountFieldType.Forename}
+                    accountFieldValue={user.forename}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Surname"
+                    accountFieldType={AccountFieldType.Surname}
+                    accountFieldValue={user.surname}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Email"
+                    accountFieldType={AccountFieldType.Email}
+                    accountFieldValue={user.email}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Password"
+                    accountFieldType={AccountFieldType.Password}
+                    accountFieldValue="********"
+                    inputType="password"
+                  />
                 </div>
+                <div className="header dark-shade">
+                  <h1>PREFERENCES</h1>
+                </div>
+                <div className="account-details">
+                  <ThemePreference />
+                  <PalettePreference />
+                </div>
+                <div className="header dark-shade">
+                  <h1>ACTIONS</h1>
+                </div>
+                <div className="account-details">
+                  <DeleteAccountAction />
+                </div>
+              </>
+            )}
+          </div>
+          <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
+            <div className="reviews-container">
+              <div className="header dark-shade">
+                <h1>REVIEWS</h1>
+                <div className="actions">
+                  <FormControl variant="outlined" sx={{ width: 250 }}>
+                    <InputLabel>Filter</InputLabel>
+                    <Select
+                      label="Filter"
+                      value={selectedReviewFilter}
+                      onChange={(e) => setSelectedReviewFilter(e.target.value)}
+                    >
+                      <MenuItem value="None">None</MenuItem>
+                      <MenuItem value="Movies">Movies</MenuItem>
+                      <MenuItem value="Series">Series</MenuItem>
+                      <MenuItem value="Games">Games</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <div className="layout">
                   {filteredReviews().length === 0 ? (
-                    <div className="reviews empty">No Media Reviewed</div>
+                    <div className="reviews empty">
+                      No {selectedReviewFilter} Reviewed
+                    </div>
                   ) : (
                     <div className="reviews">
                       {filteredReviews().map((review) => {
                         return (
-                          <div
-                            key={review.mediaId}
-                            className="review-card"
-                            onClick={() =>
-                              navigate(
-                                `/media/${review.mediaId}/view-review/${review.id}}`,
-                                {
-                                  state: { reviewId: review.id },
-                                }
-                              )
-                            }
+                          <Card
+                            key={review.id}
+                            style={{
+                              backgroundImage: `url(${review.mediaPoster?.replace(
+                                "300.jpg",
+                                "180.jpg"
+                              )})`,
+                            }}
                           >
-                            {review.mediaPoster !== null ? (
-                              <div
-                                className="review-image "
-                                style={{
-                                  backgroundImage: `url(${review.mediaPoster})`,
-                                }}
-                              >
-                                <span className="tag">
-                                  {CapitaliseFirstLetter(review.mediaType)}
-                                </span>
-                              </div>
-                            ) : (
-                              <div className="review-image empty">
-                                <ImageIcon className="text-9xl" />
-                                <span className="tag">
-                                  {CapitaliseFirstLetter(review.mediaType)}
-                                </span>
-                              </div>
-                            )}
-                            <div className="review-content">
-                              <h2>{review.mediaTitle}</h2>
-                              <p className="review-time">
-                                {formatDistanceToNowStrict(review.date)} ago
-                              </p>
-                              <Rating
-                                className="rating"
-                                value={review.rating}
-                                readOnly
-                              />
-                            </div>
-                          </div>
+                            <CardActionArea
+                              onClick={() =>
+                                navigate(
+                                  `/media/${review.mediaId}/view-review/${review.id}}`,
+                                  {
+                                    state: { reviewId: review.id },
+                                  }
+                                )
+                              }
+                            >
+                              <CardMedia component="div" />
+                              <CardHeader title={review.title} />
+                              <Divider />
+                              <CardContent>
+                                <Typography>{review.mediaTitle}</Typography>
+                                <Typography>
+                                  {format(review.date, "do MMMM yyyy")}
+                                </Typography>
+                                <div className="flex justify-around">
+                                  <Typography>
+                                    {CapitaliseFirstLetter(review.mediaType)}
+                                  </Typography>
+                                  <Typography
+                                    component="div"
+                                    className="flex items-center gap-1"
+                                  >
+                                    <GradeIcon
+                                      style={{
+                                        fontSize: 14,
+                                        color: "var(--rating-star)",
+                                      }}
+                                    />
+                                    <div className="">{review.rating}</div>
+                                  </Typography>
+                                </div>
+                              </CardContent>
+                            </CardActionArea>
+                          </Card>
                         );
                       })}
                       <div
@@ -563,25 +588,29 @@ function AccountPage() {
                     </div>
                   )}
                 </div>
-              </div>
+              )}
             </div>
-            <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
-              <div className="backlog-container">
-                <div className="header dark-shade">
-                  <h1>BACKLOG</h1>
-                  <ToggleButtonGroup
-                    value={selectedBacklogLayout}
-                    onChange={(_e, v) => setSelectedBacklogLayout(v)}
-                    exclusive
-                  >
-                    <ToggleButton value={0}>
-                      <TableRowsIcon />
-                    </ToggleButton>
-                    <ToggleButton value={1}>
-                      <ViewColumnIcon />
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </div>
+          </div>
+          <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
+            <div className="backlog-container">
+              <div className="header dark-shade">
+                <h1>BACKLOG</h1>
+                <ToggleButtonGroup
+                  value={selectedBacklogLayout}
+                  onChange={(_e, v) => setSelectedBacklogLayout(v)}
+                  exclusive
+                >
+                  <ToggleButton value={0}>
+                    <TableRowsIcon />
+                  </ToggleButton>
+                  <ToggleButton value={1}>
+                    <ViewColumnIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </div>
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <div
                   className={`layout ${
                     selectedBacklogLayout === 0 ? "row" : "col"
@@ -607,10 +636,27 @@ function AccountPage() {
                     totalItems={backlog.totalFinishedCount}
                   />
                 </div>
-              </div>
+              )}
             </div>
           </div>
-        )}
+          <div className="milestones-tab" tabIndex={3} hidden={activeTab !== 3}>
+            <div className="milestones-container">
+              <div className="header">
+                <h1>MILESTONES</h1>
+              </div>
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <div className="layout">
+                  <MilestonesAccordion object={milestones.at(0)!} />
+                  <MilestonesAccordion object={milestones.at(1)!} />
+                  <MilestonesAccordion object={milestones.at(2)!} />
+                  <MilestonesAccordion object={milestones.at(3)!} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     )
   );

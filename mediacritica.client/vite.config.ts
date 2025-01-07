@@ -62,6 +62,10 @@ export default defineConfig({
             '^/Leaderboards': {
                 target,
                 secure: false
+            },
+            '^/Milestones': {
+                target,
+                secure: false
             }
         },
         port: 5174,

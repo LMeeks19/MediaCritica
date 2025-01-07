@@ -88,7 +88,8 @@
 
     .account-tab,
     .reviews-tab,
-    .backlog-tab {
+    .backlog-tab,
+    .milestones-tab {
       flex: 1;
     }
 
@@ -114,91 +115,22 @@
         height: 100%;
 
         .layout {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden auto;
           flex: 1;
-          overflow: auto;
 
           .reviews {
             display: grid;
-            grid-template-columns: repeat(auto-fit, 225px);
+            grid-template-columns: repeat(auto-fit, 180px);
             justify-content: center;
-            gap: 2rem;
+            gap: 1rem;
             padding: 2rem;
 
-            .review-card {
-              background-color: light-dark(whitesmoke, #1c1c1c);
-              border-radius: 20px;
-              overflow: hidden;
-              width: 225px;
-              min-width: 225px;
-              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
-              transition: transform 0.3s ease-in-out,
-                box-shadow 0.3s ease-in-out;
-              cursor: pointer;
-
-              .review-image {
-                height: 180px;
-                width: 225px;
-                position: relative;
-                background-size: cover;
-                background-position: center;
-                transition: transform 0.3s ease-in-out;
-
-                &.empty {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                }
-
-                .tag {
-                  position: absolute;
-                  left: 0;
-                  bottom: 0;
-                  padding: 5px 10px;
-                  border-radius: 5px;
-                  font-size: 0.8rem;
-                  background-color: var(--palette-colour);
-                  color: whitesmoke;
-                  margin: 0.5rem;
-                }
-              }
-
-              .review-content {
-                padding: 0.5rem 1rem 1rem 1rem;
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-
-                h2 {
-                  font-size: 1.5rem;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  margin: 0;
-                }
-
-                .review-time {
-                  font-size: 0.9rem;
-                  color: light-dark(grey, #aaa);
-                  margin: 0;
-                  margin-bottom: 5px;
-                }
-
-                .rating {
-                  display: flex;
-                  font-size: 1.2rem;
-                  margin: auto;
-                }
-              }
-            }
-
-            .review-card:hover {
-              transform: scale(1.1);
-              box-shadow: 0 15px 25px rgba(0, 0, 0, 0.8);
-
-              .review-image {
-                transform: scale(1.05);
-              }
+            &.empty {
+              display: flex;
+              flex: 1;
+              align-items: center;
             }
           }
         }
@@ -296,6 +228,123 @@
                 .MuiCardActionArea-root {
                   .MuiCardMedia-root {
                     height: calc(225px - 64.45px);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .milestones-tab {
+      overflow: hidden;
+
+      .milestones-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .layout {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden auto;
+          flex: 1;
+          margin: 0 !important;
+
+          .sub-header {
+            width: 100% !important;
+            .MuiAccordionSummary-content {
+              margin: 0 !important;
+            }
+
+            .MuiAccordionSummary-expandIconWrapper {
+              .MuiSvgIcon-root {
+                color: var(--light-dark) !important;
+                font-size: 2rem;
+              }
+            }
+          }
+
+          .milestones {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 2rem;
+
+            .milestone {
+              background-color: light-dark(whitesmoke, #242424);
+              border-radius: 10px;
+              padding: 1rem;
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              flex: 1 0 47.8%;
+
+              &.bronze {
+                background-color: #cd7f32;
+              }
+
+              &.silver {
+                background-color: silver;
+              }
+
+              &.gold {
+                background-color: goldenrod;
+              }
+
+              &.platinum {
+                background-color: var(--palette-colour);
+              }
+
+              .icon {
+                background-color: var(--palette-colour-faded);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5em;
+                padding: 0.5rem;
+              }
+
+              .details {
+                flex: 1;
+
+                h3 {
+                  margin: 0;
+                  font-size: 1.2em;
+                }
+
+                p {
+                  margin: 0;
+                  font-size: 0.9em;
+                }
+
+                .progress {
+                  margin-top: 0.5em;
+                  position: relative;
+                  height: 10px;
+                  border-radius: 5px;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+
+                  .bar {
+                    height: 100%;
+                    flex-grow: 1;
+                    background-color: var(--light-dark);
+                    border-radius: 8px;
+
+                    .track {
+                      height: 100%;
+                      background: var(--palette-colour);
+                      border-radius: 8px;
+                    }
+                  }
+
+                  .label {
+                    font-size: 0.8em;
                   }
                 }
               }

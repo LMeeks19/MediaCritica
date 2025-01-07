@@ -58,13 +58,13 @@ button:disabled {
 /* Headers */
 .header,
 .sub-header {
-  width: calc(100% - 4rem);
-  padding: 1.5rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  width: calc(100% - 4rem) !important;
+  padding: 1.5rem 2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
   border-top: 1px solid light-dark(grey, #333) !important;
   border-bottom: 1px solid light-dark(grey, #333) !important;
 
@@ -97,21 +97,21 @@ button:disabled {
 
 .sub-header {
   h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: var(--light-dark);
-    text-wrap: nowrap;
+    margin: 0 !important;
+    font-size: 1.5rem !important;
+    color: var(--light-dark) !important;
+    text-wrap: nowrap !important;
   }
 }
 
 @media screen and (max-width: 1092px) {
   .header,
   .sub-header {
-    justify-content: center;
+    justify-content: center !important;
 
     .actions {
-      width: 100%;
-      justify-content: space-around;
+      width: 100% !important;
+      justify-content: space-around !important;
     }
   }
 }

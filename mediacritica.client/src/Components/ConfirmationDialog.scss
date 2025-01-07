@@ -23,15 +23,15 @@
 
   /* Modal Header */
   .header {
-    background-color: var(--palette-colour);
-    color: whitesmoke;
-    margin: 0;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px #0000001a;
-    width: 100%;
+    background-color: var(--palette-colour) !important;
+    color: whitesmoke !important;
+    margin: 0 !important;
+    padding: 15px 20px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-shadow: 0 2px 4px #0000001a !important;
+    width: 100% !important;
 
     .title {
       margin: 0;

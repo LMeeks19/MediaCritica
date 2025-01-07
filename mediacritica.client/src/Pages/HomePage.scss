@@ -10,9 +10,9 @@
     flex-direction: column;
 
     .header {
-      padding-top: 5.5rem;
-      background-color: var(--palette-colour);
-      justify-content: center;
+      padding-top: 5rem !important;
+      background-color: var(--palette-colour) !important;
+      justify-content: center !important;
 
       .MuiFormLabel-root {
         color: whitesmoke !important;
@@ -58,10 +58,10 @@
     }
 
     .actions {
-      align-items: baseline;
-      justify-content: center;
+      align-items: baseline !important;
+      justify-content: center !important;
       border-bottom: none !important;
-      gap: 2rem;
+      gap: 2rem !important;
 
       .explore-btn,
       .leaderboards-btn {
