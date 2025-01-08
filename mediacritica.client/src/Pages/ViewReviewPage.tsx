@@ -1,5 +1,5 @@
 import "./ViewReviewPage.scss";
-import { Rating } from "@mui/material";
+import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
@@ -18,6 +18,9 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
+import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
+import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
+import { CustomTooltip } from "../Components/Tooltip";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -30,6 +33,7 @@ function ViewReviewPage() {
   const [rating, setRating] = useState<number>(0);
   const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
   const [user, setUser] = useRecoilState(userState);
+  const [isRated, setIsRated] = useState<string | null>(null);
 
   const reviewId = location.state?.reviewId;
 
@@ -114,82 +118,105 @@ function ViewReviewPage() {
           <TopBar whiteText />
           <div className="info">
             <div className="hero">
-              <div className="parent-title">{review.mediaTitle}</div>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <Rating
-                  value={rating}
-                  precision={0.5}
-                  sx={{ fontSize: "2.5rem" }}
-                  readOnly={!isEditing}
-                  onChange={(_event, value) => setRating(value!)}
-                />
-                <div className="review-date">
-                  {CapitaliseFirstLetter(
-                    formatRelative(review.date, new Date())
-                  )}{" "}
-                  | {review.reviewerName}
-                </div>
-                {review.reviewerId === user.id && (
-                  <div className="flex gap-3 pt-2">
-                    {!isEditing ? (
-                      <>
-                        <button
-                          className="edit-btn"
-                          onClick={() => setIsEditing(true)}
-                        >
-                          Edit
-                          <EditOutlinedIcon fontSize="small" />
-                        </button>
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            setConfirmationDialog(deleteReviewDialog)
-                          }
-                          disabled={isEditing}
-                        >
-                          Delete
-                          <DeleteIcon fontSize="small" />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          className="cancel-btn"
-                          onClick={() =>
-                            setConfirmationDialog(cancelEditReviewDialog)
-                          }
-                        >
-                          Cancel
-                          <CancelIcon fontSize="small" />
-                        </button>
-                        <button
-                          className="save-btn"
-                          form="review-form"
-                          type="submit"
-                          disabled={
-                            review.description === description &&
-                            review.rating === rating &&
-                            review.title === title
-                          }
-                        >
-                          Save
-                          <SaveIcon fontSize="small" />
-                        </button>
-                      </>
-                    )}
-                  </div>
+              <div className="review-date">
+                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
+                | {review.reviewerName}
+              </div>
+              <div className="w-full flex items-center justify-between gap-5">
+                <div className="parent-title">{review.mediaTitle}</div>
+                {review.reviewerId === user.id ? (
+                  !isEditing ? (
+                    <ToggleButtonGroup>
+                      <ToggleButton
+                        value="edit"
+                        className="btn"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        <EditOutlinedIcon />
+                      </ToggleButton>
+                      <ToggleButton
+                        value="delete"
+                        className="btn"
+                        onClick={() =>
+                          setConfirmationDialog(deleteReviewDialog)
+                        }
+                        disabled={isEditing}
+                      >
+                        <DeleteIcon />
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  ) : (
+                    <ToggleButtonGroup>
+                      <ToggleButton
+                        value="cancel"
+                        className="btn"
+                        onClick={() =>
+                          setConfirmationDialog(cancelEditReviewDialog)
+                        }
+                      >
+                        <CancelIcon />
+                      </ToggleButton>
+                      <ToggleButton
+                        value="save"
+                        className="btn"
+                        form="review-form"
+                        type="submit"
+                        disabled={
+                          review.description === description &&
+                          review.rating === rating &&
+                          review.title === title
+                        }
+                      >
+                        <SaveIcon />
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  )
+                ) : (
+                  <CustomTooltip
+                    title={user.id === undefined && "Login to rate"}
+                    arrow
+                  >
+                    <span>
+                      <ToggleButtonGroup
+                        value={isRated}
+                        onChange={(_e, v) => {
+                          console.log(v), setIsRated(v);
+                        }}
+                        disabled={user.id === undefined}
+                        exclusive
+                      >
+                        <ToggleButton value="like" className="btn">
+                          <ThumbUpIcon />
+                        </ToggleButton>
+                        <ToggleButton value="dislike" className="btn">
+                          <ThumbDownIcon />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    </span>
+                  </CustomTooltip>
                 )}
               </div>
             </div>
             {!isEditing ? (
               <div className="review-details">
-                <h2>{review.title}</h2>
-                {review.description
-                  .trim()
-                  .split("\n\n")
-                  .map((paragraph) => {
-                    return <p key={paragraph}>{paragraph}</p>;
-                  })}
+                <div className="title-section">
+                  <h2>{review.title}</h2>
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "2.5rem" }}
+                    readOnly
+                    onChange={(_event, value) => setRating(value!)}
+                  />
+                </div>
+                <div className="description">
+                  {review.description
+                    .trim()
+                    .split("\n\n")
+                    .map((paragraph) => {
+                      return <p key={paragraph}>{paragraph}</p>;
+                    })}
+                </div>
               </div>
             ) : (
               <form
@@ -203,23 +230,31 @@ function ViewReviewPage() {
                   });
                 }}
               >
-                <input
-                  className="review-title"
-                  type="text"
-                  value={title}
-                  name="title"
-                  placeholder="Enter title..."
-                  required
-                  onChange={(e) => setTitle(e.target.value)}
-                  maxLength={50}
-                />
+                <div className="title-section">
+                  <input
+                    className="review-title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    name="title"
+                    placeholder="Enter title..."
+                    maxLength={50}
+                    required
+                  />
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "2.5rem" }}
+                    onChange={(_event, value) => setRating(value!)}
+                  />
+                </div>
                 <textarea
                   className="review-description"
                   value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   name="description"
                   placeholder="Write review..."
                   required
-                  onChange={(e) => setDescription(e.target.value)}
                 />
               </form>
             )}

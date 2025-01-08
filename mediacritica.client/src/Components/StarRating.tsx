@@ -13,9 +13,6 @@ function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
 
-  console.log(new Date().getTime())
-  console.log(new Date(props.media.released).getTime())
-
   return (
     <div className="flex items-center flex-col gap-2 my-auto">
       <Rating

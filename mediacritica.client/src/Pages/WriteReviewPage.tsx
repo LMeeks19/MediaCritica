@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import TopBar from "../Components/TopBar";
-import { Rating } from "@mui/material";
+import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
@@ -87,33 +87,25 @@ function WriteReviewPage() {
             <div className="info">
               <div className="hero">
                 <div className="parent-title">{media.title}</div>
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <Rating
-                    value={rating}
-                    precision={0.5}
-                    sx={{ fontSize: "3rem" }}
-                    onChange={(_event, value) => setRating(value)}
-                  />
-                  <div className="flex gap-3 pt-2">
-                    <button
-                      type="reset"
-                      className="reset-btn"
-                      onClick={() => ResetFields()}
-                    >
-                      Reset
-                      <RestartAltIcon fontSize="small" />
-                    </button>
-                    <button
-                      className="post-btn"
-                      form="review-form"
-                      type="submit"
-                      disabled={description === "" || title == ""}
-                    >
-                      Post
-                      <PostAddIcon fontSize="small" />
-                    </button>
-                  </div>
-                </div>
+                <ToggleButtonGroup>
+                  <ToggleButton
+                    value="reset"
+                    type="reset"
+                    className="btn"
+                    onClick={() => ResetFields()}
+                  >
+                    <RestartAltIcon />
+                  </ToggleButton>
+                  <ToggleButton
+                    value="post"
+                    className="btn"
+                    form="review-form"
+                    type="submit"
+                    disabled={description === "" || title == ""}
+                  >
+                    <PostAddIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
               </div>
               <form
                 id="review-form"
@@ -126,16 +118,24 @@ function WriteReviewPage() {
                   });
                 }}
               >
-                <input
-                  className="review-title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  name="title"
-                  placeholder="Enter title..."
-                  maxLength={50}
-                  required
-                />
+                <div className="title-section">
+                  <input
+                    className="review-title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    name="title"
+                    placeholder="Enter title..."
+                    maxLength={50}
+                    required
+                  />
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "2.5rem" }}
+                    onChange={(_event, value) => setRating(value)}
+                  />
+                </div>
                 <textarea
                   className="review-description"
                   value={description}
@@ -155,7 +155,7 @@ function WriteReviewPage() {
                     "752.jpg"
                   )})`,
                 }}
-              ></div>
+              />
             ) : (
               <div className="media-poster empty">
                 <ImageIcon />
