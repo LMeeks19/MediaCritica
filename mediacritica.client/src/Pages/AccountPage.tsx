@@ -652,6 +652,7 @@ function AccountPage() {
                   <MilestonesAccordion object={milestones.at(1)!} />
                   <MilestonesAccordion object={milestones.at(2)!} />
                   <MilestonesAccordion object={milestones.at(3)!} />
+                  <MilestonesAccordion object={milestones.at(4)!} />
                 </div>
               )}
             </div>

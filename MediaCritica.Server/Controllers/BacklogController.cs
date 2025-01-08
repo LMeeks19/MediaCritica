@@ -97,8 +97,6 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.SaveChangesAsync();
 
             var user = await _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Media)
                 .Include(user => user.Backlogs)
                 .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == backlogData.UserId);
@@ -115,8 +113,6 @@ namespace MediaCritica.Server.Controllers
         public async void DeleteBacklog(string mediaId, int userId)
         {
             var user = _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Media)
                 .Include(user => user.Backlogs)
                 .Include(user => user.Milestones)
                 .Where(user => user.Id == userId)
@@ -135,8 +131,6 @@ namespace MediaCritica.Server.Controllers
         public async void UpdateBacklogState(int backlogId, BacklogCategoryType newState)
         {
             var user = _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Media)
                 .Include(user => user.Backlogs)
                 .Include(user => user.Milestones)
                 .Where(user => user.Backlogs.Any(b => b.Id == backlogId))

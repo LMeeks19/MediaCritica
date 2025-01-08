@@ -17,5 +17,8 @@
         MonthlyReviews,
         YearlyReviews,
         ConsecutiveActivity,
+        TotalReviewEngagementsRecieved,
+        Engagements50PerReview,
+        ReviewEngagementsGiven
     }
 }

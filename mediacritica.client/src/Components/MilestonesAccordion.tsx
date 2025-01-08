@@ -15,6 +15,7 @@ import CalendarIcon from "@mui/icons-material/CalendarMonthOutlined";
 import ActivityStreakIcon from "@mui/icons-material/WhatshotOutlined";
 import PeopleIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutlined";
+import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDownOutlined";
 
 function MilestonesAccordion(props: { object: UserMilestoneModelObject }) {
   function GetLevelColour(level: UserMilestoneLevel) {
@@ -67,6 +68,11 @@ function MilestonesAccordion(props: { object: UserMilestoneModelObject }) {
 
       case UserMilestoneType.ConsecutiveActivity:
         return <ActivityStreakIcon />;
+
+      case UserMilestoneType.ReviewEngagementsGiven:
+      case UserMilestoneType.TotalReviewEngagementsRecieved:
+      case UserMilestoneType.Engagements50PerReview:
+        return <ThumbsUpDownIcon />;
 
       default:
         return <ReviewsWrittenIcon />;

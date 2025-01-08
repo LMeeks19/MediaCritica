@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,9 +8,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EngagementController(DatabaseContext databaseContext) : ControllerBase
+    public class EngagementController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
 
         [HttpGet(Name = "GetUserEngagement")]
         [Route("[action]/{reviewId}/{userId}")]
@@ -25,9 +27,17 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]/{reviewId}/{userId}/{type}")]
         public async Task<EngagementType?> ToggleEngagement(int userId, int reviewId, EngagementType type)
         {
+            // Get User for milestone update
+            var user = await _databaseContext.Users
+                .Include(user => user.Reviews)
+                    .ThenInclude(review => review.Engagements)
+                .Include(user => user.Engagements)
+                .Include(user => user.Milestones)
+                .FirstAsync(user => user.Id == userId);
+
             // Get existing engagement
-            var engagement = await _databaseContext.Engagements
-                .FirstOrDefaultAsync(e => e.UserId == userId && e.ReviewId == reviewId);
+            var engagement = user.Engagements
+                .FirstOrDefault(e => e.ReviewId == reviewId);
 
             if (engagement != null && type == EngagementType.None)
             {
@@ -53,6 +63,8 @@ namespace MediaCritica.Server.Controllers
             }
 
             await _databaseContext.SaveChangesAsync();
+
+            await _milestoneCalculatorHelper.UpdateEngagementMilestones(user);
 
             return type != EngagementType.None ? type : null;
         }

@@ -7,7 +7,7 @@ namespace MediaCritica.Server.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public MilestoneType Type { get; set; }
-        public MilestoneCategory Category { get; set; }
+        public string Category { get; set; }
         public MilestoneLevel EarnedLevel { get; set; }
         public ProgressModel Progress { get; set; }
         public DateTime? EarnedDate { get; set; }
