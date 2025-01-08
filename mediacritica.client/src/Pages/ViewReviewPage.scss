@@ -65,9 +65,18 @@
           background-color: transparent !important;
           padding: 10px !important;
 
-          &:not(:disabled):hover, &.Mui-selected {
+          &.engagement {
+            width: 70px !important;
+          }
+
+          &:not(:disabled):hover,
+          &.Mui-selected {
             background-color: whitesmoke !important;
             color: var(--palette-colour) !important;
+          }
+
+          .text {
+            font-size: 0.9rem;
           }
         }
       }

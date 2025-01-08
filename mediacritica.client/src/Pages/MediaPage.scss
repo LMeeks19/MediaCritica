@@ -15,7 +15,7 @@
 
     .media-poster {
       width: 40%;
-      
+
       &.empty {
         display: flex;
         justify-content: center;
@@ -69,8 +69,12 @@
       }
 
       .heart {
-        font-size: 2.5rem;
+        margin-left: 10px;
         color: var(--backlog-heart);
+
+        .MuiSvgIcon-root {
+          font-size: 2.5rem !important;
+        }
       }
 
       .heart:disabled {

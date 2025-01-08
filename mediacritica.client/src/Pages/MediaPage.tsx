@@ -297,38 +297,48 @@ function MediaPage() {
                   </div>
                 )}
 
-                <div className="card">
-                  <h3>Awards</h3>
-                  <p>{media.awards}</p>
-                </div>
-                <div className="card">
-                  <h3>Ratings</h3>
-                  {media.metascore !== "" && (
-                    <p className="flex items-center gap-2">
-                      Metascore:{" "}
-                      <Rating
-                        precision={0.1}
-                        value={ConvertRatingStringToFiveScale(media.metascore)}
-                        readOnly
-                      />
-                    </p>
-                  )}
-                  {media.ratings.map((rating) => {
-                    return (
-                      <p
-                        className="flex items-center gap-2"
-                        key={rating.source}
-                      >
-                        {rating.source}:{" "}
-                        <Rating
-                          precision={0.5}
-                          value={ConvertRatingStringToFiveScale(rating.value)}
-                          readOnly
-                        />
-                      </p>
-                    );
-                  })}
-                </div>
+                {media.awards !== "N/A" && (
+                  <div className="card">
+                    <h3>Awards</h3>
+                    <p>{media.awards}</p>
+                  </div>
+                )}
+
+                {media.ratings.length > 0 ||
+                  (media.metascore !== "" && (
+                    <div className="card">
+                      <h3>Ratings</h3>
+                      {media.metascore !== "" && (
+                        <p className="flex items-center gap-2">
+                          Metascore:{" "}
+                          <Rating
+                            precision={0.1}
+                            value={ConvertRatingStringToFiveScale(
+                              media.metascore
+                            )}
+                            readOnly
+                          />
+                        </p>
+                      )}
+                      {media.ratings.map((rating) => {
+                        return (
+                          <p
+                            className="flex items-center gap-2"
+                            key={rating.source}
+                          >
+                            {rating.source}:{" "}
+                            <Rating
+                              precision={0.5}
+                              value={ConvertRatingStringToFiveScale(
+                                rating.value
+                              )}
+                              readOnly
+                            />
+                          </p>
+                        );
+                      })}
+                    </div>
+                  ))}
                 {media.type === MediaType.Movie && GetUniqueMovieDetails()}
               </div>
 

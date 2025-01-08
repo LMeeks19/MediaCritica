@@ -11,5 +11,6 @@
         public virtual List<Backlog> Backlogs { get; set; }
         public virtual List<Review> Reviews { get; set; }
         public virtual List<Milestone> Milestones { get; set; }
+        public virtual List<Engagement> Engagements { get; set; }
     }
 }

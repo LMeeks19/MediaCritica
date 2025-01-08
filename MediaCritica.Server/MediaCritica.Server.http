@@ -168,6 +168,16 @@ Accept: application/json
 GET {{MediaCritica.Server_HostAddress}}/Milestones/GetUserMilestones/
 Accept: application/json
 
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Engagement/ToggleEngagement/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Engagement/GetUserEngagement/
+Accept: application/json
+
 
 
 
