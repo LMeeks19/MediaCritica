@@ -27,6 +27,7 @@ import CancelIcon from "@mui/icons-material/CancelOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
+import millify from "millify";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -239,11 +240,15 @@ function ViewReviewPage() {
                       >
                         <ToggleButton value={0} className="btn engagement">
                           <ThumbUpIcon />
-                          <div className="text">{review.likes}</div>
+                          <div className="text">
+                            {millify(review.likes, { precision: 0 })}
+                          </div>
                         </ToggleButton>
                         <ToggleButton value={1} className="btn engagement">
                           <ThumbDownIcon />
-                          <div className="text">{review.dislikes}</div>
+                          <div className="text">
+                            {millify(review.dislikes, { precision: 0 })}
+                          </div>
                         </ToggleButton>
                       </ToggleButtonGroup>
                     </span>
