@@ -68,6 +68,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Reviews)
                     .ThenInclude(review => review.Media)
                 .Include(user => user.Engagements)
+                .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == review.UserId);
 
             await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
@@ -99,17 +100,19 @@ namespace MediaCritica.Server.Controllers
             var user = _databaseContext.Users
                 .Include(user => user.Reviews)
                     .ThenInclude(review => review.Media)
+                .Include(user => user.Reviews)
+                    .ThenInclude(review => review.Engagements)
                 .Include(user => user.Engagements)
+                .Include(user => user.Milestones)
                 .Where(user => user.Reviews.Any(r => r.Id == reviewId))
                 .Single();
 
             var review = user.Reviews.Single(r => r.Id == reviewId);
 
-            _databaseContext.Reviews.Remove(review);
-            _databaseContext.SaveChanges();
-
             await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
+            _databaseContext.Reviews.Remove(review);
+            _databaseContext.SaveChanges();
         }
     }
 }

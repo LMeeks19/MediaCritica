@@ -25,7 +25,6 @@ import { userState } from "../State/GlobalState";
 import { Snackbar } from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import ScrollContainer from "react-indiana-drag-scroll";
 import StarIcon from "@mui/icons-material/Star";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -184,7 +183,7 @@ function MediaPage() {
                         ? format(new Date(episode.released), "do MMM yyyy")
                         : episode.released}
                     </p>
-                    <p>
+                    <p className="rating">
                       Rating: <StarIcon className="star-icon" />{" "}
                       {episode.imdbRating === "" ? "N/A" : episode.imdbRating}
                     </p>
@@ -360,7 +359,7 @@ function MediaPage() {
                       View all <VisibilityIcon />
                     </button>
                   </div>
-                  <ScrollContainer className="review-cards">
+                  <div className="review-cards">
                     {media.reviews.map((review) => {
                       return (
                         <div
@@ -372,18 +371,19 @@ function MediaPage() {
                             })
                           }
                         >
-                          <h3>{review.title}</h3>
-                          <p>{review.reviewerName}</p>
-                          <p> {formatDistanceToNowStrict(review.date)} ago</p>
-                          <Rating
-                            value={review.rating}
-                            precision={0.5}
-                            readOnly
-                          />
+                          <div className="rating">
+                            <StarIcon className="icon" fontSize="large" />
+                            {review.rating}
+                          </div>
+                          <div className="details">
+                            <h3>{review.title}</h3>
+                            <p>{review.reviewerName}</p>
+                            <p>{formatDistanceToNowStrict(review.date)} ago</p>
+                          </div>
                         </div>
                       );
                     })}
-                  </ScrollContainer>
+                  </div>
                 </div>
               )}
 

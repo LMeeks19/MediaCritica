@@ -4,9 +4,9 @@ import { TextField, InputAdornment, Autocomplete, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import {
-  CollapsibleSection,
-  CollapsibleTabSection,
-} from "../Components/CollapsibleSections";
+  BaseAccordion,
+  TabbedAccordion,
+} from "../Components/HomeAccordion";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import {
   GetBestOfAllTime,
@@ -121,13 +121,13 @@ function HomePage() {
           />
         </div>
         <div className="sections">
-          <CollapsibleSection
+          <BaseAccordion
             title="Seasonal Picks"
             request={() => GetSeasonalPicks()}
             defaultIsOpen={true}
           />
 
-          <CollapsibleTabSection
+          <TabbedAccordion
             title="New & Upcoming"
             tabs={[
               {
@@ -142,7 +142,7 @@ function HomePage() {
             defaultIsOpen={true}
           />
 
-          <CollapsibleTabSection
+          <TabbedAccordion
             title="Yearly Highlights"
             tabs={[
               {
@@ -157,7 +157,7 @@ function HomePage() {
             defaultIsOpen={false}
           />
 
-          <CollapsibleTabSection
+          <TabbedAccordion
             title="Community Highlights"
             tabs={[
               {
@@ -172,7 +172,7 @@ function HomePage() {
             defaultIsOpen={false}
           />
 
-          <CollapsibleSection
+          <BaseAccordion
             title="Best of All Time"
             request={() => GetBestOfAllTime()}
             defaultIsOpen={false}

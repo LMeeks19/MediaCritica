@@ -7,7 +7,6 @@ import { CustomTooltip } from "./Tooltip";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import { MediaType } from "../Enums/MediaType";
 
 function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
@@ -24,10 +23,16 @@ function StarRating(props: StarRatingProps) {
       <div className="text-base text-center flex flex-col flex-wrap justify-center">
         {props.reviews !== "" && <div>{props.reviews} Reviews</div>}
         <CustomTooltip
-          title={(user.id !== undefined) ? new Date(props.media.released).getTime() > new Date().getTime() ? "Media not out yet" : "Write a review" : "Login to review"} 
+          title={
+            user.id !== undefined
+              ? new Date(props.media.released).getTime() > new Date().getTime()
+                ? "Media not out yet"
+                : "Write a review"
+              : "Login to review"
+          }
           arrow
         >
-          <span hidden={props.media.type === MediaType.Episode}>
+          <span>
             <button
               className="review-btn"
               onClick={() =>
@@ -35,7 +40,10 @@ function StarRating(props: StarRatingProps) {
                   state: { media: props.media },
                 })
               }
-              disabled={user.id === undefined || new Date(props.media.released).getTime() > new Date().getTime()}
+              disabled={
+                user.id === undefined ||
+                new Date(props.media.released).getTime() > new Date().getTime()
+              }
             >
               Review
             </button>

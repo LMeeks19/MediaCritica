@@ -17,7 +17,7 @@ import PeopleIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutlined";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDownOutlined";
 
-function MilestonesAccordion(props: { object: UserMilestoneModelObject }) {
+const MilestonesAccordion = (props: { object: UserMilestoneModelObject }) => {
   function GetLevelColour(level: UserMilestoneLevel) {
     switch (level) {
       case UserMilestoneLevel.Platinum:
@@ -127,6 +127,6 @@ function MilestonesAccordion(props: { object: UserMilestoneModelObject }) {
       </AccordionDetails>
     </Accordion>
   );
-}
+};
 
 export default MilestonesAccordion;

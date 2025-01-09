@@ -1,8 +1,6 @@
+import "./HomeAccordion.scss";
 import { FC, useEffect, useState } from "react";
-import "./CollapsibleSections.scss";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import GradeIcon from "@mui/icons-material/Grade";
 import {
   Card,
@@ -14,6 +12,9 @@ import {
   Typography,
   ToggleButtonGroup,
   ToggleButton,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ import Loader from "./Loader";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { MediaType } from "../Enums/MediaType";
 import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
+import { ArrowDropDownIcon } from "@mui/x-date-pickers/icons";
 
 interface SectionProps {
   title: string;
@@ -97,12 +99,11 @@ const MediaGrid: FC<{
   );
 };
 
-export const CollapsibleSection: FC<SectionProps> = ({
+export const BaseAccordion: FC<SectionProps> = ({
   title,
   request,
   defaultIsOpen,
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultIsOpen);
   const [media, setMedia] = useState<MediaSummaryModelResponse>({
     mediaSummaryModels: [],
     totalMediaCount: -1,
@@ -111,10 +112,10 @@ export const CollapsibleSection: FC<SectionProps> = ({
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   useEffect(() => {
-    GetMedia();
-  }, [isOpen]);
+    GetMedia(defaultIsOpen);
+  }, []);
 
-  async function GetMedia() {
+  async function GetMedia(isOpen: boolean) {
     if (
       isOpen &&
       media.mediaSummaryModels.length === 0 &&
@@ -127,14 +128,18 @@ export const CollapsibleSection: FC<SectionProps> = ({
   }
 
   return (
-    <section className="section">
-      <div
+    <Accordion
+      className="section"
+      disableGutters
+      defaultExpanded={defaultIsOpen}
+      onChange={(_e, v: boolean) => GetMedia(v)}
+    >
+      <AccordionSummary
         className="sub-header collapsible"
-        onClick={() => setIsOpen(!isOpen)}
+        expandIcon={<ArrowDropDownIcon />}
       >
         <h2>{title}</h2>
         <div className="actions">
-          {isOpen ? <RemoveIcon /> : <AddIcon />}
           <ToggleButtonGroup
             value={selectedFilter}
             onChange={(e, v) => {
@@ -149,24 +154,23 @@ export const CollapsibleSection: FC<SectionProps> = ({
             <ToggleButton value={MediaType.Game}>Games</ToggleButton>
           </ToggleButtonGroup>
         </div>
-      </div>
-      {isOpen && (
+      </AccordionSummary>
+      <AccordionDetails>
         <MediaGrid
           media={media}
           isLoading={isLaoding}
           filter={selectedFilter}
         />
-      )}
-    </section>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
-export const CollapsibleTabSection: FC<{
+export const TabbedAccordion: FC<{
   title: string;
   tabs: { label: string; request: Function }[];
   defaultIsOpen: boolean;
 }> = ({ title, tabs, defaultIsOpen }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(defaultIsOpen);
   const [activeTab, setActiveTab] = useState(0);
   const [tab1Media, setTab1Media] = useState<MediaSummaryModelResponse>({
     mediaSummaryModels: [],
@@ -180,21 +184,22 @@ export const CollapsibleTabSection: FC<{
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   useEffect(() => {
-    GetMedia();
-  }, [isOpen, activeTab]);
+    GetMedia(defaultIsOpen, activeTab);
+  }, []);
 
-  async function GetMedia() {
+  async function GetMedia(isOpen: boolean, selectedTab: number) {
+    setActiveTab(selectedTab);
     if (isOpen) {
       setIsLoading(true);
       if (
-        activeTab === 0 &&
+        selectedTab === 0 &&
         tab1Media.mediaSummaryModels.length === 0 &&
         tab1Media.mediaSummaryModels.length !== tab1Media.totalMediaCount
       )
         setTab1Media(await tabs[0].request());
 
       if (
-        activeTab === 1 &&
+        selectedTab === 1 &&
         tab2Media.mediaSummaryModels.length === 0 &&
         tab2Media.mediaSummaryModels.length !== tab2Media.totalMediaCount
       )
@@ -204,14 +209,18 @@ export const CollapsibleTabSection: FC<{
   }
 
   return (
-    <section className="section">
-      <div
+    <Accordion
+      className="section"
+      disableGutters
+      defaultExpanded={defaultIsOpen}
+      onChange={(_e, v: boolean) => GetMedia(v, activeTab)}
+    >
+      <AccordionSummary
         className="sub-header collapsible"
-        onClick={() => setIsOpen(!isOpen)}
+        expandIcon={<ArrowDropDownIcon />}
       >
         <h2>{title}</h2>
         <div className="actions">
-          {isOpen ? <RemoveIcon /> : <AddIcon />}
           <ToggleButtonGroup
             value={selectedFilter}
             onChange={(e, v) => {
@@ -226,36 +235,36 @@ export const CollapsibleTabSection: FC<{
             <ToggleButton value={MediaType.Game}>Games</ToggleButton>
           </ToggleButtonGroup>
         </div>
-      </div>
-      {isOpen && (
-        <div className="tab-section">
-          <div className="tabs">
-            {tabs.map((tab, index) => (
-              <div
-                key={index}
-                className={`tab ${activeTab === index ? "active" : ""}`}
-                onClick={() => setActiveTab(index)}
-              >
-                {tab.label}
-              </div>
-            ))}
-          </div>
-          <div tabIndex={0} hidden={activeTab !== 0}>
-            <MediaGrid
-              media={tab1Media}
-              isLoading={isLoading}
-              filter={selectedFilter}
-            />
-          </div>
-          <div tabIndex={1} hidden={activeTab !== 1}>
-            <MediaGrid
-              media={tab2Media}
-              isLoading={isLoading}
-              filter={selectedFilter}
-            />
-          </div>
+      </AccordionSummary>
+      <AccordionDetails className="tab-section">
+        <div className="tabs">
+          {tabs.map((tab, index) => (
+            <div
+              key={index}
+              className={`tab ${activeTab === index && "active"}`}
+              onClick={async () => {
+                await GetMedia(true, index);
+              }}
+            >
+              {tab.label}
+            </div>
+          ))}
         </div>
-      )}
-    </section>
+        <div tabIndex={0} hidden={activeTab !== 0}>
+          <MediaGrid
+            media={tab1Media}
+            isLoading={isLoading}
+            filter={selectedFilter}
+          />
+        </div>
+        <div tabIndex={1} hidden={activeTab !== 1}>
+          <MediaGrid
+            media={tab2Media}
+            isLoading={isLoading}
+            filter={selectedFilter}
+          />
+        </div>
+      </AccordionDetails>
+    </Accordion>
   );
 };

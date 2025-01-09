@@ -75,6 +75,7 @@ namespace MediaCritica.Server.Helpers
         {
             return await _databaseContext.Episodes
                 .Include(episode => episode.Ratings)
+                .Include(episdoe => episdoe.Reviews)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(episode => episode.Id == episodeId);
         }

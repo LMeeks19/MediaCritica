@@ -19,6 +19,7 @@
         ConsecutiveActivity,
         TotalReviewEngagementsRecieved,
         Engagements50PerReview,
-        ReviewEngagementsGiven
+        ReviewEngagementsGiven,
+        EpisodesReviewed,
     }
 }

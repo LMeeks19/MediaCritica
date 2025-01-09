@@ -91,6 +91,7 @@ namespace MediaCritica.Server.Helpers
                 await UpdateMilestone(user, MilestoneType.MoviesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Movie));
                 await UpdateMilestone(user, MilestoneType.GamesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Game));
                 await UpdateMilestone(user, MilestoneType.SeriesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Series));
+                await UpdateMilestone(user, MilestoneType.EpisodesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Episode));
 
                 await UpdateMilestone(user, MilestoneType.SingleGenreReviewed, genres.Count == 0 ? 0 : genres.Max(g => g.Count));
                 await UpdateMilestone(user, MilestoneType.GenreVariety, uniqueGenresReviewed);
@@ -199,9 +200,6 @@ namespace MediaCritica.Server.Helpers
 
             var consecutiveDaysActive = CalculateConsecutiveActivity(user.Reviews);
 
-
-            // Fetch earned milestones
-
             // Define dynamic milestone types and data
             var milestonesData = new List<(MilestoneType Type, int Count)>
             {
@@ -209,6 +207,7 @@ namespace MediaCritica.Server.Helpers
                 (MilestoneType.MoviesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Movie)),
                 (MilestoneType.SeriesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Series)),
                 (MilestoneType.GamesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Game)),
+                (MilestoneType.EpisodesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Episode)),
 
                 (MilestoneType.BacklogAdded, user.Backlogs.Count),
                 (MilestoneType.FinishedMedia, user.Backlogs.Count(b => b.Category == BacklogCategoryType.Finished)),
@@ -374,6 +373,7 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MoviesReviewed => "Movies Reviews",
                 MilestoneType.GamesReviewed => "Games Reviews",
                 MilestoneType.SeriesReviewed => "Series Reviews",
+                MilestoneType.EpisodesReviewed => "Episodes Reviews",
                 MilestoneType.BacklogAdded => "Backlogged Media",
                 MilestoneType.FinishedMedia => "Finished Media",
                 MilestoneType.Engagements50PerReview => "Engagements Received Per Review",
@@ -400,6 +400,7 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MoviesReviewed => "Review movies to share your thoughts",
                 MilestoneType.GamesReviewed => "Critique games to provie feedback",
                 MilestoneType.SeriesReviewed => "Share your thoughts on series",
+                MilestoneType.EpisodesReviewed => "Provide opinions on episodes",
                 MilestoneType.BacklogAdded => "Keep track of media you'd like to watch or play",
                 MilestoneType.FinishedMedia => "Complete watching or playing a pieces of media",
                 MilestoneType.Engagements50PerReview => "Recieve 50 engagements on multiple reviews",
@@ -426,6 +427,7 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MoviesReviewed => MilestoneCategory.Reviews,
                 MilestoneType.GamesReviewed => MilestoneCategory.Reviews,
                 MilestoneType.SeriesReviewed => MilestoneCategory.Reviews,
+                MilestoneType.EpisodesReviewed => MilestoneCategory.Reviews,
                 MilestoneType.BacklogAdded => MilestoneCategory.Backlog,
                 MilestoneType.FinishedMedia => MilestoneCategory.Backlog,
                 MilestoneType.Engagements50PerReview => MilestoneCategory.Engagement,

@@ -23,19 +23,16 @@
       color: whitesmoke;
       box-shadow: 0 2px 5px #00000080;
       background-color: var(--palette-colour);
-    }
 
-    .episode-info h2 {
-      margin: 0;
-    }
+      h2 {
+        margin: 0;
+        font-size: 2rem;
+      }
 
-    .description {
-      margin: 0;
-    }
-
-    .meta {
-      color: #bbb;
-      margin: 0;
+      .meta {
+        color: #bbb;
+        margin: 0;
+      }
     }
 
     /* Summary Section */
@@ -47,7 +44,6 @@
 
       h2 {
         font-size: 1.8rem;
-        color: var(--palette-colour);
         margin: 0;
       }
     }
@@ -71,26 +67,114 @@
       padding: 2rem;
       overflow: auto;
       background-color: var(--dark-light);
+
+      .details-card {
+        background-color: light-dark(whitesmoke, #242424);
+        padding: 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px #00000033;
+        flex-grow: 1;
+        flex-basis: 400px;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px #00000099;
+        }
+
+        h3 {
+          color: var(--palette-colour);
+          border-bottom: 1px solid #333;
+          margin: 0;
+        }
+      }
     }
 
-    .details-card {
-      background-color: light-dark(whitesmoke, #242424);
-      padding: 1.5rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 8px #00000033;
-      flex-grow: 1;
-      flex-basis: 400px;
-    }
+    .review-details {
+      border-bottom: 1px solid #444;
 
-    .details-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px #00000099;
-    }
+      .sub-header {
+        .view-btn {
+          border-color: var(--palette-colour);
+          background-color: var(--palette-colour);
+          color: whitesmoke;
+        }
 
-    .details-card h3 {
-      color: var(--palette-colour);
-      border-bottom: 1px solid #333;
-      margin: 0;
+        .view-btn:not(:disabled):hover {
+          border-color: var(--dark-light);
+          background-color: var(--light-dark);
+          color: var(--dark-light);
+        }
+      }
+
+      .review-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        padding: 2rem;
+
+        .review-card {
+          background-color: light-dark(whitesmoke, #242424);
+          border-radius: 20px;
+          box-shadow: 0 2px 5px #0000004d;
+          display: flex;
+          align-items: center;
+          padding: 1rem;
+          min-width: 200px;
+          flex: 1 1 calc(33.333% - 1.5rem);
+          overflow: hidden;
+          text-wrap: nowrap;
+          cursor: pointer;
+          transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+          &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px #00000099;
+          }
+
+          .rating {
+            background-color: var(--palette-colour);
+            color: whitesmoke;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: 1rem 0.75rem;
+            margin-right: 0.75rem;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+
+            .icon {
+              color: var(--rating-star) !important;
+              font-size: 1.75rem !important;
+            }
+          }
+
+          .details {
+            overflow: hidden;
+            padding-left: 0.75rem;
+            border-left: 1px solid #333;
+
+            h3 {
+              font-size: 1rem;
+              margin: 0;
+              overflow: hidden;
+              text-wrap: nowrap;
+              text-overflow: ellipsis;
+            }
+
+            p {
+              margin: 0;
+              font-size: 0.75rem;
+              color: grey;
+              overflow: hidden;
+              text-wrap: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
     }
   }
 }

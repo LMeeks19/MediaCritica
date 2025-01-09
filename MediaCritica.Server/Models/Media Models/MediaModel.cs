@@ -23,6 +23,7 @@
         public string imdbRating { get; set; }
         public string imdbVotes { get; set; }
         public string imdbID { get; set; }
+        public List<ReviewSummaryModel> Reviews { get; set; } = [];
     }
 
     public class RatingModel
