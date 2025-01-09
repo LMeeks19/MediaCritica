@@ -168,7 +168,6 @@ function MediaPage() {
                       {
                         state: {
                           episodeId: episode.id,
-                          series: series as SeriesModel,
                         },
                       }
                     )

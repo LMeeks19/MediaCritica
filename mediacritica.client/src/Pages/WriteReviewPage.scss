@@ -49,6 +49,10 @@
 
         .parent-title {
           font-size: 2.5rem;
+
+          .sub-title {
+            font-size: 1.25rem;
+          }
         }
 
         .btn {
@@ -114,7 +118,7 @@
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   .writereviewpage-container {
     .review {
       .media-poster {
@@ -126,6 +130,7 @@
 
         .hero {
           justify-content: center !important;
+          flex-direction: column;
 
           .parent-title {
             text-align: center;

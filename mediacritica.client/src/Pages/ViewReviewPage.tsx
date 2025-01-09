@@ -170,7 +170,14 @@ function ViewReviewPage() {
                 | {review.reviewerName}
               </div>
               <div className="heading">
-                <div className="parent-title">{review.mediaTitle}</div>
+                <div className="parent-title">
+                  {review.mediaSeriesTitle ?? review.mediaTitle}
+                  {review.mediaEpisode && (
+                    <div className="sub-title">
+                      {review.mediaEpisode} - {review.mediaTitle}
+                    </div>
+                  )}
+                </div>
                 <div className="flex gap-2">
                   {review.reviewerId === user.id &&
                     (!isEditing ? (

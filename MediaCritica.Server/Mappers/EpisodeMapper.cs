@@ -36,6 +36,7 @@ namespace MediaCritica.Server.Mappers
             episodeModel.Episode = episode.EpisodeNo.ToString();
             episodeModel.Season = episode.SeasonNo.ToString();
             episodeModel.SeasonId = episode.SeasonId;
+            episodeModel.SeriesTitle = episode.Season.Series.Title;
             episodeModel.Reviews = episode.Reviews!.Select(_reviewMapper.MapReviewSummaryModel).ToList();
 
             return episodeModel;

@@ -7,7 +7,6 @@ import { GetEpisode } from "../Server/Server";
 import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
-import { SeriesModel } from "../Interfaces/SeriesModel";
 import Loader from "../Components/Loader";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -19,7 +18,6 @@ function EpisodePage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [episode, setEpisode] = useState<EpisodeModel>({} as EpisodeModel);
-  const series = location.state?.series as SeriesModel;
 
   useEffect(() => {
     async function FetchEpisode() {
@@ -31,7 +29,7 @@ function EpisodePage() {
     }
     FetchEpisode();
   }, []);
-
+  
   return (
     <div className="episodepage-container">
       {isLoading ? (
@@ -41,7 +39,7 @@ function EpisodePage() {
           <TopBar whiteText />
           <div className="episode-info">
             <div className="flex flex-col">
-              <h2>{series.title}</h2>
+              <h2>{episode.seriesTitle}</h2>
               <p className="meta">
                 <span>
                   S{episode.season}:E
@@ -157,7 +155,7 @@ function EpisodePage() {
                         className="review-card"
                         key={review.id}
                         onClick={() =>
-                          navigate(`view-review/${review.id}`, {
+                          navigate(`/media/${episode.id}/view-review/${review.id}`, {
                             state: { reviewId: review.id },
                           })
                         }

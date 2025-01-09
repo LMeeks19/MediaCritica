@@ -20,6 +20,7 @@ namespace MediaCritica.Server.Controllers
         {
             var review = await _databaseContext.Reviews
                 .Include(r => r.Engagements)
+                .Include(r => r.Media)
                 .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)
@@ -34,6 +35,7 @@ namespace MediaCritica.Server.Controllers
         {
             return await _databaseContext.Reviews
                 .Include(r => r.Engagements)
+                .Include(r => r.Media)
                 .Where(review => review.UserId == reviewerId)
                 .OrderByDescending(review => review.Date)
                 .Select(review => _mapper.ReviewMapper.MapReviewModel(review))

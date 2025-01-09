@@ -6,6 +6,8 @@
         public string MediaId { get; set; }
         public string MediaPoster { get; set; }
         public string MediaTitle { get; set; }
+        public string? MediaSeriesTitle { get; set; }
+        public string? MediaEpisode { get; set; }
         public string MediaType { get; set; }
         public string ReviewerName { get; set; }
         public int ReviewerId { get; set; }

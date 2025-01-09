@@ -43,7 +43,6 @@
         flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
         justify-content: space-between;
         color: whitesmoke;
         box-shadow: 0 2px 5px #00000080;
@@ -60,9 +59,14 @@
           flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
+          gap: 1rem;
 
           .parent-title {
             font-size: 2.5rem;
+
+            .sub-title {
+              font-size: 1.25rem;
+            }
           }
 
           .btn {
@@ -169,7 +173,7 @@
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   .viewreviewpage-container {
     .review {
       .media-poster {
@@ -188,6 +192,7 @@
 
           .heading {
             justify-content: center;
+            flex-direction: column;
 
             .parent-title {
               text-align: center;

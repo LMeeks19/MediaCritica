@@ -16,6 +16,7 @@ import Loader from "../Components/Loader";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import RestartAltIcon from "@mui/icons-material/RestartAltOutlined";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import { MediaType } from "../Enums/MediaType";
 
 function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -52,6 +53,7 @@ function WriteReviewPage() {
       mediaId: media.id,
       mediaPoster: media.poster,
       mediaTitle: media.title,
+      mediaSeriesTitle: (media as EpisodeModel).seriesTitle,
       mediaType: media.type,
       reviewerId: user.id,
       reviewerName: `${user.forename} ${user.surname}`,
@@ -76,6 +78,11 @@ function WriteReviewPage() {
     setRating(0);
   }
 
+  function getHeaderSubTitle() {
+    var episode = media as EpisodeModel;
+    return `${episode.title} - S${episode.season}:E${episode.episode}`;
+  }
+
   return (
     user.id !== undefined && (
       <div className="writereviewpage-container">
@@ -86,7 +93,12 @@ function WriteReviewPage() {
             <TopBar whiteText />
             <div className="info">
               <div className="hero">
-                <div className="parent-title">{media.title}</div>
+                <div className="parent-title">
+                  {(media as EpisodeModel).seriesTitle ?? media.title}
+                  {media.type === MediaType.Episode && (
+                    <div className="sub-title">{getHeaderSubTitle()}</div>
+                  )}
+                </div>
                 <ToggleButtonGroup>
                   <ToggleButton
                     value="reset"
