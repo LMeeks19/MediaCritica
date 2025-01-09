@@ -43,6 +43,7 @@
         flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
+        gap: 0.5rem;
         justify-content: space-between;
         color: whitesmoke;
         box-shadow: 0 2px 5px #00000080;
@@ -53,25 +54,34 @@
           text-align: start;
         }
 
-        .parent-title {
-          font-size: 2.5rem;
-        }
+        .heading {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
 
-        .btn {
-          border-color: whitesmoke !important;
-          color: whitesmoke !important;
-          transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out !important;
-          background-color: transparent !important;
-          padding: 10px !important;
-
-          &:not(:disabled):hover,
-          &.Mui-selected {
-            background-color: whitesmoke !important;
-            color: var(--palette-colour) !important;
+          .parent-title {
+            font-size: 2.5rem;
           }
 
-          .text {
-            font-size: 0.9rem;
+          .btn {
+            border-color: whitesmoke !important;
+            color: whitesmoke !important;
+            transition: background-color 0.3s ease-in-out,
+              color 0.3s ease-in-out !important;
+            background-color: transparent !important;
+            padding: 12px !important;
+
+            &:not(:disabled):hover,
+            &.Mui-selected {
+              background-color: whitesmoke !important;
+              color: var(--palette-colour) !important;
+            }
+
+            .text {
+              font-size: 0.9rem;
+            }
           }
         }
       }
@@ -170,11 +180,18 @@
         width: 100%;
 
         .hero {
-          gap: 0.5rem;
           justify-content: center !important;
 
-          .parent-title {
+          .review-date {
             text-align: center;
+          }
+
+          .heading {
+            justify-content: center;
+
+            .parent-title {
+              text-align: center;
+            }
           }
         }
       }

@@ -42,26 +42,34 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
         gap: 0.5rem;
+        justify-content: space-between;
         color: whitesmoke;
         box-shadow: 0 2px 5px #00000080;
 
-        .parent-title {
-          font-size: 2.5rem;
-        }
+        .heading {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          .parent-title {
+            font-size: 2.5rem;
+          }
 
-        .btn {
-          border-color: whitesmoke !important;
-          color: whitesmoke !important;
-          transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out !important;
-          background-color: transparent !important;
-          padding: 10px !important;
-        }
+          .btn {
+            border-color: whitesmoke !important;
+            color: whitesmoke !important;
+            transition: background-color 0.3s ease-in-out,
+              color 0.3s ease-in-out !important;
+            background-color: transparent !important;
+            padding: 12px !important;
+          }
 
-        .btn:not(:disabled):hover {
-          background-color: whitesmoke !important;
-          color: var(--palette-colour) !important;
+          .btn:not(:disabled):hover {
+            background-color: whitesmoke !important;
+            color: var(--palette-colour) !important;
+          }
         }
       }
 
@@ -126,6 +134,14 @@
 
         .hero {
           justify-content: center !important;
+
+          .heading {
+            justify-content: center;
+
+            .parent-title {
+              text-align: center;
+            }
+          }
         }
       }
     }

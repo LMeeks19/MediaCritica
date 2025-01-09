@@ -169,7 +169,7 @@ function ViewReviewPage() {
                 {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
                 | {review.reviewerName}
               </div>
-              <div className="w-full flex flex-wrap items-center justify-between">
+              <div className="heading">
                 <div className="parent-title">{review.mediaTitle}</div>
                 <div className="flex gap-2">
                   {review.reviewerId === user.id &&
