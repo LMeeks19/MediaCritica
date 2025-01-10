@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
@@ -14,6 +15,7 @@ namespace MediaCritica.Server.Mappers
                 MediaId = reviewModel.MediaId,
                 MediaPoster = reviewModel.MediaPoster,
                 MediaTitle = reviewModel.MediaTitle,
+                MediaSeriesTitle = reviewModel.MediaSeriesTitle,
                 MediaType = reviewModel.MediaType,
                 Rating = reviewModel.Rating,
                 UserId = reviewModel.ReviewerId,
@@ -33,10 +35,14 @@ namespace MediaCritica.Server.Mappers
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
+                MediaSeriesTitle = review.MediaSeriesTitle,
+                MediaEpisode = review.Media.Type == MediaType.Episode ? $"S{(review.Media as Episode)!.EpisodeNo}:E{(review.Media as Episode)!.SeasonNo}" : null,
                 Rating = review.Rating,
                 ReviewerId = review.UserId,
                 ReviewerName = review.ReviewerName,
                 Title = review.Title,
+                Likes = review.Engagements.Count(a => a.Type == EngagementType.Like),
+                Dislikes = review.Engagements.Count(a => a.Type == EngagementType.Dislike),
             };
         }
 

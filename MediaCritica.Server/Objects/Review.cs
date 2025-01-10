@@ -8,6 +8,7 @@
         public virtual Media Media { get; set; }
         public string MediaPoster { get; set; }
         public string MediaTitle { get; set; }
+        public string? MediaSeriesTitle { get; set; }
         public string MediaType { get; set; }
 
         public int UserId { get; set; }
@@ -16,5 +17,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
+        public virtual List<Engagement> Engagements { get; set; }
+
     }
 }

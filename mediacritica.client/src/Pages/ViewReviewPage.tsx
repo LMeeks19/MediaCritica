@@ -1,9 +1,15 @@
 import "./ViewReviewPage.scss";
-import { Rating } from "@mui/material";
+import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { DeleteReview, GetReview, UpdateReview } from "../Server/Server";
+import {
+  DeleteReview,
+  GetCurrentUserReviewEngagement,
+  GetReview,
+  ToggleReviewEngagement,
+  UpdateReview,
+} from "../Server/Server";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
@@ -18,6 +24,10 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
+import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
+import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
+import { CustomTooltip } from "../Components/Tooltip";
+import millify from "millify";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -30,6 +40,7 @@ function ViewReviewPage() {
   const [rating, setRating] = useState<number>(0);
   const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
   const [user, setUser] = useRecoilState(userState);
+  const [engagement, setEngagement] = useState<number | null>(null);
 
   const reviewId = location.state?.reviewId;
 
@@ -37,8 +48,15 @@ function ViewReviewPage() {
     async function FetchReview() {
       reviewId === undefined && navigate("/");
       setIsLoading(true);
+
       const reviewData = await GetReview(reviewId);
       setReview(reviewData);
+
+      const engagement = await GetCurrentUserReviewEngagement(
+        reviewId,
+        user.id
+      );
+      setEngagement(engagement);
 
       setTitle(reviewData.title);
       setRating(reviewData.rating);
@@ -48,6 +66,39 @@ function ViewReviewPage() {
     }
     FetchReview();
   }, []);
+
+  async function ToggleUserEngagement(value: number | null) {
+    const newUserEngagement = await ToggleReviewEngagement(
+      review.id,
+      user.id,
+      value
+    );
+
+    if (engagement === null && newUserEngagement === 0)
+      setReview({ ...review, likes: (review.likes += 1) });
+    else if (engagement === null && newUserEngagement === 1)
+      setReview({ ...review, dislikes: (review.dislikes += 1) });
+    else if (engagement === 0 && newUserEngagement === 1)
+      setReview({
+        ...review,
+        likes: (review.likes -= 1),
+        dislikes: (review.dislikes += 1),
+      });
+    else if (engagement === 1 && newUserEngagement === 0)
+      setReview({
+        ...review,
+        likes: (review.likes += 1),
+        dislikes: (review.dislikes -= 1),
+      });
+    else if (engagement === 0 && newUserEngagement === null)
+      setReview({ ...review, likes: (review.likes -= 1) });
+    else if (engagement === 1 && newUserEngagement === null)
+      setReview({ ...review, dislikes: (review.dislikes -= 1) });
+
+    setEngagement(newUserEngagement);
+
+    Snackbar("Rating updated", "success");
+  }
 
   async function PutReview() {
     const details = {
@@ -114,56 +165,55 @@ function ViewReviewPage() {
           <TopBar whiteText />
           <div className="info">
             <div className="hero">
-              <div className="parent-title">{review.mediaTitle}</div>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <Rating
-                  value={rating}
-                  precision={0.5}
-                  sx={{ fontSize: "2.5rem" }}
-                  readOnly={!isEditing}
-                  onChange={(_event, value) => setRating(value!)}
-                />
-                <div className="review-date">
-                  {CapitaliseFirstLetter(
-                    formatRelative(review.date, new Date())
-                  )}{" "}
-                  | {review.reviewerName}
+              <div className="review-date">
+                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
+                | {review.reviewerName}
+              </div>
+              <div className="heading">
+                <div className="parent-title">
+                  {review.mediaSeriesTitle ?? review.mediaTitle}
+                  {review.mediaEpisode && (
+                    <div className="sub-title">
+                      {review.mediaEpisode} - {review.mediaTitle}
+                    </div>
+                  )}
                 </div>
-                {review.reviewerId === user.id && (
-                  <div className="flex gap-3 pt-2">
-                    {!isEditing ? (
-                      <>
-                        <button
-                          className="edit-btn"
+                <div className="flex gap-2">
+                  {review.reviewerId === user.id &&
+                    (!isEditing ? (
+                      <ToggleButtonGroup>
+                        <ToggleButton
+                          value="edit"
+                          className="btn"
                           onClick={() => setIsEditing(true)}
                         >
-                          Edit
-                          <EditOutlinedIcon fontSize="small" />
-                        </button>
-                        <button
-                          className="delete-btn"
+                          <EditOutlinedIcon />
+                        </ToggleButton>
+                        <ToggleButton
+                          value="delete"
+                          className="btn"
                           onClick={() =>
                             setConfirmationDialog(deleteReviewDialog)
                           }
                           disabled={isEditing}
                         >
-                          Delete
-                          <DeleteIcon fontSize="small" />
-                        </button>
-                      </>
+                          <DeleteIcon />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
                     ) : (
-                      <>
-                        <button
-                          className="cancel-btn"
+                      <ToggleButtonGroup>
+                        <ToggleButton
+                          value="cancel"
+                          className="btn"
                           onClick={() =>
                             setConfirmationDialog(cancelEditReviewDialog)
                           }
                         >
-                          Cancel
-                          <CancelIcon fontSize="small" />
-                        </button>
-                        <button
-                          className="save-btn"
+                          <CancelIcon />
+                        </ToggleButton>
+                        <ToggleButton
+                          value="save"
+                          className="btn"
                           form="review-form"
                           type="submit"
                           disabled={
@@ -172,24 +222,67 @@ function ViewReviewPage() {
                             review.title === title
                           }
                         >
-                          Save
-                          <SaveIcon fontSize="small" />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
+                          <SaveIcon />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    ))}
+                  <CustomTooltip
+                    title={
+                      user.id === review.reviewerId
+                        ? "Cannot rate own review"
+                        : user.id === undefined && "Login to rate"
+                    }
+                    arrow
+                  >
+                    <span>
+                      <ToggleButtonGroup
+                        value={engagement}
+                        onChange={(_e, v: number) => {
+                          ToggleUserEngagement(v);
+                        }}
+                        disabled={
+                          user.id === undefined || review.reviewerId == user.id
+                        }
+                        exclusive
+                      >
+                        <ToggleButton value={0} className="btn engagement">
+                          <ThumbUpIcon />
+                          <div className="text">
+                            {millify(review.likes, { precision: 0 })}
+                          </div>
+                        </ToggleButton>
+                        <ToggleButton value={1} className="btn engagement">
+                          <ThumbDownIcon />
+                          <div className="text">
+                            {millify(review.dislikes, { precision: 0 })}
+                          </div>
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    </span>
+                  </CustomTooltip>
+                </div>
               </div>
             </div>
             {!isEditing ? (
               <div className="review-details">
-                <h2>{review.title}</h2>
-                {review.description
-                  .trim()
-                  .split("\n\n")
-                  .map((paragraph) => {
-                    return <p key={paragraph}>{paragraph}</p>;
-                  })}
+                <div className="title-section">
+                  <h2>{review.title}</h2>
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "2.5rem" }}
+                    readOnly
+                    onChange={(_event, value) => setRating(value!)}
+                  />
+                </div>
+                <div className="description">
+                  {review.description
+                    .trim()
+                    .split("\n\n")
+                    .map((paragraph) => {
+                      return <p key={paragraph}>{paragraph}</p>;
+                    })}
+                </div>
               </div>
             ) : (
               <form
@@ -203,23 +296,31 @@ function ViewReviewPage() {
                   });
                 }}
               >
-                <input
-                  className="review-title"
-                  type="text"
-                  value={title}
-                  name="title"
-                  placeholder="Enter title..."
-                  required
-                  onChange={(e) => setTitle(e.target.value)}
-                  maxLength={50}
-                />
+                <div className="title-section">
+                  <input
+                    className="review-title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    name="title"
+                    placeholder="Enter title..."
+                    maxLength={50}
+                    required
+                  />
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{ fontSize: "2.5rem" }}
+                    onChange={(_event, value) => setRating(value!)}
+                  />
+                </div>
                 <textarea
                   className="review-description"
                   value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   name="description"
                   placeholder="Write review..."
                   required
-                  onChange={(e) => setDescription(e.target.value)}
                 />
               </form>
             )}

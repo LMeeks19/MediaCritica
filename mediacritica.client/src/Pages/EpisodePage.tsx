@@ -7,16 +7,17 @@ import { GetEpisode } from "../Server/Server";
 import StarRating from "../Components/StarRating";
 import { Rating } from "@mui/material";
 import { ConvertRatingStringToFiveScale } from "../Helpers/StringHelper";
-import { SeriesModel } from "../Interfaces/SeriesModel";
 import Loader from "../Components/Loader";
-import ImageIcon from '@mui/icons-material/ImageOutlined';
+import ImageIcon from "@mui/icons-material/ImageOutlined";
+import { formatDistanceToNowStrict } from "date-fns";
+import StarIcon from "@mui/icons-material/Star";
+import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 
 function EpisodePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [episode, setEpisode] = useState<EpisodeModel>({} as EpisodeModel);
-  const series = location.state?.series as SeriesModel;
 
   useEffect(() => {
     async function FetchEpisode() {
@@ -28,7 +29,7 @@ function EpisodePage() {
     }
     FetchEpisode();
   }, []);
-
+  
   return (
     <div className="episodepage-container">
       {isLoading ? (
@@ -37,15 +38,17 @@ function EpisodePage() {
         <div className="episode">
           <TopBar whiteText />
           <div className="episode-info">
-            <div className="flex flex-col gap-4">
-              <h2>
-                {series.title} | S{episode.season}:E
-                {episode.episode} - {episode.title}
-              </h2>
+            <div className="flex flex-col">
+              <h2>{episode.seriesTitle}</h2>
               <p className="meta">
-                <span>Initial Release: {episode.released}</span> |{" "}
-                <span>Duration: {episode.runtime}(s)</span> |{" "}
-                <span>Rated: {episode.rated}</span>
+                <span>
+                  S{episode.season}:E
+                  {episode.episode} - {episode.title}
+                </span>
+              </p>
+              <p className="meta">
+                <span>{episode.released}</span> |{" "}
+                <span>{episode.runtime}(s)</span> | <span>{episode.rated}</span>
               </p>
             </div>
             <div className="flex items-center flex-col gap-2 my-auto">
@@ -126,6 +129,52 @@ function EpisodePage() {
                 </div>
               )}
             </div>
+
+            {episode.reviews.length > 0 && (
+              <div className="review-details">
+                <div className="sub-header dark-shade">
+                  <h2>Reviews</h2>
+                  <button
+                    className="view-btn"
+                    onClick={() =>
+                      navigate("reviews", {
+                        state: {
+                          mediaId: episode.id,
+                          mediaTitle: episode.title,
+                        },
+                      })
+                    }
+                  >
+                    View all <VisibilityIcon />
+                  </button>
+                </div>
+                <div className="review-cards">
+                  {episode.reviews.map((review) => {
+                    return (
+                      <div
+                        className="review-card"
+                        key={review.id}
+                        onClick={() =>
+                          navigate(`/media/${episode.id}/view-review/${review.id}`, {
+                            state: { reviewId: review.id },
+                          })
+                        }
+                      >
+                        <div className="rating">
+                          <StarIcon className="icon" fontSize="large" />
+                          {review.rating}
+                        </div>
+                        <div className="details">
+                          <h3>{review.title}</h3>
+                          <p>{review.reviewerName}</p>
+                          <p>{formatDistanceToNowStrict(review.date)} ago</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

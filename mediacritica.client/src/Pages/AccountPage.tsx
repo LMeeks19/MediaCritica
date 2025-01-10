@@ -146,12 +146,14 @@ function AccountPage() {
   }
 
   function filteredReviews() {
-    if (selectedReviewFilter === "Movies")
+    if (selectedReviewFilter === MediaType.Movie)
       return reviews.filter((review) => review.mediaType === MediaType.Movie);
-    else if (selectedReviewFilter === "Series")
+    else if (selectedReviewFilter === MediaType.Series)
       return reviews.filter((review) => review.mediaType === MediaType.Series);
-    else if (selectedReviewFilter === "Games")
+    else if (selectedReviewFilter === MediaType.Game)
       return reviews.filter((review) => review.mediaType === MediaType.Game);
+    else if (selectedReviewFilter === MediaType.Episode)
+      return reviews.filter((review) => review.mediaType === MediaType.Episode);
     return reviews;
   }
 
@@ -357,13 +359,12 @@ function AccountPage() {
                     draggable={true}
                     onDragStart={(e) => handleDragStart(e, stage, index)}
                     key={item.id}
-                    style={{
-                      backgroundImage: `url(${item.mediaPoster?.replace(
-                        "300.jpg",
-                        "180.jpg"
-                      )})`,
-                    }}
                   >
+                    <img
+                      className="image"
+                      src={item.mediaPoster?.replace("300.jpg", "180.jpg")}
+                      alt={item.mediaTitle}
+                    />
                     <CardActionArea
                       onClick={() =>
                         navigate(`/media/${item.mediaId}`, {
@@ -374,7 +375,7 @@ function AccountPage() {
                         })
                       }
                     >
-                      <CardMedia component="div" />
+                      <CardMedia />
                       <CardHeader title={item.mediaTitle} />
                       <Divider />
                       <CardContent>
@@ -500,9 +501,10 @@ function AccountPage() {
                       onChange={(e) => setSelectedReviewFilter(e.target.value)}
                     >
                       <MenuItem value="None">None</MenuItem>
-                      <MenuItem value="Movies">Movies</MenuItem>
-                      <MenuItem value="Series">Series</MenuItem>
-                      <MenuItem value="Games">Games</MenuItem>
+                      <MenuItem value={MediaType.Movie}>Movies</MenuItem>
+                      <MenuItem value={MediaType.Series}>Series</MenuItem>
+                      <MenuItem value={MediaType.Game}>Games</MenuItem>
+                      <MenuItem value={MediaType.Episode}>Episodes</MenuItem>
                     </Select>
                   </FormControl>
                 </div>
@@ -522,10 +524,7 @@ function AccountPage() {
                           <Card
                             key={review.id}
                             style={{
-                              backgroundImage: `url(${review.mediaPoster?.replace(
-                                "300.jpg",
-                                "180.jpg"
-                              )})`,
+                              backgroundImage: `url(${review.mediaPoster})`,
                             }}
                           >
                             <CardActionArea
@@ -641,7 +640,7 @@ function AccountPage() {
           </div>
           <div className="milestones-tab" tabIndex={3} hidden={activeTab !== 3}>
             <div className="milestones-container">
-              <div className="header">
+              <div className="header dark-shade">
                 <h1>MILESTONES</h1>
               </div>
               {isLoading ? (
@@ -652,6 +651,7 @@ function AccountPage() {
                   <MilestonesAccordion object={milestones.at(1)!} />
                   <MilestonesAccordion object={milestones.at(2)!} />
                   <MilestonesAccordion object={milestones.at(3)!} />
+                  <MilestonesAccordion object={milestones.at(4)!} />
                 </div>
               )}
             </div>

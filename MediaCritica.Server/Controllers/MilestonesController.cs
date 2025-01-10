@@ -19,7 +19,10 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users
                 .Include(user => user.Reviews)
                     .ThenInclude(review => review.Media)
+                .Include(user => user.Reviews)
+                    .ThenInclude(review => review.Engagements)
                 .Include(user => user.Backlogs)
+                .Include(user => user.Engagements)
                 .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == userId);
 

@@ -4,10 +4,9 @@ import { TextField, InputAdornment, Autocomplete, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import {
-  CollapsibleSection,
-  CollapsibleTabSection,
-} from "../Components/CollapsibleSections";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+  BaseAccordion,
+  TabbedAccordion,
+} from "../Components/HomeAccordion";
 import {
   GetBestOfAllTime,
   GetBestOfCurYear,
@@ -23,7 +22,6 @@ import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { useNavigate } from "react-router-dom";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
-import LeaderboardIcon from '@mui/icons-material/LeaderboardOutlined';
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -121,13 +119,13 @@ function HomePage() {
           />
         </div>
         <div className="sections">
-          <CollapsibleSection
+          <BaseAccordion
             title="Seasonal Picks"
             request={() => GetSeasonalPicks()}
             defaultIsOpen={true}
           />
 
-          <CollapsibleTabSection
+          <TabbedAccordion
             title="New & Upcoming"
             tabs={[
               {
@@ -142,7 +140,7 @@ function HomePage() {
             defaultIsOpen={true}
           />
 
-          <CollapsibleTabSection
+          <TabbedAccordion
             title="Yearly Highlights"
             tabs={[
               {
@@ -157,7 +155,7 @@ function HomePage() {
             defaultIsOpen={false}
           />
 
-          <CollapsibleTabSection
+          <TabbedAccordion
             title="Community Highlights"
             tabs={[
               {
@@ -172,21 +170,11 @@ function HomePage() {
             defaultIsOpen={false}
           />
 
-          <CollapsibleSection
+          <BaseAccordion
             title="Best of All Time"
             request={() => GetBestOfAllTime()}
             defaultIsOpen={false}
           />
-        </div>
-        <div className="sub-header actions">
-          <button className="explore-btn" onClick={() => navigate("/explore")}>
-            <TravelExploreIcon />
-            Explore
-          </button>
-          <button className="leaderboards-btn" onClick={() => navigate("/leaderboards")}>
-            <LeaderboardIcon />
-            Leaderboards
-          </button>
         </div>
       </div>
     </div>

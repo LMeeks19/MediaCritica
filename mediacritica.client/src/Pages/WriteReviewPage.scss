@@ -37,37 +37,35 @@
       overflow: hidden auto;
 
       .hero {
-        padding: 4rem 2rem 2rem 2rem;
+        padding: 6rem 2rem 2rem 2rem;
         background-color: var(--palette-colour);
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: center;
-        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: space-between;
         color: whitesmoke;
         box-shadow: 0 2px 5px #00000080;
 
         .parent-title {
-          font-size: 3rem;
-          text-align: center;
-          margin-bottom: 1rem;
+          font-size: 2.5rem;
 
           .sub-title {
-            font-size: 1.5rem;
-            color: #bbb;
+            font-size: 1.25rem;
           }
         }
 
-        .reset-btn,
-        .post-btn {
-          border-color: whitesmoke;
-          color: whitesmoke;
+        .btn {
+          border-color: whitesmoke !important;
+          color: whitesmoke !important;
+          transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out !important;
+          background-color: transparent !important;
+          padding: 12px !important;
         }
 
-        .reset-btn:not(:disabled):hover,
-        .post-btn:not(:disabled):hover {
-          background-color: whitesmoke;
-          color: var(--palette-colour);
+        .btn:not(:disabled):hover {
+          background-color: whitesmoke !important;
+          color: var(--palette-colour) !important;
         }
       }
 
@@ -77,42 +75,66 @@
         align-items: center;
         height: 100%;
 
+        .title-section {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          align-items: center;
+          justify-content: space-between;
+          width: calc(100% - 4rem);
+          padding: 2rem;
+          background-color: light-dark(whitesmoke, #242424);
+
+          .review-title {
+            flex-grow: 1;
+          }
+        }
+
+        .review-title {
+          font-size: 1.5rem;
+        }
+
         .review-title,
         .review-description {
-          font-size: 20px;
-          width: calc(100% - 4rem);
           color: var(--light-dark);
           background-color: transparent;
-          font-family: "Orbitron" ;
+          font-family: "Orbitron";
           border: none;
           outline: none;
           line-height: inherit;
-          padding: 2rem;
+          letter-spacing: 0.1rem;
+          padding: 0;
         }
 
         .review-description {
           resize: none;
           height: 100%;
+          width: calc(100% - 4rem);
+          padding: 2rem;
+          font-size: 1.25rem !important;
         }
       }
     }
   }
 }
 
-@media screen and (max-width: 1000px) {
-  .writwreviewpage-container {
+@media screen and (max-width: 1100px) {
+  .writereviewpage-container {
     .review {
       .media-poster {
-        display: none;
+        display: none !important;
       }
 
       .info {
-        width: 100%;
+        width: 100% !important;
 
         .hero {
           justify-content: center !important;
-          padding-top: 4rem;
-          gap: 1rem;
+          flex-direction: column;
+
+          .parent-title {
+            text-align: center;
+          }
         }
       }
     }

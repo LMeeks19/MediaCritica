@@ -66,6 +66,10 @@ export default defineConfig({
             '^/Milestones': {
                 target,
                 secure: false
+            },
+            '^/Engagement': {
+                target,
+                secure: false
             }
         },
         port: 5174,

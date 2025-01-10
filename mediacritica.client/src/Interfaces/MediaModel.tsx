@@ -1,3 +1,5 @@
+import { ReviewSummaryModel } from "./ReviewSummaryModel";
+
 export interface MediaModel {
   id: string
   actors: string;
@@ -19,6 +21,7 @@ export interface MediaModel {
   year: string;
   imdbRating: string;
   imdbVotes: string;
+  reviews: ReviewSummaryModel[];
 }
 
 interface Rating {

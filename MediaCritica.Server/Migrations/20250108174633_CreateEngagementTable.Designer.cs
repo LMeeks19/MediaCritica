@@ -4,6 +4,7 @@ using MediaCritica.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250108174633_CreateEngagementTable")]
+    partial class CreateEngagementTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,9 +272,6 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MediaSeriesTitle")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MediaTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -443,12 +443,6 @@ namespace MediaCritica.Server.Migrations
                         .HasForeignKey("ReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MediaCritica.Server.Objects.User", null)
-                        .WithMany("Engagements")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Milestone", b =>
@@ -499,24 +493,20 @@ namespace MediaCritica.Server.Migrations
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Season", b =>
                 {
-                    b.HasOne("MediaCritica.Server.Objects.Series", "Series")
+                    b.HasOne("MediaCritica.Server.Objects.Series", null)
                         .WithMany("Seasons")
                         .HasForeignKey("SeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Series");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Episode", b =>
                 {
-                    b.HasOne("MediaCritica.Server.Objects.Season", "Season")
+                    b.HasOne("MediaCritica.Server.Objects.Season", null)
                         .WithMany("Episodes")
                         .HasForeignKey("SeasonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Season");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
@@ -541,8 +531,6 @@ namespace MediaCritica.Server.Migrations
             modelBuilder.Entity("MediaCritica.Server.Objects.User", b =>
                 {
                     b.Navigation("Backlogs");
-
-                    b.Navigation("Engagements");
 
                     b.Navigation("Milestones");
 

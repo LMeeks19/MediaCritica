@@ -92,6 +92,7 @@ function TopBar(props: TopBarProps) {
             onClick={() => {
               resetThemePalette();
               setUser({} as UserModel);
+              if (location.pathname.includes("/account")) navigate("/login");
             }}
           >
             <ListItemIcon>

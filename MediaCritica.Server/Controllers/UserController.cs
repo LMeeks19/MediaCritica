@@ -22,6 +22,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Reviews)
                 .Include(user => user.Backlogs)
                 .Include(user => user.Preference)
+                .Include(user => user.Engagements)
                 .SingleOrDefaultAsync(user => user.Email == email);
 
             if (user == null)
@@ -57,6 +58,12 @@ namespace MediaCritica.Server.Controllers
                 {
                     Id = backlogSummary.Id,
                     MediaId = backlogSummary.MediaId,
+                }).ToList() ?? [],
+                EngagementsSummary = user.Engagements.Select(e => new EngagementUserSummaryModel()
+                {
+                    Id = e.Id,
+                    ReviewId = e.ReviewId,
+                    Type = e.Type
                 }).ToList() ?? [],
                 TotalReviews = user.Reviews.Count,
                 TotalBacklogs = user.Backlogs.Count

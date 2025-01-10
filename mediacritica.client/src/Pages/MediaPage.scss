@@ -15,7 +15,7 @@
 
     .media-poster {
       width: 40%;
-      
+
       &.empty {
         display: flex;
         justify-content: center;
@@ -69,8 +69,12 @@
       }
 
       .heart {
-        font-size: 2.5rem;
+        margin-left: 10px;
         color: var(--backlog-heart);
+
+        .MuiSvgIcon-root {
+          font-size: 2.5rem !important;
+        }
       }
 
       .heart:disabled {
@@ -112,28 +116,28 @@
           border-radius: 20px;
           flex-grow: 1;
           transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
 
-        .card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 5px 15px #00000080;
-        }
+          &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px #00000080;
+          }
 
-        .card h3 {
-          margin-bottom: 0.5rem;
-          color: var(--palette-colour);
-          margin: 0;
-          border-bottom: 1px solid #333;
-        }
+          h3 {
+            margin-bottom: 0.5rem;
+            color: var(--palette-colour);
+            margin: 0;
+            border-bottom: 1px solid #333;
+          }
 
-        .card p {
-          font-size: 0.95rem;
-          margin-bottom: 0;
-        }
+          p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+          }
 
-        .rating {
-          font-size: 1.5rem;
-          color: #ffd700;
+          .rating {
+            font-size: 1.5rem;
+            color: #ffd700;
+          }
         }
       }
 
@@ -170,52 +174,71 @@
 
         .review-cards {
           display: flex;
+          flex-wrap: wrap;
           gap: 1.5rem;
           padding-top: 1rem;
 
           .review-card {
             background-color: light-dark(whitesmoke, #242424);
-            padding: 1rem 1.5rem;
-            box-shadow: 0 2px 5px #0000004d;
             border-radius: 20px;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            max-width: 400px;
-            min-width: 200px;
-            cursor: pointer;
+            box-shadow: 0 2px 5px #0000004d;
             display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
+            align-items: center;
+            padding: 1rem;
+            min-width: 200px;
+            flex: 1 1 calc(33.333% - 1.5rem);
+            overflow: hidden;
+            text-wrap: nowrap;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
-            h3,
-            p,
-            .rating .date {
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-            }
-
-            h3,
-            p {
-              margin: 0;
-            }
-
-            h3 {
-              font-size: 1.8rem;
-            }
-
-            p {
-              color: gray;
+            &:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 6px 12px #00000099;
             }
 
             .rating {
+              background-color: var(--palette-colour);
+              color: whitesmoke;
+              font-size: 1.25rem;
+              font-weight: bold;
+              padding: 1rem 0.75rem;
+              margin-right: 0.75rem;
+              border-radius: 10px;
+              text-align: center;
               display: flex;
-              gap: 0.5rem;
-            }
-          }
+              align-items: center;
+              justify-content: center;
+              gap: 0.25rem;
 
-          .review-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px #00000080;
+              .icon {
+                color: var(--rating-star) !important;
+                font-size: 1.75rem !important;
+              }
+            }
+
+            .details {
+              overflow: hidden;
+              padding-left: 0.75rem;
+              border-left: 1px solid #333;
+
+              h3 {
+                font-size: 1rem;
+                margin: 0;
+                overflow: hidden;
+                text-wrap: nowrap;
+                text-overflow: ellipsis;
+              }
+
+              p {
+                margin: 0;
+                font-size: 0.75rem;
+                color: grey;
+                overflow: hidden;
+                text-wrap: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
           }
         }
       }
@@ -237,24 +260,24 @@
             font-family: "Orbitron";
             padding-left: 5px;
           }
-        }
 
-        .season-header h2 {
-          color: var(--palette-colour);
-          font-size: 1.8rem;
-          margin: 0;
-        }
+          h2 {
+            color: var(--palette-colour);
+            font-size: 1.8rem;
+            margin: 0;
+          }
 
-        .season-select {
-          border: 1px solid transparent;
-          border-radius: 5px;
-          width: 200px;
-          outline: none;
-          cursor: pointer;
-        }
+          .season-select {
+            border: 1px solid transparent;
+            border-radius: 5px;
+            width: 200px;
+            outline: none;
+            cursor: pointer;
+          }
 
-        .season-select:hover {
-          border-color: var(--light-dark);
+          .season-select:hover {
+            border-color: var(--light-dark);
+          }
         }
 
         /* Episode Cards */
@@ -262,64 +285,71 @@
           display: flex;
           flex-wrap: wrap;
           gap: 1.5rem;
-        }
 
-        .episode-card {
-          background-color: light-dark(whitesmoke, #242424);
-          border-radius: 20px;
-          box-shadow: 0 4px 8px #00000066;
-          display: flex;
-          align-items: center;
-          padding: 1rem;
-          flex: 1 1 calc(33.333% - 1.5rem);
-          min-width: 200px;
-          overflow: hidden;
-          text-wrap: nowrap;
-          cursor: pointer;
-          transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
+          .episode-card {
+            background-color: light-dark(whitesmoke, #242424);
+            border-radius: 20px;
+            box-shadow: 0 4px 8px #00000066;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            flex: 1 1 calc(33.333% - 1.5rem);
+            min-width: 200px;
+            overflow: hidden;
+            text-wrap: nowrap;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
-        .episode-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 6px 12px #00000099;
-        }
+            &:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 6px 12px #00000099;
+            }
 
-        .episode-number {
-          background-color: var(--palette-colour);
-          color: whitesmoke;
-          font-size: 1.5rem;
-          font-weight: bold;
-          padding: 1rem;
-          margin-right: 0.75rem;
-          border-radius: 10px;
-          text-align: center;
-          min-width: 50px;
-        }
+            .episode-number {
+              background-color: var(--palette-colour);
+              color: whitesmoke;
+              font-size: 1.5rem;
+              font-weight: bold;
+              padding: 1rem 0.75rem;
+              margin-right: 0.75rem;
+              border-radius: 10px;
+              text-align: center;
+              min-width: 50px;
+            }
 
-        .episode-info {
-          overflow: hidden;
-          padding-left: 0.75rem;
-          border-left: 1px solid #333;
-        }
+            .episode-info {
+              overflow: hidden;
+              padding-left: 0.75rem;
+              border-left: 1px solid #333;
 
-        .episode-info h3 {
-          font-size: 1.2rem;
-          margin: 0;
-          overflow: hidden;
-          text-wrap: nowrap;
-          text-overflow: ellipsis;
-        }
+              h3 {
+                font-size: 1.2rem;
+                margin: 0;
+                overflow: hidden;
+                text-wrap: nowrap;
+                text-overflow: ellipsis;
+              }
 
-        .episode-info p {
-          margin: 0;
-          font-size: 0.9rem;
-          color: grey;
-          overflow: hidden;
-          text-wrap: nowrap;
-          text-overflow: ellipsis;
+              p {
+                margin: 0;
+                font-size: 0.9rem;
+                color: grey;
+                overflow: hidden;
+                text-wrap: nowrap;
+                text-overflow: ellipsis;
 
-          .star-icon {
-            color: var(--rating-star);
+                &.rating {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.25rem;
+                }
+
+                .star-icon {
+                  color: var(--rating-star);
+                  font-size: 1.25rem;
+                }
+              }
+            }
           }
         }
       }

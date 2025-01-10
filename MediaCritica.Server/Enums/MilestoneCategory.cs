@@ -3,8 +3,9 @@
     public enum MilestoneCategory
     {
         Reviews,
-        Interaction,
+        Backlog,
         Activity,
-        Variety
+        Variety,
+        Engagement
     }
 }

@@ -491,9 +491,15 @@ button:disabled {
   min-height: 225px;
   width: 180px;
   height: 225px;
-  background-position: center;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  position: relative;
+
+  .image {
+    width: 180px;
+    height: 225px;
+    position: absolute;
+    border: none;
+    text-align: center;
+  }
 
   .MuiCardActionArea-root {
     height: inherit;
@@ -539,6 +545,7 @@ button:disabled {
       gap: 0.25rem;
       text-align: center;
       background-color: var(--dark-light);
+      z-index: 999;
 
       .MuiTypography-root {
         font-family: "Orbitron";

@@ -19,6 +19,8 @@ namespace MediaCritica.Server.Controllers
         public async Task<ReviewModel?> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
+                .Include(r => r.Engagements)
+                .Include(r => r.Media)
                 .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)
@@ -32,6 +34,8 @@ namespace MediaCritica.Server.Controllers
         public async Task<List<ReviewModel>> GetUserReviews(int reviewerId, int offset)
         {
             return await _databaseContext.Reviews
+                .Include(r => r.Engagements)
+                .Include(r => r.Media)
                 .Where(review => review.UserId == reviewerId)
                 .OrderByDescending(review => review.Date)
                 .Select(review => _mapper.ReviewMapper.MapReviewModel(review))
@@ -65,7 +69,7 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users
                 .Include(user => user.Reviews)
                     .ThenInclude(review => review.Media)
-                .Include(user => user.Backlogs)
+                .Include(user => user.Engagements)
                 .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == review.UserId);
 
@@ -98,18 +102,19 @@ namespace MediaCritica.Server.Controllers
             var user = _databaseContext.Users
                 .Include(user => user.Reviews)
                     .ThenInclude(review => review.Media)
-                .Include(user => user.Backlogs)
+                .Include(user => user.Reviews)
+                    .ThenInclude(review => review.Engagements)
+                .Include(user => user.Engagements)
                 .Include(user => user.Milestones)
                 .Where(user => user.Reviews.Any(r => r.Id == reviewId))
                 .Single();
 
             var review = user.Reviews.Single(r => r.Id == reviewId);
 
-            _databaseContext.Reviews.Remove(review);
-            _databaseContext.SaveChanges();
-
             await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
+            _databaseContext.Reviews.Remove(review);
+            _databaseContext.SaveChanges();
         }
     }
 }

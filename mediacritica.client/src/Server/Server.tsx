@@ -178,7 +178,7 @@ export async function GetEpisode(episodeId: string): Promise<EpisodeModel> {
   return response.json();
 }
 
-export async function GetReview(reviewId: string): Promise<ReviewModel> {
+export async function GetReview(reviewId: number): Promise<ReviewModel> {
   const response = await fetch(`/Review/GetReview/${reviewId}`);
   return response.json();
 }
@@ -300,17 +300,46 @@ export async function UpdateBacklogState(
 }
 
 // Leaderboards API Calls
-export async function GetUserRankings(timeframe: string): Promise<UserRankingModel[]> {
+export async function GetUserRankings(
+  timeframe: string
+): Promise<UserRankingModel[]> {
   const response = await fetch(`/Leaderboards/GetUserRankings/${timeframe}`);
   return response.json();
 }
 
-export async function GetMediaTrends(timeframe: string): Promise<MediaTrendModel[]> {
+export async function GetMediaTrends(
+  timeframe: string
+): Promise<MediaTrendModel[]> {
   const response = await fetch(`/Leaderboards/GetMediaTrends/${timeframe}`);
   return response.json();
 }
 
-export async function GetUserMilestones(userId: number): Promise<UserMilestoneModelObject[]> {
+// Milestones API Calls
+export async function GetUserMilestones(
+  userId: number
+): Promise<UserMilestoneModelObject[]> {
   const response = await fetch(`/Milestones/GetUserMilestones/${userId}`);
   return response.json();
+}
+
+// Engagement API Calls
+export async function GetCurrentUserReviewEngagement(
+  reviewId: number,
+  userId: number
+): Promise<number | null> {
+  const response = await fetch(
+    `/Engagement/GetUserEngagement/${reviewId}/${userId ?? -1}`
+  );
+  return response.status == 204 ? null : response.json();
+}
+
+export async function ToggleReviewEngagement(
+  reviewId: number,
+  userId: number,
+  type: number | null
+): Promise<number | null> {
+  const response = await fetch(
+    `/Engagement/ToggleEngagement/${reviewId}/${userId}/${type ?? -1}`
+  );
+  return response.status == 204 ? null : response.json();
 }

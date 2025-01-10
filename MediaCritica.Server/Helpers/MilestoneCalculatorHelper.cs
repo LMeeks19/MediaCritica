@@ -31,6 +31,16 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
+        public async Task UpdateEngagementMilestones(User user)
+        {
+            if (user != null)
+            {
+                await UpdateMilestone(user, MilestoneType.ReviewEngagementsGiven, user.Engagements.Count);
+                await UpdateMilestone(user, MilestoneType.TotalReviewEngagementsRecieved, user.Reviews.Sum(r => r.Engagements.Count));
+                await UpdateMilestone(user, MilestoneType.Engagements50PerReview, user.Reviews.Where(r => r.Engagements.Count >= 50).Count());
+            }
+        }
+
         public async Task UpdateUserReviewMilestones(User user)
         {
 
@@ -81,6 +91,7 @@ namespace MediaCritica.Server.Helpers
                 await UpdateMilestone(user, MilestoneType.MoviesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Movie));
                 await UpdateMilestone(user, MilestoneType.GamesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Game));
                 await UpdateMilestone(user, MilestoneType.SeriesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Series));
+                await UpdateMilestone(user, MilestoneType.EpisodesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Episode));
 
                 await UpdateMilestone(user, MilestoneType.SingleGenreReviewed, genres.Count == 0 ? 0 : genres.Max(g => g.Count));
                 await UpdateMilestone(user, MilestoneType.GenreVariety, uniqueGenresReviewed);
@@ -189,31 +200,33 @@ namespace MediaCritica.Server.Helpers
 
             var consecutiveDaysActive = CalculateConsecutiveActivity(user.Reviews);
 
-
-            // Fetch earned milestones
-
             // Define dynamic milestone types and data
             var milestonesData = new List<(MilestoneType Type, int Count)>
-        {
-            (MilestoneType.ReviewsWritten, user.Reviews.Count),
-            (MilestoneType.MoviesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Movie)),
-            (MilestoneType.SeriesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Series)),
-            (MilestoneType.GamesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Game)),
+            {
+                (MilestoneType.ReviewsWritten, user.Reviews.Count),
+                (MilestoneType.MoviesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Movie)),
+                (MilestoneType.SeriesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Series)),
+                (MilestoneType.GamesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Game)),
+                (MilestoneType.EpisodesReviewed, user.Reviews.Count(r => r.MediaType == MediaType.Episode)),
 
-            (MilestoneType.BacklogAdded, user.Backlogs.Count),
-            (MilestoneType.FinishedMedia, user.Backlogs.Count(b => b.Category == BacklogCategoryType.Finished)),
+                (MilestoneType.BacklogAdded, user.Backlogs.Count),
+                (MilestoneType.FinishedMedia, user.Backlogs.Count(b => b.Category == BacklogCategoryType.Finished)),
 
-            (MilestoneType.SingleGenreReviewed, genres.Count == 0 ? 0 : genres.Max(g => g.Count)),
-            (MilestoneType.GenreVariety, uniqueGenresReviewed),
-            (MilestoneType.SingleActorReviewed, actors.Count == 0 ? 0 : actors.Max(g => g.Count)),
-            (MilestoneType.ActorVariety, uniqueActorsReviewed),
-            (MilestoneType.SingleDirectorReviewed, directors.Count == 0 ? 0 : directors.Max(g => g.Count)),
-            (MilestoneType.DirectorVariety, uniqueDirectorsReviewed),
+                (MilestoneType.ReviewEngagementsGiven, user.Engagements.Count),
+                (MilestoneType.TotalReviewEngagementsRecieved, user.Reviews.Sum(r => r.Engagements.Count)),
+                (MilestoneType.Engagements50PerReview, user.Reviews.Where(r => r.Engagements.Count >= 50).Count()),
 
-            (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month)),
-            (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year)),
-            (MilestoneType.ConsecutiveActivity, consecutiveDaysActive)
-        };
+                (MilestoneType.SingleGenreReviewed, genres.Count == 0 ? 0 : genres.Max(g => g.Count)),
+                (MilestoneType.GenreVariety, uniqueGenresReviewed),
+                (MilestoneType.SingleActorReviewed, actors.Count == 0 ? 0 : actors.Max(g => g.Count)),
+                (MilestoneType.ActorVariety, uniqueActorsReviewed),
+                (MilestoneType.SingleDirectorReviewed, directors.Count == 0 ? 0 : directors.Max(g => g.Count)),
+                (MilestoneType.DirectorVariety, uniqueDirectorsReviewed),
+
+                (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month)),
+                (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year)),
+                (MilestoneType.ConsecutiveActivity, consecutiveDaysActive)
+            };
 
             // Calculate progress for each milestone
             var progress = milestonesData
@@ -249,7 +262,8 @@ namespace MediaCritica.Server.Helpers
         {
             return type switch
             {
-                MilestoneType.SingleGenreReviewed
+                MilestoneType.Engagements50PerReview
+                or MilestoneType.SingleGenreReviewed
                 or MilestoneType.SingleActorReviewed
                 or MilestoneType.SingleDirectorReviewed
                 or MilestoneType.MonthlyReviews =>
@@ -291,6 +305,15 @@ namespace MediaCritica.Server.Helpers
                         { MilestoneLevel.Gold, 150 },
                         { MilestoneLevel.Platinum, 200 }
                     },
+                MilestoneType.TotalReviewEngagementsRecieved =>
+                    new Dictionary<MilestoneLevel, int>
+                    {
+                        { MilestoneLevel.None, 0 },
+                        { MilestoneLevel.Bronze, 50 },
+                        { MilestoneLevel.Silver, 100 },
+                        { MilestoneLevel.Gold, 250 },
+                        { MilestoneLevel.Platinum, 500 }
+                    },
                 _ =>
                     new Dictionary<MilestoneLevel, int>
                     {
@@ -330,7 +353,7 @@ namespace MediaCritica.Server.Helpers
                 Title = GetTitle(type),
                 Description = GetDescription(type),
                 Type = type,
-                Category = GetCategory(type),
+                Category = GetCategoryTitle(GetCategory(type)),
                 EarnedLevel = earnedLevel,
                 Progress = new ProgressModel()
                 {
@@ -350,8 +373,12 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MoviesReviewed => "Movies Reviews",
                 MilestoneType.GamesReviewed => "Games Reviews",
                 MilestoneType.SeriesReviewed => "Series Reviews",
+                MilestoneType.EpisodesReviewed => "Episodes Reviews",
                 MilestoneType.BacklogAdded => "Backlogged Media",
                 MilestoneType.FinishedMedia => "Finished Media",
+                MilestoneType.Engagements50PerReview => "Engagements Received Per Review",
+                MilestoneType.ReviewEngagementsGiven => "Engagements Given",
+                MilestoneType.TotalReviewEngagementsRecieved => "Overall Engagements Received",
                 MilestoneType.SingleGenreReviewed => "Single Genre",
                 MilestoneType.GenreVariety => "Unique Genres",
                 MilestoneType.SingleActorReviewed => "Single Actor",
@@ -373,8 +400,12 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MoviesReviewed => "Review movies to share your thoughts",
                 MilestoneType.GamesReviewed => "Critique games to provie feedback",
                 MilestoneType.SeriesReviewed => "Share your thoughts on series",
+                MilestoneType.EpisodesReviewed => "Provide opinions on episodes",
                 MilestoneType.BacklogAdded => "Keep track of media you'd like to watch or play",
                 MilestoneType.FinishedMedia => "Complete watching or playing a pieces of media",
+                MilestoneType.Engagements50PerReview => "Recieve 50 engagements on multiple reviews",
+                MilestoneType.ReviewEngagementsGiven => "Hand out engagements on reviews",
+                MilestoneType.TotalReviewEngagementsRecieved => "Combined engagements received on reviews",
                 MilestoneType.SingleGenreReviewed => "Focus on reviewing a single genre of media",
                 MilestoneType.GenreVariety => "Review media across multiple genres",
                 MilestoneType.SingleActorReviewed => "Focus on reviewing a single actors media",
@@ -396,8 +427,12 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MoviesReviewed => MilestoneCategory.Reviews,
                 MilestoneType.GamesReviewed => MilestoneCategory.Reviews,
                 MilestoneType.SeriesReviewed => MilestoneCategory.Reviews,
-                MilestoneType.BacklogAdded => MilestoneCategory.Interaction,
-                MilestoneType.FinishedMedia => MilestoneCategory.Interaction,
+                MilestoneType.EpisodesReviewed => MilestoneCategory.Reviews,
+                MilestoneType.BacklogAdded => MilestoneCategory.Backlog,
+                MilestoneType.FinishedMedia => MilestoneCategory.Backlog,
+                MilestoneType.Engagements50PerReview => MilestoneCategory.Engagement,
+                MilestoneType.ReviewEngagementsGiven => MilestoneCategory.Engagement,
+                MilestoneType.TotalReviewEngagementsRecieved => MilestoneCategory.Engagement,
                 MilestoneType.SingleGenreReviewed => MilestoneCategory.Variety,
                 MilestoneType.GenreVariety => MilestoneCategory.Variety,
                 MilestoneType.SingleActorReviewed => MilestoneCategory.Variety,
@@ -408,6 +443,19 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.YearlyReviews => MilestoneCategory.Activity,
                 MilestoneType.ConsecutiveActivity => MilestoneCategory.Activity,
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unhandled type: {type}")
+            };
+        }
+
+        private static string GetCategoryTitle(MilestoneCategory category)
+        {
+            return category switch
+            {
+                MilestoneCategory.Reviews => "Reviewed Media",
+                MilestoneCategory.Backlog => "Backlogged Media",
+                MilestoneCategory.Engagement => "Review Engagement",
+                MilestoneCategory.Variety => "Interaction Variety",
+                MilestoneCategory.Activity => "Consecutive Activity",
+                _ => throw new ArgumentOutOfRangeException(nameof(category), $"Unhandled type: {category}")
             };
         }
     }
