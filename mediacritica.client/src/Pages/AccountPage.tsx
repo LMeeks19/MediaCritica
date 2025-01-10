@@ -359,13 +359,12 @@ function AccountPage() {
                     draggable={true}
                     onDragStart={(e) => handleDragStart(e, stage, index)}
                     key={item.id}
-                    style={{
-                      backgroundImage: `url(${item.mediaPoster?.replace(
-                        "300.jpg",
-                        "180.jpg"
-                      )})`,
-                    }}
                   >
+                    <img
+                      className="image"
+                      src={item.mediaPoster?.replace("300.jpg", "180.jpg")}
+                      alt={item.mediaTitle}
+                    />
                     <CardActionArea
                       onClick={() =>
                         navigate(`/media/${item.mediaId}`, {
@@ -376,7 +375,7 @@ function AccountPage() {
                         })
                       }
                     >
-                      <CardMedia component="div" />
+                      <CardMedia />
                       <CardHeader title={item.mediaTitle} />
                       <Divider />
                       <CardContent>

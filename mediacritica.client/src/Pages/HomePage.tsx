@@ -7,7 +7,6 @@ import {
   BaseAccordion,
   TabbedAccordion,
 } from "../Components/HomeAccordion";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import {
   GetBestOfAllTime,
   GetBestOfCurYear,
@@ -23,7 +22,6 @@ import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { useNavigate } from "react-router-dom";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
-import LeaderboardIcon from '@mui/icons-material/LeaderboardOutlined';
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -177,16 +175,6 @@ function HomePage() {
             request={() => GetBestOfAllTime()}
             defaultIsOpen={false}
           />
-        </div>
-        <div className="sub-header actions">
-          <button className="explore-btn" onClick={() => navigate("/explore")}>
-            <TravelExploreIcon />
-            Explore
-          </button>
-          <button className="leaderboards-btn" onClick={() => navigate("/leaderboards")}>
-            <LeaderboardIcon />
-            Leaderboards
-          </button>
         </div>
       </div>
     </div>
