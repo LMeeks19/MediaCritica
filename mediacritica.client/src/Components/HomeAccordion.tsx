@@ -126,7 +126,7 @@ export const BaseAccordion: FC<SectionProps> = ({
 
   return (
     <Accordion
-      className="section"
+      className="accordion"
       disableGutters
       defaultExpanded={defaultIsOpen}
       onChange={(_e, v: boolean) => GetMedia(v)}
@@ -207,7 +207,7 @@ export const TabbedAccordion: FC<{
 
   return (
     <Accordion
-      className="section"
+      className="accordion"
       disableGutters
       defaultExpanded={defaultIsOpen}
       onChange={(_e, v: boolean) => GetMedia(v, activeTab)}

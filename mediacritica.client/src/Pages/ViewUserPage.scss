@@ -8,12 +8,12 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     .header {
       padding-top: 4.5rem !important;
       background-color: var(--palette-colour);
-
-      gap: 0 !important;
+      gap: 0.25rem !important;
 
       h1 {
         text-align: start !important;
@@ -24,6 +24,7 @@
       span {
         font-size: 0.9rem;
         color: #ccc;
+        flex-wrap: wrap;
       }
 
       .actions {
@@ -43,7 +44,97 @@
 
     .user {
       flex: 1;
-      padding: 2rem;
+      overflow: hidden auto;
+
+      .section {
+        .summary-content {
+          padding: 2rem;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          .summary-card {
+            flex: 1 1 20%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: light-dark(whitesmoke, #242424);
+            font-size: 1.25rem;
+            border-radius: 20px;
+            gap: 1rem;
+
+            h3 {
+              margin: 0;
+              font-size: 1.5rem;
+              text-align: center;
+              text-wrap: nowrap;
+            }
+
+            span {
+              font-size: 1.25rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: var(--palette-colour);
+
+              .MuiSvgIcon-root {
+                font-size: inherit;
+              }
+            }
+          }
+        }
+
+        .rating-breakdown-content {
+          padding: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
     }
+  }
+}
+
+.MuiPopper-root {
+  .MuiChartsTooltip-paper {
+    background-color: light-dark(whitesmoke, #242424) !important;
+    color: var(--light-dark) !important;
+
+    .MuiTypography-root {
+      color: var(--light-dark) !important;
+    }
+
+    .MuiChartsTooltip-mark {
+      border-color: var(--light-dark) !important;
+    }
+  }
+}
+
+.MuiChartsAxis-root {
+  .MuiChartsAxis-line {
+    stroke: var(--light-dark) !important;
+    stroke-width: 2 !important;
+  }
+
+  .MuiChartsAxis-tickContainer {
+    .MuiChartsAxis-tick {
+      stroke: var(--light-dark) !important;
+      stroke-width: 2 !important;
+    }
+  }
+  .MuiChartsAxis-tickLabel {
+    fill: var(--light-dark) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+  }
+
+  .MuiChartsAxis-label {
+    fill: var(--light-dark) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
   }
 }

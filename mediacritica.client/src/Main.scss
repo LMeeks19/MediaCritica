@@ -105,10 +105,14 @@ button:disabled {
   }
 }
 
-@media screen and (max-width: 1092px) {
+@media screen and (max-width: 1000px) {
   .header,
   .sub-header {
     justify-content: center !important;
+
+    span {
+      text-align: center;
+    }
 
     .actions {
       width: 100% !important;

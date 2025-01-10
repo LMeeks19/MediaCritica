@@ -521,12 +521,15 @@ function AccountPage() {
                     <div className="reviews">
                       {filteredReviews().map((review) => {
                         return (
-                          <Card
-                            key={review.id}
-                            style={{
-                              backgroundImage: `url(${review.mediaPoster})`,
-                            }}
-                          >
+                          <Card key={review.id}>
+                            <img
+                              className="image"
+                              src={review.mediaPoster?.replace(
+                                "300.jpg",
+                                "180.jpg"
+                              )}
+                              alt={review.mediaTitle}
+                            />
                             <CardActionArea
                               onClick={() =>
                                 navigate(
@@ -537,7 +540,7 @@ function AccountPage() {
                                 )
                               }
                             >
-                              <CardMedia component="div" />
+                              <CardMedia />
                               <CardHeader title={review.title} />
                               <Divider />
                               <CardContent>
