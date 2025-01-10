@@ -165,10 +165,6 @@ function ViewReviewPage() {
           <TopBar whiteText />
           <div className="info">
             <div className="hero">
-              <div className="review-date">
-                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
-                | {review.reviewerName}
-              </div>
               <div className="heading">
                 <div className="parent-title">
                   {review.mediaSeriesTitle ?? review.mediaTitle}
@@ -261,6 +257,22 @@ function ViewReviewPage() {
                     </span>
                   </CustomTooltip>
                 </div>
+              </div>
+              <div className="review-date">
+                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
+                |{" "}
+                <span
+                  className="reviewer"
+                  onClick={() =>
+                    navigate(`/view-user/${review.reviewerName}`, {
+                      state: {
+                        userId: review.reviewerId,
+                      },
+                    })
+                  }
+                >
+                  {review.reviewerName}
+                </span>
               </div>
             </div>
             {!isEditing ? (

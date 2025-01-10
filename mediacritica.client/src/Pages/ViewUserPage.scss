@@ -1,0 +1,49 @@
+.viewuserpage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .viewuser {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      padding-top: 4.5rem !important;
+      background-color: var(--palette-colour);
+
+      gap: 0 !important;
+
+      h1 {
+        text-align: start !important;
+        align-self: flex-start;
+        font-size: 2rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+        color: #ccc;
+      }
+
+      .actions {
+        .MuiIconButton-root {
+          padding: 8px;
+          .MuiSvgIcon-root {
+            color: whitesmoke;
+            font-size: 2.5rem;
+          }
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+          }
+        }
+      }
+    }
+
+    .user {
+      flex: 1;
+      padding: 2rem;
+    }
+  }
+}
