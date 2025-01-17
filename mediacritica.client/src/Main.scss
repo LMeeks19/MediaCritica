@@ -582,3 +582,43 @@ button:disabled {
     }
   }
 }
+
+.MuiPopper-root {
+  .MuiChartsTooltip-paper {
+    background-color: light-dark(whitesmoke, #242424) !important;
+    color: var(--light-dark) !important;
+
+    .MuiTypography-root {
+      color: var(--light-dark) !important;
+    }
+
+    .MuiChartsTooltip-mark {
+      border-color: var(--light-dark) !important;
+    }
+  }
+}
+
+.MuiChartsAxis-root {
+  .MuiChartsAxis-line {
+    stroke: var(--light-dark) !important;
+    stroke-width: 2 !important;
+  }
+
+  .MuiChartsAxis-tickContainer {
+    .MuiChartsAxis-tick {
+      stroke: var(--light-dark) !important;
+      stroke-width: 2 !important;
+    }
+  }
+  .MuiChartsAxis-tickLabel {
+    fill: var(--light-dark) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+  }
+
+  .MuiChartsAxis-label {
+    fill: var(--light-dark) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+  }
+}

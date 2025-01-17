@@ -115,6 +115,11 @@ Accept: application/json
 
 ###
 
+GET {{MediaCritica.Server_HostAddress}}/Review/GetUserReviewsBreakdown/
+Accept: application/json
+
+###
+
 GET {{MediaCritica.Server_HostAddress}}/Review/GetMediaReviews/
 Accept: application/json
 

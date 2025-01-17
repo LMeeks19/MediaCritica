@@ -44,6 +44,21 @@ namespace MediaCritica.Server.Controllers
                 .ToListAsync();
         }
 
+        [HttpGet(Name = "GetUserReviewsBreakdown")]
+        [Route("[action]/{userId}")]
+        public async Task<List<double>> GetUserReviewsBreakdown(int userId)
+        {
+            var reviews = await _databaseContext.Reviews.Where(r => r.UserId == userId).ToListAsync();
+
+            var reviewBreakdown = new List<double>();
+            for (double rating = 0; rating <= 5; rating += 0.5)
+            {
+                reviewBreakdown.Add(reviews.Count(r => r.Rating == rating));
+            }
+
+            return reviewBreakdown;
+        }
+
         [HttpGet(Name = "GeMediaReviews")]
         [Route("[action]/{mediaId}/{offset}/{limit}")]
         public async Task<List<ReviewSummaryModel>> GetMediaReviews(string mediaId, int offset, int limit)

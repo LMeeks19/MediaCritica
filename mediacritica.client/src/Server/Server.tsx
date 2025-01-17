@@ -194,6 +194,13 @@ export async function GetUserReviews(
   return response.json();
 }
 
+export async function GetUserReviewsBreakdown(
+  userId: number
+): Promise<number[]> {
+  const response = await fetch(`/Review/GetUserReviewsBreakdown/${userId}`);
+  return response.json();
+}
+
 export async function GetMediaReviews(
   mediaId: string,
   offset: number = 0
