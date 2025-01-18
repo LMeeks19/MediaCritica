@@ -9,7 +9,6 @@ import {
   GetInProgressBacklog,
   GetUserMilestones,
   GetUserReviews,
-  GetUserReviewsBreakdown,
   UpdateBacklogState,
 } from "../Server/Server";
 import {
@@ -109,9 +108,8 @@ function AccountPage() {
   async function FetchReviews(offset: number) {
     setIsLoading(true);
     const reviewsData = await GetUserReviews(user.id, offset);
-    setReviews(reviewsData);
-    const reviewsBreakdownData = await GetUserReviewsBreakdown(user.id);
-    setReviewsBreakdown(reviewsBreakdownData);
+    setReviews(reviewsData.reviews);
+    setReviewsBreakdown(reviewsData.breakdown)
     setIsLoading(false);
   }
 
@@ -125,7 +123,7 @@ function AccountPage() {
   async function LoadMoreReviews() {
     setIsLoading(true);
     const reviewsData = await GetUserReviews(user.id, reviews.length);
-    setReviews([...reviews, ...reviewsData]);
+    setReviews([...reviews, ...reviewsData.reviews]);
     setIsLoading(false);
   }
 

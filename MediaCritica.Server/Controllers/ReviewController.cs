@@ -31,9 +31,9 @@ namespace MediaCritica.Server.Controllers
 
         [HttpGet(Name = "GetUserReviews")]
         [Route("[action]/{reviewerId}/{offset}")]
-        public async Task<List<ReviewModel>> GetUserReviews(int reviewerId, int offset)
+        public async Task<UserReviewsModelObject> GetUserReviews(int reviewerId, int offset)
         {
-            return await _databaseContext.Reviews
+            var reviews = await _databaseContext.Reviews
                 .Include(r => r.Engagements)
                 .Include(r => r.Media)
                 .Where(review => review.UserId == reviewerId)
@@ -42,6 +42,12 @@ namespace MediaCritica.Server.Controllers
                 .Skip(offset)
                 .Take(20)
                 .ToListAsync();
+
+            return new UserReviewsModelObject()
+            {
+                Reviews = reviews,
+                Breakdown = await GetUserReviewsBreakdown(reviewerId),
+            };
         }
 
         [HttpGet(Name = "GetUserReviewsBreakdown")]

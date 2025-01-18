@@ -19,6 +19,7 @@ import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
+import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
 
 // User API Calls
 export async function GetUser(email: string): Promise<UserModel> {
@@ -187,7 +188,7 @@ export async function GetReview(reviewId: number): Promise<ReviewModel> {
 export async function GetUserReviews(
   reviewerId: number,
   offset: number = 0
-): Promise<ReviewModel[]> {
+): Promise<UserReviewsModelObject> {
   const response = await fetch(
     `/Review/GetUserReviews/${reviewerId ?? -1}/${offset}`
   );
