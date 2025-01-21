@@ -1,0 +1,107 @@
+.viewuserpage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .viewuser {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .header {
+      padding-top: 4.5rem !important;
+      background-color: var(--palette-colour);
+      gap: 0.25rem !important;
+
+      h1 {
+        text-align: start !important;
+        align-self: flex-start;
+        font-size: 2rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+        color: #ccc;
+        flex-wrap: wrap;
+      }
+
+      .actions {
+        align-self: flex-end;
+        .MuiIconButton-root {
+          padding: 8px;
+          .MuiSvgIcon-root {
+            color: whitesmoke;
+            font-size: 2.5rem;
+          }
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+          }
+        }
+      }
+    }
+
+    .user {
+      flex: 1;
+      overflow: hidden auto;
+
+      .section {
+        .summary-content {
+          padding: 2rem !important;
+          display: flex !important;
+          justify-content: center !important;
+          flex-wrap: wrap !important;
+          gap: 1rem !important;
+
+          .summary-card {
+            flex: 1 1 20%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: light-dark(whitesmoke, #242424);
+            font-size: 1.25rem;
+            border-radius: 20px;
+            gap: 1rem;
+
+            h3 {
+              margin: 0;
+              font-size: 1.5rem;
+              text-align: center;
+              text-wrap: nowrap;
+            }
+
+            span {
+              font-size: 1.25rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: var(--palette-colour);
+
+              .MuiSvgIcon-root {
+                font-size: inherit;
+              }
+            }
+          }
+        }
+
+        .rating-breakdown-content {
+          padding: 2rem !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+        }
+
+        .recent-reviews-content {
+          padding: 2rem !important;
+          display: flex !important;
+          gap: 1rem !important;
+        }
+      }
+    }
+  }
+}

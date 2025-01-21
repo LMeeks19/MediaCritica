@@ -1,3 +1,4 @@
+import "./MilestonesAccordion.scss";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers/icons";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
@@ -17,7 +18,7 @@ import PeopleIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutlined";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDownOutlined";
 
-const MilestonesAccordion = (props: { object: UserMilestoneModelObject }) => {
+const MilestonesAccordion = (props: UserMilestoneModelObject) => {
   function GetLevelColour(level: UserMilestoneLevel) {
     switch (level) {
       case UserMilestoneLevel.Platinum:
@@ -80,15 +81,15 @@ const MilestonesAccordion = (props: { object: UserMilestoneModelObject }) => {
   }
 
   return (
-    <Accordion disableGutters defaultExpanded>
+    <Accordion className="accordion" disableGutters defaultExpanded>
       <AccordionSummary
-        className="sub-header dark-shade"
+        className={`sub-header ${props.isPalette ? "palette" : "dark-shade"}`}
         expandIcon={<ArrowDropDownIcon />}
       >
-        <h2>{props.object?.category}</h2>
+        <h2>{props?.category}</h2>
       </AccordionSummary>
       <AccordionDetails className="milestones">
-        {props.object?.milestones.map((milestone) => {
+        {props?.milestones?.map((milestone) => {
           return (
             <div
               key={milestone.type}

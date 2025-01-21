@@ -19,6 +19,8 @@ import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
+import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
+import { ViewUserSummaryModel } from "../Interfaces/ViewUserSummaryModel";
 
 // User API Calls
 export async function GetUser(email: string): Promise<UserModel> {
@@ -48,6 +50,11 @@ export async function UpdateUser(
 
 export async function DeleteUser(userId: number): Promise<boolean> {
   const response = await fetch(`/User/DeleteUser/${userId}`);
+  return response.json();
+}
+
+export async function GetViewUserSummary(userId: number): Promise<ViewUserSummaryModel> {
+  const response = await fetch(`/User/GetViewUserSummary/${userId}`);
   return response.json();
 }
 
@@ -187,10 +194,17 @@ export async function GetReview(reviewId: number): Promise<ReviewModel> {
 export async function GetUserReviews(
   reviewerId: number,
   offset: number = 0
-): Promise<ReviewModel[]> {
+): Promise<UserReviewsModelObject> {
   const response = await fetch(
     `/Review/GetUserReviews/${reviewerId ?? -1}/${offset}`
   );
+  return response.json();
+}
+
+export async function GetUserReviewsBreakdown(
+  userId: number
+): Promise<number[]> {
+  const response = await fetch(`/Review/GetUserReviewsBreakdown/${userId}`);
   return response.json();
 }
 

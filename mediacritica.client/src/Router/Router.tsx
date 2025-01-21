@@ -9,6 +9,7 @@ import ReviewsPage from "../Pages/ReviewsPage";
 import LoginPage from "../Pages/LoginPage";
 import ExplorePage from "../Pages/ExplorePage";
 import LeaderboardsPage from "../Pages/LeaderboardsPage";
+import ViewUserPage from "../Pages/ViewUserPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -27,4 +28,5 @@ export const router = createBrowserRouter([
     element: <ViewReviewPage />,
   },
   { path: "/account", element: <AccountPage /> },
+  { path: "/view-user/:name", element: <ViewUserPage /> },
 ]);

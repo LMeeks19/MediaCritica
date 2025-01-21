@@ -56,6 +56,7 @@ import GradeIcon from "@mui/icons-material/Grade";
 import { format } from "date-fns";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
+import { BarChart } from "@mui/x-charts/BarChart";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -63,6 +64,14 @@ function AccountPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
+
+  const starRatings: any[] = [];
+  for (let i = 0; i <= 5; i += 0.5) {
+    if (i === 1) starRatings.push(`${i} Star`);
+    else starRatings.push(`${i} Stars`);
+  }
+  const [reviewsBreakdown, setReviewsBreakdown] = useState<number[]>([]);
+
   const [selectedReviewFilter, setSelectedReviewFilter] =
     useState<string>("None");
   const [backlog, setBacklog] = useState<BacklogObjectModel>(
@@ -99,7 +108,8 @@ function AccountPage() {
   async function FetchReviews(offset: number) {
     setIsLoading(true);
     const reviewsData = await GetUserReviews(user.id, offset);
-    setReviews(reviewsData);
+    setReviews(reviewsData.reviews);
+    setReviewsBreakdown(reviewsData.breakdown);
     setIsLoading(false);
   }
 
@@ -113,7 +123,7 @@ function AccountPage() {
   async function LoadMoreReviews() {
     setIsLoading(true);
     const reviewsData = await GetUserReviews(user.id, reviews.length);
-    setReviews([...reviews, ...reviewsData]);
+    setReviews([...reviews, ...reviewsData.reviews]);
     setIsLoading(false);
   }
 
@@ -521,12 +531,15 @@ function AccountPage() {
                     <div className="reviews">
                       {filteredReviews().map((review) => {
                         return (
-                          <Card
-                            key={review.id}
-                            style={{
-                              backgroundImage: `url(${review.mediaPoster})`,
-                            }}
-                          >
+                          <Card key={review.id}>
+                            <img
+                              className="image"
+                              src={review.mediaPoster?.replace(
+                                "300.jpg",
+                                "180.jpg"
+                              )}
+                              alt={review.mediaTitle}
+                            />
                             <CardActionArea
                               onClick={() =>
                                 navigate(
@@ -537,7 +550,7 @@ function AccountPage() {
                                 )
                               }
                             >
-                              <CardMedia component="div" />
+                              <CardMedia />
                               <CardHeader title={review.title} />
                               <Divider />
                               <CardContent>
@@ -586,6 +599,28 @@ function AccountPage() {
                       </div>
                     </div>
                   )}
+                  <div className="sub-header dark-shade">
+                    <h2>Breakdown</h2>
+                  </div>
+                  <div className="breakdown">
+                    <BarChart
+                      colors={["var(--palette-colour)"]}
+                      height={450}
+                      margin={{ top: 30, left: 40, right: 10 }}
+                      borderRadius={8}
+                      series={[
+                        {
+                          data: reviewsBreakdown,
+                        },
+                      ]}
+                      xAxis={[
+                        {
+                          data: starRatings,
+                          scaleType: "band",
+                        },
+                      ]}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -647,11 +682,31 @@ function AccountPage() {
                 <Loader />
               ) : (
                 <div className="layout">
-                  <MilestonesAccordion object={milestones.at(0)!} />
-                  <MilestonesAccordion object={milestones.at(1)!} />
-                  <MilestonesAccordion object={milestones.at(2)!} />
-                  <MilestonesAccordion object={milestones.at(3)!} />
-                  <MilestonesAccordion object={milestones.at(4)!} />
+                  <MilestonesAccordion
+                    category={milestones.at(0)?.category!}
+                    milestones={milestones.at(0)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(1)?.category!}
+                    milestones={milestones.at(1)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(2)?.category!}
+                    milestones={milestones.at(2)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(3)?.category!}
+                    milestones={milestones.at(3)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(4)?.category!}
+                    milestones={milestones.at(4)?.milestones!}
+                    isPalette={true}
+                  />
                 </div>
               )}
             </div>

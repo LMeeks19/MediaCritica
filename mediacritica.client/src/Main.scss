@@ -4,7 +4,6 @@
 @tailwind utilities;
 
 :root {
-  line-height: 1.5;
   font-weight: 400;
   letter-spacing: 0.1rem;
 
@@ -86,6 +85,7 @@ button:disabled {
     color: var(--light-dark);
     text-wrap: nowrap;
     text-align: center;
+    align-self: center;
   }
 
   .actions {
@@ -101,13 +101,18 @@ button:disabled {
     font-size: 1.5rem !important;
     color: var(--light-dark) !important;
     text-wrap: nowrap !important;
+    align-self: center;
   }
 }
 
-@media screen and (max-width: 1092px) {
+@media screen and (max-width: 1000px) {
   .header,
   .sub-header {
     justify-content: center !important;
+
+    span {
+      text-align: center;
+    }
 
     .actions {
       width: 100% !important;
@@ -313,6 +318,7 @@ button:disabled {
 .MuiPaper-root {
   background-color: var(--dark-light) !important;
   color: var(--light-dark) !important;
+  box-shadow: none !important;
 
   .MuiAutocomplete-noOptions,
   .MuiAutocomplete-loading {
@@ -572,6 +578,63 @@ button:disabled {
 
       .MuiCardContent-root {
         display: flex;
+      }
+    }
+  }
+}
+
+.MuiPopper-root {
+  .MuiChartsTooltip-paper {
+    background-color: light-dark(whitesmoke, #242424) !important;
+    color: var(--light-dark) !important;
+
+    .MuiTypography-root {
+      color: var(--light-dark) !important;
+    }
+
+    .MuiChartsTooltip-mark {
+      border-color: var(--light-dark) !important;
+    }
+  }
+}
+
+.MuiChartsAxis-root {
+  .MuiChartsAxis-line {
+    stroke: var(--light-dark) !important;
+    stroke-width: 2 !important;
+  }
+
+  .MuiChartsAxis-tickContainer {
+    .MuiChartsAxis-tick {
+      stroke: var(--light-dark) !important;
+      stroke-width: 2 !important;
+    }
+  }
+  .MuiChartsAxis-tickLabel {
+    fill: var(--light-dark) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+  }
+
+  .MuiChartsAxis-label {
+    fill: var(--light-dark) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+  }
+}
+
+.accordion {
+  .sub-header {
+    width: 100% !important;
+
+    .MuiAccordionSummary-content {
+      margin: 0 !important;
+    }
+
+    .MuiAccordionSummary-expandIconWrapper {
+      .MuiSvgIcon-root {
+        color: var(--light-dark) !important;
+        font-size: 2rem;
       }
     }
   }

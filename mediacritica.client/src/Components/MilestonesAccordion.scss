@@ -1,0 +1,86 @@
+.accordion {
+  .milestones {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 2rem !important;
+
+    .milestone {
+      background-color: light-dark(whitesmoke, #242424);
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      flex: 1 0 47.8%;
+
+      &.bronze {
+        background-color: #cd7f32;
+      }
+
+      &.silver {
+        background-color: silver;
+      }
+
+      &.gold {
+        background-color: goldenrod;
+      }
+
+      &.platinum {
+        background-color: var(--palette-colour);
+      }
+
+      .icon {
+        background-color: var(--palette-colour);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        padding: 0.75rem;
+      }
+
+      .details {
+        flex: 1;
+
+        h3 {
+          margin: 0;
+          font-size: 1.2em;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.9em;
+        }
+
+        .progress {
+          margin-top: 0.5em;
+          position: relative;
+          height: 10px;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .bar {
+            height: 100%;
+            flex-grow: 1;
+            background-color: var(--light-dark);
+            border-radius: 8px;
+
+            .track {
+              height: 100%;
+              background: var(--palette-colour);
+              border-radius: 8px;
+            }
+          }
+
+          .label {
+            font-size: 0.8em;
+          }
+        }
+      }
+    }
+  }
+}

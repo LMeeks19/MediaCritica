@@ -20,6 +20,11 @@ Accept: application/json
 
 ###
 
+GET {{MediaCritica.Server_HostAddress}}/User/GetViewUserSummary/
+Accept: application/json
+
+###
+
 PUT {{MediaCritica.Server_HostAddress}}/User/UpdateUserPreference
 Accept: application/json
 
@@ -111,6 +116,11 @@ Accept: application/json
 ###
 
 GET {{MediaCritica.Server_HostAddress}}/Review/GetUserReviews/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Review/GetUserReviewsBreakdown/
 Accept: application/json
 
 ###

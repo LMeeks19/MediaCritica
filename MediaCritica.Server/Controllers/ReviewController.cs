@@ -31,9 +31,9 @@ namespace MediaCritica.Server.Controllers
 
         [HttpGet(Name = "GetUserReviews")]
         [Route("[action]/{reviewerId}/{offset}")]
-        public async Task<List<ReviewModel>> GetUserReviews(int reviewerId, int offset)
+        public async Task<UserReviewsModelObject> GetUserReviews(int reviewerId, int offset)
         {
-            return await _databaseContext.Reviews
+            var reviews = await _databaseContext.Reviews
                 .Include(r => r.Engagements)
                 .Include(r => r.Media)
                 .Where(review => review.UserId == reviewerId)
@@ -42,6 +42,27 @@ namespace MediaCritica.Server.Controllers
                 .Skip(offset)
                 .Take(20)
                 .ToListAsync();
+
+            return new UserReviewsModelObject()
+            {
+                Reviews = reviews,
+                Breakdown = await GetUserReviewsBreakdown(reviewerId),
+            };
+        }
+
+        [HttpGet(Name = "GetUserReviewsBreakdown")]
+        [Route("[action]/{userId}")]
+        public async Task<List<double>> GetUserReviewsBreakdown(int userId)
+        {
+            var reviews = await _databaseContext.Reviews.Where(r => r.UserId == userId).ToListAsync();
+
+            var reviewBreakdown = new List<double>();
+            for (double rating = 0; rating <= 5; rating += 0.5)
+            {
+                reviewBreakdown.Add(reviews.Count(r => r.Rating == rating));
+            }
+
+            return reviewBreakdown;
         }
 
         [HttpGet(Name = "GeMediaReviews")]

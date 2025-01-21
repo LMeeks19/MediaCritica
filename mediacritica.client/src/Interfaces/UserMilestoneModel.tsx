@@ -13,4 +13,5 @@ export interface UserMilestoneModel {
 export interface UserMilestoneModelObject {
   category: string;
   milestones: UserMilestoneModel[];
+  isPalette?: boolean
 }

@@ -45,7 +45,7 @@
       flex-wrap: wrap;
       box-shadow: 0 2px 5px #00000080;
       z-index: 997;
-      padding-top: 4rem;
+      padding-top: 4.5rem;
     }
 
     .release {
@@ -65,7 +65,7 @@
       }
 
       .MuiIconButton-root:hover {
-        background-color: #db709340;
+        background-color: rgba(palevioletred, 0.15);
       }
 
       .heart {
