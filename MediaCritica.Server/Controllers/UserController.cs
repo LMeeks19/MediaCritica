@@ -1,5 +1,6 @@
 ﻿using MediaCritica.Server.Enums;
 using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper, IMapper mapper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet(Name = "GetUser")]
         [Route("[action]/{email}")]
@@ -80,6 +82,7 @@ namespace MediaCritica.Server.Controllers
                 Surname = userModel.Surname,
                 Email = userModel.Email,
                 Password = userModel.Password,
+                Joined = DateTime.Now,
                 Preference = new Preference()
                 {
                     Theme = "System",
@@ -149,6 +152,59 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.SaveChangesAsync();
 
             return true;
+        }
+
+        [HttpGet(Name = "GetViewUserSummary")]
+        [Route("[action]/{userId}")]
+        public async Task<ViewUserSummaryModel?> GetViewUserSummary(int userId)
+        {
+            var user = await _databaseContext.Users
+                .Include(u => u.Backlogs)
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Engagements)
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Media)
+                .Include(u => u.Milestones)
+                .Include(u => u.Engagements)
+                .SingleOrDefaultAsync(user => user.Id == userId);
+
+            if (user == null)
+                return null;
+
+            var reviewBreakdown = new List<double>();
+            for (double rating = 0; rating <= 5; rating += 0.5)
+            {
+                reviewBreakdown.Add(user.Reviews.Count(r => r.Rating == rating));
+            }
+
+            return new ViewUserSummaryModel()
+            {
+                Name = $"{user.Forename} {user.Surname}",
+                Joined = user.Joined,
+                Reviews = user.Reviews
+                    .OrderByDescending(review => review.Date)
+                        .ThenByDescending(review => review.Rating)
+                    .Take(8)
+                    .Select(_mapper.ReviewMapper.MapReviewModel)
+                    .ToList(),
+                Milestones = _milestoneCalculatorHelper
+                    .GetUserMilestones(user)
+                    .Where(milestone => milestone.EarnedLevel > MilestoneLevel.None && milestone.EarnedDate != null)
+                    .OrderByDescending(milestone => milestone.EarnedDate)
+                        .ThenByDescending(milestone => milestone.EarnedLevel)
+                    .Take(5)
+                    .ToList(),
+                ReviewsWritten = user.Reviews.Count,
+                MediaBacklogged = user.Backlogs.Count,
+                Followers = 0,
+                Following = 0,
+                EngagementsReceivedLikes = user.Reviews.Sum(r => r.Engagements.Count(e => e.Type == EngagementType.Like)),
+                EngagementsReceivedDislikes = user.Reviews.Sum(r => r.Engagements.Count(e => e.Type == EngagementType.Dislike)),
+                EngagementsGivenLikes = user.Engagements.Count(e => e.Type == EngagementType.Like),
+                EngagementsGivenDislikes = user.Engagements.Count(e => e.Type == EngagementType.Dislike),
+                MilestonesEarned = user.Milestones.Count,
+                Breakdown = reviewBreakdown,
+            };
         }
     }
 }

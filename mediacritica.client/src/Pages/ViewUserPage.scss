@@ -28,6 +28,7 @@
       }
 
       .actions {
+        align-self: flex-end;
         .MuiIconButton-root {
           padding: 8px;
           .MuiSvgIcon-root {
@@ -48,11 +49,11 @@
 
       .section {
         .summary-content {
-          padding: 2rem;
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 1rem;
+          padding: 2rem !important;
+          display: flex !important;
+          justify-content: center !important;
+          flex-wrap: wrap !important;
+          gap: 1rem !important;
 
           .summary-card {
             flex: 1 1 20%;
@@ -89,10 +90,16 @@
         }
 
         .rating-breakdown-content {
-          padding: 2rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          padding: 2rem !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+        }
+
+        .recent-reviews-content {
+          padding: 2rem !important;
+          display: flex !important;
+          gap: 1rem !important;
         }
       }
     }

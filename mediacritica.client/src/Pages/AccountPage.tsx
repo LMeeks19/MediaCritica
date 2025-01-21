@@ -109,7 +109,7 @@ function AccountPage() {
     setIsLoading(true);
     const reviewsData = await GetUserReviews(user.id, offset);
     setReviews(reviewsData.reviews);
-    setReviewsBreakdown(reviewsData.breakdown)
+    setReviewsBreakdown(reviewsData.breakdown);
     setIsLoading(false);
   }
 
@@ -682,11 +682,31 @@ function AccountPage() {
                 <Loader />
               ) : (
                 <div className="layout">
-                  <MilestonesAccordion object={milestones.at(0)!} />
-                  <MilestonesAccordion object={milestones.at(1)!} />
-                  <MilestonesAccordion object={milestones.at(2)!} />
-                  <MilestonesAccordion object={milestones.at(3)!} />
-                  <MilestonesAccordion object={milestones.at(4)!} />
+                  <MilestonesAccordion
+                    category={milestones.at(0)?.category!}
+                    milestones={milestones.at(0)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(1)?.category!}
+                    milestones={milestones.at(1)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(2)?.category!}
+                    milestones={milestones.at(2)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(3)?.category!}
+                    milestones={milestones.at(3)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(4)?.category!}
+                    milestones={milestones.at(4)?.milestones!}
+                    isPalette={true}
+                  />
                 </div>
               )}
             </div>
