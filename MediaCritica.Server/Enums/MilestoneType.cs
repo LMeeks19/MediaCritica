@@ -21,5 +21,7 @@
         Engagements50PerReview,
         ReviewEngagementsGiven,
         EpisodesReviewed,
+        Followers,
+        Following
     }
 }

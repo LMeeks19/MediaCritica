@@ -11,6 +11,7 @@ namespace MediaCritica.Server
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<Milestone> Milestones { get; set; }
         public DbSet<Engagement> Engagements { get; set; }
+        public DbSet<UserFollow> UserFollows { get; set; }
 
         public DbSet<Media> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }
@@ -24,5 +25,21 @@ namespace MediaCritica.Server
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserFollow>()
+                .HasOne(uf => uf.Follower)
+                .WithMany(u => u.Following)
+                .HasForeignKey(uf => uf.FollowerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserFollow>()
+                .HasOne(uf => uf.Followed)
+                .WithMany(u => u.Followers)
+                .HasForeignKey(uf => uf.FollowedId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

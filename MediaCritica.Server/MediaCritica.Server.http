@@ -188,6 +188,26 @@ Accept: application/json
 GET {{MediaCritica.Server_HostAddress}}/Engagement/GetUserEngagement/
 Accept: application/json
 
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Follow/GetUserFollowStatus/
+Accept: application/json
+
+###
+
+POST {{MediaCritica.Server_HostAddress}}/Follow/FollowUser/
+Accept: application/json
+
+###
+
+DELETE {{MediaCritica.Server_HostAddress}}/Follow/UnfollowUser/
+Accept: application/json
+
+###
+
+PUT {{MediaCritica.Server_HostAddress}}/Follow/ToggleNotificationStatus/
+Accept: application/json
+
 
 
 

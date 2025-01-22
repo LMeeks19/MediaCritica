@@ -16,6 +16,7 @@ import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
+import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
@@ -53,7 +54,9 @@ export async function DeleteUser(userId: number): Promise<boolean> {
   return response.json();
 }
 
-export async function GetViewUserSummary(userId: number): Promise<ViewUserSummaryModel> {
+export async function GetViewUserSummary(
+  userId: number
+): Promise<ViewUserSummaryModel> {
   const response = await fetch(`/User/GetViewUserSummary/${userId}`);
   return response.json();
 }
@@ -354,6 +357,43 @@ export async function ToggleReviewEngagement(
 ): Promise<number | null> {
   const response = await fetch(
     `/Engagement/ToggleEngagement/${reviewId}/${userId}/${type ?? -1}`
+  );
+  return response.status == 204 ? null : response.json();
+}
+
+export async function GetUserFollow(
+  followerId: number,
+  followedId: number
+): Promise<UserFollowModel> {
+  const response = await fetch(
+    `/Follow/GetUserFollowStatus/${followerId}/${followedId}`
+  );
+  return response.status == 204 ? null : response.json();
+}
+
+export async function FollowUser(
+  userFollowModel: UserFollowModel
+): Promise<UserFollowModel> {
+  const response = await fetch(`/Follow/FollowUser`, {
+    method: "POST",
+    body: JSON.stringify(userFollowModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response.status === 204 ? null : response.json();
+}
+
+export async function UnfollowUser(userFollowId: number): Promise<void> {
+  await fetch(`/Follow/UnfollowUser/${userFollowId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function ToggleUserFollowNotificationStatus(
+  userFollowId: number
+): Promise<boolean | null> {
+  const response = await fetch(
+    `/Follow/ToggleNotificationStatus/${userFollowId}`,
+    { method: "PUT" }
   );
   return response.status == 204 ? null : response.json();
 }

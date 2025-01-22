@@ -35,6 +35,7 @@ namespace MediaCritica.Server.Mappers
                 MediaId = review.MediaId,
                 MediaPoster = review.MediaPoster,
                 MediaTitle = review.MediaTitle,
+                MediaSeriesId = review.Media.Type == MediaType.Episode ? (review.Media as Episode)!.Season?.SeriesId : null,
                 MediaSeriesTitle = review.MediaSeriesTitle,
                 MediaEpisode = review.Media.Type == MediaType.Episode ? $"S{(review.Media as Episode)!.EpisodeNo}:E{(review.Media as Episode)!.SeasonNo}" : null,
                 Rating = review.Rating,

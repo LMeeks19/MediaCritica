@@ -707,6 +707,11 @@ function AccountPage() {
                     milestones={milestones.at(4)?.milestones!}
                     isPalette={true}
                   />
+                  <MilestonesAccordion
+                    category={milestones.at(5)?.category!}
+                    milestones={milestones.at(5)?.milestones!}
+                    isPalette={true}
+                  />
                 </div>
               )}
             </div>

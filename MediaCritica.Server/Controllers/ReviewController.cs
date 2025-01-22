@@ -1,6 +1,7 @@
 ﻿using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
+using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ namespace MediaCritica.Server.Controllers
             var review = await _databaseContext.Reviews
                 .Include(r => r.Engagements)
                 .Include(r => r.Media)
+                    .ThenInclude(m => (m as Episode)!.Season)
                 .SingleOrDefaultAsync(review => review.Id == reviewId);
 
             if (review == null)

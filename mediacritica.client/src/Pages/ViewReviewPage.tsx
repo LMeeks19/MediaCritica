@@ -15,7 +15,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { formatRelative } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import { Snackbar } from "../Components/Snackbar";
+import Snackbar from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
@@ -28,6 +28,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import millify from "millify";
+import { MediaType } from "../Enums/MediaType";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -97,7 +98,7 @@ function ViewReviewPage() {
 
     setEngagement(newUserEngagement);
 
-    Snackbar("Rating updated", "success");
+    Snackbar.Success("Rating updated");
   }
 
   async function PutReview() {
@@ -112,13 +113,13 @@ function ViewReviewPage() {
     const updatedReview = await UpdateReview(details);
     setReview(updatedReview);
     setIsEditing(false);
-    Snackbar("Review Updated", "success");
+    Snackbar.Success("Review Updated");
   }
 
   async function RemoveReview() {
     await DeleteReview(review.id);
     setUser({ ...user, totalReviews: user.totalReviews - 1 });
-    Snackbar("Review Deleted", "success");
+    Snackbar.Success("Review Deleted");
     navigate("/account");
   }
 
@@ -166,10 +167,39 @@ function ViewReviewPage() {
           <div className="info">
             <div className="hero">
               <div className="heading">
-                <div className="parent-title">
-                  {review.mediaSeriesTitle ?? review.mediaTitle}
+                <div className="title">
+                  <div
+                    className="parent-title"
+                    onClick={() =>
+                      navigate(
+                        `/media/${review.mediaSeriesId ?? review.mediaId}`,
+                        {
+                          state: {
+                            mediaId: review.mediaSeriesId ?? review.mediaId,
+                            mediaType: review.mediaSeriesId
+                              ? MediaType.Series
+                              : review.mediaType,
+                          },
+                        }
+                      )
+                    }
+                  >
+                    {review.mediaSeriesTitle ?? review.mediaTitle}
+                  </div>
                   {review.mediaEpisode && (
-                    <div className="sub-title">
+                    <div
+                      className="sub-title"
+                      onClick={() =>
+                        navigate(
+                          `/media/${review.mediaSeriesId}/seasons/${review.mediaEpisode}/episodes/${review.mediaId}`,
+                          {
+                            state: {
+                              episodeId: review.mediaId,
+                            },
+                          }
+                        )
+                      }
+                    >
                       {review.mediaEpisode} - {review.mediaTitle}
                     </div>
                   )}

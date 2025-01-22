@@ -29,7 +29,7 @@ function EpisodePage() {
     }
     FetchEpisode();
   }, []);
-  
+
   return (
     <div className="episodepage-container">
       {isLoading ? (
@@ -155,9 +155,12 @@ function EpisodePage() {
                         className="review-card"
                         key={review.id}
                         onClick={() =>
-                          navigate(`/media/${episode.id}/view-review/${review.id}`, {
-                            state: { reviewId: review.id },
-                          })
+                          navigate(
+                            `/media/${episode.id}/view-review/${review.id}`,
+                            {
+                              state: { reviewId: review.id },
+                            }
+                          )
                         }
                       >
                         <div className="rating">
