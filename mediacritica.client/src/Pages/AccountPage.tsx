@@ -36,7 +36,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { CapitaliseFirstLetter, StringToColor } from "../Helpers/StringHelper";
+import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
@@ -587,7 +587,13 @@ function AccountPage() {
                               })
                             }
                           >
-                            <Avatar {...StringToColor(follower.name)} />
+                            <Avatar
+                              sx={{
+                                bgcolor: "var(--palette-colour)",
+                                height: 50,
+                                width: 50,
+                              }}
+                            />
                             <div className="details">
                               <div className="text-xl truncate">
                                 {follower.name}
@@ -600,6 +606,25 @@ function AccountPage() {
                           </div>
                         );
                       })}
+                      <div
+                        className={`flex justify-center items-center p-6 ${
+                          followers.data.length === followers.count && "hidden"
+                        }`}
+                      >
+                        <CustomTooltip title="Load more" arrow>
+                          <span>
+                            <Fab
+                              className="load-btn"
+                              disabled={
+                                followers.data?.length === followers.count
+                              }
+                              onClick={() => FetchSocial()}
+                            >
+                              <AddIcon />
+                            </Fab>
+                          </span>
+                        </CustomTooltip>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -621,7 +646,13 @@ function AccountPage() {
                               })
                             }
                           >
-                            <Avatar {...StringToColor(follower.name)} />
+                            <Avatar
+                              sx={{
+                                bgcolor: "var(--palette-colour)",
+                                height: 50,
+                                width: 50,
+                              }}
+                            />
                             <div className="details">
                               <div className="text-xl truncate">
                                 {follower.name}

@@ -23,7 +23,7 @@ namespace MediaCritica.Server.Controllers
             var followers = user.Followers
                 .OrderByDescending(follow => follow.FollowedOn)
                 .Skip(offset)
-                .Take(20)
+                .Take(25)
                 .Select(follow => new UserFollowSummaryModel()
                 {
                     UserId = follow.Follower.Id,
@@ -51,7 +51,7 @@ namespace MediaCritica.Server.Controllers
             var following = user.Following
                 .OrderByDescending(follow => follow.FollowedOn)
                 .Skip(offset)
-                .Take(20)
+                .Take(25)
                 .Select(follow => new UserFollowSummaryModel()
                 {
                     UserId = follow.Followed.Id,

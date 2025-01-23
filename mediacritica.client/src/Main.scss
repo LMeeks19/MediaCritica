@@ -166,6 +166,12 @@ button:disabled {
   }
 }
 
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .MuiAppBar-root {
   border-radius: 20px !important;
 }
