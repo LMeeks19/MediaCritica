@@ -7,12 +7,15 @@ import {
   GetBackloggedBacklog,
   GetFinishedBacklog,
   GetInProgressBacklog,
+  GetUserFollowers,
+  GetUserFollowing,
   GetUserMilestones,
   GetUserReviews,
   UpdateBacklogState,
 } from "../Server/Server";
 import {
   AppBar,
+  Avatar,
   Card,
   CardActionArea,
   CardContent,
@@ -33,7 +36,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
+import { CapitaliseFirstLetter, StringToColor } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
@@ -57,6 +60,7 @@ import { format } from "date-fns";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { UserFollowSummaryObjectModel } from "../Interfaces/UserFollowSummaryObjectModel";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -64,7 +68,6 @@ function AccountPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
-  const [activeSocialTab, setActiveSocialTab] = useState<number>(0);
 
   const starRatings: any[] = [];
   for (let i = 0; i <= 5; i += 0.5) {
@@ -85,11 +88,52 @@ function AccountPage() {
 
   useEffect(() => {
     if (user.id === undefined) navigate("/login");
-    if (activeTab === 2 && reviews.length === 0) FetchReviews(0);
+    if (activeTab === 1) FetchSocial();
+    else if (activeTab === 2 && reviews.length === 0) FetchReviews(0);
     else if (activeTab === 3 && getTotalLoadedBacklogs() === 0) FetchBacklog();
     else if (activeTab === 4) FetchMilestones();
     else setIsLoading(false);
   }, [activeTab]);
+
+  const [activeSocialTab, setActiveSocialTab] = useState<number>(0);
+  const [followers, setFollowers] = useState<UserFollowSummaryObjectModel>({
+    count: -1,
+    data: [],
+  } as UserFollowSummaryObjectModel);
+  const [following, setFollowing] = useState<UserFollowSummaryObjectModel>({
+    count: -1,
+    data: [],
+  } as UserFollowSummaryObjectModel);
+
+  useEffect(() => {
+    FetchSocial();
+  }, [activeSocialTab]);
+
+  async function FetchSocial() {
+    setIsLoading(true);
+    if (activeTab === 1) {
+      if (
+        activeSocialTab === 0 &&
+        (followers.data.length < followers.count || followers.count === -1)
+      ) {
+        const followersData = await GetUserFollowers(
+          user.id,
+          followers.data.length
+        );
+        setFollowers(followersData);
+      } else if (
+        activeSocialTab === 1 &&
+        (following.data.length < following.count || following.count === -1)
+      ) {
+        const followingData = await GetUserFollowing(
+          user.id,
+          following.data.length
+        );
+        setFollowing(followingData);
+      }
+    }
+    setIsLoading(false);
+  }
 
   function getTotalLoadedBacklogs() {
     return (
@@ -515,6 +559,85 @@ function AccountPage() {
                   <Tab value={1} label="Following" />
                 </Tabs>
               </AppBar>
+              {isLoading ? (
+                <Loader />
+              ) : (activeSocialTab === 0 && followers.data.length === 0) ||
+                (activeSocialTab === 1 && following.data.length === 0) ? (
+                <div className="empty">
+                  No {activeSocialTab === 0 ? "Followers" : "Followed Users"}
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="followers-tab"
+                    tabIndex={0}
+                    hidden={activeSocialTab !== 0}
+                  >
+                    <div className="followers">
+                      {followers.data.map((follower) => {
+                        return (
+                          <div
+                            className="follower"
+                            key={follower.userId}
+                            onClick={() =>
+                              navigate(`/view-user/${follower.userId}`, {
+                                state: {
+                                  userId: follower.userId,
+                                },
+                              })
+                            }
+                          >
+                            <Avatar {...StringToColor(follower.name)} />
+                            <div className="details">
+                              <div className="text-xl truncate">
+                                {follower.name}
+                              </div>
+                              <div className="text-xs text-[gray] truncate">
+                                Followed You:{" "}
+                                {format(follower.followedOn, "do MMMM yyyy")}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div
+                    className="following-tab"
+                    tabIndex={1}
+                    hidden={activeSocialTab !== 1}
+                  >
+                    <div className="followers">
+                      {following.data.map((follower) => {
+                        return (
+                          <div
+                            className="follower"
+                            key={follower.userId}
+                            onClick={() =>
+                              navigate(`/view-user/${follower.userId}`, {
+                                state: {
+                                  userId: follower.userId,
+                                },
+                              })
+                            }
+                          >
+                            <Avatar {...StringToColor(follower.name)} />
+                            <div className="details">
+                              <div className="text-xl truncate">
+                                {follower.name}
+                              </div>
+                              <div className="text-xs text-[gray] truncate">
+                                You Followed:{" "}
+                                {format(follower.followedOn, "do MMMM yyyy")}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className="reviews-tab" tabIndex={2} hidden={activeTab !== 2}>
@@ -622,7 +745,7 @@ function AccountPage() {
                       </div>
                     </div>
                   )}
-                  {!reviewsBreakdown.every(value => value === 0) && (
+                  {!reviewsBreakdown.every((value) => value === 0) && (
                     <>
                       <div className="sub-header dark-shade">
                         <h2>Breakdown</h2>

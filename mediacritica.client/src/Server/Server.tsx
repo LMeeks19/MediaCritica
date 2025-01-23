@@ -17,6 +17,7 @@ import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserFollowModel } from "../Interfaces/UserFollowModel";
+import { UserFollowSummaryObjectModel } from "../Interfaces/UserFollowSummaryObjectModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
@@ -396,4 +397,24 @@ export async function ToggleUserFollowNotificationStatus(
     { method: "PUT" }
   );
   return response.status == 204 ? null : response.json();
+}
+
+export async function GetUserFollowers(
+  userId: number,
+  offset: number = 0
+): Promise<UserFollowSummaryObjectModel> {
+  const response = await fetch(
+    `/Follow/GetUserFollowers/${userId}/${offset}`
+  );
+  return response.json();
+}
+
+export async function GetUserFollowing(
+  userId: number,
+  offset: number = 0
+): Promise<UserFollowSummaryObjectModel> {
+  const response = await fetch(
+    `/Follow/GetUserFollowing/${userId}/${offset}`
+  );
+  return response.json();
 }

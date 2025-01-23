@@ -117,7 +117,6 @@ namespace MediaCritica.Server.Helpers
 
         public async Task UpdateUserBacklogMilestones(User user)
         {
-
             if (user != null)
             {
                 await UpdateMilestone(user, MilestoneType.BacklogAdded, user.Backlogs.Count);

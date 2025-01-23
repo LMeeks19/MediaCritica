@@ -11,6 +11,62 @@ namespace MediaCritica.Server.Controllers
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
 
+        [HttpGet(Name = "GetUserFollowers")]
+        [Route("[action]/{userId}/{offset}")]
+        public async Task<UserFollowSummaryObjectModel> GetUserFollowers(int userId, int offset)
+        {
+            var user = await _databaseContext.Users
+                .Include(u => u.Followers)
+                .ThenInclude(f => f.Follower)
+                .SingleAsync(u => u.Id == userId);
+
+            var followers = user.Followers
+                .OrderByDescending(follow => follow.FollowedOn)
+                .Skip(offset)
+                .Take(20)
+                .Select(follow => new UserFollowSummaryModel()
+                {
+                    UserId = follow.Follower.Id,
+                    Name = $"{follow.Follower.Forename} {follow.Follower.Surname}",
+                    FollowedOn = follow.FollowedOn,
+                })
+                .ToList();
+
+            return new UserFollowSummaryObjectModel()
+            {
+                Count = user.Followers.Count,
+                Data = followers
+            };
+        }
+
+        [HttpGet(Name = "GetUserFollowing")]
+        [Route("[action]/{userId}/{offset}")]
+        public async Task<UserFollowSummaryObjectModel> GetUserFollowing(int userId, int offset)
+        {
+            var user = await _databaseContext.Users
+                .Include(u => u.Following)
+                .ThenInclude(f => f.Followed)
+                .SingleAsync(u => u.Id == userId);
+
+            var following = user.Following
+                .OrderByDescending(follow => follow.FollowedOn)
+                .Skip(offset)
+                .Take(20)
+                .Select(follow => new UserFollowSummaryModel()
+                {
+                    UserId = follow.Followed.Id,
+                    Name = $"{follow.Followed.Forename} {follow.Followed.Surname}",
+                    FollowedOn = follow.FollowedOn,
+                })
+                .ToList();
+
+            return new UserFollowSummaryObjectModel()
+            {
+                Count = user.Following.Count,
+                Data = following
+            };
+        }
+
         [HttpGet(Name = "GetUserFollowStatus")]
         [Route("[action]/{followerId}/{followedId}")]
         public async Task<UserFollowModel?> GetUserFollowStatus(int followerId, int followedId)

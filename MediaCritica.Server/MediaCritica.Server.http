@@ -208,6 +208,16 @@ Accept: application/json
 PUT {{MediaCritica.Server_HostAddress}}/Follow/ToggleNotificationStatus/
 Accept: application/json
 
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Follow/GetUserFollowers/
+Accept: application/json
+
+###
+
+GET {{MediaCritica.Server_HostAddress}}/Follow/GetUserFollowing/
+Accept: application/json
+
 
 
 
