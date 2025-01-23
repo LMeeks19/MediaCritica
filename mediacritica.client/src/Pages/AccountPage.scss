@@ -9,14 +9,18 @@
     display: flex;
     flex-direction: column;
 
+    .header {
+      border-bottom-color: transparent !important;
+    }
+
     /* App Bar */
     .MuiAppBar-root {
       background-color: var(--palette-colour) !important;
       border-radius: 0 !important;
+      padding-top: 4rem;
 
       .MuiTabs-root {
         border-radius: 0 !important;
-        margin-top: 4rem;
 
         .MuiTab-root {
           width: 50% !important;
@@ -31,6 +35,10 @@
           background-color: var(--light-dark) !important;
         }
       }
+    }
+
+    .sub-header {
+      min-height: 39px;
     }
 
     /* Headers */
@@ -62,7 +70,7 @@
           }
 
           .MuiInputBase-input {
-            padding: 12px 15px;
+            padding: 8px 15px;
             display: flex !important;
             gap: 0.5rem !important;
             overflow: hidden !important;
@@ -70,7 +78,7 @@
           }
 
           .MuiInputBase-inputAdornedStart {
-            padding: 12px 15px 12px 0 !important;
+            padding: 8px 15px 8px 0 !important;
           }
         }
       }

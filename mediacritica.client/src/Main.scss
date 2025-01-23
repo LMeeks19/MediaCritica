@@ -40,7 +40,7 @@ button {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  padding: 8px 16px;
+  padding: 6px 16px;
   border-radius: 20px;
   font-size: 15px;
   cursor: pointer;
@@ -152,7 +152,7 @@ button:disabled {
     border: 1px solid var(--light-dark) !important;
     transition: none !important;
     font-family: "Orbitron";
-    font-size: 0.6rem;
+    padding: 6px;
 
     &.Mui-selected,
     &.Mui-selected:hover {
@@ -403,7 +403,7 @@ button:disabled {
           }
 
           .MuiInputBase-input {
-            padding: 12px 15px !important;
+            padding: 8px 15px !important;
             display: flex !important;
             gap: 0.5rem !important;
             overflow: hidden !important;
@@ -425,7 +425,7 @@ button:disabled {
           }
 
           .MuiInputBase-input {
-            padding: 12px 15px !important;
+            padding: 8px 15px !important;
             color: var(--light-dark) !important;
           }
         }

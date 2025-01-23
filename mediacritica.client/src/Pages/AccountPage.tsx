@@ -64,6 +64,7 @@ function AccountPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
+  const [activeSocialTab, setActiveSocialTab] = useState<number>(0);
 
   const starRatings: any[] = [];
   for (let i = 0; i <= 5; i += 0.5) {
@@ -84,9 +85,9 @@ function AccountPage() {
 
   useEffect(() => {
     if (user.id === undefined) navigate("/login");
-    if (activeTab === 1 && reviews.length === 0) FetchReviews(0);
-    else if (activeTab === 2 && getTotalLoadedBacklogs() === 0) FetchBacklog();
-    else if (activeTab === 3) FetchMilestones();
+    if (activeTab === 2 && reviews.length === 0) FetchReviews(0);
+    else if (activeTab === 3 && getTotalLoadedBacklogs() === 0) FetchBacklog();
+    else if (activeTab === 4) FetchMilestones();
     else setIsLoading(false);
   }, [activeTab]);
 
@@ -435,14 +436,15 @@ function AccountPage() {
               variant="fullWidth"
             >
               <Tab value={0} label="Details" />
-              <Tab value={1} label="Reviews" />
-              <Tab value={2} label="Backlog" />
-              <Tab value={3} label="Milestones" />
+              <Tab value={1} label="Social" />
+              <Tab value={2} label="Reviews" />
+              <Tab value={3} label="Backlog" />
+              <Tab value={4} label="Milestones" />
             </Tabs>
           </AppBar>
           <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
-            <div className="header dark-shade">
-              <h1>DETAILS</h1>
+            <div className="sub-header dark-shade">
+              <h2>Details</h2>
               <button
                 className="logout-btn"
                 onClick={() => {
@@ -482,15 +484,15 @@ function AccountPage() {
                     inputType="password"
                   />
                 </div>
-                <div className="header dark-shade">
-                  <h1>PREFERENCES</h1>
+                <div className="sub-header dark-shade">
+                  <h2>Preferences</h2>
                 </div>
                 <div className="account-details">
                   <ThemePreference />
                   <PalettePreference />
                 </div>
-                <div className="header dark-shade">
-                  <h1>ACTIONS</h1>
+                <div className="sub-header dark-shade">
+                  <h2>Actions</h2>
                 </div>
                 <div className="account-details">
                   <DeleteAccountAction />
@@ -498,10 +500,27 @@ function AccountPage() {
               </>
             )}
           </div>
-          <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
+          <div className="social-tab" tabIndex={1} hidden={activeTab !== 1}>
+            <div className="social-container">
+              <div className="sub-header dark-shade">
+                <h2>Social</h2>
+              </div>
+              <AppBar position="static" sx={{ paddingTop: "0 !important" }}>
+                <Tabs
+                  value={activeSocialTab}
+                  onChange={(_e, v) => setActiveSocialTab(v)}
+                  variant="fullWidth"
+                >
+                  <Tab value={0} label="Followers" />
+                  <Tab value={1} label="Following" />
+                </Tabs>
+              </AppBar>
+            </div>
+          </div>
+          <div className="reviews-tab" tabIndex={2} hidden={activeTab !== 2}>
             <div className="reviews-container">
-              <div className="header dark-shade">
-                <h1>REVIEWS</h1>
+              <div className="sub-header dark-shade">
+                <h2>Reviews</h2>
                 <div className="actions">
                   <FormControl variant="outlined" sx={{ width: 250 }}>
                     <InputLabel>Filter</InputLabel>
@@ -525,7 +544,11 @@ function AccountPage() {
                 <div className="layout">
                   {filteredReviews().length === 0 ? (
                     <div className="reviews empty">
-                      No {selectedReviewFilter} Reviewed
+                      No{" "}
+                      {selectedReviewFilter !== "None"
+                        ? CapitaliseFirstLetter(selectedReviewFilter)
+                        : "Media"}{" "}
+                      Reviews
                     </div>
                   ) : (
                     <div className="reviews">
@@ -599,36 +622,40 @@ function AccountPage() {
                       </div>
                     </div>
                   )}
-                  <div className="sub-header dark-shade">
-                    <h2>Breakdown</h2>
-                  </div>
-                  <div className="breakdown">
-                    <BarChart
-                      colors={["var(--palette-colour)"]}
-                      height={450}
-                      margin={{ top: 30, left: 40, right: 10 }}
-                      borderRadius={8}
-                      series={[
-                        {
-                          data: reviewsBreakdown,
-                        },
-                      ]}
-                      xAxis={[
-                        {
-                          data: starRatings,
-                          scaleType: "band",
-                        },
-                      ]}
-                    />
-                  </div>
+                  {!reviewsBreakdown.every(value => value === 0) && (
+                    <>
+                      <div className="sub-header dark-shade">
+                        <h2>Breakdown</h2>
+                      </div>
+                      <div className="breakdown">
+                        <BarChart
+                          colors={["var(--palette-colour)"]}
+                          height={450}
+                          margin={{ top: 30, left: 40, right: 10 }}
+                          borderRadius={8}
+                          series={[
+                            {
+                              data: reviewsBreakdown,
+                            },
+                          ]}
+                          xAxis={[
+                            {
+                              data: starRatings,
+                              scaleType: "band",
+                            },
+                          ]}
+                        />
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
           </div>
-          <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
+          <div className="backlog-tab" tabIndex={3} hidden={activeTab !== 3}>
             <div className="backlog-container">
-              <div className="header dark-shade">
-                <h1>BACKLOG</h1>
+              <div className="sub-header dark-shade">
+                <h2>Backlog</h2>
                 <ToggleButtonGroup
                   value={selectedBacklogLayout}
                   onChange={(_e, v) => setSelectedBacklogLayout(v)}
@@ -673,10 +700,10 @@ function AccountPage() {
               )}
             </div>
           </div>
-          <div className="milestones-tab" tabIndex={3} hidden={activeTab !== 3}>
+          <div className="milestones-tab" tabIndex={4} hidden={activeTab !== 4}>
             <div className="milestones-container">
-              <div className="header dark-shade">
-                <h1>MILESTONES</h1>
+              <div className="sub-header dark-shade">
+                <h2>Milestones</h2>
               </div>
               {isLoading ? (
                 <Loader />

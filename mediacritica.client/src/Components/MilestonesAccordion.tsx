@@ -8,6 +8,7 @@ import { UserMilestoneType } from "../Enums/UserMilestoneType";
 import GameIcon from "@mui/icons-material/SportsEsportsOutlined";
 import MovieIcon from "@mui/icons-material/MovieOutlined";
 import SeriesIcon from "@mui/icons-material/LiveTvOutlined";
+import EpisodeIcon from '@mui/icons-material/SubscriptionsOutlined';
 import ReviewsWrittenIcon from "@mui/icons-material/ArticleOutlined";
 import BackloggedmediaIcon from "@mui/icons-material/LibraryBooksOutlined";
 import FinishedMediaIcon from "@mui/icons-material/LibraryAddCheckOutlined";
@@ -17,6 +18,9 @@ import ActivityStreakIcon from "@mui/icons-material/WhatshotOutlined";
 import PeopleIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutlined";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDownOutlined";
+import FollowersGainedIcon from '@mui/icons-material/GroupAddOutlined';
+import UsersFollowedIcon from '@mui/icons-material/PeopleOutlined';
+
 
 const MilestonesAccordion = (props: UserMilestoneModelObject) => {
   function GetLevelColour(level: UserMilestoneLevel) {
@@ -44,6 +48,9 @@ const MilestonesAccordion = (props: UserMilestoneModelObject) => {
 
       case UserMilestoneType.GamesReviewed:
         return <GameIcon />;
+
+      case UserMilestoneType.EpisodesReviewed:
+        return <EpisodeIcon />
 
       case UserMilestoneType.BacklogAdded:
         return <BackloggedmediaIcon />;
@@ -74,6 +81,12 @@ const MilestonesAccordion = (props: UserMilestoneModelObject) => {
       case UserMilestoneType.TotalReviewEngagementsRecieved:
       case UserMilestoneType.Engagements50PerReview:
         return <ThumbsUpDownIcon />;
+
+      case UserMilestoneType.Followers:
+        return <FollowersGainedIcon />
+
+      case UserMilestoneType.Following:
+        return <UsersFollowedIcon />
 
       default:
         return <ReviewsWrittenIcon />;
