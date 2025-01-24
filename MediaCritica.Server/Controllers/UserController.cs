@@ -166,6 +166,8 @@ namespace MediaCritica.Server.Controllers
                     .ThenInclude(r => r.Media)
                 .Include(u => u.Milestones)
                 .Include(u => u.Engagements)
+                .Include(u => u.Followers)
+                .Include(u => u.Following)
                 .SingleOrDefaultAsync(user => user.Id == userId);
 
             if (user == null)
@@ -179,6 +181,7 @@ namespace MediaCritica.Server.Controllers
 
             return new ViewUserSummaryModel()
             {
+                Id = user.Id,
                 Name = $"{user.Forename} {user.Surname}",
                 Joined = user.Joined,
                 Reviews = user.Reviews
@@ -196,8 +199,8 @@ namespace MediaCritica.Server.Controllers
                     .ToList(),
                 ReviewsWritten = user.Reviews.Count,
                 MediaBacklogged = user.Backlogs.Count,
-                Followers = 0,
-                Following = 0,
+                Followers = user.Followers.Count,
+                Following = user.Following.Count,
                 EngagementsReceivedLikes = user.Reviews.Sum(r => r.Engagements.Count(e => e.Type == EngagementType.Like)),
                 EngagementsReceivedDislikes = user.Reviews.Sum(r => r.Engagements.Count(e => e.Type == EngagementType.Dislike)),
                 EngagementsGivenLikes = user.Engagements.Count(e => e.Type == EngagementType.Like),

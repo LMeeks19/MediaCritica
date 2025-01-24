@@ -3,19 +3,19 @@ import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { DeleteUser } from "../Server/Server";
 import { UserModel } from "../Interfaces/UserModel";
-import { Snackbar } from "./Snackbar";
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import Snackbar from "./Snackbar";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 function DeleteAccountAction() {
   const [user, setUser] = useRecoilState(userState);
   const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   async function DeleteAccount() {
-    var deletedId = await DeleteUser(user.id) ?? false;
+    var deletedId = (await DeleteUser(user.id)) ?? false;
     if (deletedId) {
       setUser({} as UserModel);
-      Snackbar("Account deleted", "success");
-    } else Snackbar("Failed to delete account", "error");
+      Snackbar.Success("Account deleted");
+    } else Snackbar.Error("Failed to delete account");
   }
 
   const deleteAccountDialog = {

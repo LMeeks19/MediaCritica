@@ -7,12 +7,15 @@ import {
   GetBackloggedBacklog,
   GetFinishedBacklog,
   GetInProgressBacklog,
+  GetUserFollowers,
+  GetUserFollowing,
   GetUserMilestones,
   GetUserReviews,
   UpdateBacklogState,
 } from "../Server/Server";
 import {
   AppBar,
+  Avatar,
   Card,
   CardActionArea,
   CardContent,
@@ -57,6 +60,7 @@ import { format } from "date-fns";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { UserFollowSummaryObjectModel } from "../Interfaces/UserFollowSummaryObjectModel";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -84,11 +88,52 @@ function AccountPage() {
 
   useEffect(() => {
     if (user.id === undefined) navigate("/login");
-    if (activeTab === 1 && reviews.length === 0) FetchReviews(0);
-    else if (activeTab === 2 && getTotalLoadedBacklogs() === 0) FetchBacklog();
-    else if (activeTab === 3) FetchMilestones();
+    if (activeTab === 1) FetchSocial();
+    else if (activeTab === 2 && reviews.length === 0) FetchReviews(0);
+    else if (activeTab === 3 && getTotalLoadedBacklogs() === 0) FetchBacklog();
+    else if (activeTab === 4) FetchMilestones();
     else setIsLoading(false);
   }, [activeTab]);
+
+  const [activeSocialTab, setActiveSocialTab] = useState<number>(0);
+  const [followers, setFollowers] = useState<UserFollowSummaryObjectModel>({
+    count: -1,
+    data: [],
+  } as UserFollowSummaryObjectModel);
+  const [following, setFollowing] = useState<UserFollowSummaryObjectModel>({
+    count: -1,
+    data: [],
+  } as UserFollowSummaryObjectModel);
+
+  useEffect(() => {
+    FetchSocial();
+  }, [activeSocialTab]);
+
+  async function FetchSocial() {
+    setIsLoading(true);
+    if (activeTab === 1) {
+      if (
+        activeSocialTab === 0 &&
+        (followers.data.length < followers.count || followers.count === -1)
+      ) {
+        const followersData = await GetUserFollowers(
+          user.id,
+          followers.data.length
+        );
+        setFollowers(followersData);
+      } else if (
+        activeSocialTab === 1 &&
+        (following.data.length < following.count || following.count === -1)
+      ) {
+        const followingData = await GetUserFollowing(
+          user.id,
+          following.data.length
+        );
+        setFollowing(followingData);
+      }
+    }
+    setIsLoading(false);
+  }
 
   function getTotalLoadedBacklogs() {
     return (
@@ -435,14 +480,15 @@ function AccountPage() {
               variant="fullWidth"
             >
               <Tab value={0} label="Details" />
-              <Tab value={1} label="Reviews" />
-              <Tab value={2} label="Backlog" />
-              <Tab value={3} label="Milestones" />
+              <Tab value={1} label="Social" />
+              <Tab value={2} label="Reviews" />
+              <Tab value={3} label="Backlog" />
+              <Tab value={4} label="Milestones" />
             </Tabs>
           </AppBar>
           <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
-            <div className="header dark-shade">
-              <h1>DETAILS</h1>
+            <div className="sub-header dark-shade">
+              <h2>Details</h2>
               <button
                 className="logout-btn"
                 onClick={() => {
@@ -482,15 +528,15 @@ function AccountPage() {
                     inputType="password"
                   />
                 </div>
-                <div className="header dark-shade">
-                  <h1>PREFERENCES</h1>
+                <div className="sub-header dark-shade">
+                  <h2>Preferences</h2>
                 </div>
                 <div className="account-details">
                   <ThemePreference />
                   <PalettePreference />
                 </div>
-                <div className="header dark-shade">
-                  <h1>ACTIONS</h1>
+                <div className="sub-header dark-shade">
+                  <h2>Actions</h2>
                 </div>
                 <div className="account-details">
                   <DeleteAccountAction />
@@ -498,10 +544,137 @@ function AccountPage() {
               </>
             )}
           </div>
-          <div className="reviews-tab" tabIndex={1} hidden={activeTab !== 1}>
+          <div className="social-tab" tabIndex={1} hidden={activeTab !== 1}>
+            <div className="social-container">
+              <div className="sub-header dark-shade">
+                <h2>Social</h2>
+              </div>
+              <AppBar position="static" sx={{ paddingTop: "0 !important" }}>
+                <Tabs
+                  value={activeSocialTab}
+                  onChange={(_e, v) => setActiveSocialTab(v)}
+                  variant="fullWidth"
+                >
+                  <Tab value={0} label="Followers" />
+                  <Tab value={1} label="Following" />
+                </Tabs>
+              </AppBar>
+              {isLoading ? (
+                <Loader />
+              ) : (activeSocialTab === 0 && followers.data.length === 0) ||
+                (activeSocialTab === 1 && following.data.length === 0) ? (
+                <div className="empty">
+                  No {activeSocialTab === 0 ? "Followers" : "Followed Users"}
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="followers-tab"
+                    tabIndex={0}
+                    hidden={activeSocialTab !== 0}
+                  >
+                    <div className="followers">
+                      {followers.data.map((follower) => {
+                        return (
+                          <div
+                            className="follower"
+                            key={follower.userId}
+                            onClick={() =>
+                              navigate(`/view-user/${follower.userId}`, {
+                                state: {
+                                  userId: follower.userId,
+                                },
+                              })
+                            }
+                          >
+                            <Avatar
+                              sx={{
+                                bgcolor: "var(--palette-colour)",
+                                height: 50,
+                                width: 50,
+                              }}
+                            />
+                            <div className="details">
+                              <div className="text-xl truncate">
+                                {follower.name}
+                              </div>
+                              <div className="text-xs text-[gray] truncate">
+                                Followed You:{" "}
+                                {format(follower.followedOn, "do MMMM yyyy")}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      <div
+                        className={`flex justify-center items-center p-6 ${
+                          followers.data.length === followers.count && "hidden"
+                        }`}
+                      >
+                        <CustomTooltip title="Load more" arrow>
+                          <span>
+                            <Fab
+                              className="load-btn"
+                              disabled={
+                                followers.data?.length === followers.count
+                              }
+                              onClick={() => FetchSocial()}
+                            >
+                              <AddIcon />
+                            </Fab>
+                          </span>
+                        </CustomTooltip>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="following-tab"
+                    tabIndex={1}
+                    hidden={activeSocialTab !== 1}
+                  >
+                    <div className="followers">
+                      {following.data.map((follower) => {
+                        return (
+                          <div
+                            className="follower"
+                            key={follower.userId}
+                            onClick={() =>
+                              navigate(`/view-user/${follower.userId}`, {
+                                state: {
+                                  userId: follower.userId,
+                                },
+                              })
+                            }
+                          >
+                            <Avatar
+                              sx={{
+                                bgcolor: "var(--palette-colour)",
+                                height: 50,
+                                width: 50,
+                              }}
+                            />
+                            <div className="details">
+                              <div className="text-xl truncate">
+                                {follower.name}
+                              </div>
+                              <div className="text-xs text-[gray] truncate">
+                                You Followed:{" "}
+                                {format(follower.followedOn, "do MMMM yyyy")}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="reviews-tab" tabIndex={2} hidden={activeTab !== 2}>
             <div className="reviews-container">
-              <div className="header dark-shade">
-                <h1>REVIEWS</h1>
+              <div className="sub-header dark-shade">
+                <h2>Reviews</h2>
                 <div className="actions">
                   <FormControl variant="outlined" sx={{ width: 250 }}>
                     <InputLabel>Filter</InputLabel>
@@ -525,7 +698,11 @@ function AccountPage() {
                 <div className="layout">
                   {filteredReviews().length === 0 ? (
                     <div className="reviews empty">
-                      No {selectedReviewFilter} Reviewed
+                      No{" "}
+                      {selectedReviewFilter !== "None"
+                        ? CapitaliseFirstLetter(selectedReviewFilter)
+                        : "Media"}{" "}
+                      Reviews
                     </div>
                   ) : (
                     <div className="reviews">
@@ -599,36 +776,40 @@ function AccountPage() {
                       </div>
                     </div>
                   )}
-                  <div className="sub-header dark-shade">
-                    <h2>Breakdown</h2>
-                  </div>
-                  <div className="breakdown">
-                    <BarChart
-                      colors={["var(--palette-colour)"]}
-                      height={450}
-                      margin={{ top: 30, left: 40, right: 10 }}
-                      borderRadius={8}
-                      series={[
-                        {
-                          data: reviewsBreakdown,
-                        },
-                      ]}
-                      xAxis={[
-                        {
-                          data: starRatings,
-                          scaleType: "band",
-                        },
-                      ]}
-                    />
-                  </div>
+                  {!reviewsBreakdown.every((value) => value === 0) && (
+                    <>
+                      <div className="sub-header dark-shade">
+                        <h2>Breakdown</h2>
+                      </div>
+                      <div className="breakdown">
+                        <BarChart
+                          colors={["var(--palette-colour)"]}
+                          height={450}
+                          margin={{ top: 30, left: 40, right: 10 }}
+                          borderRadius={8}
+                          series={[
+                            {
+                              data: reviewsBreakdown,
+                            },
+                          ]}
+                          xAxis={[
+                            {
+                              data: starRatings,
+                              scaleType: "band",
+                            },
+                          ]}
+                        />
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
           </div>
-          <div className="backlog-tab" tabIndex={2} hidden={activeTab !== 2}>
+          <div className="backlog-tab" tabIndex={3} hidden={activeTab !== 3}>
             <div className="backlog-container">
-              <div className="header dark-shade">
-                <h1>BACKLOG</h1>
+              <div className="sub-header dark-shade">
+                <h2>Backlog</h2>
                 <ToggleButtonGroup
                   value={selectedBacklogLayout}
                   onChange={(_e, v) => setSelectedBacklogLayout(v)}
@@ -673,10 +854,10 @@ function AccountPage() {
               )}
             </div>
           </div>
-          <div className="milestones-tab" tabIndex={3} hidden={activeTab !== 3}>
+          <div className="milestones-tab" tabIndex={4} hidden={activeTab !== 4}>
             <div className="milestones-container">
-              <div className="header dark-shade">
-                <h1>MILESTONES</h1>
+              <div className="sub-header dark-shade">
+                <h2>Milestones</h2>
               </div>
               {isLoading ? (
                 <Loader />
@@ -705,6 +886,11 @@ function AccountPage() {
                   <MilestonesAccordion
                     category={milestones.at(4)?.category!}
                     milestones={milestones.at(4)?.milestones!}
+                    isPalette={true}
+                  />
+                  <MilestonesAccordion
+                    category={milestones.at(5)?.category!}
+                    milestones={milestones.at(5)?.milestones!}
                     isPalette={true}
                   />
                 </div>

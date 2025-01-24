@@ -2,6 +2,7 @@
 {
     public class ViewUserSummaryModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Joined { get; set; }
         public double ReviewsWritten { get; set; }

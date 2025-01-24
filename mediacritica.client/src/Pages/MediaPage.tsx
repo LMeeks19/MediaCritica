@@ -22,7 +22,7 @@ import { GameModel } from "../Interfaces/GameModel";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import { Snackbar } from "../Components/Snackbar";
+import Snackbar from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import StarIcon from "@mui/icons-material/Star";
@@ -102,7 +102,7 @@ function MediaPage() {
       totalBacklogs: user.totalBacklogs + 1,
     });
 
-    Snackbar(`${media.title} added to Backlog`, "success");
+    Snackbar.Success(`${media.title} added to Backlog`);
   }
 
   async function RemoveFromBacklog() {
@@ -116,7 +116,7 @@ function MediaPage() {
       totalBacklogs: user.totalBacklogs - 1,
     });
 
-    Snackbar(`${media.title} removed from Backlog`, "success");
+    Snackbar.Success(`${media.title} removed from Backlog`);
   }
 
   function GetUniqueMovieDetails() {

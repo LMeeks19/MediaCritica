@@ -41,6 +41,15 @@ namespace MediaCritica.Server.Helpers
             }
         }
 
+        public async Task UpdateFollowMilestones(User user)
+        {
+            if (user != null)
+            {
+                await UpdateMilestone(user, MilestoneType.Followers, user.Followers.Count);
+                await UpdateMilestone(user, MilestoneType.Following, user.Following.Count);
+            }
+        }
+
         public async Task UpdateUserReviewMilestones(User user)
         {
 
@@ -108,7 +117,6 @@ namespace MediaCritica.Server.Helpers
 
         public async Task UpdateUserBacklogMilestones(User user)
         {
-
             if (user != null)
             {
                 await UpdateMilestone(user, MilestoneType.BacklogAdded, user.Backlogs.Count);
@@ -223,6 +231,9 @@ namespace MediaCritica.Server.Helpers
                 (MilestoneType.SingleDirectorReviewed, directors.Count == 0 ? 0 : directors.Max(g => g.Count)),
                 (MilestoneType.DirectorVariety, uniqueDirectorsReviewed),
 
+                (MilestoneType.Followers, user.Followers.Count),
+                (MilestoneType.Following, user.Following.Count),
+
                 (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month)),
                 (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year)),
                 (MilestoneType.ConsecutiveActivity, consecutiveDaysActive)
@@ -296,7 +307,8 @@ namespace MediaCritica.Server.Helpers
                         { MilestoneLevel.Gold, 90 },
                         { MilestoneLevel.Platinum, 365 }
                     },
-                MilestoneType.ReviewsWritten =>
+                MilestoneType.ReviewsWritten
+                or MilestoneType.Following =>
                     new Dictionary<MilestoneLevel, int>
                     {
                         { MilestoneLevel.None, 0 },
@@ -388,6 +400,8 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MonthlyReviews => "Monthly Reviews",
                 MilestoneType.YearlyReviews => "Yearly Reviews",
                 MilestoneType.ConsecutiveActivity => "Activity Streak",
+                MilestoneType.Followers => "Followers Gained",
+                MilestoneType.Following => "Users Followed",
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unhandled type: {type}")
             };
         }
@@ -415,6 +429,8 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MonthlyReviews => "Contribute reviews in a month",
                 MilestoneType.YearlyReviews => "Contribute reviews in a year",
                 MilestoneType.ConsecutiveActivity => "Stay active for consecutive days",
+                MilestoneType.Followers => "Gain followers who appreciate your activity",
+                MilestoneType.Following => "Follow others to broaden your network",
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unhandled type: {type}")
             };
         }
@@ -442,6 +458,8 @@ namespace MediaCritica.Server.Helpers
                 MilestoneType.MonthlyReviews => MilestoneCategory.Activity,
                 MilestoneType.YearlyReviews => MilestoneCategory.Activity,
                 MilestoneType.ConsecutiveActivity => MilestoneCategory.Activity,
+                MilestoneType.Followers => MilestoneCategory.Community,
+                MilestoneType.Following => MilestoneCategory.Community,
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unhandled type: {type}")
             };
         }
@@ -455,6 +473,7 @@ namespace MediaCritica.Server.Helpers
                 MilestoneCategory.Engagement => "Review Engagement",
                 MilestoneCategory.Variety => "Interaction Variety",
                 MilestoneCategory.Activity => "Consecutive Activity",
+                MilestoneCategory.Community => "Social Connectivity",
                 _ => throw new ArgumentOutOfRangeException(nameof(category), $"Unhandled type: {category}")
             };
         }

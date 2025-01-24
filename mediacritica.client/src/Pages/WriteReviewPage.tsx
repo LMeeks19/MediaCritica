@@ -10,7 +10,7 @@ import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { PostReview } from "../Server/Server";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { Snackbar } from "../Components/Snackbar";
+import Snackbar from "../Components/Snackbar";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
@@ -65,7 +65,7 @@ function WriteReviewPage() {
 
     const reviewId = await PostReview(review);
     setUser({ ...user, totalReviews: user.totalReviews + 1 });
-    Snackbar("Review Created", "success");
+    Snackbar.Success("Review Created");
     navigate(`/media/${media.id}/view-review/${reviewId}`, {
       state: { reviewId: reviewId },
     });

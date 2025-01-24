@@ -70,6 +70,10 @@ export default defineConfig({
             '^/Engagement': {
                 target,
                 secure: false
+            },
+            '^/Follow': {
+                target,
+                secure: false
             }
         },
         port: 5174,

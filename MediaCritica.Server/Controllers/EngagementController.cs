@@ -68,7 +68,5 @@ namespace MediaCritica.Server.Controllers
 
             return type != EngagementType.None ? type : null;
         }
-
-
     }
 }

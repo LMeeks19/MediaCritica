@@ -23,7 +23,13 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import millify from "millify";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { ViewUserSummaryModel } from "../Interfaces/ViewUserSummaryModel";
-import { GetViewUserSummary } from "../Server/Server";
+import {
+  FollowUser,
+  GetUserFollow,
+  GetViewUserSummary,
+  ToggleUserFollowNotificationStatus,
+  UnfollowUser,
+} from "../Server/Server";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../Components/Loader";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
@@ -31,10 +37,17 @@ import GradeIcon from "@mui/icons-material/Grade";
 import ScrollContainer from "react-indiana-drag-scroll";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useRecoilValue } from "recoil";
+import { userState } from "../State/GlobalState";
+import { UserFollowModel } from "../Interfaces/UserFollowModel";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import Snackbar from "../Components/Snackbar";
 
 function ViewUserPage() {
+  const user = useRecoilValue(userState);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFollowed, setIsFollowed] = useState<boolean>(false);
+  const [userFollow, setUserFollow] = useState<UserFollowModel | null>(null);
   const [userSummary, setUserSummary] = useState<ViewUserSummaryModel>(
     {} as ViewUserSummaryModel
   );
@@ -43,14 +56,54 @@ function ViewUserPage() {
 
   useEffect(() => {
     async function GetUserSummary() {
+      if (location.state?.userId === undefined) navigate("/");
       setIsLoading(true);
-      if (location.state.userId === undefined) navigate("/");
       const userSummaryData = await GetViewUserSummary(location.state.userId);
       setUserSummary(userSummaryData);
+      const userFollowData = await GetUserFollow(
+        user.id ?? -1,
+        location.state.userId
+      );
+      setUserFollow(userFollowData);
       setIsLoading(false);
     }
     GetUserSummary();
   }, []);
+
+  async function ToggleFollow(isFollowed: boolean) {
+    if (isFollowed) {
+      var newUserFollow = {
+        followerId: user.id,
+        followedId: userSummary.id,
+        followedOn: new Date(),
+        enabledNotifications: false,
+      } as UserFollowModel;
+      const userFollowData = await FollowUser(newUserFollow);
+      setUserFollow(userFollowData);
+      setUserSummary({ ...userSummary, followers: userSummary.followers + 1 });
+      Snackbar.Info(`Now following ${userSummary.name}`);
+    } else {
+      await UnfollowUser(userFollow!.id);
+      setUserFollow(null);
+      setUserSummary({ ...userSummary, followers: userSummary.followers - 1 });
+      Snackbar.Info(`${userSummary.name} has been unfollowed`);
+    }
+  }
+
+  async function ToggleNotifications() {
+    const enabledNotifications = await ToggleUserFollowNotificationStatus(
+      userFollow!.id
+    );
+    setUserFollow({
+      ...userFollow!,
+      enabledNotifications: enabledNotifications ?? false,
+    });
+    Snackbar.Info(
+      `Notifications for ${userSummary.name} ${
+        enabledNotifications ? "enabled" : "disabled"
+      }`
+    );
+  }
 
   const starRatings: any[] = [];
 
@@ -69,18 +122,56 @@ function ViewUserPage() {
           <div className="header">
             <div className="flex flex-col gap-1">
               <h1>{userSummary.name}</h1>
-              <span>
-                Joined:{" "}
-                {format(userSummary.joined ?? new Date(), "do MMMM yyyy")}
-              </span>
+              <span>Joined: {format(userSummary.joined, "do MMMM yyyy")}</span>
             </div>
             <div className="actions">
+              {userFollow !== null && user.id !== undefined && (
+                <CustomTooltip
+                  title={
+                    userFollow?.enabledNotifications
+                      ? "Disable notifications"
+                      : "Enable notifications"
+                  }
+                >
+                  <span>
+                    <IconButton
+                      onClick={() => ToggleNotifications()}
+                      disabled={
+                        user.id === undefined || user.id === userSummary.id
+                      }
+                    >
+                      {userFollow?.enabledNotifications ? (
+                        <NotificationsActiveIcon />
+                      ) : (
+                        <NotificationsNoneIcon />
+                      )}
+                    </IconButton>
+                  </span>
+                </CustomTooltip>
+              )}
               <CustomTooltip
-                title={isFollowed ? "Unfollow user" : "Follow user"}
+                title={
+                  user.id === undefined
+                    ? "Sign in to follow"
+                    : user.id === userSummary.id
+                    ? "Cannot follow self"
+                    : userFollow !== null
+                    ? "Unfollow user"
+                    : "Follow user"
+                }
               >
                 <span>
-                  <IconButton onClick={() => setIsFollowed(!isFollowed)}>
-                    {isFollowed ? <PersonRemoveIcon /> : <PersonAddIcon />}
+                  <IconButton
+                    onClick={() => ToggleFollow(userFollow === null)}
+                    disabled={
+                      user.id === undefined || user.id === userSummary.id
+                    }
+                  >
+                    {userFollow !== null && user.id !== undefined ? (
+                      <PersonRemoveIcon />
+                    ) : (
+                      <PersonAddIcon />
+                    )}
                   </IconButton>
                 </span>
               </CustomTooltip>
@@ -187,7 +278,7 @@ function ViewUserPage() {
             <Accordion
               className="accordion section"
               disableGutters
-              defaultExpanded
+              defaultExpanded={userSummary.reviews?.length > 0}
             >
               <AccordionSummary
                 className="sub-header dark-shade"
@@ -196,64 +287,77 @@ function ViewUserPage() {
                 <h2>Recent Reviews</h2>
               </AccordionSummary>
               <AccordionDetails>
-                <ScrollContainer className="recent-reviews-content">
-                  {userSummary.reviews?.map((item) => {
-                    return (
-                      <Card key={item.id}>
-                        <img
-                          className="image"
-                          src={item.mediaPoster?.replace("300.jpg", "180.jpg")}
-                          alt={item.title}
-                        />
-                        <CardActionArea
-                          onClick={() =>
-                            navigate(`/media/${item.id}`, {
-                              state: {
-                                mediaId: item.id,
-                                mediaType: item.mediaType,
-                              },
-                            })
-                          }
-                        >
-                          <CardMedia component="div" />
-                          <CardHeader title={item.title} />
-                          <Divider />
-                          <CardContent>
-                            <Typography>{item.mediaTitle}</Typography>
-                            <Typography>
-                              {format(item.date, "do MMMM yyyy")}
-                            </Typography>
-                            <div className="flex justify-around">
+                {userSummary.reviews?.length === 0 ? (
+                  <div className="recent-reviews-content empty">
+                    No Recent Reviews
+                  </div>
+                ) : (
+                  <ScrollContainer className="recent-reviews-content">
+                    {userSummary.reviews?.map((item) => {
+                      return (
+                        <Card key={item.id}>
+                          <img
+                            className="image"
+                            src={item.mediaPoster?.replace(
+                              "300.jpg",
+                              "180.jpg"
+                            )}
+                            alt={item.title}
+                          />
+                          <CardActionArea
+                            onClick={() =>
+                              navigate(
+                                `/media/${item.mediaId}/view-review/${item.id}}`,
+                                {
+                                  state: {
+                                    reviewId: item.id,
+                                  },
+                                }
+                              )
+                            }
+                          >
+                            <CardMedia component="div" />
+                            <CardHeader title={item.title} />
+                            <Divider />
+                            <CardContent>
+                              <Typography>{item.mediaTitle}</Typography>
                               <Typography>
-                                {CapitaliseFirstLetter(item.mediaType)}
+                                {format(item.date, "do MMMM yyyy")}
                               </Typography>
-                              {item.rating !== null && (
-                                <Typography
-                                  component="div"
-                                  className="flex items-center gap-1"
-                                >
-                                  <GradeIcon
-                                    style={{
-                                      fontSize: 14,
-                                      color: "var(--rating-star)",
-                                    }}
-                                  />
-                                  <div className="">{item.rating}</div>
+                              <div className="flex justify-around">
+                                <Typography>
+                                  {CapitaliseFirstLetter(item.mediaType)}
                                 </Typography>
-                              )}
-                            </div>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    );
-                  })}
-                </ScrollContainer>
+                                {item.rating !== null && (
+                                  <Typography
+                                    component="div"
+                                    className="flex items-center gap-1"
+                                  >
+                                    <GradeIcon
+                                      style={{
+                                        fontSize: 14,
+                                        color: "var(--rating-star)",
+                                      }}
+                                    />
+                                    <div className="">{item.rating}</div>
+                                  </Typography>
+                                )}
+                              </div>
+                            </CardContent>
+                          </CardActionArea>
+                        </Card>
+                      );
+                    })}
+                  </ScrollContainer>
+                )}
               </AccordionDetails>
             </Accordion>
             <Accordion
               className="accordion section"
               disableGutters
-              defaultExpanded
+              defaultExpanded={userSummary.breakdown.some(
+                (value) => value !== 0
+              )}
             >
               <AccordionSummary
                 className="sub-header dark-shade"
@@ -261,25 +365,31 @@ function ViewUserPage() {
               >
                 <h2>Review Ratings Breakdown</h2>
               </AccordionSummary>
-              <AccordionDetails className="rating-breakdown-content">
-                <BarChart
-                  colors={["var(--palette-colour)"]}
-                  height={400}
-                  margin={{ top: 30, left: 40, right: 10 }}
-                  borderRadius={8}
-                  series={[
-                    {
-                      data: userSummary.breakdown ?? [],
-                    },
-                  ]}
-                  xAxis={[
-                    {
-                      data: starRatings,
-                      scaleType: "band",
-                    },
-                  ]}
-                ></BarChart>
-              </AccordionDetails>
+              {userSummary.breakdown.every((value) => value === 0) ? (
+                <AccordionDetails className="rating-breakdown-content empty">
+                  No Rating Breakdown
+                </AccordionDetails>
+              ) : (
+                <AccordionDetails className="rating-breakdown-content">
+                  <BarChart
+                    colors={["var(--palette-colour)"]}
+                    height={400}
+                    margin={{ top: 30, left: 40, right: 10 }}
+                    borderRadius={8}
+                    series={[
+                      {
+                        data: userSummary.breakdown ?? [],
+                      },
+                    ]}
+                    xAxis={[
+                      {
+                        data: starRatings,
+                        scaleType: "band",
+                      },
+                    ]}
+                  ></BarChart>
+                </AccordionDetails>
+              )}
             </Accordion>
             <div className="section">
               <MilestonesAccordion

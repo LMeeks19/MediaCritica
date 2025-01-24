@@ -9,14 +9,18 @@
     display: flex;
     flex-direction: column;
 
+    .header {
+      border-bottom-color: transparent !important;
+    }
+
     /* App Bar */
     .MuiAppBar-root {
       background-color: var(--palette-colour) !important;
       border-radius: 0 !important;
+      padding-top: 4rem;
 
       .MuiTabs-root {
         border-radius: 0 !important;
-        margin-top: 4rem;
 
         .MuiTab-root {
           width: 50% !important;
@@ -31,6 +35,10 @@
           background-color: var(--light-dark) !important;
         }
       }
+    }
+
+    .sub-header {
+      min-height: 39px;
     }
 
     /* Headers */
@@ -62,7 +70,7 @@
           }
 
           .MuiInputBase-input {
-            padding: 12px 15px;
+            padding: 8px 15px;
             display: flex !important;
             gap: 0.5rem !important;
             overflow: hidden !important;
@@ -70,7 +78,7 @@
           }
 
           .MuiInputBase-inputAdornedStart {
-            padding: 12px 15px 12px 0 !important;
+            padding: 8px 15px 8px 0 !important;
           }
         }
       }
@@ -87,6 +95,7 @@
     }
 
     .account-tab,
+    .social-tab,
     .reviews-tab,
     .backlog-tab,
     .milestones-tab {
@@ -103,6 +112,65 @@
         flex-direction: column;
         gap: 1.5rem;
         padding: 2rem;
+      }
+    }
+
+    .social-tab {
+      overflow: hidden;
+      .social-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .empty {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .followers-tab,
+        .following-tab {
+          overflow: hidden auto;
+          gap: 1rem;
+          padding: 2rem;
+
+          .followers {
+            display: flex;
+            flex-wrap: wrap;
+
+            .follower {
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              flex: 1 1 20%;
+              background-color: light-dark(whitesmoke, #242424);
+              border-radius: 8px;
+              padding: 1rem;
+              overflow: hidden;
+              text-wrap: nowrap;
+              text-overflow: ellipsis;
+              min-width: 200px;
+              max-width: fit-content;
+              cursor: pointer;
+              box-shadow: 0 2px 5px #0000004d;
+              transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+              height: fit-content;
+              align-self: center;
+
+              &:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px #00000080;
+              }
+
+              .details {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+              }
+            }
+          }
+        }
       }
     }
 

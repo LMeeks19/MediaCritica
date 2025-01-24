@@ -6,6 +6,7 @@
         Backlog,
         Activity,
         Variety,
-        Engagement
+        Engagement,
+        Community
     }
 }

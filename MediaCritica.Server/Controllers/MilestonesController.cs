@@ -24,6 +24,8 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Backlogs)
                 .Include(user => user.Engagements)
                 .Include(user => user.Milestones)
+                .Include(user => user.Followers)
+                .Include(user => user.Following)
                 .FirstAsync(user => user.Id == userId);
 
             var milestones = _milestoneCalculatorHelper.GetUserMilestones(user);
