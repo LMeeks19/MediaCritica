@@ -40,6 +40,9 @@ builder.Services.AddScoped<DateRangeCalculatorHelper>();
 builder.Services.AddScoped<TrendCalculatorHelper>();
 builder.Services.AddScoped<MilestoneCalculatorHelper>();
 
+// Add Hubs to Services
+builder.Services.AddScoped<NotificationHub>();
+
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));

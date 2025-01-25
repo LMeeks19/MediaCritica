@@ -9,10 +9,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> hubContext) : ControllerBase
+    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> notificationHubContext, NotificationHub notificationHub) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly IHubContext<NotificationHub> _hubContext = hubContext;
+        private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
+        private readonly NotificationHub _notificationHub = notificationHub;
 
         // Get notifications for a specific user
         [HttpGet("[action]/{userId}")]
@@ -37,7 +38,8 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]/{notificationId}")]
         public async Task<IActionResult> MarkAsRead(int notificationId)
         {
-            var notification = await _databaseContext.Notifications.FindAsync(notificationId);
+            var notification = await _databaseContext.Notifications
+                .FindAsync(notificationId);
 
             if (notification == null)
                 return NotFound();
@@ -79,7 +81,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound();
 
-            foreach (var follower in user.Followers)
+            foreach (var follower in user.Followers.Where(f => f.EnabledNotifications))
             {
                 // Create notification in the database
                 var notification = new Notification
@@ -89,13 +91,18 @@ namespace MediaCritica.Server.Controllers
                     CreatedAt = DateTime.Now,
                     IsRead = false
                 };
+
                 await _databaseContext.Notifications.AddAsync(notification);
+
+                // Send real-time notification via SignalR
+                var connectionId = _notificationHub.GetUserConnecion(notification.UserId);
+                if (connectionId != null)
+                {
+                    await _notificationHubContext.Clients.Client(connectionId).SendAsync("ReceiveNotification");
+                }
             }
 
             await _databaseContext.SaveChangesAsync();
-
-            // Send real-time notification via SignalR
-            await _hubContext.Clients.Group($"User_{newNotificationModel.AuthorId}_Group").SendAsync("ReceiveNotification");
 
             return Ok();
         }
