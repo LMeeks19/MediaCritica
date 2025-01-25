@@ -19,6 +19,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
 import { UserModel } from "../Interfaces/UserModel";
+import NotificationOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
 function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
@@ -39,9 +40,11 @@ function TopBar(props: TopBarProps) {
       <IconButton sx={{ ml: "1.25rem" }} onClick={() => navigate("/")}>
         <HomeOutlinedIcon fontSize="large" />
       </IconButton>
-      <IconButton sx={{ mr: "1.25rem" }} onClick={handleClick}>
-        <MenuIcon fontSize="large" />
-      </IconButton>
+      <div style={{ marginRight: "1.25rem" }}>
+        <IconButton onClick={handleClick}>
+          <MenuIcon fontSize="large" />
+        </IconButton>
+      </div>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -85,6 +88,14 @@ function TopBar(props: TopBarProps) {
               <AccountCircleOutlinedIcon />
             </ListItemIcon>
             Account
+          </MenuItem>
+        )}
+        {user.id !== undefined && (
+          <MenuItem onClick={() => navigate("/notifications")}>
+            <ListItemIcon>
+              <NotificationOutlinedIcon />
+            </ListItemIcon>
+            Notifications
           </MenuItem>
         )}
         {user.id !== undefined && (

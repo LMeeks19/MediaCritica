@@ -9,11 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, IMapper mapper, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMapper mapper, MilestoneCalculatorHelper milestoneCalculatorHelper, NotificationController notificationController) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMapper _mapper = mapper;
         private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
+        private readonly NotificationController _notificationController = notificationController;
 
         [HttpGet(Name = "GetReview")]
         [Route("[action]/{reviewId}")]
@@ -89,6 +90,12 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
 
+            await _notificationController.NotifyFollowers(new NewNotificationModel()
+            {
+                AuthorId = review.UserId,
+                ReviewTitle = review.Title
+            });
+
             var user = await _databaseContext.Users
                 .Include(user => user.Reviews)
                     .ThenInclude(review => review.Media)
@@ -114,6 +121,12 @@ namespace MediaCritica.Server.Controllers
 
             _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
+
+            await _notificationController.NotifyFollowers(new NewNotificationModel()
+            {
+                AuthorId = review.UserId,
+                ReviewTitle = review.Title
+            });
 
             return GetReview(review.Id).Result!;
         }

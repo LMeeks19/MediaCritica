@@ -67,7 +67,7 @@ const MediaGrid: FC<{
                 })
               }
             >
-              <CardMedia />
+              <CardMedia component="div" />
               <CardHeader title={item.title} />
               <Divider />
               <CardContent>

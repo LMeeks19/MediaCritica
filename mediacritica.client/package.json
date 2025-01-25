@@ -18,6 +18,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@freshworks/crayons": "^3.5.1",
+    "@microsoft/signalr": "^8.0.7",
     "@mui/icons-material": "^6.2.1",
     "@mui/material": "^6.3.1",
     "@mui/x-charts": "^7.23.6",

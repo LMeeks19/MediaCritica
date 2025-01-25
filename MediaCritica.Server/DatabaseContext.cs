@@ -12,6 +12,7 @@ namespace MediaCritica.Server
         public DbSet<Milestone> Milestones { get; set; }
         public DbSet<Engagement> Engagements { get; set; }
         public DbSet<UserFollow> UserFollows { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public DbSet<Media> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }

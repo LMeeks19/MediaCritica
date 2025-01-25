@@ -198,7 +198,7 @@ function ExplorePage() {
                         })
                       }
                     >
-                      <CardMedia />
+                      <CardMedia component="div" />
                       <CardHeader title={item.title} />
                       <Divider />
                       <CardContent>

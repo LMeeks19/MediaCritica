@@ -1,0 +1,55 @@
+.notifications-page {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  button {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--palette-colour);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 1rem;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+
+      &.unread {
+        background-color: var(--palette-colour);
+        color: whitesmoke;
+      }
+
+      &.read {
+        background-color: light-dark(whitesmoke, #242424);
+        color: var(--light-dark);
+      }
+    }
+
+    .message {
+      font-size: 1rem;
+      color: inherit;
+    }
+
+    .timestamp {
+      font-size: 0.8rem;
+      color: #6c757d;
+      margin-top: 0.5rem;
+    }
+  }
+}
