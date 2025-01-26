@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Controllers
             await _notificationController.NotifyFollowers(new NewNotificationModel()
             {
                 AuthorId = review.UserId,
-                ReviewTitle = review.Title
+                Message = $"{review.ReviewerName} wrote a review for {review.MediaTitle}"
             });
 
             var user = await _databaseContext.Users
@@ -125,7 +125,7 @@ namespace MediaCritica.Server.Controllers
             await _notificationController.NotifyFollowers(new NewNotificationModel()
             {
                 AuthorId = review.UserId,
-                ReviewTitle = review.Title
+                Message = $"{review.ReviewerName} updated a review for {review.MediaTitle}"
             });
 
             return GetReview(review.Id).Result!;

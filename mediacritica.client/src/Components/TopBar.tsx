@@ -7,8 +7,8 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { notificationsObjectState, userState } from "../State/GlobalState";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -20,10 +20,12 @@ import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
 import { UserModel } from "../Interfaces/UserModel";
 import NotificationOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import { NotificationModel } from "../Interfaces/NotificationModel";
 
 function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const setNotifications = useSetRecoilState(notificationsObjectState);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -103,7 +105,8 @@ function TopBar(props: TopBarProps) {
             onClick={() => {
               resetThemePalette();
               setUser({} as UserModel);
-              if (location.pathname.includes("/account")) navigate("/login");
+              setNotifications([] as NotificationModel[]);
+              if (location.pathname.endsWith("/account")) navigate("/login");
             }}
           >
             <ListItemIcon>

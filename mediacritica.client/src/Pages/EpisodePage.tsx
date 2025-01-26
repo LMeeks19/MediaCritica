@@ -38,7 +38,7 @@ function EpisodePage() {
         <div className="episode">
           <TopBar whiteText />
           <div className="episode-info">
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <h2>{episode.seriesTitle}</h2>
               <p className="meta">
                 <span>
@@ -51,13 +51,11 @@ function EpisodePage() {
                 <span>{episode.runtime}(s)</span> | <span>{episode.rated}</span>
               </p>
             </div>
-            <div className="flex items-center flex-col gap-2 my-auto">
-              <StarRating
-                rating={episode.imdbRating}
-                reviews={episode.imdbVotes}
-                media={episode}
-              />
-            </div>
+            <StarRating
+              rating={episode.imdbRating}
+              reviews={episode.imdbVotes}
+              media={episode}
+            />
           </div>
 
           <div className="content">

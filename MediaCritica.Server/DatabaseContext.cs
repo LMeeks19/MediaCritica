@@ -41,6 +41,12 @@ namespace MediaCritica.Server
                 .WithMany(u => u.Followers)
                 .HasForeignKey(uf => uf.FollowedId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.RecipientId);
+
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.CreatedAt);
         }
     }
 }

@@ -4,7 +4,7 @@ import { LoginFormType } from "../Enums/LoginFormType";
 import LoginForm from "../Components/LoginForm";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+import { notificationsObjectState, userState } from "../State/GlobalState";
 import { UserModel } from "../Interfaces/UserModel";
 import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
 import TopBar from "../Components/TopBar";
@@ -12,10 +12,12 @@ import TopBar from "../Components/TopBar";
 function LoginPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
   const setUser = useSetRecoilState(userState);
+  const setNotificationsObject = useSetRecoilState(notificationsObjectState);
 
   useEffect(() => {
     resetThemePalette();
     setUser({} as UserModel);
+    setNotificationsObject({ totalCount: -1, notifications: [] });
   }, []);
 
   return (

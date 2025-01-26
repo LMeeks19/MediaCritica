@@ -1,55 +1,157 @@
-.notifications-page {
-  padding: 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+.notificationspage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
+  .notifications {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
-  button {
-    margin-bottom: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--palette-colour);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+    .header {
+      padding-top: 4.5rem !important;
 
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      padding: 1rem;
-      border-radius: 5px;
-      margin-bottom: 0.5rem;
-
-      &.unread {
-        background-color: var(--palette-colour);
+      h1 {
         color: whitesmoke;
       }
 
-      &.read {
-        background-color: light-dark(whitesmoke, #242424);
-        color: var(--light-dark);
+      .actions {
+        .MuiButton-root {
+          color: whitesmoke !important;
+          padding: 8px !important;
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+          }
+
+          .MuiSvgIcon-root {
+            font-size: 1.75rem;
+          }
+        }
       }
     }
 
-    .message {
-      font-size: 1rem;
-      color: inherit;
-    }
+    .content {
+      flex: 1;
+      overflow: hidden auto;
 
-    .timestamp {
-      font-size: 0.8rem;
-      color: #6c757d;
-      margin-top: 0.5rem;
+      .items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 2rem;
+
+        &.empty {
+          padding: 0;
+          height: 100%;
+          width: 100%;
+        }
+
+        .notification {
+          flex: 1;
+          background-color: light-dark(whitesmoke, #242424);
+          display: flex;
+          padding: 1rem;
+          border-radius: 8px;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.5rem;
+          position: relative;
+          flex-wrap: wrap;
+          transition: border-color 0.3s ease-in-out;
+          min-width: 200px;
+
+          &:hover {
+            background-color: var(--palette-colour-faded);
+          }
+
+          &.read {
+            border: 2px solid transparent;
+          }
+
+          &.unread {
+            border: 2px solid var(--palette-colour);
+          }
+
+          .details {
+            display: flex;
+            flex-direction: column;
+            padding-left: 8px;
+
+            .message {
+              font-size: 1.25rem;
+            }
+
+            .date {
+              color: gray;
+              font-size: 1rem;
+            }
+          }
+
+          .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+
+            .MuiIconButton-root {
+              color: var(--light-dark) !important;
+
+              @media (prefers-color-scheme: light) {
+                &:hover {
+                  background-color: rgba(0, 0, 0, 0.15);
+                }
+              }
+              @media (prefers-color-scheme: dark) {
+                &:hover {
+                  background-color: rgba(255, 255, 255, 0.15);
+                }
+              }
+              .MuiSvgIcon-root {
+                font-size: 1.75rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .notificationspage-container {
+    .notifications {
+      .content {
+        .notification {
+          padding: 0.75rem !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+
+          .details {
+            gap: 0.5rem !important;
+            text-align: center !important;
+            padding-left: 0 !important;
+            padding-top: 8px !important;
+
+            .message {
+              font-size: 1rem !important;
+            }
+
+            .date {
+              color: gray;
+              font-size: 0.75rem !important;
+            }
+          }
+
+          .actions {
+            .MuiIconButton-root {
+              .MuiSvgIcon-root {
+                font-size: 1.5rem !important;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

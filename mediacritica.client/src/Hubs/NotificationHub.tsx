@@ -1,5 +1,13 @@
-import { HttpTransportType, HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import {
+  HttpTransportType,
+  HubConnection,
+  HubConnectionBuilder,
+  HubConnectionState,
+} from "@microsoft/signalr";
 import Snackbar from "../Components/Snackbar";
+import { SetterOrUpdater } from "recoil";
+import { NotificationModel } from "../Interfaces/NotificationModel";
+import { GetUserNotifications } from "../Server/Server";
 
 class NotificationHub {
   private connection: HubConnection | null = null;
@@ -23,8 +31,8 @@ class NotificationHub {
     return NotificationHub.instance;
   }
 
-  public getState(): string {
-    return this.connection?.state ?? "Disconnected";
+  public isDisconnected() {
+    return this.connection?.state === HubConnectionState.Disconnected;
   }
 
   // Start the connection
@@ -42,10 +50,27 @@ class NotificationHub {
   }
 
   // Listen for notifications from the hub
-  public onReceiveNotification(): void {
+  public onReceiveNotification(
+    userId: number,
+    setNotificationsObject: SetterOrUpdater<{
+      totalCount: number;
+      notifications: NotificationModel[];
+    }>,
+    limit: number
+  ): void {
     if (this.connection) {
-      this.connection.on("ReceiveNotification", () => {
-        Snackbar.Info("New notification received");
+      this.connection.on("ReceiveNotification", async (message: string) => {
+        if (location.pathname.endsWith("/notifications")) {
+          const notificationsData = await GetUserNotifications(
+            userId,
+            0,
+            limit
+          );
+          setNotificationsObject(notificationsData);
+        } else {
+          setNotificationsObject({ totalCount: -1, notifications: [] });
+          Snackbar.Info(`Notification Received: ${message}`);
+        }
       });
     }
   }

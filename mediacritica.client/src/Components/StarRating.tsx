@@ -13,7 +13,7 @@ function StarRating(props: StarRatingProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center flex-col gap-2 my-auto">
+    <div className="flex items-center flex-col my-auto">
       <Rating
         sx={{ fontSize: "2.5rem" }}
         value={Number(props.rating) / 2}

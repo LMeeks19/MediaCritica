@@ -5,12 +5,15 @@ import { SnackbarProvider } from "notistack";
 import ConfirmationDialog from "./Components/ConfirmationDialog";
 import { useEffect } from "react";
 import NotificationHub from "./Hubs/NotificationHub";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { setThemePalette } from "./Helpers/ThemePaletteHelper";
-import { userState } from "./State/GlobalState";
+import { notificationsObjectState, userState } from "./State/GlobalState";
 
 function App() {
   const user = useRecoilValue(userState);
+  const [notificationsObject, setNotificationsObject] = useRecoilState(
+    notificationsObjectState
+  );
 
   useEffect(() => {
     if (user.id !== undefined) {
@@ -22,12 +25,19 @@ function App() {
     if (user.id === undefined) return;
 
     const notificationHub = NotificationHub.getInstance(user.id);
-    notificationHub.startConnection();
+
+    if (notificationHub.isDisconnected()) 
+      notificationHub.startConnection();
 
     // Subscribe to notifications
-    notificationHub.onReceiveNotification();
+    notificationHub.onReceiveNotification(
+      user.id,
+      setNotificationsObject,
+      notificationsObject.notifications?.length < 25
+        ? 25
+        : notificationsObject.notifications?.length + 1
+    );
 
-    // Cleanup: Stop connection when component unmounts
     return () => {
       notificationHub.stopConnection();
     };
