@@ -3,6 +3,7 @@ import {
   HubConnection,
   HubConnectionBuilder,
   HubConnectionState,
+  LogLevel,
 } from "@microsoft/signalr";
 import Snackbar from "../Components/Snackbar";
 import { SetterOrUpdater } from "recoil";
@@ -14,12 +15,13 @@ class NotificationHub {
   private static instance: NotificationHub;
 
   private constructor(userId: number) {
-    // Create the connection but don't start it until needed
+    // Create the connection
     this.connection = new HubConnectionBuilder()
       .withUrl(`/NotificationHub?userId=${userId}`, {
         transport: HttpTransportType.WebSockets,
-      }) // Adjust URL to your hub endpoint
+      })
       .withAutomaticReconnect()
+      .configureLogging(LogLevel.Error)
       .build();
   }
 
@@ -41,10 +43,10 @@ class NotificationHub {
       this.connection
         .start()
         .then(() => {
-          console.log("Connected to SignalR hub");
+          console.log("Connected to NotificationHub");
         })
         .catch((err) =>
-          console.error("Error starting SignalR connection:", err)
+          console.error("Error starting NotificationHub connection:", err)
         );
     }
   }
@@ -59,7 +61,7 @@ class NotificationHub {
     limit: number
   ): void {
     if (this.connection) {
-      this.connection.on("ReceiveNotification", async (message: string) => {
+      this.connection.on("ReceiveNotification", async (data: {authorName: string, message: string}) => {
         if (location.pathname.endsWith("/notifications")) {
           const notificationsData = await GetUserNotifications(
             userId,
@@ -69,7 +71,7 @@ class NotificationHub {
           setNotificationsObject(notificationsData);
         } else {
           setNotificationsObject({ totalCount: -1, notifications: [] });
-          Snackbar.Info(`Notification Received: ${message}`);
+          Snackbar.Info(`Notification Received: ${data.message} by ${data.authorName}`);
         }
       });
     }
@@ -81,10 +83,10 @@ class NotificationHub {
       this.connection
         .stop()
         .then(() => {
-          console.log("Disconnected from SignalR hub");
+          console.log("Disconnected from NotificationHub");
         })
         .catch((err) => {
-          console.error("Error stopping SignalR connection:", err);
+          console.error("Error stopping NotificationHub connection:", err);
         });
     }
   }
