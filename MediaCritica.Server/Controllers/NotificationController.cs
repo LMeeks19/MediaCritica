@@ -30,6 +30,7 @@ namespace MediaCritica.Server.Controllers
                 .Select(notification => new NotificationModel()
                 {
                     Id = notification.Id,
+                    AuthorName = notification.AuthorName,
                     Message = notification.Message,
                     IsRead = notification.IsRead,
                     IsBookmarked = notification.IsBookmarked,
@@ -118,6 +119,7 @@ namespace MediaCritica.Server.Controllers
                 .Select(f => new Notification()
                 {
                     RecipientId = f.FollowerId,
+                    AuthorName = newNotificationModel.AuthorName,
                     Message = newNotificationModel.Message,
                     CreatedAt = DateTime.Now,
                     IsRead = false
@@ -131,7 +133,7 @@ namespace MediaCritica.Server.Controllers
 
             var connectionIds = notifications.Select(n => _notificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
             if (connectionIds.Count != 0)
-                await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", newNotificationModel.Message);
+                await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", new { newNotificationModel.AuthorName, newNotificationModel.Message, });
 
             await _databaseContext.SaveChangesAsync();
 
