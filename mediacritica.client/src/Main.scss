@@ -69,6 +69,11 @@ button:disabled {
 
   &.palette {
     background-color: var(--palette-colour);
+
+    h1,
+    h2 {
+      color: whitesmoke !important;
+    }
   }
 
   &.dark-shade {
@@ -116,7 +121,7 @@ button:disabled {
 
     .actions {
       width: 100% !important;
-      justify-content: space-around !important;
+      justify-content: center !important;
     }
   }
 }
@@ -385,7 +390,10 @@ button:disabled {
 
       .MuiFab-root {
         background-color: whitesmoke !important;
-        color: var(--palette-colour) !important;
+
+        .MuiSvgIcon-root {
+          color: var(--palette-colour) !important;
+        }
       }
     }
 
@@ -498,7 +506,7 @@ button:disabled {
 .MuiCard-root {
   border-radius: 8px !important;
   background-color: light-dark(whitesmoke, #242424) !important;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
   min-width: 180px;
   min-height: 225px;
   width: 180px;
@@ -586,6 +594,20 @@ button:disabled {
         display: flex;
       }
     }
+  }
+}
+
+.MuiFab-root {
+  background-color: var(--palette-colour) !important;
+  height: 40px !important;
+  width: 40px !important;
+
+  &:hover {
+    background-color: #b62828 !important;
+  }
+
+  .MuiSvgIcon-root {
+    color: whitesmoke !important;
   }
 }
 

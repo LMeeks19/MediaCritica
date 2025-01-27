@@ -12,7 +12,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
       flex: 1 0 45%;
 
       &.bronze {
@@ -31,6 +31,20 @@
         background-color: var(--palette-colour);
       }
 
+      &.bronze,
+      &.silver,
+      &.gold,
+      &.platinum {
+        .details {
+          color: whitesmoke;
+        }
+        .progress {
+          .bar {
+            background-color: whitesmoke !important;
+          }
+        }
+      }
+
       .icon {
         background-color: var(--palette-colour);
         border-radius: 50%;
@@ -39,6 +53,7 @@
         justify-content: center;
         font-size: 1.5em;
         padding: 0.75rem;
+        color: whitesmoke;
       }
 
       .details {

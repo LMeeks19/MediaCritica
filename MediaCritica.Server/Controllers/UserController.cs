@@ -56,17 +56,6 @@ namespace MediaCritica.Server.Controllers
                     Theme = user.Preference.Theme,
                     Palette = user.Preference.Palette,
                 },
-                BacklogSummary = user.Backlogs.Select(backlogSummary => new BacklogSummaryModel()
-                {
-                    Id = backlogSummary.Id,
-                    MediaId = backlogSummary.MediaId,
-                }).ToList() ?? [],
-                EngagementsSummary = user.Engagements.Select(e => new EngagementUserSummaryModel()
-                {
-                    Id = e.Id,
-                    ReviewId = e.ReviewId,
-                    Type = e.Type
-                }).ToList() ?? [],
                 TotalReviews = user.Reviews.Count,
                 TotalBacklogs = user.Backlogs.Count
             };

@@ -34,7 +34,8 @@ function WriteReviewPage() {
     | EpisodeModel;
 
   useEffect(() => {
-    (media === undefined || user.id === undefined) && navigate("/");
+    if (user.id === undefined) navigate("/login");
+    if (media === undefined) navigate("/")
     setIsLoading(false);
   });
 

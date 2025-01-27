@@ -11,6 +11,7 @@ import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
+import { NotificationModel } from "../Interfaces/NotificationModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
@@ -248,9 +249,31 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
   });
 }
 
+export async function GetUserReviewStatus(
+  mediaId: string,
+  userId: number
+): Promise<boolean> {
+  if (userId === undefined) return false;
+  const response = await fetch(
+    `/Review/GetUserReviewStatus/${mediaId}/${userId}`
+  );
+  return response.json();
+}
+
 // Backlog API Calls
 export async function GetBacklog(userId: number): Promise<BacklogObjectModel> {
   const response = await fetch(`/Backlog/GetBacklog/${userId ?? -1}`);
+  return response.json();
+}
+
+export async function GetUserMediaBackloggedStatus(
+  mediaId: string,
+  userId: number
+): Promise<boolean> {
+  if (userId === undefined) return false;
+  const response = await fetch(
+    `/Backlog/GetUserBacklogStatus/${mediaId}/${userId}`
+  );
   return response.json();
 }
 
@@ -403,9 +426,7 @@ export async function GetUserFollowers(
   userId: number,
   offset: number = 0
 ): Promise<UserFollowSummaryObjectModel> {
-  const response = await fetch(
-    `/Follow/GetUserFollowers/${userId}/${offset}`
-  );
+  const response = await fetch(`/Follow/GetUserFollowers/${userId}/${offset}`);
   return response.json();
 }
 
@@ -413,8 +434,17 @@ export async function GetUserFollowing(
   userId: number,
   offset: number = 0
 ): Promise<UserFollowSummaryObjectModel> {
+  const response = await fetch(`/Follow/GetUserFollowing/${userId}/${offset}`);
+  return response.json();
+}
+
+export async function GetUserNotifications(
+  userId: number,
+  offset: number,
+  limit: number = 25
+): Promise<{ totalCount: number; notifications: NotificationModel[] }> {
   const response = await fetch(
-    `/Follow/GetUserFollowing/${userId}/${offset}`
+    `/Notification/GetUserNotifications/${userId}/${offset}/${limit}`
   );
   return response.json();
 }

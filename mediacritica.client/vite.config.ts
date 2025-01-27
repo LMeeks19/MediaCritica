@@ -74,7 +74,17 @@ export default defineConfig({
             '^/Follow': {
                 target,
                 secure: false
-            }
+            },
+            '^/Notification': {
+                target,
+                secure: false
+            },
+            '^/NotificationHub': {
+                target,
+                changeOrigin: true,
+                secure: false,
+                ws: true
+            },
         },
         port: 5174,
         https: {

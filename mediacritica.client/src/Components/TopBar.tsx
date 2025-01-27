@@ -7,8 +7,8 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { notificationsObjectState, userState } from "../State/GlobalState";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -19,10 +19,13 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
 import { UserModel } from "../Interfaces/UserModel";
+import NotificationOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import { NotificationModel } from "../Interfaces/NotificationModel";
 
 function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const setNotifications = useSetRecoilState(notificationsObjectState);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -39,9 +42,11 @@ function TopBar(props: TopBarProps) {
       <IconButton sx={{ ml: "1.25rem" }} onClick={() => navigate("/")}>
         <HomeOutlinedIcon fontSize="large" />
       </IconButton>
-      <IconButton sx={{ mr: "1.25rem" }} onClick={handleClick}>
-        <MenuIcon fontSize="large" />
-      </IconButton>
+      <div style={{ marginRight: "1.25rem" }}>
+        <IconButton onClick={handleClick}>
+          <MenuIcon fontSize="large" />
+        </IconButton>
+      </div>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -88,11 +93,20 @@ function TopBar(props: TopBarProps) {
           </MenuItem>
         )}
         {user.id !== undefined && (
+          <MenuItem onClick={() => navigate("/notifications")}>
+            <ListItemIcon>
+              <NotificationOutlinedIcon />
+            </ListItemIcon>
+            Notifications
+          </MenuItem>
+        )}
+        {user.id !== undefined && (
           <MenuItem
             onClick={() => {
               resetThemePalette();
               setUser({} as UserModel);
-              if (location.pathname.includes("/account")) navigate("/login");
+              setNotifications([] as NotificationModel[]);
+              if (location.pathname.endsWith("/account")) navigate("/login");
             }}
           >
             <ListItemIcon>

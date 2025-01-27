@@ -10,12 +10,14 @@ import LoginPage from "../Pages/LoginPage";
 import ExplorePage from "../Pages/ExplorePage";
 import LeaderboardsPage from "../Pages/LeaderboardsPage";
 import ViewUserPage from "../Pages/ViewUserPage";
+import NotificationsPage from "../Pages/NotificationsPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/explore", element: <ExplorePage /> },
   { path: "/leaderboards", element: <LeaderboardsPage /> },
+  { path: "/notifications", element: <NotificationsPage /> },
   { path: "/media/:mediaId", element: <MediaPage /> },
   {
     path: "/media/:mediaId/seasons/:seasonId/episodes/:episodeId",

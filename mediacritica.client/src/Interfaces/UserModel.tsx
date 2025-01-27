@@ -1,5 +1,3 @@
-import { BacklogSummaryModel } from "./BacklogSummaryModel";
-
 export interface UserModel {
     id: number;
     forename: string;
@@ -7,7 +5,6 @@ export interface UserModel {
     email: string;
     password: string;
     preference: PreferenceModel;
-    backlogSummary: BacklogSummaryModel[]
     totalReviews: number;
     totalBacklogs: number
 }
