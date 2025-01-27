@@ -154,6 +154,16 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Reviews.Remove(review);
             _databaseContext.SaveChanges();
         }
+
+        [HttpPut(Name = "GetUserReviewStatus")]
+        [Route("[action]/{mediaId}/{userId}")]
+        public IActionResult GetUserReviewStatus(string mediaId, int userId)
+        {
+            var isReviewed = _databaseContext.Reviews.Any(b => b.MediaId == mediaId && b.UserId == userId);
+
+            return Ok(isReviewed);
+
+        }
     }
 }
 

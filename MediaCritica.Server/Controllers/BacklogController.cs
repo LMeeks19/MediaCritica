@@ -89,7 +89,7 @@ namespace MediaCritica.Server.Controllers
 
         [HttpPost(Name = "PostBacklog")]
         [Route("[action]")]
-        public async Task<BacklogSummaryModel> PostBacklog([FromBody] BacklogModel backlogModel)
+        public async Task PostBacklog([FromBody] BacklogModel backlogModel)
         {
             var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel);
 
@@ -102,10 +102,6 @@ namespace MediaCritica.Server.Controllers
                 .FirstAsync(user => user.Id == backlogData.UserId);
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
-
-            var newBacklog = user.Backlogs.Single(backlog => backlog.MediaId == backlogData.MediaId);
-
-            return _mapper.BacklogMapper.MapBacklogSummaryModel(newBacklog);
         }
 
         [HttpDelete(Name = "DeleteBacklog")]
@@ -143,6 +139,16 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.SaveChanges();
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+        }
+
+        [HttpPut(Name = "GetUserBacklogStatus")]
+        [Route("[action]/{mediaId}/{userId}")]
+        public IActionResult GetUserBacklogStatus(string mediaId, int userId)
+        {
+            var isBacklogged = _databaseContext.Backlogs.Any(b => b.MediaId == mediaId && b.UserId == userId);
+
+            return Ok(isBacklogged);
+
         }
     }
 }

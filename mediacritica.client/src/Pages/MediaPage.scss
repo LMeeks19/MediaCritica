@@ -48,7 +48,7 @@
     }
 
     .release {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #bbb;
     }
 
@@ -56,10 +56,10 @@
       display: flex;
       justify-content: center;
       flex-direction: column;
+      gap: 0.25rem;
 
       h1 {
-        font-size: 3rem;
-        font-weight: bold;
+        font-size: 2.25rem;
         margin: 0;
       }
 
@@ -68,11 +68,10 @@
       }
 
       .heart {
-        margin-left: 10px;
         color: var(--backlog-heart);
 
         .MuiSvgIcon-root {
-          font-size: 2.5rem !important;
+          font-size: 2rem !important;
         }
       }
 

@@ -12,6 +12,7 @@ import {
   DeleteBacklog,
   GetMedia,
   GetSeason,
+  GetUserMediaBackloggedStatus,
   PostBacklog,
 } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
@@ -40,6 +41,7 @@ function MediaPage() {
   const mediaId = location.state?.mediaId;
   const mediaType = location.state.mediaType;
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
+  const [userBacklogStatus, setUserBacklogStatus] = useState<boolean>(false);
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
@@ -47,6 +49,8 @@ function MediaPage() {
     async function FetchMedia() {
       (mediaId === undefined || mediaType === undefined) && navigate("/");
       setIsLoading(true);
+      var backlogStatus = await GetUserMediaBackloggedStatus(mediaId, user.id);
+      setUserBacklogStatus(backlogStatus);
       var mediaResponse = await GetMedia(mediaId, mediaType);
       setMedia(mediaResponse);
       setIsLoading(false);
@@ -94,11 +98,12 @@ function MediaPage() {
       addedDate: new Date(),
     } as unknown as BacklogModel;
 
-    const newBacklogSummary = await PostBacklog(backlog);
+    await PostBacklog(backlog);
+
+    setUserBacklogStatus(true);
 
     setUser({
       ...user,
-      backlogSummary: [...user.backlogSummary, newBacklogSummary],
       totalBacklogs: user.totalBacklogs + 1,
     });
 
@@ -108,11 +113,10 @@ function MediaPage() {
   async function RemoveFromBacklog() {
     await DeleteBacklog(media.id, user.id);
 
+    setUserBacklogStatus(false);
+
     setUser({
       ...user,
-      backlogSummary: user.backlogSummary.filter(
-        (backlog) => backlog.mediaId !== media.id
-      ),
       totalBacklogs: user.totalBacklogs - 1,
     });
 
@@ -217,9 +221,7 @@ function MediaPage() {
               <div className="title-section">
                 <div className="title flex items-center gap-5 flex-wrap">
                   <h1>{media.title}</h1>
-                  {user.backlogSummary?.some(
-                    (backlog) => backlog.mediaId === media.id
-                  ) ? (
+                  {userBacklogStatus ? (
                     <CustomTooltip title="Remove from backlog" arrow>
                       <span>
                         <IconButton
@@ -253,9 +255,6 @@ function MediaPage() {
                 </div>
                 <div className="release">
                   <div>Initial Release: {media.released}</div>
-                  <div>
-                    {CapitaliseFirstLetter(media.type)}: {media.year}
-                  </div>
                 </div>
               </div>
               <StarRating

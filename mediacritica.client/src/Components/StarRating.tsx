@@ -7,10 +7,21 @@ import { CustomTooltip } from "./Tooltip";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
+import { useEffect, useState } from "react";
+import { GetUserReviewStatus } from "../Server/Server";
 
 function StarRating(props: StarRatingProps) {
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
+  const [hasUserReviewed, setHasUserReviewed] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function FetchUserReviewStatus() {
+      const reviewStatus = await GetUserReviewStatus(props.media.id, user.id);
+      setHasUserReviewed(reviewStatus);
+    }
+    FetchUserReviewStatus();
+  }, []);
 
   return (
     <div className="flex items-center flex-col my-auto">
@@ -25,7 +36,10 @@ function StarRating(props: StarRatingProps) {
         <CustomTooltip
           title={
             user.id !== undefined
-              ? new Date(props.media.released).getTime() > new Date().getTime()
+              ? hasUserReviewed
+                ? "Already reviewed"
+                : new Date(props.media.released).getTime() >
+                  new Date().getTime()
                 ? "Media not out yet"
                 : "Write a review"
               : "Login to review"
@@ -42,6 +56,7 @@ function StarRating(props: StarRatingProps) {
               }
               disabled={
                 user.id === undefined ||
+                hasUserReviewed ||
                 new Date(props.media.released).getTime() > new Date().getTime()
               }
             >
