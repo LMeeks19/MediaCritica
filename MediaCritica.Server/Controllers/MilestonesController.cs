@@ -12,33 +12,37 @@ namespace MediaCritica.Server.Controllers
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
 
-        [HttpGet(Name = "GetUserMilestones")]
-        [Route("[action]/{userId}")]
-        public async Task<List<MilestoneCategoryModel>> GetUserMilestones(int userId)
+        [HttpGet("[action]/{userId}")]
+        public async Task<IActionResult> GetUserMilestones(int userId)
         {
             var user = await _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Media)
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Engagements)
-                .Include(user => user.Backlogs)
-                .Include(user => user.Engagements)
-                .Include(user => user.Milestones)
-                .Include(user => user.Followers)
-                .Include(user => user.Following)
-                .FirstAsync(user => user.Id == userId);
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Media)
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Engagements)
+                .Include(u => u.Backlogs)
+                .Include(u => u.Engagements)
+                .Include(u => u.Milestones)
+                .Include(u => u.Followers)
+                .Include(u => u.Following)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound($"User with Id: {userId} not found.");
+
 
             var milestones = _milestoneCalculatorHelper.GetUserMilestones(user);
 
             var milestonesByCategory = milestones
-                .GroupBy(a => a.Category)
+                .GroupBy(m => m.Category)
                 .Select(group => new MilestoneCategoryModel
                 {
                     Category = group.Key.ToString(),
-                    Milestones = [.. group]
-                }).ToList();
+                    Milestones = group.ToList()
+                })
+                .ToList();
 
-            return milestonesByCategory;
+            return Ok(milestonesByCategory);
         }
     }
 }

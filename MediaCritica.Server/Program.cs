@@ -20,7 +20,8 @@ builder.Services.AddControllers();
 builder.Services.AddMvc().AddControllersAsServices();
 builder.Services.AddSignalR();
 
-// Add Mappers to Servies
+// Add Mappers to Services
+builder.Services.AddScoped<UserMapper>();
 builder.Services.AddScoped<SeasonMapper>();
 builder.Services.AddScoped<SeriesMapper>();
 builder.Services.AddScoped<EpisodeMapper>();

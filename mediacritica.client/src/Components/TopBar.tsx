@@ -8,7 +8,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { notificationsObjectState, userState } from "../State/GlobalState";
+import { notificationsState, userState } from "../State/GlobalState";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -25,7 +25,7 @@ import { NotificationModel } from "../Interfaces/NotificationModel";
 function TopBar(props: TopBarProps) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
-  const setNotifications = useSetRecoilState(notificationsObjectState);
+  const setNotifications = useSetRecoilState(notificationsState);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

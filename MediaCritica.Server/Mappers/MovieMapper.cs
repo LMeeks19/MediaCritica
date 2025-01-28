@@ -4,10 +4,9 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class MovieMapper(MediaMapper mediaMapper, ReviewMapper reviewMapper)
+    public class MovieMapper(MediaMapper mediaMapper)
     {
         private readonly MediaMapper _mediaMapper = mediaMapper;
-        private readonly ReviewMapper _reviewMapper = reviewMapper;
 
         public Movie MapMovie(MovieModel movieModel)
         {
@@ -37,7 +36,6 @@ namespace MediaCritica.Server.Mappers
             movieModel.DVD = movie.DVD;
             movieModel.Production = movie.Production;
             movieModel.Website = movie.Website;
-            movieModel.Reviews = movie.Reviews!.Select(_reviewMapper.MapReviewSummaryModel).ToList();
 
             return movieModel;
         }

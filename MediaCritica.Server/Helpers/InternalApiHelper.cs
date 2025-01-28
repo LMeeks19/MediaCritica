@@ -16,14 +16,6 @@ namespace MediaCritica.Server.Helpers
                 .Include(movie => movie.Reviews)
                 .SingleOrDefaultAsync(movie => movie.Id == movieId);
 
-            if (movie != null)
-                movie.Reviews = await _databaseContext.Reviews
-                .Where(review => review.MediaId == movieId)
-                .OrderByDescending(review => review.Date)
-                .Select(review => review)
-                .Take(10)
-                .ToListAsync();
-
             return movie;
         }
 
@@ -33,14 +25,6 @@ namespace MediaCritica.Server.Helpers
                 .Include(game => game.Ratings)
                 .Include(game => game.Reviews)
                 .SingleOrDefaultAsync(game => game.Id == gameId);
-
-            if (game != null)
-                game.Reviews = await _databaseContext.Reviews
-                .Where(review => review.MediaId == gameId)
-                .OrderByDescending(review => review.Date)
-                .Select(review => review)
-                .Take(10)
-                .ToListAsync();
 
             return game;
         }
@@ -52,14 +36,6 @@ namespace MediaCritica.Server.Helpers
                 .Include(series => series.Seasons)
                     .ThenInclude(season => season.Episodes)
                 .SingleOrDefaultAsync(series => series.Id == seriesId);
-
-            if (series != null)
-                series.Reviews = await _databaseContext.Reviews
-                .Where(review => review.MediaId == seriesId)
-                .OrderByDescending(review => review.Date)
-                .Select(review => review)
-                .Take(10)
-                .ToListAsync();
 
             return series;
         }

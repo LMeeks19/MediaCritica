@@ -15,81 +15,63 @@ namespace MediaCritica.Server.Controllers
         private readonly IMapper _mapper = mapper;
         private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
 
-        [HttpGet(Name = "GetBacklog")]
-        [Route("[action]/{userId}")]
-        public async Task<BacklogObjectModel> GetBacklog(int userId)
+        [HttpGet("[action]/{userId}")]
+        public async Task<IActionResult> GetBacklog(int userId)
         {
             var backlog = new BacklogObjectModel
             {
-                Backlog = await GetBackloggedBacklog(userId),
-                TotalBacklogCount = GetBacklogCount(userId, BacklogCategoryType.Backlog),
+                Backlog = await GetBacklogByCategory(userId, BacklogCategoryType.Backlog, 0, 10),
+                TotalBacklogCount = await GetBacklogCount(userId, BacklogCategoryType.Backlog),
 
-                InProgress = await GetInProgressBacklog(userId),
-                TotalInProgressCount = GetBacklogCount(userId, BacklogCategoryType.InProgress),
+                InProgress = await GetBacklogByCategory(userId, BacklogCategoryType.InProgress, 0, 10),
+                TotalInProgressCount = await GetBacklogCount(userId, BacklogCategoryType.InProgress),
 
-                Finished = await GetFinishedBacklog(userId),
-                TotalFinishedCount = GetBacklogCount(userId, BacklogCategoryType.Finished),
+                Finished = await GetBacklogByCategory(userId, BacklogCategoryType.Finished, 0, 10),
+                TotalFinishedCount = await GetBacklogCount(userId, BacklogCategoryType.Finished),
             };
 
-            return backlog;
+            return Ok(backlog);
         }
 
-        public int GetBacklogCount(int userId, BacklogCategoryType category)
-        {
-            return _databaseContext.Backlogs.Count(backlog => backlog.UserId == userId && backlog.Category == category);
-        }
-
-        [HttpGet(Name = "GetBackloggedBacklog")]
-        [Route("[action]/{userId}/{offset}/{limit}")]
-        public async Task<List<BacklogModel>> GetBackloggedBacklog(int userId, int offset = 0, int limit = 10)
+        private async Task<List<BacklogModel>> GetBacklogByCategory(int userId, BacklogCategoryType category, int offset, int limit)
         {
             var backlog = await _databaseContext.Backlogs
-              .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.Backlog)
-              .OrderByDescending(media => media.AddedDate)
+                .Where(media => media.UserId == userId && media.Category == category)
+                .OrderByDescending(media => media.AddedDate)
                 .ThenBy(media => media.MediaTitle)
-              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
-              .Skip(offset)
-              .Take(limit)
-              .ToListAsync();
+                .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync();
 
             return backlog;
         }
 
-        [HttpGet(Name = "GetInProgressBacklog")]
-        [Route("[action]/{userId}/{offset}/{limit}")]
-        public async Task<List<BacklogModel>> GetInProgressBacklog(int userId, int offset = 0, int limit = 10)
+        private async Task<int> GetBacklogCount(int userId, BacklogCategoryType category)
         {
-            var backlog = await _databaseContext.Backlogs
-              .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.InProgress)
-              .OrderByDescending(media => media.AddedDate)
-                .ThenBy(media => media.MediaTitle)
-              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
-              .Skip(offset)
-              .Take(limit)
-              .ToListAsync();
-
-            return backlog;
+            return await _databaseContext.Backlogs.CountAsync(backlog => backlog.UserId == userId && backlog.Category == category);
         }
 
-        [HttpGet(Name = "GetFinishedBacklog")]
-        [Route("[action]/{userId}/{offset}/{limit}")]
-        public async Task<List<BacklogModel>> GetFinishedBacklog(int userId, int offset = 0, int limit = 10)
+        [HttpGet("[action]/{userId}/{offset}/{limit}")]
+        public async Task<IActionResult> GetBackloggedBacklog(int userId, int offset = 0, int limit = 10)
         {
-            var backlog = await _databaseContext.Backlogs
-              .Where(media => media.UserId == userId && media.Category == BacklogCategoryType.Finished)
-              .OrderByDescending(media => media.AddedDate)
-                .ThenBy(media => media.MediaTitle)
-              .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
-              .Skip(offset)
-              .Take(limit)
-              .ToListAsync();
-
-            return backlog;
+            return Ok(await GetBacklogByCategory(userId, BacklogCategoryType.Backlog, offset, limit));
         }
 
-        [HttpPost(Name = "PostBacklog")]
-        [Route("[action]")]
-        public async Task PostBacklog([FromBody] BacklogModel backlogModel)
+        [HttpGet("[action]/{userId}/{offset}/{limit}")]
+        public async Task<IActionResult> GetInProgressBacklog(int userId, int offset = 0, int limit = 10)
+        {
+            return Ok(await GetBacklogByCategory(userId, BacklogCategoryType.InProgress, offset, limit));
+        }
+
+        [HttpGet("[action]/{userId}/{offset}/{limit}")]
+        public async Task<IActionResult> GetFinishedBacklog(int userId, int offset = 0, int limit = 10)
+        {
+            return Ok(await GetBacklogByCategory(userId, BacklogCategoryType.Finished, offset, limit));
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> PostBacklog([FromBody] BacklogModel backlogModel)
         {
             var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel);
 
@@ -99,50 +81,67 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users
                 .Include(user => user.Backlogs)
                 .Include(user => user.Milestones)
-                .FirstAsync(user => user.Id == backlogData.UserId);
+                .FirstOrDefaultAsync(user => user.Id == backlogData.UserId);
+
+            if (user == null)
+                return NotFound($"User with Id {backlogData.UserId} not found");
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+
+            return Ok(backlogData.Id);
         }
 
-        [HttpDelete(Name = "DeleteBacklog")]
-        [Route("[action]/{mediaId}/{userId}")]
-        public async void DeleteBacklog(string mediaId, int userId)
+        [HttpDelete("[action]/{mediaId}/{userId}")]
+        public async Task<IActionResult> DeleteBacklog(string mediaId, int userId)
         {
-            var user = _databaseContext.Users
-                .Include(user => user.Backlogs)
-                .Include(user => user.Milestones)
-                .Where(user => user.Id == userId)
-                .Single();
+            var user = await _databaseContext.Users
+                .Include(u => u.Backlogs)
+                .Include(u => u.Milestones)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
-            var media = user.Backlogs.Single(r => r.MediaId == mediaId);
+            if (user == null)
+                return NotFound($"User with Id {userId} not found");
+
+            var media = user.Backlogs.SingleOrDefault(r => r.MediaId == mediaId);
+
+            if (media == null)
+                return NotFound($"Media with Id {mediaId} not found in user's backlog");
 
             _databaseContext.Backlogs.Remove(media);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+
+            return NoContent();
         }
 
-        [HttpPut(Name = "UpdateBacklogState")]
-        [Route("[action]/{backlogId}/{newState}")]
-        public async void UpdateBacklogState(int backlogId, BacklogCategoryType newState)
+        [HttpPut("[action]/{backlogId}/{newState}")]
+        public async Task<IActionResult> UpdateBacklogState(int backlogId, BacklogCategoryType newState)
         {
-            var user = _databaseContext.Users
-                .Include(user => user.Backlogs)
-                .Include(user => user.Milestones)
-                .Where(user => user.Backlogs.Any(b => b.Id == backlogId))
-                .Single();
+            var user = await _databaseContext.Users
+                .Include(u => u.Backlogs)
+                .Include(u => u.Milestones)
+                .FirstOrDefaultAsync(u => u.Backlogs.Any(b => b.Id == backlogId));
 
-            var media = user.Backlogs.Single(b => b.Id == backlogId);
+            if (user == null)
+                return NotFound($"Backlog with Id {backlogId} not found for any user");
+
+            var media = user.Backlogs.SingleOrDefault(b => b.Id == backlogId);
+
+            if (media == null)
+                return NotFound($"Media with Id {backlogId} not found in backlog");
+
             media.Category = newState;
 
             _databaseContext.Backlogs.Update(media);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+
+            return Ok();
         }
 
-        [HttpPut(Name = "GetUserBacklogStatus")]
-        [Route("[action]/{mediaId}/{userId}")]
+        [HttpGet("[action]/{mediaId}/{userId}")]
         public IActionResult GetUserBacklogStatus(string mediaId, int userId)
         {
             var isBacklogged = _databaseContext.Backlogs.Any(b => b.MediaId == mediaId && b.UserId == userId);

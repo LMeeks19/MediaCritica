@@ -60,11 +60,13 @@ function ViewUserPage() {
       setIsLoading(true);
       const userSummaryData = await GetViewUserSummary(location.state.userId);
       setUserSummary(userSummaryData);
-      const userFollowData = await GetUserFollow(
-        user.id ?? -1,
-        location.state.userId
-      );
-      setUserFollow(userFollowData);
+      var userFollowStatus = null
+      if (user.id !== undefined)
+        userFollowStatus = await GetUserFollow(
+          user.id,
+          location.state.userId
+        );
+      setUserFollow(userFollowStatus);
       setIsLoading(false);
     }
     GetUserSummary();

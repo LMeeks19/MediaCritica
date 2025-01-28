@@ -134,6 +134,7 @@ export const BaseAccordion: FC<SectionProps> = ({
       <AccordionSummary
         className="sub-header collapsible"
         expandIcon={<ArrowDropDownIcon />}
+        component="div"
       >
         <h2>{title}</h2>
         <div className="actions">
@@ -215,6 +216,7 @@ export const TabbedAccordion: FC<{
       <AccordionSummary
         className="sub-header collapsible"
         expandIcon={<ArrowDropDownIcon />}
+        component="div"
       >
         <h2>{title}</h2>
         <div className="actions">

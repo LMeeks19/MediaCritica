@@ -2,6 +2,7 @@
 {
     public interface IMapper
     {
+        UserMapper UserMapper { get; }
         SeasonMapper SeasonMapper { get; }
         SeriesMapper SeriesMapper { get; }
         EpisodeMapper EpisodeMapper { get; }

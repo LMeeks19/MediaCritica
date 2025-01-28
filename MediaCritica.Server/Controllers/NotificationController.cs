@@ -19,11 +19,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{userId}/{offset}/{limit}")]
         public async Task<IActionResult> GetUserNotifications(int userId, int offset, int limit = 25)
         {
-            var query = _databaseContext.Notifications.Where(n => n.RecipientId == userId);
-
-            var totalNotifications = await query.CountAsync();
-
-            var notifications = await query
+            var notifications = await _databaseContext.Notifications
+                .Where(n => n.RecipientId == userId)
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(offset)
                 .Take(limit)
@@ -38,11 +35,7 @@ namespace MediaCritica.Server.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(new
-            {
-                TotalCount = totalNotifications,
-                Notifications = notifications
-            });
+            return Ok(notifications);
         }
 
         // Mark a single notification as read

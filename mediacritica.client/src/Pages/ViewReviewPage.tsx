@@ -13,7 +13,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
-import { formatRelative } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import Snackbar from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
@@ -53,11 +53,13 @@ function ViewReviewPage() {
       const reviewData = await GetReview(reviewId);
       setReview(reviewData);
 
-      const engagement = await GetCurrentUserReviewEngagement(
-        reviewId,
-        user.id
-      );
-      setEngagement(engagement);
+      var engagementStatus = null;
+      if (user.id !== undefined)
+        engagementStatus = await GetCurrentUserReviewEngagement(
+          reviewId,
+          user.id
+        );
+      setEngagement(engagementStatus);
 
       setTitle(reviewData.title);
       setRating(reviewData.rating);
@@ -289,8 +291,8 @@ function ViewReviewPage() {
                 </div>
               </div>
               <div className="review-date">
-                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
-                |{" "}
+                {CapitaliseFirstLetter(formatDistanceToNowStrict(review.date))}{" "}
+                ago |{" "}
                 <span
                   className="reviewer"
                   onClick={() =>

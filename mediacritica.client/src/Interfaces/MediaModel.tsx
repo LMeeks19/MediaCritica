@@ -22,6 +22,7 @@ export interface MediaModel {
   imdbRating: string;
   imdbVotes: string;
   reviews: ReviewSummaryModel[];
+  totalReviews: number;
 }
 
 interface Rating {

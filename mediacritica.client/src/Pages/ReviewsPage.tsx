@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { GetMediaReviews } from "../Server/Server";
 import { formatDistanceToNowStrict } from "date-fns";
-import { Rating } from "@mui/material";
+import { Fab, Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 
 function ReviewsPage() {
   const location = useLocation();
@@ -16,22 +16,22 @@ function ReviewsPage() {
   const [reviews, setReviews] = useState<ReviewSummaryModel[]>(
     [] as ReviewSummaryModel[]
   );
-  const [isLoadDisabled, setIsLoadDisabled] = useState<boolean>(true);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const mediaId = location.state.mediaId;
   const mediaTitle = location.state.mediaTitle;
 
   useEffect(() => {
-    setIsLoading(true);
     FetchMediaReviews();
-    setIsLoading(false);
   }, []);
 
   async function FetchMediaReviews() {
+    setIsLoading(true);
     const reviewsData = await GetMediaReviews(mediaId, reviews.length);
-    if (reviewsData.length === 40) setIsLoadDisabled(false);
-    setReviews([...reviews, ...reviewsData]);
+    setReviews([...reviews, ...reviewsData.reviews]);
+    setTotalCount(reviewsData.totalCount);
+    setIsLoading(false);
   }
 
   return (
@@ -66,16 +66,19 @@ function ReviewsPage() {
               );
             })}
           </div>
-          <div className="button-container">
-            <CustomTooltip title={isLoadDisabled && "All reviews loaded"} arrow>
+          <div
+            className={`flex justify-center items-center p-6 ${
+              reviews.length === totalCount && "hidden"
+            }`}
+          >
+            <CustomTooltip title="Load more" arrow>
               <span>
-                <button
-                  className="load-btn"
-                  disabled={isLoadDisabled}
+                <Fab
+                  disabled={reviews.length === totalCount}
                   onClick={() => FetchMediaReviews()}
                 >
-                  Load More <AddIcon />
-                </button>
+                  <AddIcon />
+                </Fab>
               </span>
             </CustomTooltip>
           </div>

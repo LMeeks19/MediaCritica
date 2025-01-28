@@ -22,17 +22,18 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem;
-      padding: 2rem 2rem 0 2rem;
-      overflow: auto auto;
+      padding: 2rem;
+      overflow: hidden auto;
 
       .review-card {
         background-color: light-dark(whitesmoke, #242424);
         padding: 1rem 1.5rem;
-        box-shadow: 0 2px 5px #0000004d;
-        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         min-width: 200px;
-        flex: 1 1 calc(25% - 1.5rem);
+        flex: 1 1 45%;
+        height: fit-content;
         cursor: pointer;
         display: flex;
         flex-direction: column;

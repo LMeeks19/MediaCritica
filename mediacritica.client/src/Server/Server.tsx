@@ -18,7 +18,7 @@ import { SeasonModel } from "../Interfaces/SeasonModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserFollowModel } from "../Interfaces/UserFollowModel";
-import { UserFollowSummaryObjectModel } from "../Interfaces/UserFollowSummaryObjectModel";
+import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
@@ -216,7 +216,7 @@ export async function GetUserReviewsBreakdown(
 export async function GetMediaReviews(
   mediaId: string,
   offset: number = 0
-): Promise<ReviewSummaryModel[]> {
+): Promise<{ reviews: ReviewSummaryModel[]; totalCount: number }> {
   const response = await fetch(
     `/Review/GetMediaReviews/${mediaId}/${offset}/${40}`
   );
@@ -371,7 +371,7 @@ export async function GetCurrentUserReviewEngagement(
   const response = await fetch(
     `/Engagement/GetUserEngagement/${reviewId}/${userId ?? -1}`
   );
-  return response.status == 204 ? null : response.json();
+  return response.status === 200 ? response.json() : null;
 }
 
 export async function ToggleReviewEngagement(
@@ -425,7 +425,7 @@ export async function ToggleUserFollowNotificationStatus(
 export async function GetUserFollowers(
   userId: number,
   offset: number = 0
-): Promise<UserFollowSummaryObjectModel> {
+): Promise<UserFollowSummaryModel[]> {
   const response = await fetch(`/Follow/GetUserFollowers/${userId}/${offset}`);
   return response.json();
 }
@@ -433,7 +433,7 @@ export async function GetUserFollowers(
 export async function GetUserFollowing(
   userId: number,
   offset: number = 0
-): Promise<UserFollowSummaryObjectModel> {
+): Promise<UserFollowSummaryModel[]> {
   const response = await fetch(`/Follow/GetUserFollowing/${userId}/${offset}`);
   return response.json();
 }
@@ -442,7 +442,7 @@ export async function GetUserNotifications(
   userId: number,
   offset: number,
   limit: number = 25
-): Promise<{ totalCount: number; notifications: NotificationModel[] }> {
+): Promise<NotificationModel[]> {
   const response = await fetch(
     `/Notification/GetUserNotifications/${userId}/${offset}/${limit}`
   );

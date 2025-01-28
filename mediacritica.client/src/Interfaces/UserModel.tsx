@@ -7,6 +7,9 @@ export interface UserModel {
     preference: PreferenceModel;
     totalReviews: number;
     totalBacklogs: number
+    totalNotifications: number;
+    totalFollowers: number;
+    totalFollowing: number;
 }
 
 export interface PreferenceModel {

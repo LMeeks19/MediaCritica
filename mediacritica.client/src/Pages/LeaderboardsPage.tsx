@@ -195,7 +195,7 @@ function LeaderboardsPage() {
                     {...params}
                     variant="outlined"
                     label="Award Type"
-                    placeholder="Add Award..."
+                    placeholder="Select Awards..."
                     slotProps={{
                       input: {
                         ...params.InputProps,

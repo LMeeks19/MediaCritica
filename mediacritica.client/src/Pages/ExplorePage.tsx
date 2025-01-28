@@ -238,7 +238,6 @@ function ExplorePage() {
                 <CustomTooltip title="Load more" arrow>
                   <span>
                     <Fab
-                      className="load-btn"
                       onClick={() => FetchExplore(baseMedia.length)}
                     >
                       <AddIcon />

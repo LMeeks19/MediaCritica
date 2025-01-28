@@ -36,5 +36,16 @@
             DateTime endOfAllTime = DateTime.Now; // Current date
             return (startOfAllTime, endOfAllTime);
         }
+
+        public (int startMonth, int endMonth) GetSeasonMonths(int currentMonth)
+        {
+            return currentMonth switch
+            {
+                >= 12 or <= 2 => (12, 2),
+                >= 3 and <= 5 => (3, 5),
+                >= 6 and <= 8 => (6, 8),
+                _ => (9, 11)
+            };
+        }
     }
 }

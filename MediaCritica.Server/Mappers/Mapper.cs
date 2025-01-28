@@ -1,7 +1,8 @@
 ﻿namespace MediaCritica.Server.Mappers
 {
-    public class Mapper(SeasonMapper seasonMapper, SeriesMapper seriesMapper, EpisodeMapper episodeMapper, GameMapper gameMapper, MovieMapper movieMapper, MediaMapper mediaMapper, RatingMapper ratingMapper, ReviewMapper reviewMapper, BacklogMapper backlogMapper) : IMapper
+    public class Mapper(UserMapper usermapper, SeasonMapper seasonMapper, SeriesMapper seriesMapper, EpisodeMapper episodeMapper, GameMapper gameMapper, MovieMapper movieMapper, MediaMapper mediaMapper, RatingMapper ratingMapper, ReviewMapper reviewMapper, BacklogMapper backlogMapper) : IMapper
     {
+        public UserMapper UserMapper { get; set; } = usermapper;
         public SeasonMapper SeasonMapper { get; } = seasonMapper;
         public SeriesMapper SeriesMapper { get; } = seriesMapper;
         public EpisodeMapper EpisodeMapper { get; } = episodeMapper;

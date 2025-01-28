@@ -8,9 +8,10 @@
         public string? Email { get; set; }
         public string? Password { get; set; }
         public PreferenceModel Preference { get; set; }
-        public List<BacklogSummaryModel> BacklogSummary { get; set; } = [];
-        public List<EngagementUserSummaryModel> EngagementsSummary { get; set; } = [];
         public required int TotalReviews { get; set; }
         public required int TotalBacklogs { get; set; }
+        public required int TotalNotifications { get; set; }
+        public required int TotalFollowers { get; set; }
+        public required int TotalFollowing { get; set; }
     }
 }

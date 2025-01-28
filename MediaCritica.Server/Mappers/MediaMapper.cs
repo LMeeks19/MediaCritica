@@ -4,9 +4,10 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class MediaMapper(RatingMapper ratingMapper)
+    public class MediaMapper(RatingMapper ratingMapper, ReviewMapper reviewMapper)
     {
         private readonly RatingMapper _ratingMapper = ratingMapper;
+        private readonly ReviewMapper _reviewMapper = reviewMapper;
 
         public Media MapMedia(MediaModel mediaModel)
         {
@@ -61,6 +62,11 @@ namespace MediaCritica.Server.Mappers
                 Type = media.Type,
                 Writer = media.Writers,
                 Year = media.Year,
+                Reviews = media.Reviews
+                    .OrderByDescending(review => review.Date)
+                    .Take(10)
+                    .Select(_reviewMapper.MapReviewSummaryModel)
+                    .ToList(),
             };
 
             return mediaModel;

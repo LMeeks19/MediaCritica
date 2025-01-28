@@ -64,12 +64,12 @@
       }
 
       .MuiIconButton-root:hover {
-        background-color: rgba(palevioletred, 0.15);
+        background-color: rgba(palevioletred, 0.25);
       }
 
       .heart {
         color: var(--backlog-heart);
-
+        
         .MuiSvgIcon-root {
           font-size: 2rem !important;
         }

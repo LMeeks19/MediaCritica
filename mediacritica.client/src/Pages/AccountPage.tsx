@@ -60,7 +60,7 @@ import { format } from "date-fns";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { UserFollowSummaryObjectModel } from "../Interfaces/UserFollowSummaryObjectModel";
+import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
 
 function AccountPage() {
   const user = useRecoilValue(userState);
@@ -96,14 +96,8 @@ function AccountPage() {
   }, [activeTab]);
 
   const [activeSocialTab, setActiveSocialTab] = useState<number>(0);
-  const [followers, setFollowers] = useState<UserFollowSummaryObjectModel>({
-    count: -1,
-    data: [],
-  } as UserFollowSummaryObjectModel);
-  const [following, setFollowing] = useState<UserFollowSummaryObjectModel>({
-    count: -1,
-    data: [],
-  } as UserFollowSummaryObjectModel);
+  const [followers, setFollowers] = useState<UserFollowSummaryModel[]>([]);
+  const [following, setFollowing] = useState<UserFollowSummaryModel[]>([]);
 
   useEffect(() => {
     FetchSocial();
@@ -112,23 +106,14 @@ function AccountPage() {
   async function FetchSocial() {
     setIsLoading(true);
     if (activeTab === 1) {
-      if (
-        activeSocialTab === 0 &&
-        (followers.data.length < followers.count || followers.count === -1)
-      ) {
-        const followersData = await GetUserFollowers(
-          user.id,
-          followers.data.length
-        );
+      if (activeSocialTab === 0 && followers.length < user.totalFollowers) {
+        const followersData = await GetUserFollowers(user.id, followers.length);
         setFollowers(followersData);
       } else if (
         activeSocialTab === 1 &&
-        (following.data.length < following.count || following.count === -1)
+        following.length < user.totalFollowing
       ) {
-        const followingData = await GetUserFollowing(
-          user.id,
-          following.data.length
-        );
+        const followingData = await GetUserFollowing(user.id, following.length);
         setFollowing(followingData);
       }
     }
@@ -453,7 +438,6 @@ function AccountPage() {
               <CustomTooltip title="Load more" arrow>
                 <span>
                   <Fab
-                    className="load-btn"
                     disabled={items?.length === totalItems}
                     onClick={() => LoadMoreBacklogs(stage)}
                   >
@@ -561,8 +545,8 @@ function AccountPage() {
               </AppBar>
               {isLoading ? (
                 <Loader />
-              ) : (activeSocialTab === 0 && followers.data.length === 0) ||
-                (activeSocialTab === 1 && following.data.length === 0) ? (
+              ) : (activeSocialTab === 0 && followers.length === 0) ||
+                (activeSocialTab === 1 && following.length === 0) ? (
                 <div className="empty">
                   No {activeSocialTab === 0 ? "Followers" : "Followed Users"}
                 </div>
@@ -574,7 +558,7 @@ function AccountPage() {
                     hidden={activeSocialTab !== 0}
                   >
                     <div className="followers">
-                      {followers.data.map((follower) => {
+                      {followers.map((follower) => {
                         return (
                           <div
                             className="follower"
@@ -608,15 +592,14 @@ function AccountPage() {
                       })}
                       <div
                         className={`flex justify-center items-center p-6 ${
-                          followers.data.length === followers.count && "hidden"
+                          followers.length === user.totalFollowers && "hidden"
                         }`}
                       >
                         <CustomTooltip title="Load more" arrow>
                           <span>
                             <Fab
-                              className="load-btn"
                               disabled={
-                                followers.data?.length === followers.count
+                                followers?.length === user.totalFollowers
                               }
                               onClick={() => FetchSocial()}
                             >
@@ -633,7 +616,7 @@ function AccountPage() {
                     hidden={activeSocialTab !== 1}
                   >
                     <div className="followers">
-                      {following.data.map((follower) => {
+                      {following.map((follower) => {
                         return (
                           <div
                             className="follower"
@@ -765,7 +748,6 @@ function AccountPage() {
                         <CustomTooltip title="All reviewed media loaded" arrow>
                           <span>
                             <Fab
-                              className="load-btn"
                               disabled={reviews.length === user.totalReviews}
                               onClick={() => LoadMoreReviews()}
                             >

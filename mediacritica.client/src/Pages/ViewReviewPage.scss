@@ -70,7 +70,7 @@
           gap: 0.5rem;
 
           .title {
-            font-size: 2.5rem;
+            font-size: 2rem;
 
             .parent-title:hover, .sub-title:hover {
               text-decoration: underline;
@@ -89,7 +89,7 @@
             transition: background-color 0.3s ease-in-out,
               color 0.3s ease-in-out !important;
             background-color: transparent !important;
-            padding: 12px !important;
+            padding: 8px !important;
 
             &:not(:disabled):hover,
             &.Mui-selected {

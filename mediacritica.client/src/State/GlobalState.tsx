@@ -8,12 +8,9 @@ export const userState = atom({
   default: {} as UserModel,
 });
 
-export const notificationsObjectState = atom({
-  key: "notificationsObjectState",
-  default: { totalCount: -1, notifications: [] } as {
-    totalCount: number;
-    notifications: NotificationModel[];
-  },
+export const notificationsState = atom({
+  key: "notificationsState",
+  default: [] as NotificationModel[]
 });
 
 export const ConfirmationDialogState = atom({
