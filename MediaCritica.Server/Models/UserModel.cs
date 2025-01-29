@@ -8,10 +8,10 @@
         public string? Email { get; set; }
         public string? Password { get; set; }
         public PreferenceModel Preference { get; set; }
-        public required int TotalReviews { get; set; }
-        public required int TotalBacklogs { get; set; }
-        public required int TotalNotifications { get; set; }
-        public required int TotalFollowers { get; set; }
-        public required int TotalFollowing { get; set; }
+        public int TotalReviews { get; set; }
+        public int TotalBacklogs { get; set; }
+        public int TotalNotifications { get; set; }
+        public int TotalFollowers { get; set; }
+        public int TotalFollowing { get; set; }
     }
 }

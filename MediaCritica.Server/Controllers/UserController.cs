@@ -1,5 +1,4 @@
 ﻿using MediaCritica.Server.Enums;
-using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +8,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper, IMapper mapper) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, UserMapper userMapper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
-        private readonly IMapper _mapper = mapper;
+        private readonly UserMapper _userMapper = userMapper;
 
         [HttpGet("[action]/{email}")]
         public async Task<IActionResult> GetUser(string email)
@@ -28,15 +26,15 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
-                return NotFound();
+                return NotFound("User not found");
 
-            return Ok(_mapper.UserMapper.MapUserModel(user));
+            return Ok(_userMapper.MapUserModel(user));
         }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> PostUser([FromBody] CreateUserModel userModel)
         {
-            var user = _mapper.UserMapper.MapUser(userModel);
+            var user = _userMapper.MapUser(userModel);
 
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
@@ -131,7 +129,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound("User not found");
 
-            return Ok(_mapper.UserMapper.MapViewUserSummaryModel(user));
+            return Ok(_userMapper.MapViewUserSummaryModel(user));
         }
     }
 }
