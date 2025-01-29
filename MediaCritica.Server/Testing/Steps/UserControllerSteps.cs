@@ -14,25 +14,13 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class UserControllerSteps
     {
-        private static DbContextOptions<DatabaseContext> _options;
-        private static DatabaseContext _dbContext;
-        private static UserMapper _userMapper;
-        private static UserController _controller;
+        private UserController _controller;
         private IActionResult _response;
 
         [BeforeScenario]
-        public static async Task SetUp()
+        public async Task BeforeScenario()
         {
-            // Set up an in-memory database for testing
-            _options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-
-            // Initialize the database context with the in-memory database
-            _dbContext = new DatabaseContext(_options);
-
-            // Seed the database with a user
-            _dbContext.Users.Add(new User
+            await GlobalSetup._dbContext.Users.AddAsync(new User
             {
                 Id = 1,
                 Email = "test1@email.com",
@@ -48,18 +36,19 @@ namespace MediaCritica.Server.Testing.Steps
                     Palette = "#000000"
                 }
             });
-            await _dbContext.SaveChangesAsync();
 
-            _userMapper = new UserMapper(new MilestoneCalculatorHelper(_dbContext, new DateRangeCalculatorHelper()), new ReviewMapper());
+            await GlobalSetup._dbContext.SaveChangesAsync();
 
-            // Create the controller with the in-memory database context
-            _controller = new UserController(_dbContext, _userMapper);
+            var userMapper = new UserMapper(new MilestoneCalculatorHelper(GlobalSetup._dbContext, new DateRangeCalculatorHelper()), new ReviewMapper());
+            _controller = new UserController(GlobalSetup._dbContext, userMapper);
         }
 
         [AfterScenario]
-        public static async Task TearDown()
+        public async Task AfterScenario()
         {
-            await _dbContext.Database.EnsureDeletedAsync();
+            var users = await GlobalSetup._dbContext.Users.ToListAsync();
+            GlobalSetup._dbContext.Users.RemoveRange(users);
+            await GlobalSetup._dbContext.SaveChangesAsync();
         }
 
         [When(@"I call GetUser with the Email ""(.*)""")]
@@ -105,14 +94,14 @@ namespace MediaCritica.Server.Testing.Steps
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {
             var result = (ObjectResult)_response;
-            Assert.AreEqual(result.StatusCode!, statusCode);
+            Assert.AreEqual(statusCode, result.StatusCode!);
         }
 
         [Then(@"The response should be ""(.*)""")]
         public void ThenTheResponseShouldBe(string message)
         {
             var result = (ObjectResult)_response;
-            Assert.AreEqual(result.Value, message);
+            Assert.AreEqual(message, result.Value);
         }
 
         [Then(@"The UserModel response should be")]

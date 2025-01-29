@@ -91,7 +91,6 @@ Scenario: Update a users password
 		| Id | Forename | Surname | Email           | Password        | PreferenceId | Theme  | Palette |
 		| 1  | Test     | 1       | test1@email.com | NewPassword123! | 1            | System | #000000 |
 
-
 Scenario: Update a user preference that doesn't exist
 	When I call UpdateUserPreference with the PreferenceModel
 		| Id | Theme | Palette |

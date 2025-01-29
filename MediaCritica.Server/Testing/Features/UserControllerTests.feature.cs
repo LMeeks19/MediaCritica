@@ -625,7 +625,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user preference that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 95
+#line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -643,13 +643,13 @@ this.ScenarioInitialize(scenarioInfo);
                             "2",
                             "Light",
                             "#FFFFFF"});
-#line 96
+#line 95
  testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table15, "When ");
 #line hidden
-#line 99
+#line 98
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 100
+#line 99
  testRunner.And("The response should be \"Preference not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -663,7 +663,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user preference that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 102
+#line 101
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -681,10 +681,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "1",
                             "Light",
                             "#FFFFFF"});
-#line 103
+#line 102
  testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table16, "When ");
 #line hidden
-#line 106
+#line 105
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -695,7 +695,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "1",
                             "Light",
                             "#FFFFFF"});
-#line 107
+#line 106
  testRunner.And("The PreferenceModel response should be", ((string)(null)), table17, "And ");
 #line hidden
             }
@@ -709,7 +709,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user summary that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 111
+#line 110
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -719,13 +719,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 112
+#line 111
  testRunner.When("I call GetViewUserSummary with the Id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 112
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 114
+#line 113
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -739,7 +739,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("get a user summary that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 116
+#line 115
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -749,10 +749,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 117
+#line 116
  testRunner.When("I call GetViewUserSummary with the Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 118
+#line 117
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -763,7 +763,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "1",
                             "Test 1",
                             "2025-01-01"});
-#line 119
+#line 118
  testRunner.And("The UserSummaryModel response should be", ((string)(null)), table18, "And ");
 #line hidden
             }
