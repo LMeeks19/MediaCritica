@@ -23,7 +23,7 @@ import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
-import { ViewUserSummaryModel } from "../Interfaces/ViewUserSummaryModel";
+import { UserSummaryModel } from "../Interfaces/UserSummaryModel";
 
 // User API Calls
 export async function GetUser(email: string): Promise<UserModel> {
@@ -56,10 +56,10 @@ export async function DeleteUser(userId: number): Promise<boolean> {
   return response.json();
 }
 
-export async function GetViewUserSummary(
+export async function GetUserSummary(
   userId: number
-): Promise<ViewUserSummaryModel> {
-  const response = await fetch(`/User/GetViewUserSummary/${userId}`);
+): Promise<UserSummaryModel> {
+  const response = await fetch(`/User/GetUserSummary/${userId}`);
   return response.json();
 }
 

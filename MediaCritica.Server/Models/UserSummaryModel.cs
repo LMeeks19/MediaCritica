@@ -1,10 +1,10 @@
 ﻿namespace MediaCritica.Server.Models
 {
-    public class ViewUserSummaryModel
+    public class UserSummaryModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime Joined { get; set; }
+        public DateOnly Joined { get; set; }
         public double ReviewsWritten { get; set; }
         public double MediaBacklogged { get; set; }
         public double Followers { get; set; }

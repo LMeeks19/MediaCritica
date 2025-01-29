@@ -34,6 +34,11 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostUser([FromBody] CreateUserModel userModel)
         {
+            var userExists = await _databaseContext.Users.AnyAsync(u => u.Email == userModel.Email);
+
+            if (userExists)
+                return Conflict("Email already in use");
+
             var user = _userMapper.MapUser(userModel);
 
             await _databaseContext.Users.AddAsync(user);
@@ -42,13 +47,28 @@ namespace MediaCritica.Server.Controllers
             return await GetUser(user.Email);
         }
 
+        [HttpDelete("[action]/{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            var user = await _databaseContext.Users
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            _databaseContext.Users.Remove(user);
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok("User deleted");
+        }
+
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
         {
             var user = await _databaseContext.Users.SingleOrDefaultAsync(user => user.Id == updateUserModel.UserId);
 
             if (user == null)
-                return NotFound();
+                return NotFound("User not found");
 
             switch (updateUserModel.Type)
             {
@@ -88,31 +108,11 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Preferences.Update(preference);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(new PreferenceModel
-            {
-                Id = preference.Id,
-                Theme = preference.Theme,
-                Palette = preference.Palette
-            });
-        }
-
-        [HttpDelete("[action]/{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
-        {
-            var user = await _databaseContext.Users
-                .SingleOrDefaultAsync(u => u.Id == userId);
-
-            if (user == null)
-                return NotFound("User not found");
-
-            _databaseContext.Users.Remove(user);
-            await _databaseContext.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(preferenceModel);
         }
 
         [HttpGet("[action]/{userId}")]
-        public async Task<IActionResult> GetViewUserSummary(int userId)
+        public async Task<IActionResult> GetUserSummary(int userId)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Backlogs)
@@ -129,7 +129,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound("User not found");
 
-            return Ok(_userMapper.MapViewUserSummaryModel(user));
+            return Ok(_userMapper.MapUserSummaryModel(user));
         }
     }
 }

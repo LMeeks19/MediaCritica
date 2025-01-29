@@ -22,11 +22,11 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import millify from "millify";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { ViewUserSummaryModel } from "../Interfaces/ViewUserSummaryModel";
+import { UserSummaryModel } from "../Interfaces/UserSummaryModel";
 import {
   FollowUser,
   GetUserFollow,
-  GetViewUserSummary,
+  GetUserSummary,
   ToggleUserFollowNotificationStatus,
   UnfollowUser,
 } from "../Server/Server";
@@ -48,17 +48,17 @@ function ViewUserPage() {
   const user = useRecoilValue(userState);
   const [isLoading, setIsLoading] = useState(true);
   const [userFollow, setUserFollow] = useState<UserFollowModel | null>(null);
-  const [userSummary, setUserSummary] = useState<ViewUserSummaryModel>(
-    {} as ViewUserSummaryModel
+  const [userSummary, setUserSummary] = useState<UserSummaryModel>(
+    {} as UserSummaryModel
   );
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function GetUserSummary() {
+    async function FetchUserSummary() {
       if (location.state?.userId === undefined) navigate("/");
       setIsLoading(true);
-      const userSummaryData = await GetViewUserSummary(location.state.userId);
+      const userSummaryData = await GetUserSummary(location.state.userId);
       setUserSummary(userSummaryData);
       var userFollowStatus = null
       if (user.id !== undefined)
@@ -69,7 +69,7 @@ function ViewUserPage() {
       setUserFollow(userFollowStatus);
       setIsLoading(false);
     }
-    GetUserSummary();
+    FetchUserSummary();
   }, []);
 
   async function ToggleFollow(isFollowed: boolean) {

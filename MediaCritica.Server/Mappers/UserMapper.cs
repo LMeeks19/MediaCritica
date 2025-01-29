@@ -18,7 +18,7 @@ namespace MediaCritica.Server.Mappers
                 Surname = userModel.Surname,
                 Email = userModel.Email,
                 Password = userModel.Password,
-                Joined = DateTime.Now,
+                Joined = DateOnly.MaxValue,
                 Preference = new Preference()
                 {
                     Theme = "System",
@@ -55,9 +55,9 @@ namespace MediaCritica.Server.Mappers
             return userModel;
         }
 
-        public ViewUserSummaryModel MapViewUserSummaryModel(User user)
+        public UserSummaryModel MapUserSummaryModel(User user)
         {
-            var viewUserSummaryModel = new ViewUserSummaryModel()
+            var viewUserSummaryModel = new UserSummaryModel()
             {
                 Id = user.Id,
                 Name = $"{user.Forename} {user.Surname}",
