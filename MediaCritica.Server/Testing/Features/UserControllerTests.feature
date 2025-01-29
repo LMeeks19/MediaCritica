@@ -1,5 +1,13 @@
 Feature: UserControllerTests
 
+Background: 
+	Given I have the following users
+		| Id | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+	And I have the following preferences
+		| Id | UserId | Theme  | Palette |
+		| 1  | 1      | System | #000000 |
+
 Scenario: Get a user by email that exists
 	When I call GetUser with the Email "test1@email.com"
 	Then The status code should be 200

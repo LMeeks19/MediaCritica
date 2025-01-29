@@ -73,6 +73,97 @@ namespace MediaCritica.Server.Testing.Features
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 3
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Forename",
+                        "Surname",
+                        "Email",
+                        "Password",
+                        "Joined"});
+            table1.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "1",
+                        "test1@email.com",
+                        "Password123!",
+                        "2025-01-01"});
+            table1.AddRow(new string[] {
+                        "2",
+                        "Test",
+                        "2",
+                        "test2@email.com",
+                        "Password456!",
+                        "2025-01-02"});
+#line 4
+ testRunner.Given("I have the following users", ((string)(null)), table1, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "UserId",
+                        "Theme",
+                        "Palette"});
+            table2.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "System",
+                        "#000000"});
+            table2.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Dark",
+                        "#FFFFFF"});
+#line 8
+ testRunner.And("I have the following preferences", ((string)(null)), table2, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "RecipientId",
+                        "AuthorName",
+                        "Message",
+                        "IsRead",
+                        "IsBookmarked",
+                        "CreatedAt"});
+            table3.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "Test 2",
+                        "Test Message 1",
+                        "false",
+                        "false",
+                        "2024-04-01"});
+            table3.AddRow(new string[] {
+                        "2",
+                        "1",
+                        "Test 2",
+                        "Test Message 2",
+                        "true",
+                        "true",
+                        "2024-01-01"});
+            table3.AddRow(new string[] {
+                        "3",
+                        "1",
+                        "Test 2",
+                        "Test Message 3",
+                        "false",
+                        "true",
+                        "2024-03-01"});
+            table3.AddRow(new string[] {
+                        "4",
+                        "1",
+                        "Test 2",
+                        "Test Message 4",
+                        "true",
+                        "false",
+                        "2024-02-01"});
+#line 12
+ testRunner.And("I have the following notifications", ((string)(null)), table3, "And ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Get Notifications")]
         public void GetNotifications()
@@ -80,7 +171,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Notifications", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 3
+#line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -90,6 +181,86 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 20
+ testRunner.When("I call GetUserNotifications with userId 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "AuthorName",
+                            "Message",
+                            "IsRead",
+                            "IsBookmarked",
+                            "CreatedAt"});
+                table4.AddRow(new string[] {
+                            "1",
+                            "Test 2",
+                            "Test Message 1",
+                            "false",
+                            "false",
+                            "2024-04-01"});
+                table4.AddRow(new string[] {
+                            "3",
+                            "Test 2",
+                            "Test Message 3",
+                            "false",
+                            "true",
+                            "2024-03-01"});
+                table4.AddRow(new string[] {
+                            "4",
+                            "Test 2",
+                            "Test Message 4",
+                            "true",
+                            "false",
+                            "2024-02-01"});
+                table4.AddRow(new string[] {
+                            "2",
+                            "Test 2",
+                            "Test Message 2",
+                            "true",
+                            "true",
+                            "2024-01-01"});
+#line 22
+ testRunner.And("The NotificationModels should be", ((string)(null)), table4, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get Notifications but the user has none")]
+        public void GetNotificationsButTheUserHasNone()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Notifications but the user has none", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 30
+ testRunner.When("I call GetUserNotifications with userId 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 32
+ testRunner.And("The NotificationModels should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
