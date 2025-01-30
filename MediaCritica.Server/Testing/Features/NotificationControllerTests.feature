@@ -6,11 +6,6 @@ Background:
 		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
 		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
 		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
-
-	And I have the following preferences
-		| Id | UserId | Theme  | Palette |
-		| 1  | 1      | System | #000000 |
-		| 2  | 2      | Dark   | #FFFFFF |
 	And I have the following notifications
 		| Id | RecipientId | AuthorName | Message        | IsRead | IsBookmarked | CreatedAt  |
 		| 1  | 1           | Test 2     | Test Message 1 | false  | false        | 2024-04-01 |
@@ -18,7 +13,6 @@ Background:
 		| 3  | 1           | Test 2     | Test Message 3 | false  | true         | 2024-03-01 |
 		| 4  | 1           | Test 2     | Test Message 4 | true   | false        | 2024-02-01 |
 		| 5  | 2           | Test 3     | Test Message 5 | true   | false        | 2024-05-01 |
-
 
 Scenario: Get Notifications
 	When I call GetUserNotifications with userId 1 

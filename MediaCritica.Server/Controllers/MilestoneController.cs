@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Controllers
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound($"User with Id: {userId} not found.");
+                return NotFound($"User not found");
 
             var milestones = _milestoneCalculatorHelper.GetUserMilestones(user);
 

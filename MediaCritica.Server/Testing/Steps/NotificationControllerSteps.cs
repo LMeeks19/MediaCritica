@@ -16,7 +16,6 @@ namespace MediaCritica.Server.Testing.Steps
     public class NotificationControllerSteps
     {
         private NotificationController _controller;
-        private IHubContext<NotificationHub> _hubContext;
 
         [BeforeScenario]
         public void BeforeScenario()

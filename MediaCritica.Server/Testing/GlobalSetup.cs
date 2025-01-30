@@ -56,7 +56,6 @@ namespace MediaCritica.Server.Testing
             var preferences = table.CreateSet<Preference>().ToList();
             await _dbContext.Preferences.AddRangeAsync(preferences);
             await _dbContext.SaveChangesAsync();
-
         }
 
         [Given(@"I have the following notifications")]
