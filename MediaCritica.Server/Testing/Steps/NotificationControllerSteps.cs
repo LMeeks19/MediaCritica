@@ -56,11 +56,11 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSetup._response = await _controller.Delete(notificationId);
         }
 
-        [When(@"I call NotifyFollowers with the NewNotificationModel")]
-        public async Task WhenICallNotifyFollowersWithTheNewNotificationModel(Table table)
+        [When(@"I call PostNotifications with the NewNotificationModel")]
+        public async Task WhenICallPostNotificationsWithTheNewNotificationModel(Table table)
         {
             var newNotificationModel = table.CreateInstance<NewNotificationModel>();
-            GlobalSetup._response = await _controller.NotifyFollowers(newNotificationModel);
+            GlobalSetup._response = await _controller.PostNotifications(newNotificationModel);
         }
 
         [Then(@"The NotificationModels should be")]

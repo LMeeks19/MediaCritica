@@ -106,8 +106,7 @@ namespace MediaCritica.Server.Controllers
             return Ok($"Notification {notification.Id} deleted");
         }
 
-        // Notify followers about a new review
-        public async Task<IActionResult> NotifyFollowers(NewNotificationModel newNotificationModel)
+        public async Task<IActionResult> PostNotifications(NewNotificationModel newNotificationModel)
         {
             var notifications = await _databaseContext.UserFollows
                 .Where(f => f.FollowedId == newNotificationModel.AuthorId && f.EnabledNotifications)
@@ -127,7 +126,18 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Notifications.AddRangeAsync(notifications);
             await _databaseContext.SaveChangesAsync();
 
-            var connectionIds = notifications!.Select(n => _notificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
+            return Ok(notifications);
+        }
+
+        // Notify followers about a new review
+        public async Task<IActionResult> NotifyFollowers(NewNotificationModel newNotificationModel)
+        {
+            var response = (ObjectResult)await PostNotifications(newNotificationModel);
+
+            if (response.Value is not List<Notification> notifications)
+                return NotFound(response.Value);
+
+            var connectionIds = notifications.Select(n => _notificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
             if (connectionIds.Count != 0)
             {
                 await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", new { newNotificationModel.AuthorName, newNotificationModel.Message, });

@@ -593,12 +593,12 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Notify followers with no followers to notify")]
-        public void NotifyFollowersWithNoFollowersToNotify()
+        [NUnit.Framework.DescriptionAttribute("Post notifications with no followers")]
+        public void PostNotificationsWithNoFollowers()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify followers with no followers to notify", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post notifications with no followers", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 88
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -642,7 +642,7 @@ this.FeatureBackground();
                             "Test 1",
                             "Test Notification Message"});
 #line 93
- testRunner.When("I call NotifyFollowers with the NewNotificationModel", ((string)(null)), table6, "When ");
+ testRunner.When("I call Post with the NewNotificationModel", ((string)(null)), table6, "When ");
 #line hidden
 #line 96
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -655,12 +655,12 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Notify followers")]
-        public void NotifyFollowers()
+        [NUnit.Framework.DescriptionAttribute("Post notifications")]
+        public void PostNotifications()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify followers", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post notifications", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 99
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -704,7 +704,7 @@ this.FeatureBackground();
                             "Test 1",
                             "Test Notification Message"});
 #line 104
- testRunner.When("I call NotifyFollowers with the NewNotificationModel", ((string)(null)), table8, "When ");
+ testRunner.When("I call Post with the NewNotificationModel", ((string)(null)), table8, "When ");
 #line hidden
 #line 107
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -725,12 +725,6 @@ this.FeatureBackground();
                             "false"});
 #line 108
  testRunner.And("The following notifications should have been created", ((string)(null)), table9, "And ");
-#line hidden
-#line 111
- testRunner.And("SignalR should notify the connected followers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 112
- testRunner.And("The response should be \"Followers notified\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

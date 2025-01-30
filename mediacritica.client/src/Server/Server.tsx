@@ -344,14 +344,14 @@ export async function UpdateBacklogState(
 export async function GetUserRankings(
   timeframe: string
 ): Promise<UserRankingModel[]> {
-  const response = await fetch(`/Leaderboards/GetUserRankings/${timeframe}`);
+  const response = await fetch(`/Leaderboard/GetUserRankings/${timeframe}`);
   return response.json();
 }
 
 export async function GetMediaTrends(
   timeframe: string
 ): Promise<MediaTrendModel[]> {
-  const response = await fetch(`/Leaderboards/GetMediaTrends/${timeframe}`);
+  const response = await fetch(`/Leaderboard/GetMediaTrends/${timeframe}`);
   return response.json();
 }
 
@@ -359,7 +359,7 @@ export async function GetMediaTrends(
 export async function GetUserMilestones(
   userId: number
 ): Promise<UserMilestoneModelObject[]> {
-  const response = await fetch(`/Milestones/GetUserMilestones/${userId}`);
+  const response = await fetch(`/Milestone/GetUserMilestones/${userId}`);
   return response.json();
 }
 

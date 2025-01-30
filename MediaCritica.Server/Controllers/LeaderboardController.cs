@@ -8,7 +8,7 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LeaderboardsController(DatabaseContext databaseContext, DateRangeCalculatorHelper dateRangeCalculatorHelper, TrendCalculatorHelper trendCalculatorHelper) : ControllerBase
+    public class LeaderboardController(DatabaseContext databaseContext, DateRangeCalculatorHelper dateRangeCalculatorHelper, TrendCalculatorHelper trendCalculatorHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly DateRangeCalculatorHelper _dateRangeCalculatorHelper = dateRangeCalculatorHelper;

@@ -30,7 +30,6 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound($"User with Id: {userId} not found.");
 
-
             var milestones = _milestoneCalculatorHelper.GetUserMilestones(user);
 
             var milestonesByCategory = milestones
@@ -38,7 +37,7 @@ namespace MediaCritica.Server.Controllers
                 .Select(group => new MilestoneCategoryModel
                 {
                     Category = group.Key.ToString(),
-                    Milestones = group.ToList()
+                    Milestones = [.. group]
                 })
                 .ToList();
 

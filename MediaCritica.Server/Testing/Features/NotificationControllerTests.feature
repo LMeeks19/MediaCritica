@@ -85,23 +85,23 @@ Scenario: Delete notificaiton
 	And The response should be "Notification 1 deleted"
 	And Notifications should no longer contain notification with Id 1
 
-Scenario: Notify followers with no followers to notify
+Scenario: Post notifications with no followers
 	Given I have the following userFollows
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 1          | 2          | 2025-01-01 | true                 |
 		| 2  | 2          | 1          | 2025-01-02 | false                |
-	When I call NotifyFollowers with the NewNotificationModel
+	When I call Post with the NewNotificationModel
 		| AuthorId | AuthorName | Message                   |
 		| 1        | Test 1     | Test Notification Message |
 	Then The status code should be 404
 	And The response should be "No followers to send notifications to"
 
-Scenario: Notify followers
+Scenario: Post notifications
 	Given I have the following userFollows
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 2          | 1          | 2025-01-01 | true                 |
 		| 2  | 2          | 1          | 2025-01-02 | true                 |
-	When I call NotifyFollowers with the NewNotificationModel
+	When I call Post with the NewNotificationModel
 		| AuthorId | AuthorName | Message                   |
 		| 1        | Test 1     | Test Notification Message |
 	Then The status code should be 200
