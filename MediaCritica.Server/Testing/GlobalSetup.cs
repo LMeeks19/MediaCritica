@@ -67,6 +67,14 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following userFollows")]
+        public async Task GivenIHaveTheFollowingUserFollows(Table table)
+        {
+            var userFollows = table.CreateSet<UserFollow>().ToList();
+            await _dbContext.UserFollows.AddRangeAsync(userFollows);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Then(@"The status code should be (\d+)")]
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {

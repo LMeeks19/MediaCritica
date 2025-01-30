@@ -586,7 +586,151 @@ this.FeatureBackground();
  testRunner.And("The response should be \"Notification 1 deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 86
- testRunner.And("Notification should no longer contain notification with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Notifications should no longer contain notification with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Notify followers with no followers to notify")]
+        public void NotifyFollowersWithNoFollowersToNotify()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify followers with no followers to notify", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 88
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "FollowerId",
+                            "FollowedId",
+                            "FollowedOn",
+                            "EnabledNotifications"});
+                table5.AddRow(new string[] {
+                            "1",
+                            "1",
+                            "2",
+                            "2025-01-01",
+                            "true"});
+                table5.AddRow(new string[] {
+                            "2",
+                            "2",
+                            "1",
+                            "2025-01-02",
+                            "false"});
+#line 89
+ testRunner.Given("I have the following userFollows", ((string)(null)), table5, "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                            "AuthorId",
+                            "AuthorName",
+                            "Message"});
+                table6.AddRow(new string[] {
+                            "1",
+                            "Test 1",
+                            "Test Notification Message"});
+#line 93
+ testRunner.When("I call NotifyFollowers with the NewNotificationModel", ((string)(null)), table6, "When ");
+#line hidden
+#line 96
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 97
+ testRunner.And("The response should be \"No followers to send notifications to\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Notify followers")]
+        public void NotifyFollowers()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify followers", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 99
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "FollowerId",
+                            "FollowedId",
+                            "FollowedOn",
+                            "EnabledNotifications"});
+                table7.AddRow(new string[] {
+                            "1",
+                            "2",
+                            "1",
+                            "2025-01-01",
+                            "true"});
+                table7.AddRow(new string[] {
+                            "2",
+                            "2",
+                            "1",
+                            "2025-01-02",
+                            "true"});
+#line 100
+ testRunner.Given("I have the following userFollows", ((string)(null)), table7, "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                            "AuthorId",
+                            "AuthorName",
+                            "Message"});
+                table8.AddRow(new string[] {
+                            "1",
+                            "Test 1",
+                            "Test Notification Message"});
+#line 104
+ testRunner.When("I call NotifyFollowers with the NewNotificationModel", ((string)(null)), table8, "When ");
+#line hidden
+#line 107
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "RecipientId",
+                            "AuthorName",
+                            "Message",
+                            "IsRead",
+                            "IsBookmarked"});
+                table9.AddRow(new string[] {
+                            "6",
+                            "2",
+                            "Test 1",
+                            "Test Notification Message",
+                            "false",
+                            "false"});
+#line 108
+ testRunner.And("The following notifications should have been created", ((string)(null)), table9, "And ");
+#line hidden
+#line 111
+ testRunner.And("SignalR should notify the connected followers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 112
+ testRunner.And("The response should be \"Followers notified\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

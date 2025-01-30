@@ -1,6 +1,7 @@
 ﻿using MediaCritica.Server.Controllers;
 using MediaCritica.Server.Hubs;
 using MediaCritica.Server.Models;
+using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -15,19 +16,12 @@ namespace MediaCritica.Server.Testing.Steps
     public class NotificationControllerSteps
     {
         private NotificationController _controller;
+        private IHubContext<NotificationHub> _hubContext;
 
         [BeforeScenario]
         public void BeforeScenario()
         {
-            var mockClients = new Mock<IHubClients>();
-            var mockClientProxy = new Mock<IClientProxy>();
-
-            mockClients.Setup(clients => clients.All).Returns(mockClientProxy.Object);
-
-            var mockHubContext = new Mock<IHubContext<NotificationHub>>();
-            mockHubContext.Setup(context => context.Clients).Returns(mockClients.Object);
-
-            var hubContext = mockHubContext.Object;
+            var hubContext = new Mock<IHubContext<NotificationHub>>().Object;
 
             _controller = new NotificationController(GlobalSetup._dbContext, hubContext, new NotificationHub());
         }
@@ -60,6 +54,13 @@ namespace MediaCritica.Server.Testing.Steps
         public async Task WhenICallDeleteWithId(int notificationId)
         {
             GlobalSetup._response = await _controller.Delete(notificationId);
+        }
+
+        [When(@"I call NotifyFollowers with the NewNotificationModel")]
+        public async Task WhenICallNotifyFollowersWithTheNewNotificationModel(Table table)
+        {
+            var newNotificationModel = table.CreateInstance<NewNotificationModel>();
+            GlobalSetup._response = await _controller.NotifyFollowers(newNotificationModel);
         }
 
         [Then(@"The NotificationModels should be")]
@@ -126,11 +127,31 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.IsTrue(notification.IsBookmarked);
         }
 
-        [Then(@"Notification should no longer contain notification with Id (\d+)")]
+        [Then(@"Notifications should no longer contain notification with Id (\d+)")]
         public async Task NotificationShouldNoLongerContainNotificatioNWithId(int notificationId)
         {
             var notification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
             Assert.IsNull(notification);
+        }
+
+        [Then(@"The following notifications should have been created")]
+        public async Task TheFollowingNotificationShouldHaveBeenCreated(Table table)
+        {
+            var expectedNotifications = table.CreateSet<Notification>();
+            Assert.IsNotEmpty(expectedNotifications);
+
+            foreach (var expectedNotification in expectedNotifications)
+            {
+                var actualNotification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == expectedNotification.Id);
+                Assert.IsNotNull(actualNotification);
+                Assert.AreEqual(expectedNotification.Id, actualNotification.Id);
+                Assert.AreEqual(expectedNotification.RecipientId, actualNotification.RecipientId);
+                Assert.AreEqual(expectedNotification.AuthorName, actualNotification.AuthorName);
+                Assert.AreEqual(expectedNotification.Message, actualNotification.Message);
+                Assert.AreEqual(expectedNotification.IsRead, actualNotification.IsRead);
+                Assert.AreEqual(expectedNotification.IsBookmarked, actualNotification.IsBookmarked);
+                Assert.AreEqual(DateTime.Now.Date, actualNotification.CreatedAt.Date);
+            }
         }
     }
 }
