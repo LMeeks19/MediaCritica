@@ -60,13 +60,6 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSetup._response = await _controller.GetUserSummary(userId);
         }
 
-        [Then(@"The response should be ""(.*)""")]
-        public void ThenTheResponseShouldBe(string message)
-        {
-            var result = (ObjectResult)GlobalSetup._response;
-            Assert.AreEqual(message, result.Value);
-        }
-
         [Then(@"The UserModel response should be")]
         public void ThenTheUserModelResponseShouldBe(Table table)
         {

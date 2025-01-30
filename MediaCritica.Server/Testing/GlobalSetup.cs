@@ -30,13 +30,6 @@ namespace MediaCritica.Server.Testing
             await _dbContext.Database.EnsureDeletedAsync();
         }
 
-        [Then(@"The status code should be (\d+)")]
-        public void ThenTheStatusCodeShouldBe(int statusCode)
-        {
-            var result = (ObjectResult)_response;
-            Assert.AreEqual(statusCode, result.StatusCode!);
-        }
-
         [Given(@"I have the following users")]
         public async Task GivenIHaveTheFollowingUsers(Table table)
         {
@@ -72,6 +65,20 @@ namespace MediaCritica.Server.Testing
             var notifications = table.CreateSet<Notification>().ToList();
             await _dbContext.Notifications.AddRangeAsync(notifications);
             await _dbContext.SaveChangesAsync();
+        }
+
+        [Then(@"The status code should be (\d+)")]
+        public void ThenTheStatusCodeShouldBe(int statusCode)
+        {
+            var result = (ObjectResult)_response;
+            Assert.AreEqual(statusCode, result.StatusCode!);
+        }
+
+        [Then(@"The response should be ""(.*)""")]
+        public void ThenTheResponseShouldBe(string message)
+        {
+            var result = (ObjectResult)_response;
+            Assert.AreEqual(message, result.Value);
         }
     }
 }
