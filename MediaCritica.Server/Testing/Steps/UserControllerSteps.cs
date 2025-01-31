@@ -17,53 +17,53 @@ namespace MediaCritica.Server.Testing.Steps
         [BeforeScenario]
         public void BeforeScenario()
         {
-            var userMapper = new UserMapper(new MilestoneCalculatorHelper(GlobalSetup._dbContext, new DateRangeCalculatorHelper()), new ReviewMapper());
-            _controller = new UserController(GlobalSetup._dbContext, userMapper);
+            var userMapper = new UserMapper(new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper()), new ReviewMapper());
+            _controller = new UserController(GlobalSteps._dbContext, userMapper);
         }
 
         [When(@"I call GetUser with the Email ""(.*)""")]
         public async Task WhenICallGetUserWithTheEmail(string email)
         {
-            GlobalSetup._response = await _controller.GetUser(email);
+            GlobalSteps._response = await _controller.GetUser(email);
         }
 
         [When(@"I call DeleteUser with the Id (\d+)")]
         public async Task WhenICallDeleteUserWithTheId(int userId)
         {
-            GlobalSetup._response = await _controller.DeleteUser(userId);
+            GlobalSteps._response = await _controller.DeleteUser(userId);
         }
 
         [When(@"I call PostUser with the User")]
         public async Task WhenICallPostUserWithTheUser(Table table)
         {
             var user = table.CreateInstance<CreateUserModel>();
-            GlobalSetup._response = await _controller.PostUser(user);
+            GlobalSteps._response = await _controller.PostUser(user);
         }
 
         [When(@"I call UpdateUser with the UpdateUserModel")]
         public async Task WhenICallUpdateUserWithTheUpdateUserModel(Table table)
         {
             var updateUserModel = table.CreateInstance<UpdateUserModel>();
-            GlobalSetup._response = await _controller.UpdateUser(updateUserModel);
+            GlobalSteps._response = await _controller.UpdateUser(updateUserModel);
         }
 
         [When(@"I call UpdateUserPreference with the PreferenceModel")]
         public async Task WhenICallUpdateUserPreferenceWithThePreferenceModel(Table table)
         {
             var preferenceModel = table.CreateInstance<PreferenceModel>();
-            GlobalSetup._response = await _controller.UpdateUserPreference(preferenceModel);
+            GlobalSteps._response = await _controller.UpdateUserPreference(preferenceModel);
         }
 
         [When(@"I call GetViewUserSummary with the Id (\d+)")]
         public async Task WhenICallGetViewSummaryWithTheId(int userId)
         {
-            GlobalSetup._response = await _controller.GetUserSummary(userId);
+            GlobalSteps._response = await _controller.GetUserSummary(userId);
         }
 
         [Then(@"The UserModel response should be")]
         public void ThenTheUserModelResponseShouldBe(Table table)
         {
-            var result = (OkObjectResult)GlobalSetup._response;
+            var result = (OkObjectResult)GlobalSteps._response;
             Assert.IsNotNull(result);
             var expectedUser = result.Value as UserModel;
             Assert.IsNotNull(expectedUser);
@@ -99,7 +99,7 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The PreferenceModel response should be")]
         public void ThenThePreferenceModelResponseShouldBe(Table table)
         {
-            var result = (OkObjectResult)GlobalSetup._response;
+            var result = (OkObjectResult)GlobalSteps._response;
             Assert.IsNotNull(result);
             var expectedPreference = result.Value as PreferenceModel;
             Assert.IsNotNull(expectedPreference);
@@ -115,7 +115,7 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The UserSummaryModel response should be")]
         public void TheUserSummaryModelResponseShouldBe(Table table)
         {
-            var result = (OkObjectResult)GlobalSetup._response;
+            var result = (OkObjectResult)GlobalSteps._response;
             Assert.IsNotNull(result);
             var expectedUserSummary = result.Value as UserSummaryModel;
             Assert.IsNotNull(expectedUserSummary);

@@ -23,13 +23,13 @@ namespace MediaCritica.Server.Testing.Steps
         [BeforeScenario]
         public void BeforeScenario()
         {
-            _controller = new MilestoneController(GlobalSetup._dbContext, new MilestoneCalculatorHelper(GlobalSetup._dbContext, new DateRangeCalculatorHelper()));
+            _controller = new MilestoneController(GlobalSteps._dbContext, new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper()));
         }
 
         [When(@"I call GetUserMilestones with UserId (\d+)")]
         public async Task WhenICallGetUserMilestonesWithId(int userId)
         {
-            GlobalSetup._response = await _controller.GetUserMilestones(userId);
+            GlobalSteps._response = await _controller.GetUserMilestones(userId);
         }
 
         [Then(@"The MilestoneCategoryModels should be")]
@@ -37,7 +37,7 @@ namespace MediaCritica.Server.Testing.Steps
         {
             var expextedMilestoneCategoryModels = table.CreateSet<MilestoneTestModel>();
 
-            var result = (OkObjectResult)GlobalSetup._response;
+            var result = (OkObjectResult)GlobalSteps._response;
             Assert.IsNotNull(result);
             var actualMilestoneCategoryModels = result.Value as List<MilestoneCategoryModel>;
             Assert.IsNotEmpty(actualMilestoneCategoryModels);

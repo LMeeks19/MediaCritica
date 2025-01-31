@@ -84,7 +84,7 @@ Scenario: Post notifications with no followers
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 1          | 2          | 2025-01-01 | true                 |
 		| 2  | 2          | 1          | 2025-01-02 | false                |
-	When I call Post with the NewNotificationModel
+	When I call PostNotifications with the NewNotificationModel
 		| AuthorId | AuthorName | Message                   |
 		| 1        | Test 1     | Test Notification Message |
 	Then The status code should be 404
@@ -95,7 +95,7 @@ Scenario: Post notifications
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 2          | 1          | 2025-01-01 | true                 |
 		| 2  | 2          | 1          | 2025-01-02 | true                 |
-	When I call Post with the NewNotificationModel
+	When I call PostNotifications with the NewNotificationModel
 		| AuthorId | AuthorName | Message                   |
 		| 1        | Test 1     | Test Notification Message |
 	Then The status code should be 200

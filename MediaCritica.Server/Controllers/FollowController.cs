@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound($"User with ID {userId} not found");
+                return NotFound($"User not found");
 
             var followers = user.Followers
                 .OrderByDescending(f => f.FollowedOn)
@@ -28,6 +28,7 @@ namespace MediaCritica.Server.Controllers
                 .Take(25)
                 .Select(f => new UserFollowSummaryModel
                 {
+                    Id = f.Id,
                     UserId = f.Follower.Id,
                     Name = $"{f.Follower.Forename} {f.Follower.Surname}",
                     FollowedOn = f.FollowedOn,
@@ -46,7 +47,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound($"User with ID {userId} not found");
+                return NotFound($"User not found");
 
             var following = user.Following
                 .OrderByDescending(f => f.FollowedOn)
@@ -54,6 +55,7 @@ namespace MediaCritica.Server.Controllers
                 .Take(25)
                 .Select(f => new UserFollowSummaryModel
                 {
+                    Id = f.Id,
                     UserId = f.Followed.Id,
                     Name = $"{f.Followed.Forename} {f.Followed.Surname}",
                     FollowedOn = f.FollowedOn,
@@ -82,17 +84,14 @@ namespace MediaCritica.Server.Controllers
             });
         }
 
-
         [HttpPost("[action]")]
         public async Task<IActionResult> FollowUser([FromBody] UserFollowModel userFollowModel)
         {
+            if (!await _databaseContext.Users.AnyAsync(u => u.Id == userFollowModel.FollowedId))
+                return NotFound("User not found");
             if (userFollowModel.FollowerId == userFollowModel.FollowedId)
                 return BadRequest("Users cannot follow themselves");
-
-            var alreadyFollowing = await _databaseContext.UserFollows
-                .AnyAsync(f => f.FollowerId == userFollowModel.FollowerId && f.FollowedId == userFollowModel.FollowedId);
-
-            if (alreadyFollowing)
+            if (await _databaseContext.UserFollows.AnyAsync(f => f.FollowerId == userFollowModel.FollowerId && f.FollowedId == userFollowModel.FollowedId))
                 return Conflict("User is already following");
 
             var newFollow = new UserFollow
@@ -106,7 +105,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.UserFollows.AddAsync(newFollow);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok("User followed");
         }
 
         [HttpDelete("[action]/{userFollowId}")]
@@ -121,9 +120,8 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.UserFollows.Remove(follow);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok("User unfollowed");
         }
-
 
         [HttpPut("[action]/{userFollowId}")]
         public async Task<IActionResult> ToggleNotificationStatus(int userFollowId)

@@ -22,50 +22,50 @@ namespace MediaCritica.Server.Testing.Steps
         {
             var hubContext = new Mock<IHubContext<NotificationHub>>().Object;
 
-            _controller = new NotificationController(GlobalSetup._dbContext, hubContext, new NotificationHub());
+            _controller = new NotificationController(GlobalSteps._dbContext, hubContext, new NotificationHub());
         }
 
         [When(@"I call GetUserNotifications with userId (\d+)")]
         public async Task WhenICallGetUserNotificationsWithUserId(int userId)
         {
-            GlobalSetup._response = await _controller.GetUserNotifications(userId, 0);
+            GlobalSteps._response = await _controller.GetUserNotifications(userId, 0);
         }
 
         [When(@"I call MarkAsRead with Id (\d+)")]
         public async Task WhenICallMarkAsReadWithId(int notificationId)
         {
-            GlobalSetup._response = await _controller.MarkAsRead(notificationId);
+            GlobalSteps._response = await _controller.MarkAsRead(notificationId);
         }
 
         [When(@"I call MarkAllAsRead with UserId (\d+)")]
         public async Task WhenICallMarkAllAsReadWithUserId(int userId)
         {
-            GlobalSetup._response = await _controller.MarkAllAsRead(userId);
+            GlobalSteps._response = await _controller.MarkAllAsRead(userId);
         }
 
         [When(@"I call UpdateBookmarkStatus with Id (\d+)")]
         public async Task WhenICallUpdateBookmarkStatusWithId(int notificationId)
         {
-            GlobalSetup._response = await _controller.UpdateBookmarkStatus(notificationId);
+            GlobalSteps._response = await _controller.UpdateBookmarkStatus(notificationId);
         }
 
         [When(@"I call Delete with Id (\d+)")]
         public async Task WhenICallDeleteWithId(int notificationId)
         {
-            GlobalSetup._response = await _controller.Delete(notificationId);
+            GlobalSteps._response = await _controller.Delete(notificationId);
         }
 
         [When(@"I call PostNotifications with the NewNotificationModel")]
         public async Task WhenICallPostNotificationsWithTheNewNotificationModel(Table table)
         {
             var newNotificationModel = table.CreateInstance<NewNotificationModel>();
-            GlobalSetup._response = await _controller.PostNotifications(newNotificationModel);
+            GlobalSteps._response = await _controller.PostNotifications(newNotificationModel);
         }
 
         [Then(@"The NotificationModels should be")]
         public void TheNotificationModelsShouldBe(Table table)
         {
-            var result = (OkObjectResult)GlobalSetup._response;
+            var result = (OkObjectResult)GlobalSteps._response;
             Assert.IsNotNull(result);
             var actualNotifications = result.Value as List<NotificationModel>;
             Assert.IsNotNull(actualNotifications);
@@ -89,7 +89,7 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The NotificationModels should be empty")]
         public void TheNotificationModelsShouldBeEmpty()
         {
-            var result = (OkObjectResult)GlobalSetup._response;
+            var result = (OkObjectResult)GlobalSteps._response;
             Assert.IsNotNull(result);
             var expectedNotifications = result.Value as List<NotificationModel>;
             Assert.IsEmpty(expectedNotifications);
@@ -98,7 +98,7 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The Notification with Id (\d+) should be read")]
         public async Task TheNotificationWithIdShouldBeRead(int notificationId)
         {
-            var notification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
+            var notification = await GlobalSteps._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
             Assert.IsNotNull(notification);
             Assert.IsTrue(notification.IsRead);
         }
@@ -106,14 +106,14 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The Notifications for UserId (\d+) should all be read")]
         public async Task TheNotificationsForUserIdShouldAllBeRead(int userId)
         {
-            var notifications = await GlobalSetup._dbContext.Notifications.Where(n => n.RecipientId == userId).ToListAsync();
+            var notifications = await GlobalSteps._dbContext.Notifications.Where(n => n.RecipientId == userId).ToListAsync();
             Assert.True(notifications.All(n => n.IsRead));
         }
 
         [Then(@"The bookmark status of Notification (\d+) should be false")]
         public async Task TheBookmarkStatusOfNotificationShoulBeFalse(int notificationId)
         {
-            var notification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
+            var notification = await GlobalSteps._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
             Assert.IsNotNull(notification);
             Assert.IsFalse(notification.IsBookmarked);
         }
@@ -121,7 +121,7 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The bookmark status of Notification (\d+) should be true")]
         public async Task TheBookmarkStatusOfNotificationShoulBeTrue(int notificationId)
         {
-            var notification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
+            var notification = await GlobalSteps._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
             Assert.IsNotNull(notification);
             Assert.IsTrue(notification.IsBookmarked);
         }
@@ -129,7 +129,7 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"Notifications should no longer contain notification with Id (\d+)")]
         public async Task NotificationShouldNoLongerContainNotificatioNWithId(int notificationId)
         {
-            var notification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
+            var notification = await GlobalSteps._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == notificationId);
             Assert.IsNull(notification);
         }
 
@@ -141,7 +141,7 @@ namespace MediaCritica.Server.Testing.Steps
 
             foreach (var expectedNotification in expectedNotifications)
             {
-                var actualNotification = await GlobalSetup._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == expectedNotification.Id);
+                var actualNotification = await GlobalSteps._dbContext.Notifications.SingleOrDefaultAsync(n => n.Id == expectedNotification.Id);
                 Assert.IsNotNull(actualNotification);
                 Assert.AreEqual(expectedNotification.Id, actualNotification.Id);
                 Assert.AreEqual(expectedNotification.RecipientId, actualNotification.RecipientId);

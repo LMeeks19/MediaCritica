@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.Assist;
 namespace MediaCritica.Server.Testing
 {
     [Binding]
-    public class GlobalSetup
+    public class GlobalSteps
     {
         private static DbContextOptions<DatabaseContext> _options;
         public static DatabaseContext _dbContext;
