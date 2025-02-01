@@ -29,8 +29,8 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Reviews)
                 .Where(user => user.Reviews.Any(r => r.Date >= startDate && r.Date <= endDate))
                 .OrderByDescending(user => user.Reviews.Count(r => r.Date >= startDate && r.Date <= endDate))
-                .ThenBy(user => user.Surname)
-                .ThenBy(user => user.Forename)
+                    .ThenBy(user => user.Surname)
+                    .ThenBy(user => user.Forename)
                 .Select(user => new UserRankingModel
                 {
                     Name = $"{user.Forename} {user.Surname}",
