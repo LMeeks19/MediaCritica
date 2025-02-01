@@ -74,6 +74,22 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following reviews")]
+        public async Task GivenIHaveTheFollowingReviews(Table table)
+        {
+            var reviews = table.CreateSet<Review>().ToList();
+            await _dbContext.Reviews.AddRangeAsync(reviews);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following engagements")]
+        public async Task GivenIHaveTheFollowingEngagements(Table table)
+        {
+            var engagements = table.CreateSet<Engagement>().ToList();
+            await _dbContext.Engagements.AddRangeAsync(engagements);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Then(@"The status code should be (\d+)")]
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {

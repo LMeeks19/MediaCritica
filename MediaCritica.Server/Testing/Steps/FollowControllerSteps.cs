@@ -11,8 +11,6 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class FollowControllerSteps
     {
-        // TODO
-
         private FollowController _controller;
 
         [BeforeScenario]

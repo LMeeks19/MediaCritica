@@ -77,28 +77,28 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table1.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table1.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table1.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
@@ -106,34 +106,34 @@ namespace MediaCritica.Server.Testing.Features
                         "Password789!",
                         "2025-01-03"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table1, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table8, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "FollowerId",
                         "FollowedId",
                         "FollowedOn",
                         "EnabledNotifications"});
-            table2.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "1",
                         "1",
                         "2",
                         "2025-01-01",
                         "true"});
-            table2.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "2",
                         "2",
                         "1",
                         "2025-01-02",
                         "false"});
-            table2.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "3",
                         "3",
                         "1",
                         "2025-01-03",
                         "false"});
 #line 9
- testRunner.Given("I have the following userFollows", ((string)(null)), table2, "Given ");
+ testRunner.Given("I have the following userFollows", ((string)(null)), table9, "Given ");
 #line hidden
         }
         
@@ -163,23 +163,23 @@ this.FeatureBackground();
 #line 17
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "Name",
                             "FollowedOn"});
-                table3.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "3",
                             "3",
                             "Test 3",
                             "2025-01-03"});
-                table3.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "2",
                             "2",
                             "Test 2",
                             "2025-01-02"});
 #line 18
- testRunner.And("The UserFollowSummaryModels returned should be", ((string)(null)), table3, "And ");
+ testRunner.And("The UserFollowSummaryModels returned should be", ((string)(null)), table10, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -244,18 +244,18 @@ this.FeatureBackground();
 #line 30
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "Name",
                             "FollowedOn"});
-                table4.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "1",
                             "2",
                             "Test 2",
                             "2025-01-01"});
 #line 31
- testRunner.And("The UserFollowSummaryModels returned should be", ((string)(null)), table4, "And ");
+ testRunner.And("The UserFollowSummaryModels returned should be", ((string)(null)), table11, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -320,20 +320,20 @@ this.FeatureBackground();
 #line 42
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table5.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "1",
                             "1",
                             "2",
                             "2025-01-01",
                             "true"});
 #line 43
- testRunner.And("The UserFollowModel should be", ((string)(null)), table5, "And ");
+ testRunner.And("The UserFollowModel should be", ((string)(null)), table12, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -392,20 +392,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table6.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "4",
                             "1",
                             "3",
                             "2025-01-04",
                             "false"});
 #line 53
- testRunner.When("I call FollowUser with these values", ((string)(null)), table6, "When ");
+ testRunner.When("I call FollowUser with these values", ((string)(null)), table13, "When ");
 #line hidden
 #line 56
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -437,20 +437,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table7.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "4",
                             "1",
                             "4",
                             "2025-01-04",
                             "false"});
 #line 60
- testRunner.When("I call FollowUser with these values", ((string)(null)), table7, "When ");
+ testRunner.When("I call FollowUser with these values", ((string)(null)), table14, "When ");
 #line hidden
 #line 63
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -482,20 +482,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table8.AddRow(new string[] {
+                table15.AddRow(new string[] {
                             "4",
                             "1",
                             "1",
                             "2025-01-04",
                             "false"});
 #line 67
- testRunner.When("I call FollowUser with these values", ((string)(null)), table8, "When ");
+ testRunner.When("I call FollowUser with these values", ((string)(null)), table15, "When ");
 #line hidden
 #line 70
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -527,20 +527,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table9.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "4",
                             "1",
                             "2",
                             "2025-01-04",
                             "false"});
 #line 74
- testRunner.When("I call FollowUser with these values", ((string)(null)), table9, "When ");
+ testRunner.When("I call FollowUser with these values", ((string)(null)), table16, "When ");
 #line hidden
 #line 77
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

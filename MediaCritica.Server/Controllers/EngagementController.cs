@@ -16,11 +16,17 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{reviewId}/{userId}")]
         public async Task<IActionResult> GetUserEngagement(int reviewId, int userId)
         {
+            if (!await _databaseContext.Users.AnyAsync(u => u.Id == userId))
+                return NotFound("User not found");
+
+            if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
+                return NotFound("Review not found");
+
             var engagement = await _databaseContext.Engagements
                 .SingleOrDefaultAsync(e => e.ReviewId == reviewId && e.UserId == userId);
 
             if (engagement == null)
-                return NotFound("Engagemnet not found");
+                return NotFound("Engagement not found");
 
             return Ok(engagement.Type);
         }
@@ -28,6 +34,9 @@ namespace MediaCritica.Server.Controllers
         [Route("[action]/{reviewId}/{userId}/{type}")]
         public async Task<IActionResult> ToggleEngagement(int userId, int reviewId, EngagementType type)
         {
+            if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
+                return NotFound("Review not found");
+
             var user = await _databaseContext.Users
                 .Include(u => u.Reviews)
                     .ThenInclude(r => r.Engagements)
@@ -63,10 +72,10 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.SaveChangesAsync();
             await _milestoneCalculatorHelper.UpdateEngagementMilestones(user);
 
-            if (type == EngagementType.None)
-                return NoContent();
+            if (!await _databaseContext.Engagements.AnyAsync(e => e.Id == engagement!.Id))
+                return Ok("Engagement deleted");
 
-            return Ok(type);
+            return Ok(engagement!.Type);
         }
     }
 }
