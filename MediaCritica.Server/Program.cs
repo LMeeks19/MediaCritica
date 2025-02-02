@@ -33,6 +33,7 @@ builder.Services.AddScoped<BacklogMapper>();
 builder.Services.AddScoped<RatingMapper>();
 
 builder.Services.AddScoped<IMapper, Mapper>();
+builder.Services.AddScoped<IDateTimeProviderHelper, DateTimeProviderHelper>();
 
 // Add Helpers to Services
 builder.Services.AddScoped<ExternalApiHelper>();
@@ -40,6 +41,7 @@ builder.Services.AddScoped<InternalApiHelper>();
 builder.Services.AddScoped<DateRangeCalculatorHelper>();
 builder.Services.AddScoped<TrendCalculatorHelper>();
 builder.Services.AddScoped<MilestoneCalculatorHelper>();
+builder.Services.AddScoped<DateTimeProviderHelper>();
 
 // Add Hubs to Services
 builder.Services.AddScoped<NotificationHub>();

@@ -17,7 +17,7 @@ namespace MediaCritica.Server.Testing.Steps
         [BeforeScenario]
         public void BeforeScenario()
         {
-            var userMapper = new UserMapper(new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper()), new ReviewMapper());
+            var userMapper = new UserMapper(new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())), new ReviewMapper());
             _controller = new UserController(GlobalSteps._dbContext, userMapper);
         }
 

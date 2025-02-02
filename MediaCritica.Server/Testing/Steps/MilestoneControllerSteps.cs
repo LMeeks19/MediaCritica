@@ -23,7 +23,7 @@ namespace MediaCritica.Server.Testing.Steps
         [BeforeScenario]
         public void BeforeScenario()
         {
-            _controller = new MilestoneController(GlobalSteps._dbContext, new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper()));
+            _controller = new MilestoneController(GlobalSteps._dbContext, new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())));
         }
 
         [When(@"I call GetUserMilestones with UserId (\d+)")]
