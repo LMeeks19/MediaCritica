@@ -1,7 +1,5 @@
 Feature: LeaderboardControllerTests
 
-TODO
-
 Background: 
 	Given I have the following users
 		| Id | Forename | Surname | Email           | Password     | Joined     |
@@ -11,13 +9,13 @@ Background:
 		| 4  | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
 	And I have the following media
 		| Id | Actors    | Awards  | Countries   | Directors              | Genres            | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes |
-		| 1  | Actor 1,2 | Award 1 | USA, UK | Director 1, Director 2 | Action, Drama     | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | Movie   | Writer 1 | 2020 | 8.5        | 1500      |
-		| 2  | Actor 1,2 | Award 1 | USA, UK | Director 5, Director 1 | Action, Adventure | English   | 85        | A great plot | Media Poster 2 | PG-13 | 2020-02-03 | 120 min | Media Title 2 | Series  | Writer 1 | 2020 | 8.5        | 1500      |
-		| 3  | Actor 1,2 | Award 1 | USA, UK | Director 2, Director 7 | Comedy, Drama     | English   | 85        | A great plot | Media Poster 3 | PG-13 | 2020-02-03 | 120 min | Media Title 3 | Game    | Writer 1 | 2020 | 8.5        | 1500      |
-		| 4  | Actor 1,2 | Award 1 | USA, UK | Director 6, Director 2 | Thriller, Action  | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2020-02-03 | 120 min | Media Title 4 | Episode | Writer 1 | 2020 | 8.5        | 1500      |
-		| 5  | Actor 1,2 | Award 1 | USA, UK | Director 8, Director 4 | Drama, Romance    | English   | 85        | A great plot | Media Poster 5 | PG-13 | 2020-02-03 | 120 min | Media Title 5 | Series  | Writer 1 | 2020 | 8.5        | 1500      |
-		| 6  | Actor 1,2 | Award 1 | USA, UK | Director 1, Director 7 | Fantasy, Action   | English   | 85        | A great plot | Media Poster 6 | PG-13 | 2020-02-03 | 120 min | Media Title 6 | Movie   | Writer 1 | 2020 | 8.5        | 1500      |
-		| 7  | Actor 1,2 | Award 1 | USA, UK | Director 4, Director 8 | Horror, Thriller  | English   | 85        | A great plot | Media Poster 7 | PG-13 | 2020-02-03 | 120 min | Media Title 7 | Game    | Writer 1 | 2020 | 8.5        | 1500      |
+		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK | Director 1, Director 2 | Action, Drama     | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | Movie   | Writer 1 | 2020 | 8.5        | 1500      |
+		| 2  | Actor 1, Actor 4 | Award 1 | USA, UK | Director 5, Director 1 | Action, Adventure | English   | 85        | A great plot | Media Poster 2 | PG-13 | 2020-02-03 | 120 min | Media Title 2 | Series  | Writer 1 | 2020 | 8.5        | 1500      |
+		| 3  | Actor 1, Actor 5 | Award 1 | USA, UK | Director 2, Director 7 | Comedy, Drama     | English   | 85        | A great plot | Media Poster 3 | PG-13 | 2020-02-03 | 120 min | Media Title 3 | Game    | Writer 1 | 2020 | 8.5        | 1500      |
+		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK | Director 6, Director 2 | Thriller, Action  | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2020-02-03 | 120 min | Media Title 4 | Episode | Writer 1 | 2020 | 8.5        | 1500      |
+		| 5  | Actor 1, Actor 8 | Award 1 | USA, UK | Director 8, Director 4 | Drama, Romance    | English   | 85        | A great plot | Media Poster 5 | PG-13 | 2020-02-03 | 120 min | Media Title 5 | Series  | Writer 1 | 2020 | 8.5        | 1500      |
+		| 6  | Actor 1, Actor 9 | Award 1 | USA, UK | Director 1, Director 7 | Fantasy, Action   | English   | 85        | A great plot | Media Poster 6 | PG-13 | 2020-02-03 | 120 min | Media Title 6 | Movie   | Writer 1 | 2020 | 8.5        | 1500      |
+		| 7  | Actor 1, Actor 3 | Award 1 | USA, UK | Director 4, Director 8 | Horror, Thriller  | English   | 85        | A great plot | Media Poster 7 | PG-13 | 2020-02-03 | 120 min | Media Title 7 | Game    | Writer 1 | 2020 | 8.5        | 1500      |
 	And I have the following reviews
 		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title    | Description    | Date       |
 		| 1  | 1       | Media Poster 1 | Media Title 1 | Movie     | 1      | Test 1       | 4      | Title 1  | Description 1  | 2025-02-03 |
@@ -118,6 +116,7 @@ Scenario: Get media trends for month
 	Then The status code should be 200
 	And The MediaTrendModels reposne should be
 		| AwardType          | Title         | Description                                                                         | TimeFrame |
+		| Actor Spotlight    | Actor 9       | 2 reviews on their media with an average rating of 4.0!                             | month     |
 		| Comeback           | Media Title 4 | A comeback with 3 reviews this month after a period of inactivity!                  | month     |
 		| Director Spotlight | Director 7    | 3 reviews on their media with an average rating of 4.5!                             | month     |
 		| Falling Star       | Media Title 7 | 3 fewer reviews than the previous month.                                            | month     |

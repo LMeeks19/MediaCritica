@@ -9,10 +9,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BacklogController(DatabaseContext databaseContext, IMapper mapper, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class BacklogController(DatabaseContext databaseContext, BacklogMapper backlogMapper, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly IMapper _mapper = mapper;
+        private readonly BacklogMapper _backlogMapper = backlogMapper;
         private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
 
         [HttpGet("[action]/{userId}")]
@@ -39,7 +39,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(media => media.UserId == userId && media.Category == category)
                 .OrderByDescending(media => media.AddedDate)
                 .ThenBy(media => media.MediaTitle)
-                .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
+                .Select(media => _backlogMapper.MapBacklogModel(media))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();
@@ -73,7 +73,7 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostBacklog([FromBody] BacklogModel backlogModel)
         {
-            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel);
+            var backlogData = _backlogMapper.MapBacklog(backlogModel);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();

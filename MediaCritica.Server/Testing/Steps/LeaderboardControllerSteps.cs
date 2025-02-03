@@ -12,7 +12,6 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class LeaderboardControllerSteps
     {
-        // TODO
         private LeaderboardController _controller;
 
         [BeforeScenario]
