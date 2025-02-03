@@ -90,6 +90,22 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following media")]
+        public async Task GivenIHaveTheFollowingMedia(Table table)
+        {
+            var media = table.CreateSet<Media>().ToList();
+            await _dbContext.Media.AddRangeAsync(media);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following backlogs")]
+        public async Task GivenIHaveTheFollowingBacklogs(Table table)
+        {
+            var backlogs = table.CreateSet<Backlog>().ToList();
+            await _dbContext.Backlogs.AddRangeAsync(backlogs);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Then(@"The status code should be (\d+)")]
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {

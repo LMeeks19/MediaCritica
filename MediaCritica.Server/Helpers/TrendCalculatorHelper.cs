@@ -213,7 +213,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Backlogged",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"Added to backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s " : "")} this week!"
+                Description = $"Added to backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} this {timeframe}!"
             };
         }
 
@@ -237,7 +237,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Unfinished",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"{trend.StartedCount - trend.FinishedCount} user{(trend.StartedCount - trend.FinishedCount > 1 ? "s " : "")} didn’t complete it this {timeframe}!"
+                Description = $"{trend.StartedCount - trend.FinishedCount} user{(trend.StartedCount - trend.FinishedCount > 1 ? "s " : "")} didn't complete it this {timeframe}!"
             };
         }
 
@@ -261,7 +261,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Abandoned",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"{trend.AbandonedCount - trend.FinishedCount} user{(trend.AbandonedCount - trend.FinishedCount > 1 ? "s " : "")} either abandoned it early or never started it this {timeframe}!"
+                Description = $"{trend.AbandonedCount - trend.FinishedCount} user{(trend.AbandonedCount - trend.FinishedCount > 1 ? "s" : "")} either abandoned it early or never started it this {timeframe}!"
             };
         }
 

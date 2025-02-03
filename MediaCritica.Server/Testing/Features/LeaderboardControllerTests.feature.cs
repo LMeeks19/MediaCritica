@@ -117,6 +117,169 @@ namespace MediaCritica.Server.Testing.Features
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Actors",
+                        "Awards",
+                        "Countries",
+                        "Directors",
+                        "Genres",
+                        "Languages",
+                        "Metascore",
+                        "Plot",
+                        "Poster",
+                        "Rated",
+                        "Released",
+                        "Runtime",
+                        "Title",
+                        "Type",
+                        "Writers",
+                        "Year",
+                        "ImdbRating",
+                        "ImdbVotes"});
+            table18.AddRow(new string[] {
+                        "1",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 1, Director 2",
+                        "Action, Drama",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 1",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 1",
+                        "Movie",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+            table18.AddRow(new string[] {
+                        "2",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 5, Director 1",
+                        "Action, Adventure",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 2",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 2",
+                        "Series",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+            table18.AddRow(new string[] {
+                        "3",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 2, Director 7",
+                        "Comedy, Drama",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 3",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 3",
+                        "Game",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+            table18.AddRow(new string[] {
+                        "4",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 6, Director 2",
+                        "Thriller, Action",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 4",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 4",
+                        "Episode",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+            table18.AddRow(new string[] {
+                        "5",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 8, Director 4",
+                        "Drama, Romance",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 5",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 5",
+                        "Series",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+            table18.AddRow(new string[] {
+                        "6",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 1, Director 7",
+                        "Fantasy, Action",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 6",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 6",
+                        "Movie",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+            table18.AddRow(new string[] {
+                        "7",
+                        "Actor 1,2",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 4, Director 8",
+                        "Horror, Thriller",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 7",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 7",
+                        "Game",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500"});
+#line 12
+ testRunner.And("I have the following media", ((string)(null)), table18, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
                         "MediaId",
                         "MediaPoster",
                         "MediaTitle",
@@ -127,92 +290,491 @@ namespace MediaCritica.Server.Testing.Features
                         "Title",
                         "Description",
                         "Date"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "1",
                         "1",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 1",
+                        "Media Title 1",
                         "Movie",
                         "1",
                         "Test 1",
                         "4",
-                        "Test Title",
-                        "Test Description",
+                        "Title 1",
+                        "Description 1",
                         "2025-02-03"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "2",
                         "2",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 2",
+                        "Media Title 2",
                         "Series",
                         "1",
                         "Test 1",
                         "2",
-                        "Test Title",
-                        "Test Description",
+                        "Title 2",
+                        "Description 2",
                         "2025-02-27"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "3",
                         "3",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 3",
+                        "Media Title 3",
                         "Game",
                         "1",
                         "Test 1",
                         "1",
-                        "Test Title",
-                        "Test Description",
+                        "Title 3",
+                        "Description 3",
                         "2025-01-01"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "4",
                         "4",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 4",
+                        "Media Title 4",
                         "Episode",
                         "1",
                         "Test 1",
                         "4.5",
-                        "Test Title",
-                        "Test Description",
+                        "Title 4",
+                        "Description 4",
                         "2025-01-04"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "5",
                         "5",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 5",
+                        "Media Title 5",
                         "Series",
                         "2",
                         "Test 2",
                         "1.5",
-                        "Test Title",
-                        "Test Description",
+                        "Title 5",
+                        "Description 5",
                         "2025-01-04"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "6",
                         "6",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 6",
+                        "Media Title 6",
                         "Movie",
                         "2",
                         "Test 2",
                         "2",
-                        "Test Title",
-                        "Test Description",
+                        "Title 6",
+                        "Description 6",
                         "2024-01-04"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "7",
                         "7",
-                        "Test Media Poster",
-                        "Test Media Title",
+                        "Media Poster 7",
+                        "Media Title 7",
                         "Game",
                         "3",
                         "Test 3",
                         "2.5",
-                        "Test Title",
-                        "Test Description",
+                        "Title 7",
+                        "Description 7",
                         "2025-01-05"});
-#line 12
- testRunner.And("I have the following reviews", ((string)(null)), table18, "And ");
+            table19.AddRow(new string[] {
+                        "8",
+                        "1",
+                        "Media Poster 1",
+                        "Media Title 1",
+                        "Movie",
+                        "2",
+                        "Test 2",
+                        "3.5",
+                        "Title 8",
+                        "Description 8",
+                        "2025-01-15"});
+            table19.AddRow(new string[] {
+                        "9",
+                        "2",
+                        "Media Poster 2",
+                        "Media Title 2",
+                        "Series",
+                        "3",
+                        "Test 3",
+                        "4",
+                        "Title 9",
+                        "Description 9",
+                        "2025-02-10"});
+            table19.AddRow(new string[] {
+                        "10",
+                        "3",
+                        "Media Poster 3",
+                        "Media Title 3",
+                        "Game",
+                        "4",
+                        "Test 4",
+                        "2",
+                        "Title 10",
+                        "Description 10",
+                        "2025-01-25"});
+            table19.AddRow(new string[] {
+                        "11",
+                        "4",
+                        "Media Poster 4",
+                        "Media Title 4",
+                        "Episode",
+                        "1",
+                        "Test 1",
+                        "3",
+                        "Title 11",
+                        "Description 11",
+                        "2025-02-20"});
+            table19.AddRow(new string[] {
+                        "12",
+                        "5",
+                        "Media Poster 5",
+                        "Media Title 5",
+                        "Series",
+                        "2",
+                        "Test 2",
+                        "1",
+                        "Title 12",
+                        "Description 12",
+                        "2024-12-15"});
+            table19.AddRow(new string[] {
+                        "13",
+                        "6",
+                        "Media Poster 6",
+                        "Media Title 6",
+                        "Movie",
+                        "3",
+                        "Test 3",
+                        "4.5",
+                        "Title 13",
+                        "Description 13",
+                        "2025-02-03"});
+            table19.AddRow(new string[] {
+                        "14",
+                        "7",
+                        "Media Poster 7",
+                        "Media Title 7",
+                        "Game",
+                        "4",
+                        "Test 4",
+                        "5",
+                        "Title 14",
+                        "Description 14",
+                        "2025-01-28"});
+            table19.AddRow(new string[] {
+                        "15",
+                        "1",
+                        "Media Poster 1",
+                        "Media Title 1",
+                        "Movie",
+                        "1",
+                        "Test 1",
+                        "3",
+                        "Title 15",
+                        "Description 15",
+                        "2025-02-15"});
+            table19.AddRow(new string[] {
+                        "16",
+                        "2",
+                        "Media Poster 2",
+                        "Media Title 2",
+                        "Series",
+                        "4",
+                        "Test 4",
+                        "2.5",
+                        "Title 16",
+                        "Description 16",
+                        "2025-01-18"});
+            table19.AddRow(new string[] {
+                        "17",
+                        "3",
+                        "Media Poster 3",
+                        "Media Title 3",
+                        "Game",
+                        "1",
+                        "Test 1",
+                        "4",
+                        "Title 17",
+                        "Description 17",
+                        "2025-01-07"});
+            table19.AddRow(new string[] {
+                        "18",
+                        "4",
+                        "Media Poster 4",
+                        "Media Title 4",
+                        "Episode",
+                        "3",
+                        "Test 3",
+                        "1.5",
+                        "Title 18",
+                        "Description 18",
+                        "2025-02-22"});
+            table19.AddRow(new string[] {
+                        "19",
+                        "5",
+                        "Media Poster 5",
+                        "Media Title 5",
+                        "Series",
+                        "4",
+                        "Test 4",
+                        "3.5",
+                        "Title 19",
+                        "Description 19",
+                        "2025-02-08"});
+            table19.AddRow(new string[] {
+                        "20",
+                        "6",
+                        "Media Poster 6",
+                        "Media Title 6",
+                        "Movie",
+                        "2",
+                        "Test 2",
+                        "2",
+                        "Title 20",
+                        "Description 20",
+                        "2025-01-10"});
+            table19.AddRow(new string[] {
+                        "21",
+                        "7",
+                        "Media Poster 7",
+                        "Media Title 7",
+                        "Game",
+                        "1",
+                        "Test 1",
+                        "1",
+                        "Title 21",
+                        "Description 21",
+                        "2025-01-02"});
+            table19.AddRow(new string[] {
+                        "22",
+                        "1",
+                        "Media Poster 1",
+                        "Media Title 1",
+                        "Movie",
+                        "4",
+                        "Test 4",
+                        "4.5",
+                        "Title 22",
+                        "Description 22",
+                        "2025-02-14"});
+            table19.AddRow(new string[] {
+                        "23",
+                        "2",
+                        "Media Poster 2",
+                        "Media Title 2",
+                        "Series",
+                        "2",
+                        "Test 2",
+                        "3",
+                        "Title 23",
+                        "Description 23",
+                        "2025-01-20"});
+            table19.AddRow(new string[] {
+                        "24",
+                        "3",
+                        "Media Poster 3",
+                        "Media Title 3",
+                        "Game",
+                        "3",
+                        "Test 3",
+                        "5",
+                        "Title 24",
+                        "Description 24",
+                        "2025-02-05"});
+            table19.AddRow(new string[] {
+                        "25",
+                        "4",
+                        "Media Poster 4",
+                        "Media Title 4",
+                        "Episode",
+                        "1",
+                        "Test 1",
+                        "2",
+                        "Title 25",
+                        "Description 25",
+                        "2025-02-18"});
+            table19.AddRow(new string[] {
+                        "26",
+                        "5",
+                        "Media Poster 5",
+                        "Media Title 5",
+                        "Series",
+                        "3",
+                        "Test 3",
+                        "4",
+                        "Title 26",
+                        "Description 26",
+                        "2024-11-12"});
+            table19.AddRow(new string[] {
+                        "27",
+                        "6",
+                        "Media Poster 6",
+                        "Media Title 6",
+                        "Movie",
+                        "4",
+                        "Test 4",
+                        "3.5",
+                        "Title 27",
+                        "Description 27",
+                        "2025-02-06"});
+            table19.AddRow(new string[] {
+                        "28",
+                        "7",
+                        "Media Poster 7",
+                        "Media Title 7",
+                        "Game",
+                        "2",
+                        "Test 2",
+                        "2.5",
+                        "Title 28",
+                        "Description 28",
+                        "2025-01-19"});
+#line 21
+ testRunner.And("I have the following reviews", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "UserId",
+                        "MediaId",
+                        "MediaType",
+                        "Category",
+                        "MediaPoster",
+                        "MediaTitle",
+                        "AddedDate"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "1",
+                        "Movie",
+                        "0",
+                        "Media Poster 1",
+                        "Media Title 1",
+                        "2025-02-01"});
+            table20.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "2",
+                        "Series",
+                        "1",
+                        "Media Poster 2",
+                        "Media Title 2",
+                        "2025-02-02"});
+            table20.AddRow(new string[] {
+                        "3",
+                        "3",
+                        "3",
+                        "Game",
+                        "2",
+                        "Media Poster 3",
+                        "Media Title 3",
+                        "2025-02-03"});
+            table20.AddRow(new string[] {
+                        "4",
+                        "4",
+                        "4",
+                        "Episode",
+                        "0",
+                        "Media Poster 4",
+                        "Media Title 4",
+                        "2022-02-03"});
+            table20.AddRow(new string[] {
+                        "5",
+                        "1",
+                        "5",
+                        "Series",
+                        "1",
+                        "Media Poster 5",
+                        "Media Title 5",
+                        "2025-02-04"});
+            table20.AddRow(new string[] {
+                        "6",
+                        "2",
+                        "6",
+                        "Movie",
+                        "0",
+                        "Media Poster 6",
+                        "Media Title 6",
+                        "2025-02-05"});
+            table20.AddRow(new string[] {
+                        "7",
+                        "3",
+                        "7",
+                        "Game",
+                        "1",
+                        "Media Poster 7",
+                        "Media Title 7",
+                        "2023-02-06"});
+            table20.AddRow(new string[] {
+                        "8",
+                        "4",
+                        "1",
+                        "Movie",
+                        "2",
+                        "Media Poster 1",
+                        "Media Title 1",
+                        "2025-02-07"});
+            table20.AddRow(new string[] {
+                        "9",
+                        "1",
+                        "2",
+                        "Series",
+                        "0",
+                        "Media Poster 2",
+                        "Media Title 2",
+                        "2025-02-08"});
+            table20.AddRow(new string[] {
+                        "10",
+                        "2",
+                        "3",
+                        "Game",
+                        "1",
+                        "Media Poster 3",
+                        "Media Title 3",
+                        "2024-02-09"});
+            table20.AddRow(new string[] {
+                        "11",
+                        "3",
+                        "4",
+                        "Episode",
+                        "2",
+                        "Media Poster 4",
+                        "Media Title 4",
+                        "2025-02-10"});
+            table20.AddRow(new string[] {
+                        "12",
+                        "4",
+                        "5",
+                        "Series",
+                        "0",
+                        "Media Poster 5",
+                        "Media Title 5",
+                        "2025-02-11"});
+            table20.AddRow(new string[] {
+                        "13",
+                        "1",
+                        "6",
+                        "Movie",
+                        "2",
+                        "Media Poster 6",
+                        "Media Title 6",
+                        "2024-02-12"});
+            table20.AddRow(new string[] {
+                        "14",
+                        "2",
+                        "7",
+                        "Game",
+                        "0",
+                        "Media Poster 7",
+                        "Media Title 7",
+                        "2025-02-13"});
+            table20.AddRow(new string[] {
+                        "15",
+                        "3",
+                        "1",
+                        "Movie",
+                        "1",
+                        "Media Poster 1",
+                        "Media Title 1",
+                        "2025-02-14"});
+#line 51
+ testRunner.And("I have the following backlogs", ((string)(null)), table20, "And ");
 #line hidden
         }
         
@@ -223,7 +785,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for week", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
+#line 69
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -236,24 +798,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 23
+#line 70
  testRunner.When("I call GetUserRankings for week", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 71
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table19.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "1",
                             "week"});
-#line 25
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table19, "And ");
+#line 72
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table21, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -266,7 +828,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for month", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 29
+#line 76
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -279,24 +841,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 30
+#line 77
  testRunner.When("I call GetUserRankings for month", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 78
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table20.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "1",
                             "Test 1",
-                            "2",
+                            "5",
                             "month"});
-#line 32
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table20, "And ");
+                table22.AddRow(new string[] {
+                            "2",
+                            "Test 3",
+                            "4",
+                            "month"});
+                table22.AddRow(new string[] {
+                            "3",
+                            "Test 4",
+                            "3",
+                            "month"});
+#line 79
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table22, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -309,7 +881,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 36
+#line 85
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -322,34 +894,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 37
+#line 86
  testRunner.When("I call GetUserRankings for year", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
+#line 87
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "1",
                             "Test 1",
-                            "4",
+                            "9",
                             "year"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "2",
-                            "Test 2",
-                            "1",
+                            "Test 4",
+                            "6",
                             "year"});
-                table21.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "3",
-                            "Test 3",
-                            "1",
+                            "Test 2",
+                            "5",
                             "year"});
-#line 39
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table21, "And ");
+                table23.AddRow(new string[] {
+                            "4",
+                            "Test 3",
+                            "5",
+                            "year"});
+#line 88
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table23, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -362,7 +939,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for all time", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 45
+#line 95
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -375,34 +952,390 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 46
+#line 96
  testRunner.When("I call GetUserRankings for all-time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 97
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "1",
                             "Test 1",
-                            "4",
+                            "9",
                             "all-time"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "2",
                             "Test 2",
-                            "2",
+                            "7",
                             "all-time"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "3",
                             "Test 3",
-                            "1",
+                            "6",
                             "all-time"});
-#line 48
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table22, "And ");
+                table24.AddRow(new string[] {
+                            "4",
+                            "Test 4",
+                            "6",
+                            "all-time"});
+#line 98
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table24, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get media trends for week")]
+        public void GetMediaTrendsForWeek()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for week", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 105
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 106
+ testRunner.When("I call GetMediaTrends for week", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 107
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                            "AwardType",
+                            "Title",
+                            "Description",
+                            "TimeFrame"});
+                table25.AddRow(new string[] {
+                            "Falling Star",
+                            "Media Title 4",
+                            "3 fewer reviews than the previous week.",
+                            "week"});
+                table25.AddRow(new string[] {
+                            "Highest Rated",
+                            "Media Title 2",
+                            "An outstanding average rating of 2.0 this week!",
+                            "week"});
+                table25.AddRow(new string[] {
+                            "Most Active Genre",
+                            "Action",
+                            "Action is the most active genre this week!",
+                            "week"});
+                table25.AddRow(new string[] {
+                            "Most Reviewed",
+                            "Media Title 2",
+                            "1 reviews this week!",
+                            "week"});
+                table25.AddRow(new string[] {
+                            "Rising Star",
+                            "Media Title 2",
+                            "1 more reviews than the previous week!",
+                            "week"});
+#line 108
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table25, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get media trends for month")]
+        public void GetMediaTrendsForMonth()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for month", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 116
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 117
+ testRunner.When("I call GetMediaTrends for month", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 118
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                            "AwardType",
+                            "Title",
+                            "Description",
+                            "TimeFrame"});
+                table26.AddRow(new string[] {
+                            "Comeback",
+                            "Media Title 4",
+                            "A comeback with 3 reviews this month after a period of inactivity!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Director Spotlight",
+                            "Director 7",
+                            "3 reviews on their media with an average rating of 4.5!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Falling Star",
+                            "Media Title 7",
+                            "3 fewer reviews than the previous month.",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Hidden Gem",
+                            "Media Title 3",
+                            "1 reviews with an average rating of 5.0!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Highest Rated",
+                            "Media Title 3",
+                            "An outstanding average rating of 5.0 this month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Most Abandoned",
+                            "Media Title 2",
+                            "2 users either abandoned it early or never started it this month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Most Active Genre",
+                            "Action",
+                            "Action is the most active genre this month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Most Backlogged",
+                            "Media Title 1",
+                            "Added to backlogs 3 times this month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Most Polarizing",
+                            "Media Title 2",
+                            "Media Title 2 sparked a lot of debate this month, with a variability score of 1.0" +
+                                "0!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Most Reviewed",
+                            "Media Title 4",
+                            "3 reviews this month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Most Unfinished",
+                            "Media Title 2",
+                            "1 user didn\'t complete it this month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Rising Star",
+                            "Media Title 4",
+                            "2 more reviews than the previous month!",
+                            "month"});
+                table26.AddRow(new string[] {
+                            "Sleeper Hit",
+                            "Media Title 4",
+                            "3 reviews this month! More than its average of 1 per month",
+                            "month"});
+#line 119
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table26, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get media trends for year")]
+        public void GetMediaTrendsForYear()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for year", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 135
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 136
+ testRunner.When("I call GetMediaTrends for year", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 137
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                            "AwardType",
+                            "Title",
+                            "Description",
+                            "TimeFrame"});
+                table27.AddRow(new string[] {
+                            "Comeback",
+                            "Media Title 4",
+                            "A comeback with 4 reviews this year after a period of inactivity!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Highest Rated",
+                            "Media Title 1",
+                            "An outstanding average rating of 3.8 this year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Most Abandoned",
+                            "Media Title 2",
+                            "2 users either abandoned it early or never started it this year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Most Active Genre",
+                            "Action",
+                            "Action is the most active genre this year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Most Backlogged",
+                            "Media Title 1",
+                            "Added to backlogs 3 times this year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Most Polarizing",
+                            "Media Title 3",
+                            "Media Title 3 sparked a lot of debate this year, with a variability score of 1.58" +
+                                "!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Most Reviewed",
+                            "Media Title 4",
+                            "4 reviews this year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Most Unfinished",
+                            "Media Title 2",
+                            "1 user didn\'t complete it this year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Rising Star",
+                            "Media Title 4",
+                            "4 more reviews than the previous year!",
+                            "year"});
+                table27.AddRow(new string[] {
+                            "Sleeper Hit",
+                            "Media Title 4",
+                            "4 reviews this year! More than its average of 0 per year",
+                            "year"});
+#line 138
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table27, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get media trends for all-time")]
+        public void GetMediaTrendsForAll_Time()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for all-time", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 151
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 152
+ testRunner.When("I call GetMediaTrends for all-time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 153
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                            "AwardType",
+                            "Title",
+                            "Description",
+                            "TimeFrame"});
+                table28.AddRow(new string[] {
+                            "Comeback",
+                            "Media Title 4",
+                            "A comeback with 4 reviews this all-time after a period of inactivity!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Highest Rated",
+                            "Media Title 1",
+                            "An outstanding average rating of 3.8 this all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Abandoned",
+                            "Media Title 2",
+                            "2 users either abandoned it early or never started it this all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Active Genre",
+                            "Action",
+                            "Action is the most active genre this all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Anticipated",
+                            "Media Title 1",
+                            "Added to user backlogs 3 times ahead of its release on Monday, February 3rd this " +
+                                "all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Backlogged",
+                            "Media Title 1",
+                            "Added to backlogs 3 times this all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Polarizing",
+                            "Media Title 3",
+                            "Media Title 3 sparked a lot of debate this all-time, with a variability score of " +
+                                "1.58!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Reviewed",
+                            "Media Title 4",
+                            "4 reviews this all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Most Unfinished",
+                            "Media Title 3",
+                            "1 user didn\'t complete it this all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Rising Star",
+                            "Media Title 4",
+                            "4 more reviews than the previous all-time!",
+                            "all-time"});
+                table28.AddRow(new string[] {
+                            "Sleeper Hit",
+                            "Media Title 4",
+                            "4 reviews this all-time! More than its average of 0 per all-time",
+                            "all-time"});
+#line 154
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table28, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

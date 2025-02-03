@@ -14,7 +14,6 @@ namespace MediaCritica.Server.Testing.Steps
     {
         // TODO
         private LeaderboardController _controller;
-        private Mock<IDateTimeProviderHelper> _mockDateTimeProvider;
 
         [BeforeScenario]
         public void BeforeScenario()
@@ -27,9 +26,15 @@ namespace MediaCritica.Server.Testing.Steps
         }
 
         [When(@"I call GetUserRankings for (week|month|year|all-time)")]
-        public void WhenICallGetUserRankingsForThis(string timeframe)
+        public async Task WhenICallGetUserRankingsForThis(string timeframe)
         {
-            GlobalSteps._response = _controller.GetUserRankings(timeframe).Result;
+            GlobalSteps._response = await _controller.GetUserRankings(timeframe);
+        }
+
+        [When(@"I call GetMediaTrends for (week|month|year|all-time)")]
+        public async Task WhenICallGetMediaTrendssForThis(string timeframe)
+        {
+            GlobalSteps._response = await _controller.GetMediaTrends(timeframe);
         }
 
         [Then(@"The UserRankingModels reposne should be")]
@@ -54,6 +59,31 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedUserRankingModel.Name, actualUserRankingModel.Name);
                 Assert.AreEqual(expectedUserRankingModel.Reviews, actualUserRankingModel.Reviews);
                 Assert.AreEqual(expectedUserRankingModel.Timeframe, actualUserRankingModel.Timeframe);
+            }
+        }
+
+        [Then(@"The MediaTrendModels reposne should be")]
+        public void TheMediaTrendModelsReposneShouldBe(Table table)
+        {
+            var expectedMediaTrendgModels = table.CreateSet<MediaTrendModel>().ToList();
+            Assert.IsNotEmpty(expectedMediaTrendgModels);
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualMediaTrendModels = result.Value as List<MediaTrendModel>;
+            Assert.IsNotEmpty(actualMediaTrendModels);
+
+            Assert.IsTrue(expectedMediaTrendgModels.Count == actualMediaTrendModels.Count);
+
+            for (var i = 0; i < actualMediaTrendModels.Count; i++)
+            {
+                var expectedMediaTrendModel = expectedMediaTrendgModels[i];
+                var actualMediaTrendModel = actualMediaTrendModels[i];
+
+                Assert.AreEqual(expectedMediaTrendModel.AwardType, actualMediaTrendModel.AwardType);
+                Assert.AreEqual(expectedMediaTrendModel.Title, actualMediaTrendModel.Title);
+                Assert.AreEqual(expectedMediaTrendModel.Description, actualMediaTrendModel.Description);
+                Assert.AreEqual(expectedMediaTrendModel.Timeframe, actualMediaTrendModel.Timeframe);
             }
         }
     }

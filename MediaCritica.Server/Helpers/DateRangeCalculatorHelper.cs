@@ -36,7 +36,7 @@
 
         public (DateTime start, DateTime end) GetAllTimeRange()
         {
-            DateTime startOfAllTime = DateTime.MinValue; // The earliest possible date
+            DateTime startOfAllTime = new DateTime(1753, 1, 1); // The earliest possible date allowed
             DateTime endOfAllTime = _dateTimeProviderHelper.Now; // Current date
             return (startOfAllTime, endOfAllTime);
         }
