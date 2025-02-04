@@ -14,11 +14,10 @@ namespace MediaCritica.Server.Testing.Steps
         // TODO
         private ReviewController _controller;
 
-        [BeforeFeature]
+        [BeforeScenario]
         public void BeforeScenario()
         {
             var hubContext = new Mock<IHubContext<NotificationHub>>().Object;
-
             _controller = new ReviewController(GlobalSteps._dbContext, new ReviewMapper(), new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())), new NotificationController(GlobalSteps._dbContext, hubContext, new NotificationHub()));
         }
     }
