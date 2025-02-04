@@ -73,6 +73,12 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostBacklog([FromBody] BacklogModel backlogModel)
         {
+            if (!await _databaseContext.Users.AnyAsync(u => u.Id == backlogModel.UserId))
+                return NotFound("User not found");
+
+            if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
+                return NotFound("Media not found");
+
             var backlogData = _backlogMapper.MapBacklog(backlogModel);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
@@ -81,14 +87,11 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users
                 .Include(user => user.Backlogs)
                 .Include(user => user.Milestones)
-                .FirstOrDefaultAsync(user => user.Id == backlogData.UserId);
-
-            if (user == null)
-                return NotFound($"User with Id {backlogData.UserId} not found");
+                .FirstAsync(user => user.Id == backlogData.UserId);
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
-            return Ok(backlogData.Id);
+            return Ok($"{backlogModel.MediaTitle} added to backlog");
         }
 
         [HttpDelete("[action]/{mediaId}/{userId}")]
@@ -97,22 +100,19 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users
                 .Include(u => u.Backlogs)
                 .Include(u => u.Milestones)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+                .FirstAsync(u => u.Id == userId);
 
-            if (user == null)
-                return NotFound($"User with Id {userId} not found");
+            var backlog = user.Backlogs.SingleOrDefault(r => r.MediaId == mediaId);
 
-            var media = user.Backlogs.SingleOrDefault(r => r.MediaId == mediaId);
+            if (backlog == null)
+                return NotFound("Backlog not found");
 
-            if (media == null)
-                return NotFound($"Media with Id {mediaId} not found in user's backlog");
-
-            _databaseContext.Backlogs.Remove(media);
+            _databaseContext.Backlogs.Remove(backlog);
             await _databaseContext.SaveChangesAsync();
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
-            return NoContent();
+            return Ok($"{backlog.MediaTitle} removed from {backlog.User.Forename} {backlog.User.Surname} backlog");
         }
 
         [HttpPut("[action]/{backlogId}/{newState}")]
@@ -124,27 +124,24 @@ namespace MediaCritica.Server.Controllers
                 .FirstOrDefaultAsync(u => u.Backlogs.Any(b => b.Id == backlogId));
 
             if (user == null)
-                return NotFound($"Backlog with Id {backlogId} not found for any user");
+                return NotFound("Backlog not found");
 
-            var media = user.Backlogs.SingleOrDefault(b => b.Id == backlogId);
+            var backlog = user.Backlogs.Single(b => b.Id == backlogId);
 
-            if (media == null)
-                return NotFound($"Media with Id {backlogId} not found in backlog");
+            backlog.Category = newState;
 
-            media.Category = newState;
-
-            _databaseContext.Backlogs.Update(media);
+            _databaseContext.Backlogs.Update(backlog);
             await _databaseContext.SaveChangesAsync();
 
             await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
-            return Ok();
+            return Ok($"Backlog {backlog.Id} updated to {backlog.Category} state");
         }
 
         [HttpGet("[action]/{mediaId}/{userId}")]
-        public IActionResult GetUserBacklogStatus(string mediaId, int userId)
+        public async Task<IActionResult> GetUserBacklogStatus(string mediaId, int userId)
         {
-            var isBacklogged = _databaseContext.Backlogs.Any(b => b.MediaId == mediaId && b.UserId == userId);
+            var isBacklogged = await _databaseContext.Backlogs.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
 
             return Ok(isBacklogged);
 

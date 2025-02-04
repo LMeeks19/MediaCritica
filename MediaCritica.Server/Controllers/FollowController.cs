@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound($"User not found");
+                return NotFound("User not found");
 
             var followers = user.Followers
                 .OrderByDescending(f => f.FollowedOn)
@@ -47,7 +47,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound($"User not found");
+                return NotFound("User not found");
 
             var following = user.Following
                 .OrderByDescending(f => f.FollowedOn)

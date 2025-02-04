@@ -1,13 +1,11 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Objects;
+﻿using MediaCritica.Server.Objects;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class InternalApiHelper(DatabaseContext databaseContext, ReviewController reviewController)
+    public class InternalApiHelper(DatabaseContext databaseContext)
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly ReviewController _reviewController = reviewController;
 
         public async Task<Movie?> GetMovieMedia(string movieId)
         {

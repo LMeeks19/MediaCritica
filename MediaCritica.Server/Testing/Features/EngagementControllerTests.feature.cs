@@ -77,35 +77,35 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table1.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table1.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table1.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table1.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "4",
                         "Test",
                         "4",
@@ -113,9 +113,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table1, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table18, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
@@ -127,7 +127,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title",
                         "Description",
                         "Date"});
-            table2.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "1",
                         "1",
                         "Test Media Poster",
@@ -140,25 +140,25 @@ namespace MediaCritica.Server.Testing.Features
                         "Test Description",
                         "2025-01-01"});
 #line 10
- testRunner.And("I have the following reviews", ((string)(null)), table2, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table19, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "ReviewId",
                         "Type"});
-            table3.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "1",
                         "1",
                         "1",
                         "0"});
-            table3.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "2",
                         "2",
                         "1",
                         "1"});
 #line 13
- testRunner.And("I have the following engagements", ((string)(null)), table3, "And ");
+ testRunner.And("I have the following engagements", ((string)(null)), table20, "And ");
 #line hidden
         }
         
@@ -356,18 +356,18 @@ this.FeatureBackground();
 #line 46
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table4.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "3",
                             "4",
                             "1",
                             "0"});
 #line 47
- testRunner.And("The engagement should have been created", ((string)(null)), table4, "And ");
+ testRunner.And("The engagement should have been created", ((string)(null)), table21, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -402,18 +402,18 @@ this.FeatureBackground();
 #line 54
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table5.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "0"});
 #line 55
- testRunner.And("The engagement should have been updated", ((string)(null)), table5, "And ");
+ testRunner.And("The engagement should have been updated", ((string)(null)), table22, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -448,18 +448,18 @@ this.FeatureBackground();
 #line 62
  testRunner.And("The response should be a dislike", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table6.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "1",
                             "1",
                             "1",
                             "1"});
 #line 63
- testRunner.And("The engagement should have been updated", ((string)(null)), table6, "And ");
+ testRunner.And("The engagement should have been updated", ((string)(null)), table23, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -494,13 +494,13 @@ this.FeatureBackground();
 #line 70
  testRunner.And("The response should be \"Engagement deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
 #line 71
- testRunner.And("The engagement should have been deleted", ((string)(null)), table7, "And ");
+ testRunner.And("The engagement should have been deleted", ((string)(null)), table24, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

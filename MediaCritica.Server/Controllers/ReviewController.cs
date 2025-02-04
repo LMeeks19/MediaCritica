@@ -76,10 +76,19 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostReview([FromBody] ReviewModel reviewModel)
         {
-            var userAlreadyReviewed = await _databaseContext.Reviews.AnyAsync(r => r.UserId == reviewModel.ReviewerId);
+            var user = await _databaseContext.Users
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Media)
+                .Include(u => u.Engagements)
+                .Include(u => u.Milestones)
+                .FirstOrDefaultAsync(u => u.Id == reviewModel.ReviewerId);
 
-            if (userAlreadyReviewed)
-                return Conflict("User already review this media");
+            if (user == null)
+                return NotFound("User not found");
+            if (!user.Reviews.Any(r => r.Media.Id == reviewModel.MediaId))
+                return NotFound("Media not found");
+            if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId))
+                return Conflict("User has already reviewed this media");
 
             var review = _reviewMapper.MapReview(reviewModel);
 
@@ -93,19 +102,9 @@ namespace MediaCritica.Server.Controllers
                 Message = $"Review created for {review.MediaTitle}"
             });
 
-            var user = await _databaseContext.Users
-                .Include(u => u.Reviews)
-                    .ThenInclude(r => r.Media)
-                .Include(u => u.Engagements)
-                .Include(u => u.Milestones)
-                .FirstOrDefaultAsync(u => u.Id == review.UserId);
-
-            if (user == null)
-                return NotFound();
-
             await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
-            return Ok(review.Id);
+            return Ok("Review created");
         }
 
         [HttpPut("[action]")]
