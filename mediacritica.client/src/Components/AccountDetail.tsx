@@ -8,7 +8,6 @@ import {
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { UpdateUser } from "../Server/Server";
-import Snackbar  from "./Snackbar";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import SaveIcon from '@mui/icons-material/SaveOutlined';

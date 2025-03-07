@@ -15,7 +15,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { formatDistanceToNowStrict } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import Snackbar from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
@@ -99,8 +98,6 @@ function ViewReviewPage() {
       setReview({ ...review, dislikes: (review.dislikes -= 1) });
 
     setEngagement(newUserEngagement);
-
-    Snackbar.Success("Rating updated");
   }
 
   async function PutReview() {
@@ -115,13 +112,11 @@ function ViewReviewPage() {
     const updatedReview = await UpdateReview(details);
     setReview(updatedReview);
     setIsEditing(false);
-    Snackbar.Success("Review Updated");
   }
 
   async function RemoveReview() {
     await DeleteReview(review.id);
     setUser({ ...user, totalReviews: user.totalReviews - 1 });
-    Snackbar.Success("Review Deleted");
     navigate("/account");
   }
 
