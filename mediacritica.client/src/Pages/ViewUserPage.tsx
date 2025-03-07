@@ -60,7 +60,7 @@ function ViewUserPage() {
       const userSummaryData = await GetUserSummary(location.state.userId);
       setUserSummary(userSummaryData);
       var userFollowStatus = null;
-      if (user.id !== undefined)
+      if (user.id !== undefined && user.id !== location.state.userId)
         userFollowStatus = await GetUserFollow(user.id, location.state.userId);
       setUserFollow(userFollowStatus);
       setIsLoading(false);

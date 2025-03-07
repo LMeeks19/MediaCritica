@@ -72,7 +72,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.FollowedId == followedId);
 
             if (userFollow == null)
-                return NotFound(new { Message = "Follow relationship not found" });
+                return Ok(new { Message = "Follow relationship not found" });
 
             return Ok(new UserFollowModel
             {
