@@ -42,7 +42,6 @@ import { userState } from "../State/GlobalState";
 import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import Snackbar from "../Components/Snackbar";
 
 function ViewUserPage() {
   const user = useRecoilValue(userState);
@@ -60,12 +59,9 @@ function ViewUserPage() {
       setIsLoading(true);
       const userSummaryData = await GetUserSummary(location.state.userId);
       setUserSummary(userSummaryData);
-      var userFollowStatus = null
+      var userFollowStatus = null;
       if (user.id !== undefined)
-        userFollowStatus = await GetUserFollow(
-          user.id,
-          location.state.userId
-        );
+        userFollowStatus = await GetUserFollow(user.id, location.state.userId);
       setUserFollow(userFollowStatus);
       setIsLoading(false);
     }
@@ -83,12 +79,10 @@ function ViewUserPage() {
       const userFollowData = await FollowUser(newUserFollow);
       setUserFollow(userFollowData);
       setUserSummary({ ...userSummary, followers: userSummary.followers + 1 });
-      Snackbar.Info(`Now following ${userSummary.name}`);
     } else {
       await UnfollowUser(userFollow!.id);
       setUserFollow(null);
       setUserSummary({ ...userSummary, followers: userSummary.followers - 1 });
-      Snackbar.Info(`${userSummary.name} has been unfollowed`);
     }
   }
 
@@ -98,13 +92,8 @@ function ViewUserPage() {
     );
     setUserFollow({
       ...userFollow!,
-      enabledNotifications: enabledNotifications ?? false,
+      enabledNotifications: enabledNotifications.value ?? false,
     });
-    Snackbar.Info(
-      `Notifications for ${userSummary.name} ${
-        enabledNotifications ? "enabled" : "disabled"
-      }`
-    );
   }
 
   const starRatings: any[] = [];

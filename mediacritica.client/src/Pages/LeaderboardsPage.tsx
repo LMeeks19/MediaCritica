@@ -131,7 +131,7 @@ function LeaderboardsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {rankings?.length !== 0 ? (
+                  {rankings?.length > 0 ? (
                     rankings
                       ?.filter(
                         (item) => item.timeframe === selectedRankingTimeFrame
@@ -147,7 +147,7 @@ function LeaderboardsPage() {
                       })
                   ) : (
                     <tr className="empty">
-                      <td colSpan={4}>No Other Rankings</td>
+                      <td colSpan={3}>No Rankings</td>
                     </tr>
                   )}
                 </tbody>

@@ -84,10 +84,10 @@ namespace MediaCritica.Server.Controllers
                 .FirstOrDefaultAsync(u => u.Id == reviewModel.ReviewerId);
 
             if (user == null)
-                return NotFound("User not found");
-            if (!user.Reviews.Any(r => r.Media.Id == reviewModel.MediaId))
+                return NotFound(new { Message = "User not found" });
+            if (!_databaseContext.Media.Any(m => m.Id == reviewModel.MediaId))
                 return NotFound("Media not found");
-            if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId))
+            if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
                 return Conflict("User has already reviewed this media");
 
             var review = _reviewMapper.MapReview(reviewModel);
@@ -102,9 +102,12 @@ namespace MediaCritica.Server.Controllers
                 Message = $"Review created for {review.MediaTitle}"
             });
 
+            var newReview = user.Reviews.Single(r => r.MediaId == reviewModel.MediaId);
+            newReview.Media = _databaseContext.Media.Single(m => m.Id == newReview.MediaId);
+
             await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
-            return Ok("Review created");
+            return Ok(newReview.Id);
         }
 
         [HttpPut("[action]")]
@@ -139,12 +142,12 @@ namespace MediaCritica.Server.Controllers
             var review = await _databaseContext.Reviews.FindAsync(reviewId);
 
             if (review == null)
-                return NotFound();
+                return NotFound(new { Message = "Review not found" });
 
             _databaseContext.Reviews.Remove(review);
             await _databaseContext.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { Message = "Review Deleted" });
         }
 
         [HttpGet("[action]/{mediaId}/{userId}")]
@@ -152,8 +155,7 @@ namespace MediaCritica.Server.Controllers
         {
             var isReviewed = _databaseContext.Reviews.Any(b => b.MediaId == mediaId && b.UserId == userId);
 
-            return Ok(isReviewed);
-
+            return Ok(new { Value = isReviewed });
         }
     }
 }

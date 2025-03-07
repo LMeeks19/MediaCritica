@@ -26,7 +26,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             return Ok(_userMapper.MapUserModel(user));
         }
@@ -37,7 +37,7 @@ namespace MediaCritica.Server.Controllers
             var userExists = await _databaseContext.Users.AnyAsync(u => u.Email == userModel.Email);
 
             if (userExists)
-                return Conflict("Email already in use");
+                return Conflict(new { Message = "Email already in use" });
 
             var user = _userMapper.MapUser(userModel);
 
@@ -54,12 +54,12 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             _databaseContext.Users.Remove(user);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok("User deleted");
+            return Ok(new { Message = "User deleted" });
         }
 
         [HttpPut("[action]")]
@@ -68,7 +68,7 @@ namespace MediaCritica.Server.Controllers
             var user = await _databaseContext.Users.SingleOrDefaultAsync(user => user.Id == updateUserModel.UserId);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             switch (updateUserModel.Type)
             {
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Controllers
                     user.Password = updateUserModel.Value;
                     break;
                 default:
-                    return BadRequest("Invalid update type");
+                    return BadRequest(new { Message = "Invalid update type" });
             }
 
             _databaseContext.Users.Update(user);
@@ -100,7 +100,7 @@ namespace MediaCritica.Server.Controllers
             var preference = await _databaseContext.Preferences.SingleOrDefaultAsync(p => p.Id == preferenceModel.Id);
 
             if (preference == null)
-                return NotFound("Preference not found");
+                return NotFound(new { Message = "Preference not found" });
 
             preference.Theme = preferenceModel.Theme;
             preference.Palette = preferenceModel.Palette;
@@ -127,7 +127,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             return Ok(_userMapper.MapUserSummaryModel(user));
         }

@@ -3,7 +3,6 @@ import { ConfirmationDialogState, userState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { DeleteUser } from "../Server/Server";
 import { UserModel } from "../Interfaces/UserModel";
-import Snackbar from "./Snackbar";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 function DeleteAccountAction() {
@@ -11,11 +10,8 @@ function DeleteAccountAction() {
   const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   async function DeleteAccount() {
-    var deletedId = (await DeleteUser(user.id)) ?? false;
-    if (deletedId) {
-      setUser({} as UserModel);
-      Snackbar.Success("Account deleted");
-    } else Snackbar.Error("Failed to delete account");
+    await DeleteUser(user.id);
+    setUser({} as UserModel);
   }
 
   const deleteAccountDialog = {

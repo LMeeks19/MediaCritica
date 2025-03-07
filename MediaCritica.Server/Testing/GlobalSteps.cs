@@ -117,14 +117,14 @@ namespace MediaCritica.Server.Testing
         public void ThenTheResponseShouldBeString(string message)
         {
             var result = (ObjectResult)_response;
-            Assert.AreEqual(message, result.Value);
+            Assert.AreEqual(new { Message = message }, result.Value);
         }
 
         [Then(@"The response should be (true|false)")]
         public void ThenTheResponseShouldBeBool(bool value)
         {
             var result = (ObjectResult)_response;
-            Assert.AreEqual(value, result.Value);
+            Assert.AreEqual(new { Value = value }, result.Value);
         }
     }
 }

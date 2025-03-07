@@ -59,11 +59,11 @@ export default defineConfig({
                 target,
                 secure: false
             },
-            '^/Leaderboards': {
+            '^/Leaderboard': {
                 target,
                 secure: false
             },
-            '^/Milestones': {
+            '^/Milestone': {
                 target,
                 secure: false
             },

@@ -39,7 +39,6 @@ function AccountDetail(props: AccountDetailsProps) {
   async function UpdateAccountField() {
     const userData = await UpdateUser(fieldValue);
     setUser(userData);
-    Snackbar.Info("Account Updated");
     ResetAccountField();
   }
 

@@ -46,13 +46,13 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(n => n.Id == notificationId);
 
             if (notification == null)
-                return NotFound("Notification not found");
+                return NotFound(new { Message = "Notification not found" });
 
             notification.IsRead = true;
 
             await _databaseContext.SaveChangesAsync();
 
-            return Ok($"Notification {notification.Id} marked as read");
+            return Ok(new { Message = $"Notification {notification.Id} marked as read" });
         }
 
         // Mark all notifications as read for a user
@@ -64,12 +64,12 @@ namespace MediaCritica.Server.Controllers
                 .ToListAsync();
 
             if (unreadNotifications.Count == 0)
-                return NotFound("No unread notifications");
+                return NotFound(new { Message = "No unread notifications" });
 
             unreadNotifications.ForEach(n => n.IsRead = true);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok("All notifications marked as read");
+            return Ok(new { Message = "All notifications marked as read" });
         }
 
         // update bookmark status of a notification
@@ -81,13 +81,13 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync();
 
             if (notification == null)
-                return NotFound("Notification not found");
+                return NotFound(new { Message = "Notification not found" });
 
             notification.IsBookmarked = !notification.IsBookmarked;
 
             await _databaseContext.SaveChangesAsync();
 
-            return Ok($"Notification {notification.Id} bookmark status updated");
+            return Ok(new { Message = $"Notification {notification.Id} bookmark status updated" });
         }
 
         // delete a notification
@@ -98,12 +98,12 @@ namespace MediaCritica.Server.Controllers
                 .FirstOrDefaultAsync(n => n.Id == notificationId);
 
             if (notification == null)
-                return NotFound("Notification not found");
+                return NotFound(new { Message = "Notification not found" });
 
             _databaseContext.Notifications.Remove(notification);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok($"Notification {notification.Id} deleted");
+            return Ok(new { Message = $"Notification {notification.Id} deleted" });
         }
 
         public async Task<IActionResult> PostNotifications(NewNotificationModel newNotificationModel)
@@ -121,7 +121,7 @@ namespace MediaCritica.Server.Controllers
                 .ToListAsync();
 
             if (notifications.Count == 0)
-                return NotFound("No followers to send notifications to");
+                return NotFound(new { Message = "No followers to send notifications to" });
 
             await _databaseContext.Notifications.AddRangeAsync(notifications);
             await _databaseContext.SaveChangesAsync();
@@ -143,7 +143,7 @@ namespace MediaCritica.Server.Controllers
                 await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", new { newNotificationModel.AuthorName, newNotificationModel.Message, });
             }
 
-            return Ok("Followers notified");
+            return Ok(new { Message = "Followers notified" });
         }
     }
 }

@@ -18,7 +18,7 @@ function StarRating(props: StarRatingProps) {
   useEffect(() => {
     async function FetchUserReviewStatus() {
       const reviewStatus = await GetUserReviewStatus(props.media.id, user.id);
-      setHasUserReviewed(reviewStatus);
+      setHasUserReviewed(reviewStatus.value);
     }
     FetchUserReviewStatus();
   }, []);

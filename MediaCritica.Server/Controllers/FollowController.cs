@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             var followers = user.Followers
                 .OrderByDescending(f => f.FollowedOn)
@@ -47,7 +47,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             var following = user.Following
                 .OrderByDescending(f => f.FollowedOn)
@@ -72,7 +72,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.FollowedId == followedId);
 
             if (userFollow == null)
-                return NotFound("Follow relationship not found");
+                return NotFound(new { Message = "Follow relationship not found" });
 
             return Ok(new UserFollowModel
             {
@@ -88,11 +88,11 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> FollowUser([FromBody] UserFollowModel userFollowModel)
         {
             if (!await _databaseContext.Users.AnyAsync(u => u.Id == userFollowModel.FollowedId))
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
             if (userFollowModel.FollowerId == userFollowModel.FollowedId)
-                return BadRequest("Users cannot follow themselves");
+                return BadRequest(new { Message = "Users cannot follow themselves" });
             if (await _databaseContext.UserFollows.AnyAsync(f => f.FollowerId == userFollowModel.FollowerId && f.FollowedId == userFollowModel.FollowedId))
-                return Conflict("User is already following");
+                return Conflict(new { Message = "User is already following" });
 
             var newFollow = new UserFollow
             {
@@ -105,7 +105,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.UserFollows.AddAsync(newFollow);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok("User followed");
+            return Ok(new { Message = "User followed" });
         }
 
         [HttpDelete("[action]/{userFollowId}")]
@@ -115,12 +115,12 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(f => f.Id == userFollowId);
 
             if (follow == null)
-                return NotFound("Follow relationship not found");
+                return NotFound(new { Message = "Follow relationship not found" });
 
             _databaseContext.UserFollows.Remove(follow);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok("User unfollowed");
+            return Ok(new { Message = "User unfollowed" });
         }
 
         [HttpPut("[action]/{userFollowId}")]
@@ -130,7 +130,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(f => f.Id == userFollowId);
 
             if (userFollow == null)
-                return NotFound("Follow relationship not found");
+                return NotFound(new { Message = "Follow relationship not found" });
 
             userFollow.EnabledNotifications = !userFollow.EnabledNotifications;
             await _databaseContext.SaveChangesAsync();

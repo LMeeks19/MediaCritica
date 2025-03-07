@@ -17,16 +17,16 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetUserEngagement(int reviewId, int userId)
         {
             if (!await _databaseContext.Users.AnyAsync(u => u.Id == userId))
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
-                return NotFound("Review not found");
+                return NotFound(new { Message = "Review not found" });
 
             var engagement = await _databaseContext.Engagements
                 .SingleOrDefaultAsync(e => e.ReviewId == reviewId && e.UserId == userId);
 
             if (engagement == null)
-                return NotFound("Engagement not found");
+                return Ok(new { Value = false });
 
             return Ok(engagement.Type);
         }
@@ -35,7 +35,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> ToggleEngagement(int userId, int reviewId, EngagementType type)
         {
             if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
-                return NotFound("Review not found");
+                return NotFound(new { Message = "Review not found" });
 
             var user = await _databaseContext.Users
                 .Include(u => u.Reviews)
@@ -45,7 +45,7 @@ namespace MediaCritica.Server.Controllers
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound(new { Message = "User not found" });
 
             var engagement = user.Engagements.FirstOrDefault(e => e.ReviewId == reviewId);
 
@@ -73,7 +73,7 @@ namespace MediaCritica.Server.Controllers
             await _milestoneCalculatorHelper.UpdateEngagementMilestones(user);
 
             if (!await _databaseContext.Engagements.AnyAsync(e => e.Id == engagement!.Id))
-                return Ok("Engagement deleted");
+                return Ok(new { Message = "Engagement deleted" });
 
             return Ok(engagement!.Type);
         }

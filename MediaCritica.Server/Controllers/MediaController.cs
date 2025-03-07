@@ -255,7 +255,7 @@ namespace MediaCritica.Server.Controllers
             movie = await _internalApiHelper.GetMovieMedia(movieId);
 
             if (movie == null)
-                return NotFound("Movie not found");
+                return NotFound(new { Message = "Movie not found" });
 
             return Ok(_mapper.MovieMapper.MapMovieModel(movie));
         }
@@ -279,7 +279,7 @@ namespace MediaCritica.Server.Controllers
             series = await _internalApiHelper.GetSeriesMedia(seriesId);
 
             if (series == null)
-                return NotFound("Series not found");
+                return NotFound(new { Message = "Series not found" });
 
             return Ok(_mapper.SeriesMapper.MapSeriesModel(series));
         }
@@ -301,7 +301,7 @@ namespace MediaCritica.Server.Controllers
             season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
 
             if (season == null)
-                return NotFound("Season not found");
+                return NotFound(new { Message = "Season not found" });
 
             return Ok(_mapper.SeasonMapper.MapSeasonModel(season));
         }
@@ -323,7 +323,7 @@ namespace MediaCritica.Server.Controllers
             game = await _internalApiHelper.GetGameMedia(gameId);
 
             if (game == null)
-                return NotFound("Game not found");
+                return NotFound(new { Message = "Game not found" });
 
             return Ok(_mapper.GameMapper.MapGameModel(game));
         }
@@ -356,7 +356,7 @@ namespace MediaCritica.Server.Controllers
             episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
 
             if (episode == null)
-                return NotFound("Episode not found");
+                return NotFound(new { Message = "Episode not found" });
 
             return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
         }

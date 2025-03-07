@@ -129,6 +129,7 @@
 
             &.empty {
               background-color: light-dark(whitesmoke, #1b1b1b);
+              display: table-row !important;
             }
           }
 

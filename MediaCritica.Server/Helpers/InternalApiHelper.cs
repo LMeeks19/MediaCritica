@@ -30,6 +30,7 @@ namespace MediaCritica.Server.Helpers
         public async Task<Series?> GetSeriesMedia(string seriesId)
         {
             var series = await _databaseContext.Series
+                .Include(episdoe => episdoe.Reviews)
                 .Include(series => series.Ratings)
                 .Include(series => series.Seasons)
                     .ThenInclude(season => season.Episodes)
