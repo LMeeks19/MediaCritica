@@ -34,6 +34,10 @@ interface RequestValue {
   value: boolean;
 }
 
+interface RequestId {
+  id: number;
+}
+
 function isRequestMessageInterface(obj: any): obj is RequestMessage {
   return (
     typeof obj === "object" &&
@@ -55,13 +59,11 @@ async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
         default:
           Snackbar.Error((response as RequestMessage).message);
       }
-    } else {
-      return response as T;
-    }
+    } else return response as T;
   } catch (error) {
     Snackbar.Error(error as string);
   }
-  return Array.isArray([] as T) ? ([] as T) : ({} as T);
+  return Array.isArray([] as T) ? [] as T : {} as T;
 }
 
 // User API Calls
@@ -302,8 +304,8 @@ export async function GetMediaReviews(
   return response;
 }
 
-export async function PostReview(review: ReviewModel): Promise<number> {
-  const response = await MakeRequest<number>(`/Review/PostReview`, {
+export async function PostReview(review: ReviewModel): Promise<RequestId> {
+  const response = await MakeRequest<RequestId>(`/Review/PostReview`, {
     method: "POST",
     body: JSON.stringify(review),
     headers: { "Content-type": "application/json; charset=UTF-8" },
