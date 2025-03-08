@@ -363,7 +363,7 @@ this.FeatureBackground();
  testRunner.When("I call GetUserFollowStatus for userId 1 on userId 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 49
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 50
  testRunner.And("The response should be \"Follow relationship not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

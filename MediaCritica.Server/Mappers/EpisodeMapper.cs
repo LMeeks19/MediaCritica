@@ -19,7 +19,6 @@ namespace MediaCritica.Server.Mappers
             episode.EpisodeNo = int.Parse(episodeModel.Episode);
             episode.SeasonNo = int.Parse(episodeModel.Season);
             episode.SeasonId = episodeModel.SeasonId;
-            episode.IsFullyPopulated = true;
 
             return episode;
         }
@@ -47,7 +46,7 @@ namespace MediaCritica.Server.Mappers
                 Id = episode.Id,
                 Episode = episode.EpisodeNo.ToString(),
                 Title = episode.Title,
-                Released = episode.Released.ToLongDateString(),
+                Released = episode.Released != null ? ((DateTime)episode.Released).ToLongDateString() : "N/A",
                 imdbRating = episode.ImdbRating.ToString(),
             };
         }

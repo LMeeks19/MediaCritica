@@ -62,7 +62,7 @@ namespace MediaCritica.Server.Controllers
             var lastYear = DateTime.Now.Year - 1;
 
             var query = _databaseContext.Media
-                .Where(m => m.Type != MediaType.Episode && m.Released.Year == lastYear)
+                .Where(m => m.Type != MediaType.Episode && m.Released != null && ((DateTime)m.Released!).Year == lastYear)
                 .OrderByDescending(m => m.ImdbRating)
                 .ThenBy(m => m.Title);
 
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Controllers
             var currentYear = DateTime.Now.Year;
 
             var query = _databaseContext.Media
-                .Where(m => m.Type != MediaType.Episode && m.Released.Year == currentYear && m.Released < DateTime.Now)
+                .Where(m => m.Type != MediaType.Episode && m.Released != null && ((DateTime)m.Released!).Year == currentYear && m.Released < DateTime.Now)
                 .OrderByDescending(m => m.ImdbRating)
                 .ThenBy(m => m.Title);
 
@@ -174,10 +174,10 @@ namespace MediaCritica.Server.Controllers
             var isWinter = currentSeasonStartMonth == 12 && currentSeasonEndMonth == 2;
 
             var mediaQuery = _databaseContext.Media
-                .Where(media => media.Type != MediaType.Episode)
+                .Where(media => media.Type != MediaType.Episode && media.Released != null)
                 .Where(media => (isWinter ?
-                    media.Released.Month >= currentSeasonStartMonth || media.Released.Month <= currentSeasonEndMonth :
-                    media.Released.Month >= currentSeasonStartMonth && media.Released.Month <= currentSeasonEndMonth) &&
+                    ((DateTime)media.Released!).Month >= currentSeasonStartMonth || ((DateTime)media.Released!).Month <= currentSeasonEndMonth :
+                    ((DateTime)media.Released!).Month >= currentSeasonStartMonth && ((DateTime)media.Released!).Month <= currentSeasonEndMonth) &&
                     media.Released <= DateTime.Now)
                 .OrderByDescending(media => media.ImdbRating)
                 .ThenBy(media => media.Title);
@@ -252,8 +252,6 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Movies.AddAsync(movie);
             await _databaseContext.SaveChangesAsync();
 
-            movie = await _internalApiHelper.GetMovieMedia(movieId);
-
             if (movie == null)
                 return NotFound(new { Message = "Movie not found" });
 
@@ -276,8 +274,6 @@ namespace MediaCritica.Server.Controllers
 
             await GetSeason(seriesId);
 
-            series = await _internalApiHelper.GetSeriesMedia(seriesId);
-
             if (series == null)
                 return NotFound(new { Message = "Series not found" });
 
@@ -298,7 +294,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Seasons.AddAsync(season);
             await _databaseContext.SaveChangesAsync();
 
-            season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+            season.Episodes.ForEach(async episode => await GetEpisode(episode.Id));
 
             if (season == null)
                 return NotFound(new { Message = "Season not found" });
@@ -320,8 +316,6 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Games.AddAsync(game);
             await _databaseContext.SaveChangesAsync();
 
-            game = await _internalApiHelper.GetGameMedia(gameId);
-
             if (game == null)
                 return NotFound(new { Message = "Game not found" });
 
@@ -333,7 +327,7 @@ namespace MediaCritica.Server.Controllers
         {
             var episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
 
-            if (episode != null && episode.IsFullyPopulated)
+            if (episode != null)
                 return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
 
             var episodeModel = await _externalApiHelper.GetEpisodeMedia(episodeId);
@@ -352,8 +346,6 @@ namespace MediaCritica.Server.Controllers
                 _databaseContext.Episodes.Update(episode);
 
             await _databaseContext.SaveChangesAsync();
-
-            episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
 
             if (episode == null)
                 return NotFound(new { Message = "Episode not found" });

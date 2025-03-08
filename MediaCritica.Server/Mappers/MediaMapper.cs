@@ -56,7 +56,7 @@ namespace MediaCritica.Server.Mappers
                 Poster = media.Poster,
                 Rated = media.Rated,
                 Ratings = media.Ratings.Select(_ratingMapper.MapRatingModel).ToList(),
-                Released = media.Released.ToLongDateString(),
+                Released = media.Released != null ? ((DateTime)media.Released).ToLongDateString() : "N/A",
                 Runtime = media.Runtime,
                 Title = media.Title,
                 Type = media.Type,

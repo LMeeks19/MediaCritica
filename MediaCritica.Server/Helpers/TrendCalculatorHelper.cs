@@ -403,7 +403,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Anticipated",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"Added to user backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} ahead of its release on {trend.Released.GetDateByTimeFrame(timeframe)} this {timeframe}!"
+                Description = $"Added to user backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} ahead of its release on {(trend.Released == null ? "unknown" : trend.Released?.GetDateByTimeFrame(timeframe))} this {timeframe}!"
             };
         }
 

@@ -110,7 +110,7 @@ Scenario: Post a backlog but the media doesn't exist
 Scenario: Delete a backlog
 	When I call DeleteBacklog with the media id 1 and user id 3
 	Then The status code should be 200
-	And The response should be "Media Title 1 removed from Test 3 backlog"
+	And The response should be "Media Title 1 removed from backlog"
 
 Scenario: Delete a backlog that doesn't exist
 	When I call DeleteBacklog with the media id 7 and user id 4

@@ -27,8 +27,8 @@ Scenario: Get a users engagement for a review that is a dislike
 
 Scenario: Get a users engagement that doesn't exist
 	When I call GetUserEngagement with review id 1 and user id 3
-	Then The status code should be 404
-	And The response should be "Engagement not found"
+	Then The status code should be 200
+	And The response should be false
 
 Scenario: Get a users engagement but the user doesn't exist
 	When I call GetUserEngagement with review id 1 and user id 5

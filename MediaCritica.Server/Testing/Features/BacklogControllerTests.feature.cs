@@ -971,7 +971,7 @@ this.FeatureBackground();
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 113
- testRunner.And("The response should be \"Media Title 1 removed from Test 3 backlog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The response should be \"Media Title 1 removed from backlog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

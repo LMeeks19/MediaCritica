@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Mappers
                     Id = episode.imdbID,
                     EpisodeNo = int.Parse(episode.Episode),
                     SeasonNo = int.Parse(seasonModel.Season),
-                    Released = DateTime.Parse(episode.Released),
+                    Released = episode.Released == "N/A" ? null : DateTime.Parse(episode.Released),
                     Title = episode.Title,
                     ImdbRating = episode.imdbRating == "N/A" ? null : double.Parse(episode.imdbRating),
                     Type = MediaType.Episode,

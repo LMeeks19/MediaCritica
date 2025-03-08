@@ -15,7 +15,7 @@
             return dateTime.ToString(text).Replace(suffixPlaceHolder, suffix);
         }
 
-        public static string GetDateByTimeFrame(this DateTime dateTime, string timeframe)
+        public static string? GetDateByTimeFrame(this DateTime dateTime, string timeframe)
         {
             var formattedDate = timeframe switch
             {

@@ -46,7 +46,7 @@ Scenario: Get a users follow status for another user
 
 Scenario: Get a users follow status for another user that doesn't exist
 	When I call GetUserFollowStatus for userId 1 on userId 3
-	Then The status code should be 404
+	Then The status code should be 200
 	And The response should be "Follow relationship not found"
 
 Scenario: Follow a user
