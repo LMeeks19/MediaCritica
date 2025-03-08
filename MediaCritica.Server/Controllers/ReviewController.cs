@@ -26,7 +26,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync(r => r.Id == reviewId);
 
             if (review == null)
-                return NotFound("Review not found");
+                return NotFound(new { Message = "Review not found" });
 
             return Ok(_reviewMapper.MapReviewModel(review));
         }
@@ -86,9 +86,9 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
             if (!_databaseContext.Media.Any(m => m.Id == reviewModel.MediaId))
-                return NotFound("Media not found");
+                return NotFound(new { Message = "Media not found" });
             if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
-                return Conflict("User has already reviewed this media");
+                return Conflict(new { Message = "User has already reviewed this media" });
 
             var review = _reviewMapper.MapReview(reviewModel);
 
@@ -102,12 +102,11 @@ namespace MediaCritica.Server.Controllers
                 Message = $"Review created for {review.MediaTitle}"
             });
 
-            var newReview = user.Reviews.Single(r => r.MediaId == reviewModel.MediaId);
-            newReview.Media = _databaseContext.Media.Single(m => m.Id == newReview.MediaId);
+            review.Media = _databaseContext.Media.Single(m => m.Id == review.MediaId);
 
             await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
-            return Ok(newReview.Id);
+            return Ok(new { review.Id });
         }
 
         [HttpPut("[action]")]
@@ -116,7 +115,7 @@ namespace MediaCritica.Server.Controllers
             var review = await _databaseContext.Reviews.SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId);
 
             if (review == null)
-                return NotFound();
+                return NotFound(new { Message = "Review not found" });
 
             review.Title = updateReviewModel.Title;
             review.Description = updateReviewModel.Description;
@@ -151,9 +150,9 @@ namespace MediaCritica.Server.Controllers
         }
 
         [HttpGet("[action]/{mediaId}/{userId}")]
-        public IActionResult GetUserReviewStatus(string mediaId, int userId)
+        public async Task<IActionResult> GetUserReviewStatus(string mediaId, int userId)
         {
-            var isReviewed = _databaseContext.Reviews.Any(b => b.MediaId == mediaId && b.UserId == userId);
+            var isReviewed = await _databaseContext.Reviews.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
 
             return Ok(new { Value = isReviewed });
         }
