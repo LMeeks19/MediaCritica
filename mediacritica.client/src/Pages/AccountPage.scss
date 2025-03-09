@@ -17,7 +17,8 @@
     .MuiAppBar-root {
       background-color: var(--palette-colour) !important;
       border-radius: 0 !important;
-      padding-top: 4rem;
+      margin-top: 4rem;
+      z-index: 999;
 
       .MuiTabs-root {
         border-radius: 0 !important;

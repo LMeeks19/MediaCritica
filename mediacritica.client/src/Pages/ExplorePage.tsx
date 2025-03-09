@@ -111,7 +111,7 @@ function ExplorePage() {
   return (
     <div className="explorepage-container">
       <div className="explore">
-        <TopBar whiteText />
+        <TopBar />
         <div className="header">
           <h1>Explore</h1>
           <div className="actions">

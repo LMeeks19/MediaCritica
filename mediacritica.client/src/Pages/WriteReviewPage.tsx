@@ -89,7 +89,7 @@ function WriteReviewPage() {
           <Loader />
         ) : (
           <div className="review">
-            <TopBar whiteText />
+            <TopBar />
             <div className="info">
               <div className="hero">
                 <div className="parent-title">

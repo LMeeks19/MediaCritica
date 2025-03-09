@@ -84,7 +84,7 @@ function LeaderboardsPage() {
   return (
     <div className="leaderboards-container">
       <div className="leaderboards">
-        <TopBar whiteText />
+        <TopBar />
         <div className="header">
           <h1>Leaderboards</h1>
         </div>

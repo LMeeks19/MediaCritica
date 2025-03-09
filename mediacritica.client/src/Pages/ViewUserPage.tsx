@@ -109,7 +109,7 @@ function ViewUserPage() {
         <Loader />
       ) : (
         <div className="viewuser">
-          <TopBar whiteText />
+          <TopBar />
           <div className="header">
             <div className="flex flex-col gap-1">
               <h1>{userSummary.name}</h1>

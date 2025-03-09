@@ -142,7 +142,7 @@ function NotificationsPage() {
   return (
     <div className="notificationspage-container">
       <div className="notifications">
-        <TopBar whiteText />
+        <TopBar />
         <div className="header palette">
           <h1>Notifications</h1>
           <div className="actions">

@@ -15,13 +15,14 @@
     }
 
     .episode-info {
-      padding: 4.5rem 2rem 1.5rem 2rem;
+      margin-top: 4rem;
+      padding: 20px 2rem;
+      z-index: 999;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
       color: whitesmoke;
-      box-shadow: 0 2px 5px #00000080;
       background-color: var(--palette-colour);
 
       h2 {
@@ -64,7 +65,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 2rem;
-      padding: 2rem;
+      padding: 1.5rem 2rem;
       overflow: auto;
       background-color: var(--dark-light);
 
@@ -110,7 +111,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1.5rem;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
 
         .review-card {
           background-color: light-dark(whitesmoke, #242424);

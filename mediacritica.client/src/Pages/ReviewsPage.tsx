@@ -40,7 +40,7 @@ function ReviewsPage() {
         <Loader />
       ) : (
         <div className="reviews">
-          <TopBar whiteText />
+          <TopBar />
           <div className="header">
             <h1>{mediaTitle} Reviews</h1>
           </div>

@@ -4,26 +4,64 @@
   z-index: 999;
   height: 4rem;
   text-wrap: nowrap;
-  color: var(--light-dark) !important;
+  color: whitesmoke !important;
   position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--palette-colour);
+  box-shadow: 0 0 10px 0 black;
 
-  &.white-text {
-    color: whitesmoke !important;
-  }
+  .MuiAutocomplete-root {
+    transition: background-color 0.3s ease-in-out;
 
-  &.palette-bg {
-    background-color: var(--palette-colour) !important;
+    &:hover,
+    &:focus-within {
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .MuiFormControl-root {
+      .MuiOutlinedInput-notchedOutline {
+        border-color: whitesmoke !important;
+      }
+
+      .MuiInputBase-root {
+        color: whitesmoke !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+
+        .MuiInputAdornment-root {
+          margin-left: 8px;
+          margin-top: 0;
+
+          .MuiSvgIcon-root {
+            width: 20px;
+            height: 20px;
+            color: whitesmoke !important;
+          }
+        }
+
+        .MuiInputBase-input {
+          font-family: "Orbitron";
+          font-size: 15px;
+          letter-spacing: 2px;
+        }
+      }
+    }
   }
 
   .MuiIconButton-root {
     color: inherit;
-    padding: 8px !important;
+    padding: 6px;
+    transition: background-color 0.3s ease-in-out;
+
+    .MuiSvgIcon-root {
+      width: 30px;
+      height: 30px;
+    }
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: rgba(0, 0, 0, 0.15);
     }
   }
 }

@@ -200,7 +200,7 @@ function MediaPage() {
         <Loader />
       ) : (
         <div className="media">
-          <TopBar whiteText />
+          <TopBar />
           {media.poster !== "N/A" ? (
             <img
               className="media-poster"

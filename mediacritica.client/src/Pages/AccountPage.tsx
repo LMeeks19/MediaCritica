@@ -455,8 +455,8 @@ function AccountPage() {
   return (
     user.id !== undefined && (
       <div className="accountpage-container">
+        <TopBar />
         <div className="account">
-          <TopBar whiteText />
           <AppBar position="static">
             <Tabs
               value={activeTab}
