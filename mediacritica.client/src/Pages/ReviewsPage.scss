@@ -4,14 +4,16 @@
   overflow: hidden;
 
   .reviews {
-    height: 100%;
+    height: calc(100% - 4rem);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-top: 4rem;
 
     .header {
-      padding-top: 4.5rem !important;
       background-color: var(--palette-colour);
+      border-top: none !important;
+      z-index: 999;
 
       h1 {
         color: whitesmoke !important;
@@ -22,7 +24,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem;
-      padding: 2rem;
+      padding: 1.5rem 2rem;
       overflow: hidden auto;
 
       .review-card {
