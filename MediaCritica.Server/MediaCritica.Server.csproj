@@ -45,7 +45,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Testing\Data\" />
   </ItemGroup>
 
 </Project>

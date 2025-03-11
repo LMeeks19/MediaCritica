@@ -1,0 +1,23 @@
+{
+  "Id": "11",
+  "Actors": "Actor 1, Actor 4",
+  "Awards": "Award 1",
+  "Country": "USA, UK",
+  "Director": "Director 5, Director 1",
+  "Genre": "Action, Adventure",
+  "Language": "English",
+  "Metascore": "85",
+  "Plot": "A great plot",
+  "Poster": "Media Poster 11",
+  "Rated": "PG-13",
+  "Released": "2024-11-09",
+  "Runtime": "120 min",
+  "Title": "Media Title 11",
+  "Type": "series",
+  "Writer": "Writer 1",
+  "Year": "2024",
+  "imdbRating": "9",
+  "imdbVotes": "1500",
+  "imdbID": "11",
+  "totalSeasons": "1"
+}

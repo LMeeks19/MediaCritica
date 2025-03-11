@@ -1,7 +1,5 @@
 Feature: MediaControllerTests
 
-TODO
-
 Background: 
 	Given I have the following users
 		| Id | Forename | Surname | Email           | Password     | Joined     |
@@ -189,7 +187,7 @@ Scenario: Get game internally
 	When I call GetGame with id 3
 	Then The status code should be 200
 	And The GameModel should be
-		| Id | Actors           | Awards  | Countries | Directors              | Genres        | Languages | Metascore | Plot         | Poster         | Rated | Released              | Runtime | Title         | Type | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice | DVD | Website | Production |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres        | Languages | Metascore | Plot         | Poster         | Rated | Released              | Runtime | Title         | Type | Writers  | Year | imdbRating | ImdbVotes | BoxOffice | DVD | Website | Production |
 		| 3  | Actor 1, Actor 5 | Award 1 | USA, UK   | Director 2, Director 7 | Comedy, Drama | English   | 85        | A great plot | Media Poster 3 | PG-13 | Friday, June 21, 2024 | 120 min | Media Title 3 | game | Writer 1 | 2024 | 8.5        | 1500      |           |     |         |            |
 
 Scenario: Get episode internally
@@ -200,34 +198,39 @@ Scenario: Get episode internally
 		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | Media Poster 4 | PG-13 | Friday, January 19, 2024 | 120 min | Media Title 4 | episode | Writer 1 | 2022 | 6          | 1500      | 1       | 1      | 1        | Media Title 2 |
 
 Scenario: Get movie externally
-	When I call GetMovie with id 1
+	When I call GetMovie with id 10
 	Then The status code should be 200
 	And The MovieModel should be
-		|  |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres        | Languages | Metascore | Plot         | Poster          | Rated | Released                 | Runtime | Title          | Type  | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
+		| 10 | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama | English   | 85        | A great plot | Media Poster 10 | PG-13 | Monday, February 3, 2025 | 120 min | Media Title 10 | movie | Writer 1 | 2025 | 7.2        | 1500      | $300,000,000 |     |         |            |
 
 Scenario: Get series externally
-	When I call GetSeries with id 2
+	When I call GetSeries with id 11
 	Then The status code should be 200
 	And The SeriesModel should be
-		|  |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres            | Languages | Metascore | Plot         | Poster          | Rated | Released                   | Runtime | Title          | Type   | Writers  | Year | ImdbRating | ImdbVotes | TotalSeasons |
+		| 11 | Actor 1, Actor 4 | Award 1 | USA, UK   | Director 5, Director 1 | Action, Adventure | English   | 85        | A great plot | Media Poster 11 | PG-13 | Saturday, November 9, 2024 | 120 min | Media Title 11 | series | Writer 1 | 2024 | 9          | 1500      | 1            |
 
 Scenario: Get season externally
-	When I call GetSeason with series id 1
+	When I call GetSeason with series id 11
 	Then The status code should be 200
 	And The SeasonModel should be
-		|  |
+		| Season | Title          |
+		| 1      | Media Title 11 |
 
 Scenario: Get game externally
-	When I call GetGame with id 3
+	When I call GetGame with id 12
 	Then The status code should be 200
 	And The GameModel should be
-		|  |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres        | Languages | Metascore | Plot         | Poster          | Rated | Released              | Runtime | Title          | Type | Writers  | Year | imdbRating | ImdbVotes | BoxOffice | DVD | Website | Production |
+		| 12 | Actor 1, Actor 5 | Award 1 | USA, UK   | Director 2, Director 7 | Comedy, Drama | English   | 85        | A great plot | Media Poster 12 | PG-13 | Friday, June 21, 2024 | 120 min | Media Title 12 | game | Writer 1 | 2024 | 8.5        | 1500      |           |     |         |            |
 
 Scenario: Get episode externally
-	When I call GetEpisode with id 4
+	When I call GetEpisode with id 13
 	Then The status code should be 200
 	And The EpisodeModel should be
-		|  |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Poster          | Rated | Released                 | Runtime | Title          | Type    | Writers  | Year | imdbRating | ImdbVotes | Episode | Season | SeasonId | SeriesTitle   |
+		| 13 | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | Media Poster 13 | PG-13 | Friday, January 19, 2024 | 120 min | Media Title 13 | episode | Writer 1 | 2022 | 6          | 1500      | 2       | 1      | 1        | Media Title 2 |
 
 Scenario: Get movie that doesn't exist
 	When I call GetMovie with id 2

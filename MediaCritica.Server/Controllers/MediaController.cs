@@ -357,7 +357,7 @@ namespace MediaCritica.Server.Controllers
 
             episode = _mapper.EpisodeMapper.MapEpisode(episodeModel);
 
-            if (episode.Id == null)
+            if (!_databaseContext.Episodes.Any(e => e.Id == episodeId))
                 await _databaseContext.Media.AddAsync(episode);
             else
                 _databaseContext.Media.Update(episode);

@@ -11,8 +11,6 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class MediaControllerSteps
     {
-        // TODO
-
         [When(@"I call GetMediaByExternalSearch with search term ""(.*)""")]
         public async Task WhenICallGetGetMediaByExternalSearchWithSearchTerm(string searchTerm)
         {

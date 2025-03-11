@@ -35,7 +35,7 @@ namespace MediaCritica.Server.Testing.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Testing/Features", "MediaControllerTests", "TODO", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Testing/Features", "MediaControllerTests", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,7 +75,7 @@ namespace MediaCritica.Server.Testing.Features
         
         public virtual void FeatureBackground()
         {
-#line 5
+#line 3
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -112,7 +112,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test4@email.com",
                         "Password012!",
                         "2025-01-04"});
-#line 6
+#line 4
  testRunner.Given("I have the following users", ((string)(null)), table52, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -187,7 +187,7 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         "",
                         ""});
-#line 12
+#line 10
  testRunner.And("I have the following movies", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
@@ -253,7 +253,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2",
                         "1500",
                         "1"});
-#line 16
+#line 14
  testRunner.And("I have the following series", ((string)(null)), table54, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -271,7 +271,7 @@ namespace MediaCritica.Server.Testing.Features
                         "5",
                         "1",
                         "Media Title 5"});
-#line 20
+#line 18
  testRunner.And("I have the following seasons", ((string)(null)), table55, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
@@ -346,7 +346,7 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         "",
                         ""});
-#line 24
+#line 22
  testRunner.And("I have the following games", ((string)(null)), table56, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
@@ -395,7 +395,7 @@ namespace MediaCritica.Server.Testing.Features
                         "1",
                         "1",
                         "1"});
-#line 28
+#line 26
  testRunner.And("I have the following episodes", ((string)(null)), table57, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
@@ -458,7 +458,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test Title 4",
                         "Test Description 4",
                         "2025-02-26"});
-#line 31
+#line 29
  testRunner.And("I have the following reviews", ((string)(null)), table58, "And ");
 #line hidden
         }
@@ -470,7 +470,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media by external search", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 38
+#line 36
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -480,13 +480,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 39
+#line 37
  testRunner.When("I call GetMediaByExternalSearch with search term \"Media Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 40
+#line 38
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
@@ -497,7 +497,7 @@ this.FeatureBackground();
                             "True",
                             "1",
                             "1"});
-#line 41
+#line 39
  testRunner.And("The MediaSearchResultResponse should be", ((string)(null)), table59, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
@@ -512,7 +512,7 @@ this.FeatureBackground();
                             "movie",
                             "2025",
                             "1"});
-#line 44
+#line 42
  testRunner.And("The MediaSearchModels should be", ((string)(null)), table60, "And ");
 #line hidden
             }
@@ -526,7 +526,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media by external search that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 48
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -536,16 +536,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 49
+#line 47
  testRunner.When("I call GetMediaByExternalSearch with search term \"Media Title 8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
+#line 48
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 51
+#line 49
  testRunner.And("The response should be \"No results found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -559,7 +559,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get explore media by search", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 53
+#line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -569,13 +569,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 54
+#line 52
  testRunner.When("I call GetExploreMediaBySearch with search term \"Media Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 55
+#line 53
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
@@ -594,7 +594,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-#line 56
+#line 54
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table61, "And ");
 #line hidden
             }
@@ -608,7 +608,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get explore media", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 60
+#line 58
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -618,13 +618,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 61
+#line 59
  testRunner.When("I call GetExploreMedia", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
+#line 60
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
@@ -633,7 +633,7 @@ this.FeatureBackground();
                 table62.AddRow(new string[] {
                             "6",
                             "6"});
-#line 63
+#line 61
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table62, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
@@ -692,7 +692,7 @@ this.FeatureBackground();
                             "Horror, Thriller",
                             "2026-10-16",
                             "3"});
-#line 66
+#line 64
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table63, "And ");
 #line hidden
             }
@@ -706,7 +706,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get best of previous year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 75
+#line 73
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -716,13 +716,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 76
+#line 74
  testRunner.When("I call GetBestOfPrevYear", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 77
+#line 75
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
@@ -731,7 +731,7 @@ this.FeatureBackground();
                 table64.AddRow(new string[] {
                             "2",
                             "2"});
-#line 78
+#line 76
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table64, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
@@ -758,7 +758,7 @@ this.FeatureBackground();
                             "Comedy, Drama",
                             "2024-06-21",
                             "8.5"});
-#line 81
+#line 79
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table65, "And ");
 #line hidden
             }
@@ -772,7 +772,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get best of current year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 86
+#line 84
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -782,13 +782,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 87
+#line 85
  testRunner.When("I call GetBestOfCurYear", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 88
+#line 86
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
@@ -797,7 +797,7 @@ this.FeatureBackground();
                 table66.AddRow(new string[] {
                             "2",
                             "2"});
-#line 89
+#line 87
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table66, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
@@ -824,7 +824,7 @@ this.FeatureBackground();
                             "Drama, Romance",
                             "2025-01-01",
                             "2"});
-#line 92
+#line 90
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table67, "And ");
 #line hidden
             }
@@ -838,7 +838,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get best of all time", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 97
+#line 95
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -848,13 +848,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 98
+#line 96
  testRunner.When("I call GetBestOfAllTime", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 99
+#line 97
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
@@ -863,7 +863,7 @@ this.FeatureBackground();
                 table68.AddRow(new string[] {
                             "5",
                             "5"});
-#line 100
+#line 98
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table68, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
@@ -914,7 +914,7 @@ this.FeatureBackground();
                             "Drama, Romance",
                             "2025-01-01",
                             "2"});
-#line 103
+#line 101
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table69, "And ");
 #line hidden
             }
@@ -928,7 +928,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get upcomng", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 111
+#line 109
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -938,13 +938,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 112
+#line 110
  testRunner.When("I call GetUpcoming", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 111
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
@@ -953,7 +953,7 @@ this.FeatureBackground();
                 table70.AddRow(new string[] {
                             "1",
                             "1"});
-#line 114
+#line 112
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table70, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
@@ -972,7 +972,7 @@ this.FeatureBackground();
                             "Horror, Thriller",
                             "2026-10-16",
                             "3"});
-#line 117
+#line 115
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table71, "And ");
 #line hidden
             }
@@ -986,7 +986,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get latest", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 121
+#line 119
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -996,13 +996,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 122
+#line 120
  testRunner.When("I call GetLatest", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 123
+#line 121
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1011,7 +1011,7 @@ this.FeatureBackground();
                 table72.AddRow(new string[] {
                             "5",
                             "5"});
-#line 124
+#line 122
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table72, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1062,7 +1062,7 @@ this.FeatureBackground();
                             "Fantasy, Action",
                             "2022-04-10",
                             "5"});
-#line 127
+#line 125
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table73, "And ");
 #line hidden
             }
@@ -1076,7 +1076,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get seasonal picks", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 135
+#line 133
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1086,13 +1086,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 136
+#line 134
  testRunner.When("I call GetSeasonalPicks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 137
+#line 135
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1101,7 +1101,7 @@ this.FeatureBackground();
                 table74.AddRow(new string[] {
                             "1",
                             "1"});
-#line 138
+#line 136
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table74, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1120,7 +1120,7 @@ this.FeatureBackground();
                             "Fantasy, Action",
                             "2022-04-10",
                             "5"});
-#line 141
+#line 139
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table75, "And ");
 #line hidden
             }
@@ -1134,7 +1134,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get most reviewed", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 145
+#line 143
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1144,13 +1144,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 146
+#line 144
  testRunner.When("I call GetMostReviewed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 147
+#line 145
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1159,7 +1159,7 @@ this.FeatureBackground();
                 table76.AddRow(new string[] {
                             "2",
                             "2"});
-#line 148
+#line 146
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table76, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1186,7 +1186,7 @@ this.FeatureBackground();
                             "Drama, Romance",
                             "2025-01-01",
                             "2"});
-#line 151
+#line 149
   testRunner.And("The MediaSummaryModels should be", ((string)(null)), table77, "And ");
 #line hidden
             }
@@ -1200,7 +1200,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get recently reviewed", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 156
+#line 154
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1210,13 +1210,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 157
+#line 155
  testRunner.When("I call GetRecentlyReviewed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 158
+#line 156
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1225,7 +1225,7 @@ this.FeatureBackground();
                 table78.AddRow(new string[] {
                             "2",
                             "2"});
-#line 159
+#line 157
  testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table78, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1252,7 +1252,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-#line 162
+#line 160
  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table79, "And ");
 #line hidden
             }
@@ -1266,7 +1266,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get movie internally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 167
+#line 165
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1276,13 +1276,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 168
+#line 166
  testRunner.When("I call GetMovie with id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 169
+#line 167
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1333,7 +1333,7 @@ this.FeatureBackground();
                             "",
                             "",
                             ""});
-#line 170
+#line 168
  testRunner.And("The MovieModel should be", ((string)(null)), table80, "And ");
 #line hidden
             }
@@ -1347,7 +1347,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get series internally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 174
+#line 172
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1357,13 +1357,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 175
+#line 173
  testRunner.When("I call GetSeries with id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 176
+#line 174
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1408,7 +1408,7 @@ this.FeatureBackground();
                             "9",
                             "1500",
                             "1"});
-#line 177
+#line 175
  testRunner.And("The SeriesModel should be", ((string)(null)), table81, "And ");
 #line hidden
             }
@@ -1422,7 +1422,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get season internally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 181
+#line 179
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1432,13 +1432,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 182
+#line 180
  testRunner.When("I call GetSeason with series id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 183
+#line 181
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1447,7 +1447,7 @@ this.FeatureBackground();
                 table82.AddRow(new string[] {
                             "1",
                             "Media Title 2"});
-#line 184
+#line 182
  testRunner.And("The SeasonModel should be", ((string)(null)), table82, "And ");
 #line hidden
             }
@@ -1461,7 +1461,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get game internally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 188
+#line 186
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1471,13 +1471,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 189
+#line 187
  testRunner.When("I call GetGame with id 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 190
+#line 188
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1498,7 +1498,7 @@ this.FeatureBackground();
                             "Type",
                             "Writers",
                             "Year",
-                            "ImdbRating",
+                            "imdbRating",
                             "ImdbVotes",
                             "BoxOffice",
                             "DVD",
@@ -1528,7 +1528,7 @@ this.FeatureBackground();
                             "",
                             "",
                             ""});
-#line 191
+#line 189
  testRunner.And("The GameModel should be", ((string)(null)), table83, "And ");
 #line hidden
             }
@@ -1542,7 +1542,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get episode internally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 195
+#line 193
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1552,13 +1552,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 196
+#line 194
  testRunner.When("I call GetEpisode with id 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 197
+#line 195
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1609,7 +1609,7 @@ this.FeatureBackground();
                             "1",
                             "1",
                             "Media Title 2"});
-#line 198
+#line 196
  testRunner.And("The EpisodeModel should be", ((string)(null)), table84, "And ");
 #line hidden
             }
@@ -1623,7 +1623,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get movie externally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 202
+#line 200
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1633,18 +1633,64 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 203
- testRunner.When("I call GetMovie with id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 201
+ testRunner.When("I call GetMovie with id 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 204
+#line 202
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "Actors",
+                            "Awards",
+                            "Countries",
+                            "Directors",
+                            "Genres",
+                            "Languages",
+                            "Metascore",
+                            "Plot",
+                            "Poster",
+                            "Rated",
+                            "Released",
+                            "Runtime",
+                            "Title",
+                            "Type",
+                            "Writers",
+                            "Year",
+                            "ImdbRating",
+                            "ImdbVotes",
+                            "BoxOffice",
+                            "DVD",
+                            "Website",
+                            "Production"});
+                table85.AddRow(new string[] {
+                            "10",
+                            "Actor 1, Actor 2",
+                            "Award 1",
+                            "USA, UK",
+                            "Director 1, Director 2",
+                            "Action, Drama",
+                            "English",
+                            "85",
+                            "A great plot",
+                            "Media Poster 10",
+                            "PG-13",
+                            "Monday, February 3, 2025",
+                            "120 min",
+                            "Media Title 10",
+                            "movie",
+                            "Writer 1",
+                            "2025",
+                            "7.2",
+                            "1500",
+                            "$300,000,000",
+                            "",
+                            "",
                             ""});
-#line 205
+#line 203
  testRunner.And("The MovieModel should be", ((string)(null)), table85, "And ");
 #line hidden
             }
@@ -1658,7 +1704,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get series externally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 208
+#line 207
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1668,18 +1714,58 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 209
- testRunner.When("I call GetSeries with id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 208
+ testRunner.When("I call GetSeries with id 11", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 210
+#line 209
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
-                            ""});
-#line 211
+                            "Id",
+                            "Actors",
+                            "Awards",
+                            "Countries",
+                            "Directors",
+                            "Genres",
+                            "Languages",
+                            "Metascore",
+                            "Plot",
+                            "Poster",
+                            "Rated",
+                            "Released",
+                            "Runtime",
+                            "Title",
+                            "Type",
+                            "Writers",
+                            "Year",
+                            "ImdbRating",
+                            "ImdbVotes",
+                            "TotalSeasons"});
+                table86.AddRow(new string[] {
+                            "11",
+                            "Actor 1, Actor 4",
+                            "Award 1",
+                            "USA, UK",
+                            "Director 5, Director 1",
+                            "Action, Adventure",
+                            "English",
+                            "85",
+                            "A great plot",
+                            "Media Poster 11",
+                            "PG-13",
+                            "Saturday, November 9, 2024",
+                            "120 min",
+                            "Media Title 11",
+                            "series",
+                            "Writer 1",
+                            "2024",
+                            "9",
+                            "1500",
+                            "1"});
+#line 210
  testRunner.And("The SeriesModel should be", ((string)(null)), table86, "And ");
 #line hidden
             }
@@ -1703,17 +1789,21 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
 #line 215
- testRunner.When("I call GetSeason with series id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call GetSeason with series id 11", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 216
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
-                            ""});
+                            "Season",
+                            "Title"});
+                table87.AddRow(new string[] {
+                            "1",
+                            "Media Title 11"});
 #line 217
  testRunner.And("The SeasonModel should be", ((string)(null)), table87, "And ");
 #line hidden
@@ -1728,7 +1818,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get game externally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 220
+#line 221
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1738,18 +1828,64 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 221
- testRunner.When("I call GetGame with id 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 222
+ testRunner.When("I call GetGame with id 12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 223
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "Actors",
+                            "Awards",
+                            "Countries",
+                            "Directors",
+                            "Genres",
+                            "Languages",
+                            "Metascore",
+                            "Plot",
+                            "Poster",
+                            "Rated",
+                            "Released",
+                            "Runtime",
+                            "Title",
+                            "Type",
+                            "Writers",
+                            "Year",
+                            "imdbRating",
+                            "ImdbVotes",
+                            "BoxOffice",
+                            "DVD",
+                            "Website",
+                            "Production"});
+                table88.AddRow(new string[] {
+                            "12",
+                            "Actor 1, Actor 5",
+                            "Award 1",
+                            "USA, UK",
+                            "Director 2, Director 7",
+                            "Comedy, Drama",
+                            "English",
+                            "85",
+                            "A great plot",
+                            "Media Poster 12",
+                            "PG-13",
+                            "Friday, June 21, 2024",
+                            "120 min",
+                            "Media Title 12",
+                            "game",
+                            "Writer 1",
+                            "2024",
+                            "8.5",
+                            "1500",
+                            "",
+                            "",
+                            "",
                             ""});
-#line 223
+#line 224
  testRunner.And("The GameModel should be", ((string)(null)), table88, "And ");
 #line hidden
             }
@@ -1763,7 +1899,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get episode externally", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 226
+#line 228
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1773,18 +1909,64 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 227
- testRunner.When("I call GetEpisode with id 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 229
+ testRunner.When("I call GetEpisode with id 13", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 228
+#line 230
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
-                            ""});
-#line 229
+                            "Id",
+                            "Actors",
+                            "Awards",
+                            "Countries",
+                            "Directors",
+                            "Genres",
+                            "Languages",
+                            "Metascore",
+                            "Plot",
+                            "Poster",
+                            "Rated",
+                            "Released",
+                            "Runtime",
+                            "Title",
+                            "Type",
+                            "Writers",
+                            "Year",
+                            "imdbRating",
+                            "ImdbVotes",
+                            "Episode",
+                            "Season",
+                            "SeasonId",
+                            "SeriesTitle"});
+                table89.AddRow(new string[] {
+                            "13",
+                            "Actor 1, Actor 6",
+                            "Award 1",
+                            "USA, UK",
+                            "Director 6, Director 2",
+                            "Thriller, Action",
+                            "English",
+                            "85",
+                            "A great plot",
+                            "Media Poster 13",
+                            "PG-13",
+                            "Friday, January 19, 2024",
+                            "120 min",
+                            "Media Title 13",
+                            "episode",
+                            "Writer 1",
+                            "2022",
+                            "6",
+                            "1500",
+                            "2",
+                            "1",
+                            "1",
+                            "Media Title 2"});
+#line 231
  testRunner.And("The EpisodeModel should be", ((string)(null)), table89, "And ");
 #line hidden
             }
@@ -1798,7 +1980,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get movie that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 232
+#line 235
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1808,16 +1990,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 233
+#line 236
  testRunner.When("I call GetMovie with id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 234
+#line 237
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 235
+#line 238
  testRunner.And("The response should be \"Movie not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1831,7 +2013,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get series that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 237
+#line 240
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1841,16 +2023,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 238
+#line 241
  testRunner.When("I call GetSeries with id 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 239
+#line 242
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 240
+#line 243
  testRunner.And("The response should be \"Series not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1864,7 +2046,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get season that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 242
+#line 245
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1874,16 +2056,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 243
+#line 246
  testRunner.When("I call GetSeason with series id 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 244
+#line 247
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 245
+#line 248
  testRunner.And("The response should be \"Season not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1897,7 +2079,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get game that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 247
+#line 250
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1907,16 +2089,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 248
+#line 251
  testRunner.When("I call GetGame with id 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 249
+#line 252
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 250
+#line 253
  testRunner.And("The response should be \"Game not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1930,7 +2112,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get episode that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 252
+#line 255
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1940,16 +2122,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 253
+#line 256
  testRunner.When("I call GetEpisode with id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 254
+#line 257
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 255
+#line 258
  testRunner.And("The response should be \"Episode not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

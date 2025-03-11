@@ -25,7 +25,7 @@ namespace MediaCritica.Server.Mappers
                 Plot = mediaModel.Plot,
                 Poster = mediaModel.Poster,
                 Rated = mediaModel.Rated,
-                Ratings = mediaModel.Ratings.Select(_mapper.RatingMapper.MapRating).ToList(),
+                Ratings = mediaModel.Ratings != null ? mediaModel.Ratings.Select(_mapper.RatingMapper.MapRating).ToList() : [],
                 Released = DateTime.Parse(mediaModel.Released),
                 Runtime = mediaModel.Runtime,
                 Title = mediaModel.Title,

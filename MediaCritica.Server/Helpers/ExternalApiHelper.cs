@@ -39,56 +39,102 @@ namespace MediaCritica.Server.Helpers
         public async Task<MovieModel?> GetMovieMedia(string movieId)
         {
             if (_isTestEnvironment)
+            {
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Testing", "Data", "GetMovieTestData.json");
+                var stringResponse = File.ReadAllText(filePath);
+                var jsonData = JsonSerializer.Deserialize<MovieModel>(stringResponse);
+                if (jsonData.Id == movieId)
+                    return jsonData;
                 return null;
+            }
+            else
+            {
 
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={movieId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var movieModel = JsonSerializer.Deserialize<MovieModel>(stringResponse);
-            return movieModel;
+                var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={movieId}&plot=full&apikey={_apiKey}");
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var movieModel = JsonSerializer.Deserialize<MovieModel>(stringResponse);
+                return movieModel;
+            }
         }
 
         public async Task<GameModel?> GetGameMedia(string gameId)
         {
             if (_isTestEnvironment)
+            {
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Testing", "Data", "GetGameTestData.json");
+                var stringResponse = File.ReadAllText(filePath);
+                var jsonData = JsonSerializer.Deserialize<GameModel>(stringResponse);
+                if (jsonData.Id == gameId)
+                    return jsonData;
                 return null;
-
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={gameId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var gameModel = JsonSerializer.Deserialize<GameModel>(stringResponse);
-            return gameModel;
+            }
+            else
+            {
+                var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={gameId}&plot=full&apikey={_apiKey}");
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var gameModel = JsonSerializer.Deserialize<GameModel>(stringResponse);
+                return gameModel;
+            }
         }
 
         public async Task<SeriesModel?> GetSeriesMedia(string seriesId)
         {
             if (_isTestEnvironment)
+            {
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Testing", "Data", "GetSeriesTestData.json");
+                var stringResponse = File.ReadAllText(filePath);
+                var jsonData = JsonSerializer.Deserialize<SeriesModel>(stringResponse);
+                if (jsonData.Id == seriesId)
+                    return jsonData;
                 return null;
-
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={seriesId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var seriesModel = JsonSerializer.Deserialize<SeriesModel>(stringResponse);
-            return seriesModel;
+            }
+            else
+            {
+                var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={seriesId}&plot=full&apikey={_apiKey}");
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var seriesModel = JsonSerializer.Deserialize<SeriesModel>(stringResponse);
+                return seriesModel;
+            }
         }
 
         public async Task<SeasonModel?> GetSeasonMedia(string seriesId, int season)
         {
             if (_isTestEnvironment)
+            {
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Testing", "Data", "GetSeasonTestData.json");
+                var stringResponse = File.ReadAllText(filePath);
+                var jsonData = JsonSerializer.Deserialize<SeasonModel>(stringResponse);
+                if (jsonData.SeriesId == seriesId)
+                    return jsonData;
                 return null;
-
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={seriesId}&season={season}&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var seasonModel = JsonSerializer.Deserialize<SeasonModel>(stringResponse);
-            return seasonModel;
+            }
+            else
+            {
+                var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={seriesId}&season={season}&apikey={_apiKey}");
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var seasonModel = JsonSerializer.Deserialize<SeasonModel>(stringResponse);
+                return seasonModel;
+            }
         }
 
         public async Task<EpisodeModel?> GetEpisodeMedia(string episodeId)
         {
             if (_isTestEnvironment)
+            {
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Testing", "Data", "GetEpisodeTestData.json");
+                var stringResponse = File.ReadAllText(filePath);
+                var jsonData = JsonSerializer.Deserialize<EpisodeModel>(stringResponse);
+                if (jsonData.Id == episodeId)
+                    return jsonData;
                 return null;
-
-            var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={episodeId}&plot=full&apikey={_apiKey}");
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var episodeModel = JsonSerializer.Deserialize<EpisodeModel>(stringResponse);
-            return episodeModel;
+            }
+            else
+            {
+                var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?i={episodeId}&plot=full&apikey={_apiKey}");
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var episodeModel = JsonSerializer.Deserialize<EpisodeModel>(stringResponse);
+                return episodeModel;
+            }
         }
     }
 }

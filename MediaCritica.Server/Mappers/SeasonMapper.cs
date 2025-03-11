@@ -15,7 +15,7 @@ namespace MediaCritica.Server.Mappers
                 SeriesId = seriesId,
                 SeasonNo = int.Parse(seasonModel.Season),
                 Title = seasonModel.Title,
-                Episodes = seasonModel.Episodes.Select(episode => new Episode()
+                Episodes = seasonModel.Episodes == null ? [] : seasonModel.Episodes.Select(episode => new Episode()
                 {
                     Id = episode.imdbID,
                     EpisodeNo = int.Parse(episode.Episode),
