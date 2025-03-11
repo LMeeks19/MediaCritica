@@ -94,11 +94,48 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
-        [Given(@"I have the following media")]
-        public async Task GivenIHaveTheFollowingMedia(Table table)
+        [Given(@"I have the following movies")]
+        public async Task GivenIHaveTheFollowingMovies(Table table)
         {
-            var media = table.CreateSet<Media>().ToList();
-            await _dbContext.Media.AddRangeAsync(media);
+            var movies = table.CreateSet<Movie>().ToList();
+
+            await _dbContext.Movies.AddRangeAsync(movies);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following series")]
+        public async Task GivenIHaveTheFollowingSeries(Table table)
+        {
+            var series = table.CreateSet<Series>().ToList();
+
+            await _dbContext.Series.AddRangeAsync(series);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following games")]
+        public async Task GivenIHaveTheFollowingGames(Table table)
+        {
+            var games = table.CreateSet<Game>().ToList();
+
+            await _dbContext.Games.AddRangeAsync(games);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following episodes")]
+        public async Task GivenIHaveTheFollowingepisodes(Table table)
+        {
+            var episodes = table.CreateSet<Episode>().ToList();
+
+            await _dbContext.Episodes.AddRangeAsync(episodes);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following seasons")]
+        public async Task GivenIHaveTheFollowingSeasons(Table table)
+        {
+            var seasons = table.CreateSet<Season>().ToList();
+
+            await _dbContext.Seasons.AddRangeAsync(seasons);
             await _dbContext.SaveChangesAsync();
         }
 

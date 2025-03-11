@@ -77,35 +77,35 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "4",
                         "Test",
                         "4",
@@ -113,9 +113,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table34, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table37, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -134,8 +134,12 @@ namespace MediaCritica.Server.Testing.Features
                         "Writers",
                         "Year",
                         "ImdbRating",
-                        "ImdbVotes"});
-            table35.AddRow(new string[] {
+                        "ImdbVotes",
+                        "BoxOffice",
+                        "DVD",
+                        "Website",
+                        "Production"});
+            table38.AddRow(new string[] {
                         "1",
                         "Actor 1, Actor 2",
                         "Award 1",
@@ -150,92 +154,16 @@ namespace MediaCritica.Server.Testing.Features
                         "2020-02-03",
                         "120 min",
                         "Media Title 1",
-                        "Movie",
+                        "movie",
                         "Writer 1",
                         "2020",
                         "8.5",
-                        "1500"});
-            table35.AddRow(new string[] {
-                        "2",
-                        "Actor 1, Actor 4",
-                        "Award 1",
-                        "USA, UK",
-                        "Director 5, Director 1",
-                        "Action, Adventure",
-                        "English",
-                        "85",
-                        "A great plot",
-                        "Media Poster 2",
-                        "PG-13",
-                        "2020-02-03",
-                        "120 min",
-                        "Media Title 2",
-                        "Series",
-                        "Writer 1",
-                        "2020",
-                        "8.5",
-                        "1500"});
-            table35.AddRow(new string[] {
-                        "3",
-                        "Actor 1, Actor 5",
-                        "Award 1",
-                        "USA, UK",
-                        "Director 2, Director 7",
-                        "Comedy, Drama",
-                        "English",
-                        "85",
-                        "A great plot",
-                        "Media Poster 3",
-                        "PG-13",
-                        "2020-02-03",
-                        "120 min",
-                        "Media Title 3",
-                        "Game",
-                        "Writer 1",
-                        "2020",
-                        "8.5",
-                        "1500"});
-            table35.AddRow(new string[] {
-                        "4",
-                        "Actor 1, Actor 6",
-                        "Award 1",
-                        "USA, UK",
-                        "Director 6, Director 2",
-                        "Thriller, Action",
-                        "English",
-                        "85",
-                        "A great plot",
-                        "Media Poster 4",
-                        "PG-13",
-                        "2020-02-03",
-                        "120 min",
-                        "Media Title 4",
-                        "Episode",
-                        "Writer 1",
-                        "2020",
-                        "8.5",
-                        "1500"});
-            table35.AddRow(new string[] {
-                        "5",
-                        "Actor 1, Actor 8",
-                        "Award 1",
-                        "USA, UK",
-                        "Director 8, Director 4",
-                        "Drama, Romance",
-                        "English",
-                        "85",
-                        "A great plot",
-                        "Media Poster 5",
-                        "PG-13",
-                        "2020-02-03",
-                        "120 min",
-                        "Media Title 5",
-                        "Series",
-                        "Writer 1",
-                        "2020",
-                        "8.5",
-                        "1500"});
-            table35.AddRow(new string[] {
+                        "1500",
+                        "$300,000,000",
+                        "",
+                        "",
+                        ""});
+            table38.AddRow(new string[] {
                         "6",
                         "Actor 1, Actor 9",
                         "Award 1",
@@ -250,12 +178,133 @@ namespace MediaCritica.Server.Testing.Features
                         "2020-02-03",
                         "120 min",
                         "Media Title 6",
-                        "Movie",
+                        "movie",
                         "Writer 1",
                         "2020",
                         "8.5",
-                        "1500"});
-            table35.AddRow(new string[] {
+                        "1500",
+                        "$800,000,000",
+                        "",
+                        "",
+                        ""});
+#line 10
+ testRunner.And("I have the following movies", ((string)(null)), table38, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Actors",
+                        "Awards",
+                        "Countries",
+                        "Directors",
+                        "Genres",
+                        "Languages",
+                        "Metascore",
+                        "Plot",
+                        "Poster",
+                        "Rated",
+                        "Released",
+                        "Runtime",
+                        "Title",
+                        "Type",
+                        "Writers",
+                        "Year",
+                        "ImdbRating",
+                        "ImdbVotes",
+                        "TotalSeasons"});
+            table39.AddRow(new string[] {
+                        "2",
+                        "Actor 1, Actor 4",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 5, Director 1",
+                        "Action, Adventure",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 2",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 2",
+                        "series",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500",
+                        "1"});
+            table39.AddRow(new string[] {
+                        "5",
+                        "Actor 1, Actor 8",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 8, Director 4",
+                        "Drama, Romance",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 5",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 5",
+                        "series",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500",
+                        "1"});
+#line 14
+ testRunner.And("I have the following series", ((string)(null)), table39, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Actors",
+                        "Awards",
+                        "Countries",
+                        "Directors",
+                        "Genres",
+                        "Languages",
+                        "Metascore",
+                        "Plot",
+                        "Poster",
+                        "Rated",
+                        "Released",
+                        "Runtime",
+                        "Title",
+                        "Type",
+                        "Writers",
+                        "Year",
+                        "ImdbRating",
+                        "ImdbVotes",
+                        "BoxOffice",
+                        "DVD",
+                        "Website",
+                        "Production"});
+            table40.AddRow(new string[] {
+                        "3",
+                        "Actor 1, Actor 5",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 2, Director 7",
+                        "Comedy, Drama",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 3",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 3",
+                        "game",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table40.AddRow(new string[] {
                         "7",
                         "Actor 1, Actor 3",
                         "Award 1",
@@ -270,15 +319,68 @@ namespace MediaCritica.Server.Testing.Features
                         "2020-02-03",
                         "120 min",
                         "Media Title 7",
-                        "Game",
+                        "game",
                         "Writer 1",
                         "2020",
                         "8.5",
-                        "1500"});
-#line 10
- testRunner.And("I have the following media", ((string)(null)), table35, "And ");
+                        "1500",
+                        "",
+                        "",
+                        "",
+                        ""});
+#line 18
+ testRunner.And("I have the following games", ((string)(null)), table40, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Actors",
+                        "Awards",
+                        "Countries",
+                        "Directors",
+                        "Genres",
+                        "Languages",
+                        "Metascore",
+                        "Plot",
+                        "Poster",
+                        "Rated",
+                        "Released",
+                        "Runtime",
+                        "Title",
+                        "Type",
+                        "Writers",
+                        "Year",
+                        "ImdbRating",
+                        "ImdbVotes",
+                        "EpisodeNo",
+                        "SeasonNo",
+                        "SeasonId"});
+            table41.AddRow(new string[] {
+                        "4",
+                        "Actor 1, Actor 6",
+                        "Award 1",
+                        "USA, UK",
+                        "Director 6, Director 2",
+                        "Thriller, Action",
+                        "English",
+                        "85",
+                        "A great plot",
+                        "Media Poster 4",
+                        "PG-13",
+                        "2020-02-03",
+                        "120 min",
+                        "Media Title 4",
+                        "episode",
+                        "Writer 1",
+                        "2020",
+                        "8.5",
+                        "1500",
+                        "1",
+                        "1",
+                        "1"});
+#line 22
+ testRunner.And("I have the following episodes", ((string)(null)), table41, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
@@ -290,346 +392,346 @@ namespace MediaCritica.Server.Testing.Features
                         "Title",
                         "Description",
                         "Date"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "1",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
-                        "Movie",
+                        "movie",
                         "1",
                         "Test 1",
                         "4",
                         "Title 1",
                         "Description 1",
                         "2025-02-03"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "2",
                         "2",
                         "Media Poster 2",
                         "Media Title 2",
-                        "Series",
+                        "series",
                         "1",
                         "Test 1",
                         "2",
                         "Title 2",
                         "Description 2",
                         "2025-02-27"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "3",
                         "3",
                         "Media Poster 3",
                         "Media Title 3",
-                        "Game",
+                        "game",
                         "1",
                         "Test 1",
                         "1",
                         "Title 3",
                         "Description 3",
                         "2025-01-01"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "4",
                         "4",
                         "Media Poster 4",
                         "Media Title 4",
-                        "Episode",
+                        "episode",
                         "1",
                         "Test 1",
                         "4.5",
                         "Title 4",
                         "Description 4",
                         "2025-01-04"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "5",
                         "5",
                         "Media Poster 5",
                         "Media Title 5",
-                        "Series",
+                        "series",
                         "2",
                         "Test 2",
                         "1.5",
                         "Title 5",
                         "Description 5",
                         "2025-01-04"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "6",
                         "6",
                         "Media Poster 6",
                         "Media Title 6",
-                        "Movie",
+                        "movie",
                         "2",
                         "Test 2",
                         "2",
                         "Title 6",
                         "Description 6",
                         "2024-01-04"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "7",
                         "7",
                         "Media Poster 7",
                         "Media Title 7",
-                        "Game",
+                        "game",
                         "3",
                         "Test 3",
                         "2.5",
                         "Title 7",
                         "Description 7",
                         "2025-01-05"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "8",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
-                        "Movie",
+                        "movie",
                         "2",
                         "Test 2",
                         "3.5",
                         "Title 8",
                         "Description 8",
                         "2025-01-15"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "9",
                         "2",
                         "Media Poster 2",
                         "Media Title 2",
-                        "Series",
+                        "series",
                         "3",
                         "Test 3",
                         "4",
                         "Title 9",
                         "Description 9",
                         "2025-02-10"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "10",
                         "3",
                         "Media Poster 3",
                         "Media Title 3",
-                        "Game",
+                        "game",
                         "4",
                         "Test 4",
                         "2",
                         "Title 10",
                         "Description 10",
                         "2025-01-25"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "11",
                         "4",
                         "Media Poster 4",
                         "Media Title 4",
-                        "Episode",
+                        "episode",
                         "1",
                         "Test 1",
                         "3",
                         "Title 11",
                         "Description 11",
                         "2025-02-20"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "12",
                         "5",
                         "Media Poster 5",
                         "Media Title 5",
-                        "Series",
+                        "series",
                         "2",
                         "Test 2",
                         "1",
                         "Title 12",
                         "Description 12",
                         "2024-12-15"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "13",
                         "6",
                         "Media Poster 6",
                         "Media Title 6",
-                        "Movie",
+                        "movie",
                         "3",
                         "Test 3",
                         "4.5",
                         "Title 13",
                         "Description 13",
                         "2025-02-03"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "14",
                         "7",
                         "Media Poster 7",
                         "Media Title 7",
-                        "Game",
+                        "game",
                         "4",
                         "Test 4",
                         "5",
                         "Title 14",
                         "Description 14",
                         "2025-01-28"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "15",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
-                        "Movie",
+                        "movie",
                         "1",
                         "Test 1",
                         "3",
                         "Title 15",
                         "Description 15",
                         "2025-02-15"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "16",
                         "2",
                         "Media Poster 2",
                         "Media Title 2",
-                        "Series",
+                        "series",
                         "4",
                         "Test 4",
                         "2.5",
                         "Title 16",
                         "Description 16",
                         "2025-01-18"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "17",
                         "3",
                         "Media Poster 3",
                         "Media Title 3",
-                        "Game",
+                        "game",
                         "1",
                         "Test 1",
                         "4",
                         "Title 17",
                         "Description 17",
                         "2025-01-07"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "18",
                         "4",
                         "Media Poster 4",
                         "Media Title 4",
-                        "Episode",
+                        "episode",
                         "3",
                         "Test 3",
                         "1.5",
                         "Title 18",
                         "Description 18",
                         "2025-02-22"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "19",
                         "5",
                         "Media Poster 5",
                         "Media Title 5",
-                        "Series",
+                        "series",
                         "4",
                         "Test 4",
                         "3.5",
                         "Title 19",
                         "Description 19",
                         "2025-02-08"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "20",
                         "6",
                         "Media Poster 6",
                         "Media Title 6",
-                        "Movie",
+                        "movie",
                         "2",
                         "Test 2",
                         "2",
                         "Title 20",
                         "Description 20",
                         "2025-01-10"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "21",
                         "7",
                         "Media Poster 7",
                         "Media Title 7",
-                        "Game",
+                        "game",
                         "1",
                         "Test 1",
                         "1",
                         "Title 21",
                         "Description 21",
                         "2025-01-02"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "22",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
-                        "Movie",
+                        "movie",
                         "4",
                         "Test 4",
                         "4.5",
                         "Title 22",
                         "Description 22",
                         "2025-02-14"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "23",
                         "2",
                         "Media Poster 2",
                         "Media Title 2",
-                        "Series",
+                        "series",
                         "2",
                         "Test 2",
                         "3",
                         "Title 23",
                         "Description 23",
                         "2025-01-20"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "24",
                         "3",
                         "Media Poster 3",
                         "Media Title 3",
-                        "Game",
+                        "game",
                         "3",
                         "Test 3",
                         "5",
                         "Title 24",
                         "Description 24",
                         "2025-02-05"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "25",
                         "4",
                         "Media Poster 4",
                         "Media Title 4",
-                        "Episode",
+                        "episode",
                         "1",
                         "Test 1",
                         "2",
                         "Title 25",
                         "Description 25",
                         "2025-02-18"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "26",
                         "5",
                         "Media Poster 5",
                         "Media Title 5",
-                        "Series",
+                        "series",
                         "3",
                         "Test 3",
                         "4",
                         "Title 26",
                         "Description 26",
                         "2024-11-12"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "27",
                         "6",
                         "Media Poster 6",
                         "Media Title 6",
-                        "Movie",
+                        "movie",
                         "4",
                         "Test 4",
                         "3.5",
                         "Title 27",
                         "Description 27",
                         "2025-02-06"});
-            table36.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "28",
                         "7",
                         "Media Poster 7",
                         "Media Title 7",
-                        "Game",
+                        "game",
                         "2",
                         "Test 2",
                         "2.5",
                         "Title 28",
                         "Description 28",
                         "2025-01-19"});
-#line 19
- testRunner.And("I have the following reviews", ((string)(null)), table36, "And ");
+#line 25
+ testRunner.And("I have the following reviews", ((string)(null)), table42, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "MediaId",
@@ -638,143 +740,143 @@ namespace MediaCritica.Server.Testing.Features
                         "MediaPoster",
                         "MediaTitle",
                         "AddedDate"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "1",
                         "1",
                         "1",
-                        "Movie",
+                        "movie",
                         "0",
                         "Media Poster 1",
                         "Media Title 1",
                         "2025-02-01"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "2",
                         "2",
                         "2",
-                        "Series",
+                        "series",
                         "1",
                         "Media Poster 2",
                         "Media Title 2",
                         "2025-02-02"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "3",
                         "3",
                         "3",
-                        "Game",
+                        "game",
                         "2",
                         "Media Poster 3",
                         "Media Title 3",
                         "2025-02-03"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "4",
                         "4",
                         "4",
-                        "Episode",
+                        "episode",
                         "0",
                         "Media Poster 4",
                         "Media Title 4",
                         "2022-02-03"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "5",
                         "1",
                         "5",
-                        "Series",
+                        "series",
                         "1",
                         "Media Poster 5",
                         "Media Title 5",
                         "2025-02-04"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "6",
                         "2",
                         "6",
-                        "Movie",
+                        "movie",
                         "0",
                         "Media Poster 6",
                         "Media Title 6",
                         "2025-02-05"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "7",
                         "3",
                         "7",
-                        "Game",
+                        "game",
                         "1",
                         "Media Poster 7",
                         "Media Title 7",
                         "2023-02-06"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "8",
                         "4",
                         "1",
-                        "Movie",
+                        "movie",
                         "2",
                         "Media Poster 1",
                         "Media Title 1",
                         "2025-02-07"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "9",
                         "1",
                         "2",
-                        "Series",
+                        "series",
                         "0",
                         "Media Poster 2",
                         "Media Title 2",
                         "2025-02-08"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "10",
                         "2",
                         "3",
-                        "Game",
+                        "game",
                         "1",
                         "Media Poster 3",
                         "Media Title 3",
                         "2024-02-09"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "11",
                         "3",
                         "4",
-                        "Episode",
+                        "episode",
                         "2",
                         "Media Poster 4",
                         "Media Title 4",
                         "2025-02-10"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "12",
                         "4",
                         "5",
-                        "Series",
+                        "series",
                         "0",
                         "Media Poster 5",
                         "Media Title 5",
                         "2025-02-11"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "13",
                         "1",
                         "6",
-                        "Movie",
+                        "movie",
                         "2",
                         "Media Poster 6",
                         "Media Title 6",
                         "2024-02-12"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "14",
                         "2",
                         "7",
-                        "Game",
+                        "game",
                         "0",
                         "Media Poster 7",
                         "Media Title 7",
                         "2025-02-13"});
-            table37.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "15",
                         "3",
                         "1",
-                        "Movie",
+                        "movie",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
                         "2025-02-14"});
-#line 49
- testRunner.And("I have the following backlogs", ((string)(null)), table37, "And ");
+#line 55
+ testRunner.And("I have the following backlogs", ((string)(null)), table43, "And ");
 #line hidden
         }
         
@@ -785,7 +887,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for week", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 67
+#line 73
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -798,24 +900,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 68
+#line 74
  testRunner.When("I call GetUserRankings for week", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 75
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table38.AddRow(new string[] {
+                table44.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "1",
                             "week"});
-#line 70
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table38, "And ");
+#line 76
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table44, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -828,7 +930,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for month", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 74
+#line 80
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -841,34 +943,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 75
+#line 81
  testRunner.When("I call GetUserRankings for month", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 82
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table39.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "5",
                             "month"});
-                table39.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "2",
                             "Test 3",
                             "4",
                             "month"});
-                table39.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "3",
                             "Test 4",
                             "3",
                             "month"});
-#line 77
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table39, "And ");
+#line 83
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table45, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -881,7 +983,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 83
+#line 89
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -894,39 +996,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 84
+#line 90
  testRunner.When("I call GetUserRankings for year", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 85
+#line 91
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table40.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "9",
                             "year"});
-                table40.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "2",
                             "Test 4",
                             "6",
                             "year"});
-                table40.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "3",
                             "Test 2",
                             "5",
                             "year"});
-                table40.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "4",
                             "Test 3",
                             "5",
                             "year"});
-#line 86
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table40, "And ");
+#line 92
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table46, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -939,7 +1041,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for all time", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 93
+#line 99
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -952,39 +1054,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 94
+#line 100
  testRunner.When("I call GetUserRankings for all-time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 101
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Name",
                             "Reviews",
                             "Timeframe"});
-                table41.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "9",
                             "all-time"});
-                table41.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "2",
                             "Test 2",
                             "7",
                             "all-time"});
-                table41.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "3",
                             "Test 3",
                             "6",
                             "all-time"});
-                table41.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "4",
                             "Test 4",
                             "6",
                             "all-time"});
-#line 96
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table41, "And ");
+#line 102
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table47, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -997,7 +1099,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for week", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 103
+#line 109
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1010,44 +1112,44 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 104
+#line 110
  testRunner.When("I call GetMediaTrends for week", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 105
+#line 111
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table42.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "Falling Star",
                             "Media Title 4",
                             "3 fewer reviews than the previous week.",
                             "week"});
-                table42.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 2",
                             "An outstanding average rating of 2.0 this week!",
                             "week"});
-                table42.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this week!",
                             "week"});
-                table42.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 2",
                             "1 reviews this week!",
                             "week"});
-                table42.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 2",
                             "1 more reviews than the previous week!",
                             "week"});
-#line 106
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table42, "And ");
+#line 112
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table48, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1060,7 +1162,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for month", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 114
+#line 120
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1073,90 +1175,90 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 115
+#line 121
  testRunner.When("I call GetMediaTrends for month", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 116
+#line 122
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Actor Spotlight",
                             "Actor 9",
                             "2 reviews on their media with an average rating of 4.0!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
                             "A comeback with 3 reviews this month after a period of inactivity!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Director Spotlight",
                             "Director 7",
                             "3 reviews on their media with an average rating of 4.5!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Falling Star",
                             "Media Title 7",
                             "3 fewer reviews than the previous month.",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Hidden Gem",
                             "Media Title 3",
                             "1 reviews with an average rating of 5.0!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 3",
                             "An outstanding average rating of 5.0 this month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Most Abandoned",
-                            "Media Title 2",
+                            "Media Title 5",
                             "2 users either abandoned it early or never started it this month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Most Backlogged",
                             "Media Title 1",
                             "Added to backlogs 3 times this month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Most Polarizing",
                             "Media Title 2",
                             "Media Title 2 sparked a lot of debate this month, with a variability score of 1.0" +
                                 "0!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
                             "3 reviews this month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Most Unfinished",
-                            "Media Title 2",
+                            "Media Title 1",
                             "1 user didn\'t complete it this month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
                             "2 more reviews than the previous month!",
                             "month"});
-                table43.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
                             "3 reviews this month! More than its average of 1 per month",
                             "month"});
-#line 117
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table43, "And ");
+#line 123
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table49, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1169,7 +1271,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 134
+#line 140
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1182,70 +1284,70 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 135
+#line 141
  testRunner.When("I call GetMediaTrends for year", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 136
+#line 142
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
                             "A comeback with 4 reviews this year after a period of inactivity!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 1",
                             "An outstanding average rating of 3.8 this year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Most Abandoned",
-                            "Media Title 2",
+                            "Media Title 5",
                             "2 users either abandoned it early or never started it this year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Most Backlogged",
                             "Media Title 1",
                             "Added to backlogs 3 times this year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Most Polarizing",
                             "Media Title 3",
                             "Media Title 3 sparked a lot of debate this year, with a variability score of 1.58" +
                                 "!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
                             "4 reviews this year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Most Unfinished",
-                            "Media Title 2",
+                            "Media Title 1",
                             "1 user didn\'t complete it this year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
                             "4 more reviews than the previous year!",
                             "year"});
-                table44.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
                             "4 reviews this year! More than its average of 0 per year",
                             "year"});
-#line 137
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table44, "And ");
+#line 143
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table50, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1258,7 +1360,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for all-time", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 150
+#line 156
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1271,76 +1373,76 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 151
+#line 157
  testRunner.When("I call GetMediaTrends for all-time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 152
+#line 158
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
                             "A comeback with 4 reviews this all-time after a period of inactivity!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 1",
                             "An outstanding average rating of 3.8 this all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Abandoned",
-                            "Media Title 2",
+                            "Media Title 5",
                             "2 users either abandoned it early or never started it this all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Anticipated",
                             "Media Title 1",
                             "Added to user backlogs 3 times ahead of its release on Monday, February 3rd this " +
                                 "all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Backlogged",
                             "Media Title 1",
                             "Added to backlogs 3 times this all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Polarizing",
                             "Media Title 3",
                             "Media Title 3 sparked a lot of debate this all-time, with a variability score of " +
                                 "1.58!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
                             "4 reviews this all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Most Unfinished",
-                            "Media Title 3",
+                            "Media Title 1",
                             "1 user didn\'t complete it this all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
                             "4 more reviews than the previous all-time!",
                             "all-time"});
-                table45.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
                             "4 reviews this all-time! More than its average of 0 per all-time",
                             "all-time"});
-#line 153
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table45, "And ");
+#line 159
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table51, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

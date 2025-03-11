@@ -91,8 +91,8 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.MediaController.GetSeries(seriesId);
         }
 
-        [When(@"I call GetSeason with id (\d+)")]
-        public async Task WhenICallGetSeasonWithId(string seriesId)
+        [When(@"I call GetSeason with series id (\d+)")]
+        public async Task WhenICallGetSeasonWithSeriesId(string seriesId)
         {
             GlobalSteps._response = await GlobalSteps._controller.MediaController.GetSeason(seriesId);
         }
@@ -125,9 +125,9 @@ namespace MediaCritica.Server.Testing.Steps
             var actualMediaSearchResultResponse = result.Value as MediaSearchResultResponse;
             Assert.IsNotNull(actualMediaSearchResultResponse);
 
-            Assert.AreEqual(expectedMediaSearchResultResponse.Response, actualMediaSearchResultResponse.Response);
-            Assert.AreEqual(expectedMediaSearchResultResponse.SearchResults, actualMediaSearchResultResponse.Search.Count);
-            Assert.AreEqual(expectedMediaSearchResultResponse.TotalResults, int.Parse(actualMediaSearchResultResponse.TotalResults));
+            Assert.AreEqual(expectedMediaSearchResultResponse.Response, actualMediaSearchResultResponse.response);
+            Assert.AreEqual(expectedMediaSearchResultResponse.SearchResults, actualMediaSearchResultResponse.search.Count);
+            Assert.AreEqual(expectedMediaSearchResultResponse.TotalResults, int.Parse(actualMediaSearchResultResponse.totalResults));
         }
 
         [Then(@"The MediaSearchModels should be")]
@@ -139,7 +139,7 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.IsNotNull(result);
             var actualMediaSearchResultResponse = result.Value as MediaSearchResultResponse;
             Assert.IsNotNull(actualMediaSearchResultResponse);
-            var actualMediaSearchModels = actualMediaSearchResultResponse.Search;
+            var actualMediaSearchModels = actualMediaSearchResultResponse.search;
 
 
             Assert.AreEqual(expectedMediaSearchModels.Count, actualMediaSearchModels.Count);
@@ -207,31 +207,137 @@ namespace MediaCritica.Server.Testing.Steps
         [Then(@"The MovieModel should be")]
         public void ThenTheMovieModelShouldBe(Table table)
         {
-            throw new Exception("Method not implemented");
+            var expectedMovieModel = table.Rows.First().CreateInstance<MovieModel>();
+            expectedMovieModel.Country = table.Rows.First()["Countries"];
+            expectedMovieModel.Director = table.Rows.First()["Directors"];
+            expectedMovieModel.Writer = table.Rows.First()["Writers"];
+            expectedMovieModel.Genre = table.Rows.First()["Genres"];
+            expectedMovieModel.Language = table.Rows.First()["Languages"];
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualMovieModel = result.Value as MovieModel;
+            Assert.IsNotNull(actualMovieModel);
+
+            Assert.IsTrue(AssertMediaModel(expectedMovieModel, actualMovieModel));
+
+            Assert.AreEqual(expectedMovieModel.BoxOffice, actualMovieModel.BoxOffice);
+            Assert.AreEqual(expectedMovieModel.DVD, actualMovieModel.DVD);
+            Assert.AreEqual(expectedMovieModel.Production, actualMovieModel.Production);
+            Assert.AreEqual(expectedMovieModel.Website, actualMovieModel.Website);
         }
 
         [Then(@"The SeriesModel should be")]
         public void ThenTheSeriesModelShouldBe(Table table)
         {
-            throw new Exception("Method not implemented");
+            var expectedSeriesModel = table.Rows.First().CreateInstance<SeriesModel>();
+            expectedSeriesModel.Country = table.Rows.First()["Countries"];
+            expectedSeriesModel.Director = table.Rows.First()["Directors"];
+            expectedSeriesModel.Writer = table.Rows.First()["Writers"];
+            expectedSeriesModel.Genre = table.Rows.First()["Genres"];
+            expectedSeriesModel.Language = table.Rows.First()["Languages"];
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualSeriesModel = result.Value as SeriesModel;
+            Assert.IsNotNull(actualSeriesModel);
+
+            Assert.IsTrue(AssertMediaModel(expectedSeriesModel, actualSeriesModel));
+
+            Assert.AreEqual(expectedSeriesModel.totalSeasons, actualSeriesModel.totalSeasons);
         }
 
         [Then(@"The SeasonModel should be")]
         public void ThenTheSeasonModelShouldBe(Table table)
         {
-            throw new Exception("Method not implemented");
+            var expectedSeasonModel = table.Rows.First().CreateInstance<SeasonModel>();
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualSeasonModel = result.Value as SeasonModel;
+            Assert.IsNotNull(actualSeasonModel);
+
+            Assert.AreEqual(expectedSeasonModel.Season, actualSeasonModel.Season);
+            Assert.AreEqual(expectedSeasonModel.Title, actualSeasonModel.Title);
         }
 
         [Then(@"The GameModel should be")]
         public void ThenTheGameModelShouldBe(Table table)
         {
-            throw new Exception("Method not implemented");
+            var expectedGameModel = table.Rows.First().CreateInstance<GameModel>();
+            expectedGameModel.Country = table.Rows.First()["Countries"];
+            expectedGameModel.Director = table.Rows.First()["Directors"];
+            expectedGameModel.Writer = table.Rows.First()["Writers"];
+            expectedGameModel.Genre = table.Rows.First()["Genres"];
+            expectedGameModel.Language = table.Rows.First()["Languages"];
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualGameModel = result.Value as GameModel;
+            Assert.IsNotNull(actualGameModel);
+
+            Assert.IsTrue(AssertMediaModel(expectedGameModel, actualGameModel));
+
+            Assert.AreEqual(expectedGameModel.BoxOffice, actualGameModel.BoxOffice);
+            Assert.AreEqual(expectedGameModel.DVD, actualGameModel.DVD);
+            Assert.AreEqual(expectedGameModel.Production, actualGameModel.Production);
+            Assert.AreEqual(expectedGameModel.Website, actualGameModel.Website);
         }
 
         [Then(@"The EpisodeModel should be")]
         public void ThenTheEpisodeModelShouldBe(Table table)
         {
-            throw new Exception("Method not implemented");
+            var expectedEpisodeModel = table.Rows.First().CreateInstance<EpisodeModel>();
+            expectedEpisodeModel.Country = table.Rows.First()["Countries"];
+            expectedEpisodeModel.Director = table.Rows.First()["Directors"];
+            expectedEpisodeModel.Writer = table.Rows.First()["Writers"];
+            expectedEpisodeModel.Genre = table.Rows.First()["Genres"];
+            expectedEpisodeModel.Language = table.Rows.First()["Languages"];
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualEpisodeModel = result.Value as EpisodeModel;
+            Assert.IsNotNull(actualEpisodeModel);
+
+            Assert.IsTrue(AssertMediaModel(expectedEpisodeModel, actualEpisodeModel));
+
+            Assert.AreEqual(expectedEpisodeModel.Episode, actualEpisodeModel.Episode);
+            Assert.AreEqual(expectedEpisodeModel.Season, actualEpisodeModel.Season);
+            Assert.AreEqual(expectedEpisodeModel.SeasonId, actualEpisodeModel.SeasonId);
+            Assert.AreEqual(expectedEpisodeModel.SeriesTitle, actualEpisodeModel.SeriesTitle);
+        }
+
+        private static bool AssertMediaModel(MediaModel expectedMediaModel, MediaModel actualMediaModel)
+        {
+            try
+            {
+                Assert.AreEqual(expectedMediaModel.Id, actualMediaModel.Id);
+                Assert.AreEqual(expectedMediaModel.Actors, actualMediaModel.Actors);
+                Assert.AreEqual(expectedMediaModel.Awards, actualMediaModel.Awards);
+                Assert.AreEqual(expectedMediaModel.Country, actualMediaModel.Country);
+                Assert.AreEqual(expectedMediaModel.Director, actualMediaModel.Director);
+                Assert.AreEqual(expectedMediaModel.Genre, actualMediaModel.Genre);
+                Assert.AreEqual(expectedMediaModel.Language, actualMediaModel.Language);
+                Assert.AreEqual(expectedMediaModel.Metascore, actualMediaModel.Metascore);
+                Assert.AreEqual(expectedMediaModel.Plot, actualMediaModel.Plot);
+                Assert.AreEqual(expectedMediaModel.Poster, actualMediaModel.Poster);
+                Assert.AreEqual(expectedMediaModel.Rated, actualMediaModel.Rated);
+                Assert.AreEqual(expectedMediaModel.Released, actualMediaModel.Released);
+                Assert.AreEqual(expectedMediaModel.Runtime, actualMediaModel.Runtime);
+                Assert.AreEqual(expectedMediaModel.Title, actualMediaModel.Title);
+                Assert.AreEqual(expectedMediaModel.Type, actualMediaModel.Type);
+                Assert.AreEqual(expectedMediaModel.Writer, actualMediaModel.Writer);
+                Assert.AreEqual(expectedMediaModel.Year, actualMediaModel.Year);
+                Assert.AreEqual(expectedMediaModel.imdbRating, actualMediaModel.imdbRating);
+                Assert.AreEqual(expectedMediaModel.imdbVotes, actualMediaModel.imdbVotes);
+                Assert.AreEqual(expectedMediaModel.imdbID, actualMediaModel.imdbID);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

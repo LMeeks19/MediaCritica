@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Controllers
         {
             var result = await _helper.ExternalApiHelper.GetSearchMedia(searchTerm, page);
 
-            if (result?.Search == null || result?.Search.Count == 0 || result == null)
+            if (result?.search == null || result?.search.Count == 0 || result == null)
                 return NotFound(new { Message = "No results found" });
 
             return Ok(result);
@@ -263,7 +263,7 @@ namespace MediaCritica.Server.Controllers
 
             movie = _mapper.MovieMapper.MapMovie(movieModel);
 
-            await _databaseContext.Movies.AddAsync(movie);
+            await _databaseContext.Media.AddAsync(movie);
             await _databaseContext.SaveChangesAsync();
 
             return Ok(_mapper.MovieMapper.MapMovieModel(movie));
@@ -284,7 +284,7 @@ namespace MediaCritica.Server.Controllers
 
             series = _mapper.SeriesMapper.MapSeries(seriesModel);
 
-            await _databaseContext.Series.AddAsync(series);
+            await _databaseContext.Media.AddAsync(series);
             await _databaseContext.SaveChangesAsync();
 
             await GetSeason(seriesId);
@@ -330,7 +330,7 @@ namespace MediaCritica.Server.Controllers
 
             game = _mapper.GameMapper.MapGame(gameModel);
 
-            await _databaseContext.Games.AddAsync(game);
+            await _databaseContext.Media.AddAsync(game);
             await _databaseContext.SaveChangesAsync();
 
             return Ok(_mapper.GameMapper.MapGameModel(game));
@@ -358,9 +358,9 @@ namespace MediaCritica.Server.Controllers
             episode = _mapper.EpisodeMapper.MapEpisode(episodeModel);
 
             if (episode.Id == null)
-                await _databaseContext.Episodes.AddAsync(episode);
+                await _databaseContext.Media.AddAsync(episode);
             else
-                _databaseContext.Episodes.Update(episode);
+                _databaseContext.Media.Update(episode);
 
             await _databaseContext.SaveChangesAsync();
 

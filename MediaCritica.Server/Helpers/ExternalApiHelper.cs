@@ -22,9 +22,9 @@ namespace MediaCritica.Server.Helpers
                 var searchResults = jsonData.Where(m => m.Title.StartsWith(searchTerm)).ToList();
                 return new MediaSearchResultResponse()
                 {
-                    Response = "True",
-                    Search = searchResults,
-                    TotalResults = searchResults.Count.ToString()
+                    response = "True",
+                    search = searchResults,
+                    totalResults = searchResults.Count.ToString()
                 };
             }
             else
