@@ -1,7 +1,4 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Enums;
-using MediaCritica.Server.Helpers;
-using MediaCritica.Server.Mappers;
+﻿using MediaCritica.Server.Enums;
 using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -13,52 +10,44 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class BacklogControllerSteps
     {
-        private BacklogController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            _controller = new BacklogController(GlobalSteps._dbContext, new BacklogMapper(), new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())));
-        }
-
         [When(@"I call GetBacklog with user id (\d+)")]
         public async Task WhenICallGetBacklogWithUserId(int userId)
         {
-            GlobalSteps._response = await _controller.GetBacklog(userId);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.GetBacklog(userId);
         }
 
         [When(@"I call Get(Backlogged|InProgress|Finished)Backlog with user id (\d+)")]
         public async Task WhenICallGetTypeBacklogWithUserId(string type, int userId)
         {
             GlobalSteps._response = await (type == "Backlogged" ?
-                _controller.GetBackloggedBacklog(userId) : type == "InProgress" ?
-                _controller.GetInProgressBacklog(userId) :
-                _controller.GetFinishedBacklog(userId));
+                GlobalSteps._controller.BacklogController.GetBackloggedBacklog(userId) : type == "InProgress" ?
+                GlobalSteps._controller.BacklogController.GetInProgressBacklog(userId) :
+                GlobalSteps._controller.BacklogController.GetFinishedBacklog(userId));
         }
 
         [When(@"I call PostBacklog with the backlog model")]
         public async Task WhenICallPostBacklogWithTheBacklogModel(Table table)
         {
             var backlogModel = table.CreateSet<BacklogModel>().First();
-            GlobalSteps._response = await _controller.PostBacklog(backlogModel);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.PostBacklog(backlogModel);
         }
 
         [When(@"I call DeleteBacklog with the media id (.*) and user id (\d+)")]
         public async Task WhenICallDeleteBacklogWithTheMediaIdAndUserId(string mediaId, int userId)
         {
-            GlobalSteps._response = await _controller.DeleteBacklog(mediaId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.DeleteBacklog(mediaId, userId);
         }
 
         [When(@"I call UpdateBacklogState with the id (\d+) and new state (Backlog|InProgress|Finished)")]
         public async Task WhenICallUpdateBacklogWithTheIdAndNewState(int backlogId, BacklogCategoryType newState)
         {
-            GlobalSteps._response = await _controller.UpdateBacklogState(backlogId, newState);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.UpdateBacklogState(backlogId, newState);
         }
 
         [When(@"I call GetUserBacklogStatus with the media id (.*) and user id (\d+)")]
         public async Task WhenICallGetUserBacklogStatusWithTheMediaIdAndUserId(string mediaId, int userId)
         {
-            GlobalSteps._response = await _controller.GetUserBacklogStatus(mediaId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.GetUserBacklogStatus(mediaId, userId);
         }
 
         [Then(@"The BacklokObjectModel should be")]

@@ -8,10 +8,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EngagementController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class EngagementController(DatabaseContext databaseContext, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
+        private readonly IHelpers _helper = helper;
 
         [HttpGet("[action]/{reviewId}/{userId}")]
         public async Task<IActionResult> GetUserEngagement(int reviewId, int userId)
@@ -70,7 +70,7 @@ namespace MediaCritica.Server.Controllers
             }
 
             await _databaseContext.SaveChangesAsync();
-            await _milestoneCalculatorHelper.UpdateEngagementMilestones(user);
+            await _helper.MilestoneCalculatorHelper.UpdateEngagementMilestones(user);
 
             if (!await _databaseContext.Engagements.AnyAsync(e => e.Id == engagement!.Id))
                 return Ok(new { Message = "Engagement deleted" });

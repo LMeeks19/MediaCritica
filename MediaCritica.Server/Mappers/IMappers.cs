@@ -1,6 +1,6 @@
 ﻿namespace MediaCritica.Server.Mappers
 {
-    public interface IMapper
+    public interface IMappers
     {
         UserMapper UserMapper { get; }
         SeasonMapper SeasonMapper { get; }

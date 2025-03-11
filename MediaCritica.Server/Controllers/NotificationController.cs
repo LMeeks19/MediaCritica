@@ -9,11 +9,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> notificationHubContext, NotificationHub notificationHub) : ControllerBase
+    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> notificationHubContext, IHubs hubs) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
-        private readonly NotificationHub _notificationHub = notificationHub;
+        private readonly IHubs _hubs = hubs;
 
         // Get notifications for a specific user
         [HttpGet("[action]/{userId}/{offset}/{limit}")]
@@ -137,7 +137,7 @@ namespace MediaCritica.Server.Controllers
             if (response.Value is not List<Notification> notifications)
                 return NotFound(response.Value);
 
-            var connectionIds = notifications.Select(n => _notificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
+            var connectionIds = notifications.Select(n => _hubs.NotificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
             if (connectionIds.Count != 0)
             {
                 await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", new { newNotificationModel.AuthorName, newNotificationModel.Message, });

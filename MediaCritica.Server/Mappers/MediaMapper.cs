@@ -4,10 +4,9 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class MediaMapper(RatingMapper ratingMapper, ReviewMapper reviewMapper)
+    public class MediaMapper(IMappers mapper)
     {
-        private readonly RatingMapper _ratingMapper = ratingMapper;
-        private readonly ReviewMapper _reviewMapper = reviewMapper;
+        private readonly IMappers _mapper = mapper;
 
         public Media MapMedia(MediaModel mediaModel)
         {
@@ -26,7 +25,7 @@ namespace MediaCritica.Server.Mappers
                 Plot = mediaModel.Plot,
                 Poster = mediaModel.Poster,
                 Rated = mediaModel.Rated,
-                Ratings = mediaModel.Ratings.Select(_ratingMapper.MapRating).ToList(),
+                Ratings = mediaModel.Ratings.Select(_mapper.RatingMapper.MapRating).ToList(),
                 Released = DateTime.Parse(mediaModel.Released),
                 Runtime = mediaModel.Runtime,
                 Title = mediaModel.Title,
@@ -55,7 +54,7 @@ namespace MediaCritica.Server.Mappers
                 Plot = media.Plot,
                 Poster = media.Poster,
                 Rated = media.Rated,
-                Ratings = media.Ratings.Select(_ratingMapper.MapRatingModel).ToList(),
+                Ratings = media.Ratings.Select(_mapper.RatingMapper.MapRatingModel).ToList(),
                 Released = media.Released != null ? ((DateTime)media.Released).ToLongDateString() : "N/A",
                 Runtime = media.Runtime,
                 Title = media.Title,
@@ -65,7 +64,7 @@ namespace MediaCritica.Server.Mappers
                 Reviews = media.Reviews
                     .OrderByDescending(review => review.Date)
                     .Take(10)
-                    .Select(_reviewMapper.MapReviewSummaryModel)
+                    .Select(_mapper.ReviewMapper.MapReviewSummaryModel)
                     .ToList(),
             };
 

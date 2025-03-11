@@ -1,0 +1,51 @@
+[
+  {
+    "Poster": "Media Poster 1",
+    "Title": "Media Title 1",
+    "Type": "Movie",
+    "Year": "2025",
+    "imdbID": "1"
+  },
+  {
+    "Poster": "Media Poster 2",
+    "Title": "Media Title 2",
+    "Type": "Series",
+    "Year": "2024",
+    "imdbID": "2"
+  },
+  {
+    "Poster": "Media Poster 3",
+    "Title": "Media Title 3",
+    "Type": "Game",
+    "Year": "2024",
+    "imdbID": "3"
+  },
+  {
+    "Poster": "Media Poster 4",
+    "Title": "Media Title 4",
+    "Type": "Episode",
+    "Year": "2024",
+    "imdbID": "4"
+  },
+  {
+    "Poster": "Media Poster 5",
+    "Title": "Media Title 5",
+    "Type": "Series",
+    "Year": "2025",
+    "imdbID": "5"
+  },
+  {
+    "Poster": "Media Poster 6",
+    "Title": "Media Title 6",
+    "Type": "Movie",
+    "Year": "2022",
+    "imdbID": "6"
+  },
+  {
+    "Poster": "Media Poster 7",
+    "Title": "Media Title 7",
+    "Type": "Game",
+    "Year": "2026",
+    "imdbID": "7"
+  }
+]

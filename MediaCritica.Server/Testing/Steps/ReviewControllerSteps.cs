@@ -1,11 +1,5 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Helpers;
-using MediaCritica.Server.Hubs;
-using MediaCritica.Server.Mappers;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -15,58 +9,48 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class ReviewControllerSteps
     {
-        // TODO
-        private ReviewController _controller;
-
-        [BeforeScenario]
-        public async void BeforeScenario()
-        {
-            var hubContext = new Mock<IHubContext<NotificationHub>>().Object;
-            _controller = new ReviewController(GlobalSteps._dbContext, new ReviewMapper(), new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())), new NotificationController(GlobalSteps._dbContext, hubContext, new NotificationHub()));
-        }
-
         [When(@"I call GetReview with id (\d+)")]
         public async void WhenICallGetReviewWithId(int id)
         {
-            GlobalSteps._response = await _controller.GetReview(id);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetReview(id);
         }
 
         [When(@"I call GetUserReviews with the user id (\d+)")]
         public async void WhenICallGetUserReviewsWithUserId(int userId)
         {
-            GlobalSteps._response = await _controller.GetUserReviews(userId, 0);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviews(userId, 0);
         }
 
         [When(@"I call GetMediaReviews with the media id (.*)")]
         public async void WhenICallGetMediaReviewsWithMediaId(string mediaId)
         {
-            GlobalSteps._response = await _controller.GetMediaReviews(mediaId, 0, 10);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetMediaReviews(mediaId, 0, 10);
         }
 
         [When(@"I call PostReview with the following data")]
         public async void WhenICallPostReviewWithTheFollowingData(Table table)
         {
             var review = table.Rows[0].CreateInstance<ReviewModel>();
-            GlobalSteps._response = await _controller.PostReview(review);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.PostReview(review);
         }
 
         [When(@"I call UpdateReview with the following data")]
         public async void WhenICallUpdateReviewWithTheFollowingData(Table table)
         {
             var updatedDetails = table.Rows[0].CreateInstance<UpdateReviewModel>();
-            GlobalSteps._response = await _controller.UpdateReview(updatedDetails);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.UpdateReview(updatedDetails);
         }
 
         [When(@"I call delete review with id (\d+)")]
         public async void WhenICallDeleteReviewWithId(int id)
         {
-            GlobalSteps._response = await _controller.DeleteReview(id);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.DeleteReview(id);
         }
 
         [When(@"I call GetUserReviewStatus with media id (.*) and user id (\d+)")]
         public async void WhenICallGetUserReviewStatusWithMediaIdAndUserId(string mediaId, int userId)
         {
-            GlobalSteps._response = await _controller.GetUserReviewStatus(mediaId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviewStatus(mediaId, userId);
         }
 
         [Then(@"The ReviewModel should be")]

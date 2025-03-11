@@ -5,10 +5,10 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class UserMapper(MilestoneCalculatorHelper milestoneCalculatorHelper, ReviewMapper reviewMapper)
+    public class UserMapper(IHelpers helper, IMappers mapper)
     {
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
-        private readonly ReviewMapper _reviewMapper = reviewMapper;
+        private readonly IHelpers _helper = helper;
+        private readonly IMappers _mapper = mapper;
 
         public User MapUser(CreateUserModel userModel)
         {
@@ -24,7 +24,7 @@ namespace MediaCritica.Server.Mappers
                     Theme = "System",
                     Palette = "#971212"
                 },
-                Milestones = _milestoneCalculatorHelper.CreateMilestones()
+                Milestones = _helper.MilestoneCalculatorHelper.CreateMilestones()
             };
 
             return user;
@@ -66,9 +66,9 @@ namespace MediaCritica.Server.Mappers
                      .OrderByDescending(r => r.Date)
                      .ThenByDescending(r => r.Rating)
                      .Take(8)
-                     .Select(_reviewMapper.MapReviewModel)
+                     .Select(_mapper.ReviewMapper.MapReviewModel)
                      .ToList(),
-                Milestones = _milestoneCalculatorHelper
+                Milestones = _helper.MilestoneCalculatorHelper
                      .GetUserMilestones(user)
                      .Where(m => m.EarnedLevel > MilestoneLevel.None && m.EarnedDate != null)
                      .OrderByDescending(m => m.EarnedDate)

@@ -1,8 +1,5 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Helpers;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -12,28 +9,16 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class LeaderboardControllerSteps
     {
-        private LeaderboardController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            var mockDateTimeProviderHelper = new Mock<IDateTimeProviderHelper>();
-            mockDateTimeProviderHelper.Setup(provider => provider.Now).Returns(new DateTime(2025, 2, 27));
-            var dateTimeProviderHelper = mockDateTimeProviderHelper.Object;
-
-            _controller = new LeaderboardController(GlobalSteps._dbContext, new DateRangeCalculatorHelper(dateTimeProviderHelper), new TrendCalculatorHelper());
-        }
-
         [When(@"I call GetUserRankings for (week|month|year|all-time)")]
         public async Task WhenICallGetUserRankingsForThis(string timeframe)
         {
-            GlobalSteps._response = await _controller.GetUserRankings(timeframe);
+            GlobalSteps._response = await GlobalSteps._controller.LeaderboardController.GetUserRankings(timeframe);
         }
 
         [When(@"I call GetMediaTrends for (week|month|year|all-time)")]
         public async Task WhenICallGetMediaTrendssForThis(string timeframe)
         {
-            GlobalSteps._response = await _controller.GetMediaTrends(timeframe);
+            GlobalSteps._response = await GlobalSteps._controller.LeaderboardController.GetMediaTrends(timeframe);
         }
 
         [Then(@"The UserRankingModels reposne should be")]

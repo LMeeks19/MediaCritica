@@ -4,16 +4,16 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class EpisodeMapper(MediaMapper mediaMapper)
+    public class EpisodeMapper(IMappers mapper)
     {
-        private readonly MediaMapper _mediaMapper = mediaMapper;
+        private readonly IMappers _mapper = mapper;
 
         public Episode MapEpisode(EpisodeModel episodeModel)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Episode>());
             var mapper = config.CreateMapper();
 
-            Media media = _mediaMapper.MapMedia(episodeModel);
+            Media media = _mapper.MediaMapper.MapMedia(episodeModel);
             Episode episode = mapper.Map<Episode>(media);
 
             episode.EpisodeNo = int.Parse(episodeModel.Episode);
@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, EpisodeModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(episode);
+            MediaModel mediaModel = _mapper.MediaMapper.MapMediaModel(episode);
             EpisodeModel episodeModel = mapper.Map<EpisodeModel>(mediaModel);
 
             episodeModel.Episode = episode.EpisodeNo.ToString();

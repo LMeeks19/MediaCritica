@@ -8,10 +8,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext, UserMapper userMapper) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, IMappers mapper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly UserMapper _userMapper = userMapper;
+        private readonly IMappers _mapper = mapper;
 
         [HttpGet("[action]/{email}")]
         public async Task<IActionResult> GetUser(string email)
@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
-            return Ok(_userMapper.MapUserModel(user));
+            return Ok(_mapper.UserMapper.MapUserModel(user));
         }
 
         [HttpPost("[action]")]
@@ -39,7 +39,7 @@ namespace MediaCritica.Server.Controllers
             if (userExists)
                 return Conflict(new { Message = "Email already in use" });
 
-            var user = _userMapper.MapUser(userModel);
+            var user = _mapper.UserMapper.MapUser(userModel);
 
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
@@ -129,7 +129,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
-            return Ok(_userMapper.MapUserSummaryModel(user));
+            return Ok(_mapper.UserMapper.MapUserSummaryModel(user));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -11,49 +10,41 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class FollowControllerSteps
     {
-        private FollowController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            _controller = new FollowController(GlobalSteps._dbContext);
-        }
-
         [When(@"I call GetUserFollowers with the UserId (\d+) and offset (\d+)")]
         public async Task WhenICallGetUserFollowersWithTheUserId(int userId, int offset)
         {
-            GlobalSteps._response = await _controller.GetUserFollowers(userId, offset);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowers(userId, offset);
         }
 
         [When(@"I call GetUserFollowing with the UserId (\d+) and offset (\d+)")]
         public async Task WhenICallGetUserFollowingWithTheUserId(int userId, int offset)
         {
-            GlobalSteps._response = await _controller.GetUserFollowing(userId, offset);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowing(userId, offset);
         }
 
         [When(@"I call GetUserFollowStatus for userId (\d+) on userId (\d+)")]
         public async Task WhenICallGetUserFollowStatusForUserIdOnUserId(int followerId, int followedId)
         {
-            GlobalSteps._response = await _controller.GetUserFollowStatus(followerId, followedId);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowStatus(followerId, followedId);
         }
 
         [When(@"I call FollowUser with these values")]
         public async Task WhenICallFollowUserWithTheseValues(Table table)
         {
             var userFollowModel = table.Rows[0].CreateInstance<UserFollowModel>();
-            GlobalSteps._response = await _controller.FollowUser(userFollowModel);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.FollowUser(userFollowModel);
         }
 
         [When(@"I call UnfollowUser with the userFollowId (\d+)")]
         public async Task WhenICallUnfollowUserWithTheUserFollowId(int userFollowId)
         {
-            GlobalSteps._response = await _controller.UnfollowUser(userFollowId);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.UnfollowUser(userFollowId);
         }
 
         [When(@"I call ToggleNotificationStatus with userFollowId (\d+)")]
         public async Task ICallToggleNotificationStatusWithUserFollowId(int userFollowId)
         {
-            GlobalSteps._response = await _controller.ToggleNotificationStatus(userFollowId);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.ToggleNotificationStatus(userFollowId);
         }
 
         [Then(@"The UserFollowSummaryModels returned should be")]

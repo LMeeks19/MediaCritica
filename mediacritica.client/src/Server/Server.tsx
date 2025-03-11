@@ -128,7 +128,7 @@ export async function GetSearchResults(
   page: number = 1
 ): Promise<MediaSearchResponse> {
   const response = await MakeRequest<MediaSearchResponse>(
-    `/Media/GetMediaBySearch/${searchTerm}/${page}`
+    `/Media/GetMediaByExternalSearch/${searchTerm}/${page}`
   );
   return response;
 }
@@ -136,10 +136,10 @@ export async function GetSearchResults(
 export async function GetExploreMediaBySearch(
   searchTerm: string
 ): Promise<MediaSummaryModel[]> {
-  const response = await MakeRequest<MediaSummaryModel[]>(
+  const response = await MakeRequest<MediaSummaryModelResponse>(
     `/Media/GetExploreMediaBySearch/${searchTerm}`
   );
-  return response;
+  return response.mediaSummaryModels;
 }
 
 export async function GetExploreMedia(

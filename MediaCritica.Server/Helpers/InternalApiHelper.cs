@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Objects;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Objects;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediaCritica.Server.Helpers
@@ -12,7 +13,7 @@ namespace MediaCritica.Server.Helpers
             var movie = await _databaseContext.Movies
                 .Include(movie => movie.Ratings)
                 .Include(movie => movie.Reviews)
-                .SingleOrDefaultAsync(movie => movie.Id == movieId);
+                .SingleOrDefaultAsync(movie => movie.Id == movieId && movie.Type == MediaType.Movie);
 
             return movie;
         }
@@ -22,7 +23,7 @@ namespace MediaCritica.Server.Helpers
             var game = await _databaseContext.Games
                 .Include(game => game.Ratings)
                 .Include(game => game.Reviews)
-                .SingleOrDefaultAsync(game => game.Id == gameId);
+                .SingleOrDefaultAsync(game => game.Id == gameId && game.Type == MediaType.Game);
 
             return game;
         }
@@ -34,7 +35,7 @@ namespace MediaCritica.Server.Helpers
                 .Include(series => series.Ratings)
                 .Include(series => series.Seasons)
                     .ThenInclude(season => season.Episodes)
-                .SingleOrDefaultAsync(series => series.Id == seriesId);
+                .SingleOrDefaultAsync(series => series.Id == seriesId && series.Type == MediaType.Series);
 
             return series;
         }
@@ -54,7 +55,7 @@ namespace MediaCritica.Server.Helpers
                 .Include(episode => episode.Season)
                     .ThenInclude(season => season.Series)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(episode => episode.Id == episodeId);
+                .SingleOrDefaultAsync(episode => episode.Id == episodeId && episode.Type == MediaType.Episode);
         }
     }
 }

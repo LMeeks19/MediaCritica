@@ -1,6 +1,4 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Helpers;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -18,18 +16,10 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class MilestoneControllerSteps
     {
-        private MilestoneController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            _controller = new MilestoneController(GlobalSteps._dbContext, new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())));
-        }
-
         [When(@"I call GetUserMilestones with UserId (\d+)")]
         public async Task WhenICallGetUserMilestonesWithId(int userId)
         {
-            GlobalSteps._response = await _controller.GetUserMilestones(userId);
+            GlobalSteps._response = await GlobalSteps._controller.MilestoneController.GetUserMilestones(userId);
         }
 
         [Then(@"The MilestoneCategoryModels should be")]

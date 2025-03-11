@@ -4,6 +4,6 @@
     {
         public string Response { get; set; }
         public List<MediaSearchModel> Search { get; set; }
-        public string totalResults { get; set; }
+        public string TotalResults { get; set; }
     }
 }

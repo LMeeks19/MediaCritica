@@ -5,7 +5,7 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class TrendCalculatorHelper()
+    public class TrendCalculatorHelper
     {
 
         public MediaTrendModel? GetRisingStar(List<Media> media, DateTime start, DateTime end, string timeframe)

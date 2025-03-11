@@ -4,10 +4,9 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class MilestoneCalculatorHelper(DatabaseContext databaseContext, DateRangeCalculatorHelper dateRangeCalculatorHelper)
+    public class MilestoneCalculatorHelper(DatabaseContext databaseContext)
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly DateRangeCalculatorHelper _dateRangeCalculatorHelper = dateRangeCalculatorHelper;
 
         public List<Milestone> CreateMilestones()
         {

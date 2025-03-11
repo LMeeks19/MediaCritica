@@ -9,11 +9,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BacklogController(DatabaseContext databaseContext, BacklogMapper backlogMapper, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class BacklogController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly BacklogMapper _backlogMapper = backlogMapper;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
+        private readonly IMappers _mapper = mapper;
+        private readonly IHelpers _helper = helper;
 
         [HttpGet("[action]/{userId}")]
         public async Task<IActionResult> GetBacklog(int userId)
@@ -39,7 +39,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(media => media.UserId == userId && media.Category == category)
                 .OrderByDescending(media => media.AddedDate)
                 .ThenBy(media => media.MediaTitle)
-                .Select(media => _backlogMapper.MapBacklogModel(media))
+                .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();
@@ -79,7 +79,7 @@ namespace MediaCritica.Server.Controllers
             if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
                 return NotFound(new { Message = "Media not found" });
 
-            var backlogData = _backlogMapper.MapBacklog(backlogModel);
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();
@@ -89,7 +89,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(user => user.Milestones)
                 .FirstAsync(user => user.Id == backlogData.UserId);
 
-            await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+            await _helper.MilestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
             return Ok(new { Message = $"{backlogModel.MediaTitle} added to backlog" });
         }
@@ -110,7 +110,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Backlogs.Remove(backlog);
             await _databaseContext.SaveChangesAsync();
 
-            await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+            await _helper.MilestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
             return Ok(new { Message = $"{backlog.MediaTitle} removed from backlog" });
         }
@@ -133,7 +133,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Backlogs.Update(backlog);
             await _databaseContext.SaveChangesAsync();
 
-            await _milestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
+            await _helper.MilestoneCalculatorHelper.UpdateUserBacklogMilestones(user);
 
             return Ok(new { Message = $"Backlog {backlog.Id} updated to {backlog.Category} state" });
         }

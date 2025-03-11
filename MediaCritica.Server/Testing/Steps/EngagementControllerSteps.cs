@@ -1,6 +1,4 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Enums;
-using MediaCritica.Server.Helpers;
+﻿using MediaCritica.Server.Enums;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,24 +12,16 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class EngagementControllerSteps
     {
-        private EngagementController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            _controller = new EngagementController(GlobalSteps._dbContext, new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())));
-        }
-
         [When(@"I call GetUserEngagement with review id (\d+) and user id (\d+)")]
         public async Task WhenICallGetUserEngagementWithReviewIdAndUserId(int reviewId, int userId)
         {
-            GlobalSteps._response = await _controller.GetUserEngagement(reviewId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.EngagementController.GetUserEngagement(reviewId, userId);
         }
 
         [When(@"I call ToggleEngagement with review id (\d+), user id (\d+) and engagement type (-1|0|1)")]
         public async Task WhenICallToggleEngagementWithReviewIdAndUserIdAndEngagementType(int reviewId, int userId, string engagementType)
         {
-            GlobalSteps._response = await _controller.ToggleEngagement(userId, reviewId, Enum.Parse<EngagementType>(engagementType));
+            GlobalSteps._response = await GlobalSteps._controller.EngagementController.ToggleEngagement(userId, reviewId, Enum.Parse<EngagementType>(engagementType));
         }
 
         [Then(@"The response should be a (like|dislike)")]

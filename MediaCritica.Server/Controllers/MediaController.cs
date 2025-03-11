@@ -9,31 +9,41 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MediaController(DatabaseContext databaseContext, IMapper mapper, ExternalApiHelper externalApiHelper, InternalApiHelper internalApiHelper, DateRangeCalculatorHelper dateRangeCalculatorHelper) : ControllerBase
+    public class MediaController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly ExternalApiHelper _externalApiHelper = externalApiHelper;
-        private readonly InternalApiHelper _internalApiHelper = internalApiHelper;
-        private readonly DateRangeCalculatorHelper _dateRangeCalculatorHelper = dateRangeCalculatorHelper;
-        private readonly IMapper _mapper = mapper;
+        private readonly IMappers _mapper = mapper;
+        private readonly IHelpers _helper = helper;
 
         [HttpGet("[action]/{searchTerm}/{page}")]
-        public async Task<IActionResult> GetMediaBySearch(string searchTerm, int page)
+        public async Task<IActionResult> GetMediaByExternalSearch(string searchTerm, int page)
         {
-            var result = await _externalApiHelper.GetSearchMedia(searchTerm, page);
+            var result = await _helper.ExternalApiHelper.GetSearchMedia(searchTerm, page);
+
+            if (result?.Search == null || result?.Search.Count == 0 || result == null)
+                return NotFound(new { Message = "No results found" });
+
             return Ok(result);
         }
 
         [HttpGet("[action]/{searchTerm}")]
         public async Task<IActionResult> GetExploreMediaBySearch(string searchTerm)
         {
-            var media = await _databaseContext.Media
+            var mediaQuery = _databaseContext.Media
                 .Where(m => m.Type != MediaType.Episode && m.Title.StartsWith(searchTerm))
-                .OrderBy(m => m.Title)
-                .Take(10)
-                .ToListAsync();
+                .OrderBy(m => m.Title);
 
-            return Ok(media.Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m)));
+            var mediaResopnse = new MediaSummaryModelResponse
+            {
+                MediaSummaryModels = await mediaQuery
+                    .Take(10)
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .ToListAsync(),
+                TotalMediaCount = await mediaQuery.CountAsync()
+            };
+
+            return Ok(mediaResopnse);
+
         }
 
         [HttpGet("[action]/{offset}")]
@@ -169,7 +179,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetSeasonalPicks(int offset)
         {
             var currentMonth = DateTime.Now.Month;
-            var (currentSeasonStartMonth, currentSeasonEndMonth) = _dateRangeCalculatorHelper.GetSeasonMonths(currentMonth);
+            var (currentSeasonStartMonth, currentSeasonEndMonth) = _helper.DateRangeCalculatorHelper.GetSeasonMonths(currentMonth);
 
             var isWinter = currentSeasonStartMonth == 12 && currentSeasonEndMonth == 2;
 
@@ -241,19 +251,20 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{movieId}")]
         public async Task<IActionResult> GetMovie(string movieId)
         {
-            var movie = await _internalApiHelper.GetMovieMedia(movieId);
+            var movie = await _helper.InternalApiHelper.GetMovieMedia(movieId);
 
             if (movie != null)
                 return Ok(_mapper.MovieMapper.MapMovieModel(movie));
 
-            var movieModel = await _externalApiHelper.GetMovieMedia(movieId);
+            var movieModel = await _helper.ExternalApiHelper.GetMovieMedia(movieId);
+
+            if (movieModel?.Type != MediaType.Movie || movieModel == null)
+                return NotFound(new { Message = "Movie not found" });
+
             movie = _mapper.MovieMapper.MapMovie(movieModel);
 
             await _databaseContext.Movies.AddAsync(movie);
             await _databaseContext.SaveChangesAsync();
-
-            if (movie == null)
-                return NotFound(new { Message = "Movie not found" });
 
             return Ok(_mapper.MovieMapper.MapMovieModel(movie));
         }
@@ -261,12 +272,16 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{seriesId}")]
         public async Task<IActionResult> GetSeries(string seriesId)
         {
-            var series = await _internalApiHelper.GetSeriesMedia(seriesId);
+            var series = await _helper.InternalApiHelper.GetSeriesMedia(seriesId);
 
             if (series != null)
                 return Ok(_mapper.SeriesMapper.MapSeriesModel(series));
 
-            var seriesModel = await _externalApiHelper.GetSeriesMedia(seriesId);
+            var seriesModel = await _helper.ExternalApiHelper.GetSeriesMedia(seriesId);
+
+            if (seriesModel?.Type != MediaType.Series || seriesModel == null)
+                return NotFound(new { Message = "Series not found" });
+
             series = _mapper.SeriesMapper.MapSeries(seriesModel);
 
             await _databaseContext.Series.AddAsync(series);
@@ -274,21 +289,22 @@ namespace MediaCritica.Server.Controllers
 
             await GetSeason(seriesId);
 
-            if (series == null)
-                return NotFound(new { Message = "Series not found" });
-
             return Ok(_mapper.SeriesMapper.MapSeriesModel(series));
         }
 
         [HttpGet("[action]/{seriesId}/{seasonNo}")]
         public async Task<IActionResult> GetSeason(string seriesId, int seasonNo = 1)
         {
-            var season = await _internalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+            var season = await _helper.InternalApiHelper.GetSeasonMedia(seriesId, seasonNo);
 
             if (season != null)
                 return Ok(_mapper.SeasonMapper.MapSeasonModel(season));
 
-            var seasonModel = await _externalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+            var seasonModel = await _helper.ExternalApiHelper.GetSeasonMedia(seriesId, seasonNo);
+
+            if (seasonModel == null)
+                return NotFound(new { Message = "Season not found" });
+
             season = _mapper.SeasonMapper.MapSeason(seasonModel!, seriesId);
 
             await _databaseContext.Seasons.AddAsync(season);
@@ -296,28 +312,26 @@ namespace MediaCritica.Server.Controllers
 
             season.Episodes.ForEach(async episode => await GetEpisode(episode.Id));
 
-            if (season == null)
-                return NotFound(new { Message = "Season not found" });
-
             return Ok(_mapper.SeasonMapper.MapSeasonModel(season));
         }
 
         [HttpGet("[action]/{gameId}")]
         public async Task<IActionResult> GetGame(string gameId)
         {
-            var game = await _internalApiHelper.GetGameMedia(gameId);
+            var game = await _helper.InternalApiHelper.GetGameMedia(gameId);
 
             if (game != null)
                 return Ok(_mapper.GameMapper.MapGameModel(game));
 
-            var gameModel = await _externalApiHelper.GetGameMedia(gameId);
+            var gameModel = await _helper.ExternalApiHelper.GetGameMedia(gameId);
+
+            if (gameModel?.Type != MediaType.Game || gameModel == null)
+                return NotFound(new { Message = "Game not found" });
+
             game = _mapper.GameMapper.MapGame(gameModel);
 
             await _databaseContext.Games.AddAsync(game);
             await _databaseContext.SaveChangesAsync();
-
-            if (game == null)
-                return NotFound(new { Message = "Game not found" });
 
             return Ok(_mapper.GameMapper.MapGameModel(game));
         }
@@ -325,12 +339,15 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{episodeId}")]
         public async Task<IActionResult> GetEpisode(string episodeId)
         {
-            var episode = await _internalApiHelper.GetEpisodeMedia(episodeId);
+            var episode = await _helper.InternalApiHelper.GetEpisodeMedia(episodeId);
 
             if (episode != null)
                 return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
 
-            var episodeModel = await _externalApiHelper.GetEpisodeMedia(episodeId);
+            var episodeModel = await _helper.ExternalApiHelper.GetEpisodeMedia(episodeId);
+
+            if (episodeModel?.Type != MediaType.Episode || episodeModel == null)
+                return NotFound(new { Message = "Episode not found" });
 
             if (episode != null)
             {
@@ -346,9 +363,6 @@ namespace MediaCritica.Server.Controllers
                 _databaseContext.Episodes.Update(episode);
 
             await _databaseContext.SaveChangesAsync();
-
-            if (episode == null)
-                return NotFound(new { Message = "Episode not found" });
 
             return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
         }

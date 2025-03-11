@@ -8,21 +8,20 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LeaderboardController(DatabaseContext databaseContext, DateRangeCalculatorHelper dateRangeCalculatorHelper, TrendCalculatorHelper trendCalculatorHelper) : ControllerBase
+    public class LeaderboardController(DatabaseContext databaseContext, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly DateRangeCalculatorHelper _dateRangeCalculatorHelper = dateRangeCalculatorHelper;
-        private readonly TrendCalculatorHelper _trendCalculatorHelper = trendCalculatorHelper;
+        private readonly IHelpers _helper = helper;
 
         [HttpGet("[action]/{timeframe}")]
         public async Task<IActionResult> GetUserRankings(string timeframe)
         {
             (DateTime startDate, DateTime endDate) = timeframe switch
             {
-                "week" => _dateRangeCalculatorHelper.GetThisWeekRange(),
-                "month" => _dateRangeCalculatorHelper.GetThisMonthRange(),
-                "year" => _dateRangeCalculatorHelper.GetThisYearRange(),
-                _ => _dateRangeCalculatorHelper.GetAllTimeRange()
+                "week" => _helper.DateRangeCalculatorHelper.GetThisWeekRange(),
+                "month" => _helper.DateRangeCalculatorHelper.GetThisMonthRange(),
+                "year" => _helper.DateRangeCalculatorHelper.GetThisYearRange(),
+                _ => _helper.DateRangeCalculatorHelper.GetAllTimeRange()
             };
 
             var rankings = await _databaseContext.Users
@@ -54,10 +53,10 @@ namespace MediaCritica.Server.Controllers
         {
             (DateTime startDate, DateTime endDate) = timeframe switch
             {
-                "week" => _dateRangeCalculatorHelper.GetThisWeekRange(),
-                "month" => _dateRangeCalculatorHelper.GetThisMonthRange(),
-                "year" => _dateRangeCalculatorHelper.GetThisYearRange(),
-                _ => _dateRangeCalculatorHelper.GetAllTimeRange()
+                "week" => _helper.DateRangeCalculatorHelper.GetThisWeekRange(),
+                "month" => _helper.DateRangeCalculatorHelper.GetThisMonthRange(),
+                "year" => _helper.DateRangeCalculatorHelper.GetThisYearRange(),
+                _ => _helper.DateRangeCalculatorHelper.GetAllTimeRange()
             };
 
             var media = await _databaseContext.Media
@@ -67,21 +66,21 @@ namespace MediaCritica.Server.Controllers
 
             var trends = new List<MediaTrendModel>();
 
-            trends.AddIfNotNull(_trendCalculatorHelper.GetRisingStar(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetFallingStar(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetSurprise(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostReviewed(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetHighestRated(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetComeback(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostActiveGenre(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostBacklogged(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostUnfinished(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostAbandoned(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetHiddenGem(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetDirectorsSpotlight(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetActorsSpotlight(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostAnticipated(media, startDate, endDate, timeframe));
-            trends.AddIfNotNull(_trendCalculatorHelper.GetMostPolarising(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetRisingStar(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetFallingStar(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetSurprise(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostReviewed(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetHighestRated(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetComeback(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostActiveGenre(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostBacklogged(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostUnfinished(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostAbandoned(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetHiddenGem(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetDirectorsSpotlight(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetActorsSpotlight(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostAnticipated(media, startDate, endDate, timeframe));
+            trends.AddIfNotNull(_helper.TrendCalculatorHelper.GetMostPolarising(media, startDate, endDate, timeframe));
 
             trends = [.. trends.OrderBy(trend => trend.AwardType)];
             return Ok(trends);

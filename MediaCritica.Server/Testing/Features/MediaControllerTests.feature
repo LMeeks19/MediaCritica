@@ -3,3 +3,212 @@ Feature: MediaControllerTests
 TODO
 
 Background: 
+	Given I have the following users
+		| Id | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| 4  | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
+	And I have the following media
+		| Id | Actors           | Awards  | Countries | Directors              | Genres            | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes |
+		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama     | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2025-02-03 | 120 min | Media Title 1 | Movie   | Writer 1 | 2025 | 7.2        | 1500      |
+		| 2  | Actor 1, Actor 4 | Award 1 | USA, UK   | Director 5, Director 1 | Action, Adventure | English   | 85        | A great plot | Media Poster 2 | PG-13 | 2024-11-09 | 120 min | Media Title 2 | Series  | Writer 1 | 2024 | 9          | 1500      |
+		| 3  | Actor 1, Actor 5 | Award 1 | USA, UK   | Director 2, Director 7 | Comedy, Drama     | English   | 85        | A great plot | Media Poster 3 | PG-13 | 2024-06-21 | 120 min | Media Title 3 | Game    | Writer 1 | 2024 | 8.5        | 1500      |
+		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action  | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2024-01-19 | 120 min | Media Title 4 | Episode | Writer 1 | 2024 | 6          | 1500      |
+		| 5  | Actor 1, Actor 8 | Award 1 | USA, UK   | Director 8, Director 4 | Drama, Romance    | English   | 85        | A great plot | Media Poster 5 | PG-13 | 2025-01-01 | 120 min | Media Title 5 | Series  | Writer 1 | 2025 | 2          | 1500      |
+		| 6  | Actor 1, Actor 9 | Award 1 | USA, UK   | Director 1, Director 7 | Fantasy, Action   | English   | 85        | A great plot | Media Poster 6 | PG-13 | 2022-04-10 | 120 min | Media Title 6 | Movie   | Writer 1 | 2022 | 5          | 1500      |
+		| 7  | Actor 1, Actor 3 | Award 1 | USA, UK   | Director 4, Director 8 | Horror, Thriller  | English   | 85        | A great plot | Media Poster 7 | PG-13 | 2026-10-16 | 120 min | Media Title 7 | Game    | Writer 1 | 2026 | 3          | 1500      |
+	And I have the following reviews
+		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title        | Description        | Date       |
+		| 1  | 1       | Media Poster 1 | Media Title 1 | Movie     | 1      | Test 3       | 1      | Test Title 1 | Test Description 1 | 2025-02-04 |
+		| 2  | 1       | Media Poster 1 | Media Title 1 | Movie     | 2      | Test 3       | 2      | Test Title 2 | Test Description 2 | 2025-02-06 |
+		| 3  | 1       | Media Poster 1 | Media Title 1 | Movie     | 3      | Test 3       | 2      | Test Title 3 | Test Description 3 | 2024-02-08 |
+		| 4  | 5       | Media Poster 5 | Media Title 5 | Series    | 4      | Test 4       | 5      | Test Title 4 | Test Description 4 | 2025-02-26 |
+
+Scenario: Get media by external search
+	When I call GetMediaByExternalSearch with search term "Media Title 1"
+	Then The status code should be 200
+	And The MediaSearchResultResponse should be
+		| Response | Search | TotalResults |
+		| True     | 1      | 1            |
+	And The MediaSearchModels should be
+		| Poster         | Title         | Type  | Year | imdbID |
+		| Media Poster 1 | Media Title 1 | Movie | 2025 | 1      |
+
+Scenario: Get media by external search that doesn't exist
+	When I call GetMediaByExternalSearch with search term "Media Title 8"
+	Then The status code should be 404
+	And The response should be "No results found"
+
+Scenario: Get explore media by search
+	When I call GetExploreMediaBySearch with search term "Media Title 1"
+	Then The status code should be 200
+	And The MediaSummaryModels should be
+		| Id | Title         | Type    | Poster         | Genre            | Released   | ImdbRating |
+		| 1  | Media Title 1 | Movie   | Media Poster 1 | Action, Drama    | 2025-02-03 | 7.2        |
+
+Scenario: Get explore media 
+	When I call GetExploreMedia
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 7               | 7                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type    | Poster         | Genre            | Released   | ImdbRating |
+		| 1  | Media Title 1 | Movie   | Media Poster 1 | Action, Drama    | 2025-02-03 | 7.2        |
+		| 2  | Media Title 2 | Series  | Media Poster 2 | Action, Adventur | 2024-11-09 | 9          |
+		| 3  | Media Title 3 | Game    | Media Poster 3 | Comedy, Drama    | 2024-06-21 | 8.5        |
+		| 4  | Media Title 4 | Episode | Media Poster 4 | Thriller, Action | 2024-01-19 | 6          |
+		| 5  | Media Title 5 | Series  | Media Poster 5 | Drama, Romance   | 2025-01-01 | 2          |
+		| 6  | Media Title 6 | Movie   | Media Poster 6 | Fantasy, Action  | 2022-04-10 | 5          |
+		| 7  | Media Title 7 | Game    | Media Poster 7 | Horror, Thriller | 2026-10-16 | 3          |
+
+Scenario: Get best of previous year
+	When I call GetBestOfPrevYear
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 3               | 3                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type    | Poster         | Genre            | Released   | ImdbRating |
+		| 2  | Media Title 2 | Series  | Media Poster 2 | Action, Adventur | 2024-11-09 | 9          |
+		| 3  | Media Title 3 | Game    | Media Poster 3 | Comedy, Drama    | 2024-06-21 | 8.5        |
+		| 4  | Media Title 4 | Episode | Media Poster 4 | Thriller, Action | 2024-01-19 | 6          |
+
+Scenario: Get best of current year
+	When I call GetBestOfCurYear
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 2               | 2                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
+		| 1  | Media Title 1 | Movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
+		| 5  | Media Title 5 | Series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
+
+Scenario: Get best of all time
+	When I call GetBestOfAllTime
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 6               | 6                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type    | Poster         | Genre            | Released   | ImdbRating |
+		| 2  | Media Title 2 | Series  | Media Poster 2 | Action, Adventur | 2024-11-09 | 9          |
+		| 3  | Media Title 3 | Game    | Media Poster 3 | Comedy, Drama    | 2024-06-21 | 8.5        |
+		| 1  | Media Title 1 | Movie   | Media Poster 1 | Action, Drama    | 2025-02-03 | 7.2        |
+		| 4  | Media Title 4 | Episode | Media Poster 4 | Thriller, Action | 2024-01-19 | 6          |
+		| 6  | Media Title 6 | Movie   | Media Poster 6 | Fantasy, Action  | 2022-04-10 | 5          |
+		| 5  | Media Title 5 | Series  | Media Poster 5 | Drama, Romance   | 2025-01-01 | 2          |
+
+Scenario: Get upcomng
+	When I call GetUpcoming
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 1               | 1                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type | Poster         | Genre            | Released   | ImdbRating |
+		| 7  | Media Title 7 | Game | Media Poster 7 | Horror, Thriller | 2026-10-16 | 3          |
+
+Scenario: Get latest
+	When I call GetLatest
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 6               | 6                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type    | Poster         | Genre            | Released   | ImdbRating |
+		| 1  | Media Title 1 | Movie   | Media Poster 1 | Action, Drama    | 2025-02-03 | 7.2        |
+		| 5  | Media Title 5 | Series  | Media Poster 5 | Drama, Romance   | 2025-01-01 | 2          |
+		| 2  | Media Title 2 | Series  | Media Poster 2 | Action, Adventur | 2024-11-09 | 9          |
+		| 3  | Media Title 3 | Game    | Media Poster 3 | Comedy, Drama    | 2024-06-21 | 8.5        |
+		| 4  | Media Title 4 | Episode | Media Poster 4 | Thriller, Action | 2024-01-19 | 6          |
+		| 6  | Media Title 6 | Movie   | Media Poster 6 | Fantasy, Action  | 2022-04-10 | 5          |
+
+Scenario: Get seasonal picks
+	When I call GetSeasonalPicks
+	Then The status code should be 200	
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 1               | 1                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type  | Poster         | Genre           | Released   | ImdbRating |
+		| 6  | Media Title 6 | Movie | Media Poster 6 | Fantasy, Action | 2022-04-10 | 5          |
+
+Scenario: Get most reviewed
+	When I call GetMostReviewed
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 2               | 2                  |	
+		And The MediaSummaryModels should be
+		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
+		| 1  | Media Title 1 | Movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
+		| 5  | Media Title 5 | Series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
+
+Scenario: Get recently reviewed
+	When I call GetRecentlyReviewed
+	Then The status code should be 200
+	And The MediaSummaryModelResponse should be
+		| TotalMediaCount | MediaSummaryModels |
+		| 2               | 2                  |
+	And The MediaSummaryModels should be
+		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
+		| 5  | Media Title 5 | Series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
+		| 1  | Media Title 1 | Movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
+
+Scenario: Get movie
+	When I call GetMovie with id 1
+	Then The status code should be 200
+	And The MovieModel should be
+		|  |
+
+Scenario: Get series
+	When I call GetSeries with id 2
+	Then The status code should be 200
+	And The SeriesModel should be
+		|  |
+
+Scenario: Get season
+	When I call GetSeason with id 1
+	Then The status code should be 200
+	And The SeasonModel should be
+		|  |
+
+Scenario: Get game
+	When I call GetGame with id 3
+	Then The status code should be 200
+	And The GameModel should be
+		|  |
+
+Scenario: Get episode
+	When I call GetEpisode with id 4
+	Then The status code should be 200
+	And The EpisodeModel should be
+		|  |
+
+Scenario: Get movie that doesn't exist
+	When I call GetMovie with id 2
+	Then The status code should be 404
+	And The response should be "Movie not found"
+
+Scenario: Get series that doesn't exist
+	When I call GetSeries with id 3
+	Then The status code should be 404
+	And The response should be "Series not found"
+
+Scenario: Get season that doesn't exist
+	When I call GetSeason with id 2
+	Then The status code should be 404
+	And The response should be "Season not found"
+
+Scenario: Get game that doesn't exist
+	When I call GetGame with id 4
+	Then The status code should be 404
+	And The response should be "Game not found"
+
+Scenario: Get episode that doesn't exist
+	When I call GetEpisode with id 1
+	Then The status code should be 404
+	And The response should be "Episode not found"

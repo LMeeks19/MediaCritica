@@ -1,12 +1,12 @@
 ﻿namespace MediaCritica.Server.Helpers
 {
-    public class DateRangeCalculatorHelper(IDateTimeProviderHelper dateTimeProviderHelper)
+    public class DateRangeCalculatorHelper(IHelpers helper)
     {
-        private IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
+        private IHelpers _helper = helper;
 
         public (DateTime start, DateTime end) GetThisWeekRange()
         {
-            DateTime currentDate = _dateTimeProviderHelper.Now.Date;
+            DateTime currentDate = _helper.DateTimeProviderHelper.Now.Date;
 
             int daysSinceMonday = (int)currentDate.DayOfWeek - (int)DayOfWeek.Monday;
             daysSinceMonday = daysSinceMonday < 0 ? 6 : daysSinceMonday; // Back to current week monday
@@ -18,7 +18,7 @@
 
         public (DateTime start, DateTime end) GetThisMonthRange()
         {
-            DateTime currentDate = _dateTimeProviderHelper.Now.Date;
+            DateTime currentDate = _helper.DateTimeProviderHelper.Now.Date;
 
             DateTime startOfMonth = new(currentDate.Year, currentDate.Month, 1); // 1st day of current month
             DateTime endOfMonth = startOfMonth.AddMonths(1); // 1st day of next month
@@ -27,7 +27,7 @@
 
         public (DateTime start, DateTime end) GetThisYearRange()
         {
-            DateTime currentDate = _dateTimeProviderHelper.Now.Date;
+            DateTime currentDate = _helper.DateTimeProviderHelper.Now.Date;
 
             DateTime startOfYear = new(currentDate.Year, 1, 1); // Jan 1st of current year
             DateTime endOfYear = new(currentDate.Year + 1, 1, 1); // Jan 1st of next year
@@ -36,8 +36,8 @@
 
         public (DateTime start, DateTime end) GetAllTimeRange()
         {
-            DateTime startOfAllTime = new DateTime(1753, 1, 1); // The earliest possible date allowed
-            DateTime endOfAllTime = _dateTimeProviderHelper.Now; // Current date
+            DateTime startOfAllTime = new(1753, 1, 1); // The earliest possible date allowed
+            DateTime endOfAllTime = _helper.DateTimeProviderHelper.Now; // Current date
             return (startOfAllTime, endOfAllTime);
         }
 

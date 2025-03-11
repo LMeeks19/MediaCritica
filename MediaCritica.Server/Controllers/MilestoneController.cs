@@ -7,10 +7,10 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MilestoneController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class MilestoneController(DatabaseContext databaseContext, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
+        private readonly IHelpers _helper = helper;
 
         [HttpGet("[action]/{userId}")]
         public async Task<IActionResult> GetUserMilestones(int userId)
@@ -30,7 +30,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
-            var milestones = _milestoneCalculatorHelper.GetUserMilestones(user);
+            var milestones = _helper.MilestoneCalculatorHelper.GetUserMilestones(user);
 
             var milestonesByCategory = milestones
                 .GroupBy(m => m.Category)

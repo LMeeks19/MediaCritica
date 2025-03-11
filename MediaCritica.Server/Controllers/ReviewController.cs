@@ -9,12 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, ReviewMapper reviewMapper, MilestoneCalculatorHelper milestoneCalculatorHelper, NotificationController notificationController) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IControllers controller) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly ReviewMapper _reviewMapper = reviewMapper;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
-        private readonly NotificationController _notificationController = notificationController;
+        private readonly IMappers _mapper = mapper;
+        private readonly IHelpers _helper = helper;
+        private readonly IControllers _controller = controller;
 
         [HttpGet("[action]/{reviewId}")]
         public async Task<IActionResult> GetReview(int reviewId)
@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Controllers
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
 
-            return Ok(_reviewMapper.MapReviewModel(review));
+            return Ok(_mapper.ReviewMapper.MapReviewModel(review));
         }
 
         [HttpGet("[action]/{reviewerId}/{offset}")]
@@ -41,7 +41,7 @@ namespace MediaCritica.Server.Controllers
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
-                   .Select(r => _reviewMapper.MapReviewModel(r))
+                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r))
                    .ToListAsync();
 
             var breakdown = await GetUserReviewsBreakdown(reviewerId);
@@ -67,7 +67,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
-                .Select(r => _reviewMapper.MapReviewSummaryModel(r))
+                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r))
                 .ToListAsync();
 
             return Ok(new { Reviews = reviews, totalCount = reviews.Count });
@@ -90,12 +90,12 @@ namespace MediaCritica.Server.Controllers
             if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
                 return Conflict(new { Message = "User has already reviewed this media" });
 
-            var review = _reviewMapper.MapReview(reviewModel);
+            var review = _mapper.ReviewMapper.MapReview(reviewModel);
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
 
-            await _notificationController.NotifyFollowers(new NewNotificationModel
+            await _controller.NotificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
                 AuthorName = review.ReviewerName,
@@ -104,7 +104,7 @@ namespace MediaCritica.Server.Controllers
 
             review.Media = _databaseContext.Media.Single(m => m.Id == review.MediaId);
 
-            await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
+            await _helper.MilestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
             return Ok(new { review.Id });
         }
@@ -125,7 +125,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
 
-            await _notificationController.NotifyFollowers(new NewNotificationModel
+            await _controller.NotificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
                 AuthorName = review.ReviewerName,

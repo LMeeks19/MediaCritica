@@ -4,9 +4,9 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class SeasonMapper(EpisodeMapper episodeMapper)
+    public class SeasonMapper(IMappers mapper)
     {
-        private readonly EpisodeMapper _episodeMapper = episodeMapper;
+        private readonly IMappers _mapper = mapper;
 
         public Season MapSeason(SeasonModel seasonModel, string seriesId)
         {
@@ -34,7 +34,7 @@ namespace MediaCritica.Server.Mappers
             {
                 Season = season.SeasonNo.ToString(),
                 Title = season.Title,
-                Episodes = season.Episodes == null ? [] : season.Episodes.Select(episode => _episodeMapper.MapEpisodeSummaryModel(episode!)).ToList()
+                Episodes = season.Episodes == null ? [] : season.Episodes.Select(episode => _mapper.EpisodeMapper.MapEpisodeSummaryModel(episode!)).ToList()
             };
             return seasonModel;
         }

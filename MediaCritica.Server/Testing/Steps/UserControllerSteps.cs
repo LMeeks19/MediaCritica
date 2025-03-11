@@ -1,7 +1,4 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Helpers;
-using MediaCritica.Server.Mappers;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -12,52 +9,43 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class UserControllerSteps
     {
-        private UserController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            var userMapper = new UserMapper(new MilestoneCalculatorHelper(GlobalSteps._dbContext, new DateRangeCalculatorHelper(new DateTimeProviderHelper())), new ReviewMapper());
-            _controller = new UserController(GlobalSteps._dbContext, userMapper);
-        }
-
         [When(@"I call GetUser with the Email ""(.*)""")]
         public async Task WhenICallGetUserWithTheEmail(string email)
         {
-            GlobalSteps._response = await _controller.GetUser(email);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUser(email);
         }
 
         [When(@"I call DeleteUser with the Id (\d+)")]
         public async Task WhenICallDeleteUserWithTheId(int userId)
         {
-            GlobalSteps._response = await _controller.DeleteUser(userId);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.DeleteUser(userId);
         }
 
         [When(@"I call PostUser with the User")]
         public async Task WhenICallPostUserWithTheUser(Table table)
         {
             var user = table.CreateInstance<CreateUserModel>();
-            GlobalSteps._response = await _controller.PostUser(user);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.PostUser(user);
         }
 
         [When(@"I call UpdateUser with the UpdateUserModel")]
         public async Task WhenICallUpdateUserWithTheUpdateUserModel(Table table)
         {
             var updateUserModel = table.CreateInstance<UpdateUserModel>();
-            GlobalSteps._response = await _controller.UpdateUser(updateUserModel);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.UpdateUser(updateUserModel);
         }
 
         [When(@"I call UpdateUserPreference with the PreferenceModel")]
         public async Task WhenICallUpdateUserPreferenceWithThePreferenceModel(Table table)
         {
             var preferenceModel = table.CreateInstance<PreferenceModel>();
-            GlobalSteps._response = await _controller.UpdateUserPreference(preferenceModel);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.UpdateUserPreference(preferenceModel);
         }
 
         [When(@"I call GetViewUserSummary with the Id (\d+)")]
         public async Task WhenICallGetViewSummaryWithTheId(int userId)
         {
-            GlobalSteps._response = await _controller.GetUserSummary(userId);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserSummary(userId);
         }
 
         [Then(@"The UserModel response should be")]

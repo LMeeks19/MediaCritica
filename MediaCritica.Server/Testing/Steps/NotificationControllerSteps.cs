@@ -1,11 +1,7 @@
-﻿using MediaCritica.Server.Controllers;
-using MediaCritica.Server.Hubs;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -15,51 +11,41 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class NotificationControllerSteps
     {
-        private NotificationController _controller;
-
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            var hubContext = new Mock<IHubContext<NotificationHub>>().Object;
-
-            _controller = new NotificationController(GlobalSteps._dbContext, hubContext, new NotificationHub());
-        }
-
         [When(@"I call GetUserNotifications with userId (\d+)")]
         public async Task WhenICallGetUserNotificationsWithUserId(int userId)
         {
-            GlobalSteps._response = await _controller.GetUserNotifications(userId, 0);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.GetUserNotifications(userId, 0);
         }
 
         [When(@"I call MarkAsRead with Id (\d+)")]
         public async Task WhenICallMarkAsReadWithId(int notificationId)
         {
-            GlobalSteps._response = await _controller.MarkAsRead(notificationId);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.MarkAsRead(notificationId);
         }
 
         [When(@"I call MarkAllAsRead with UserId (\d+)")]
         public async Task WhenICallMarkAllAsReadWithUserId(int userId)
         {
-            GlobalSteps._response = await _controller.MarkAllAsRead(userId);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.MarkAllAsRead(userId);
         }
 
         [When(@"I call UpdateBookmarkStatus with Id (\d+)")]
         public async Task WhenICallUpdateBookmarkStatusWithId(int notificationId)
         {
-            GlobalSteps._response = await _controller.UpdateBookmarkStatus(notificationId);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.UpdateBookmarkStatus(notificationId);
         }
 
         [When(@"I call Delete with Id (\d+)")]
         public async Task WhenICallDeleteWithId(int notificationId)
         {
-            GlobalSteps._response = await _controller.Delete(notificationId);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.Delete(notificationId);
         }
 
         [When(@"I call PostNotifications with the NewNotificationModel")]
         public async Task WhenICallPostNotificationsWithTheNewNotificationModel(Table table)
         {
             var newNotificationModel = table.CreateInstance<NewNotificationModel>();
-            GlobalSteps._response = await _controller.PostNotifications(newNotificationModel);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.PostNotifications(newNotificationModel);
         }
 
         [Then(@"The NotificationModels should be")]

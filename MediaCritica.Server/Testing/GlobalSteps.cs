@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Objects;
+﻿using MediaCritica.Server.Controllers;
+using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -13,6 +14,7 @@ namespace MediaCritica.Server.Testing
         private static DbContextOptions<DatabaseContext> _options;
         public static DatabaseContext _dbContext;
         public static IActionResult _response;
+        public static IControllers _controller;
 
         [BeforeScenario]
         public void BeforeScenario()
@@ -22,6 +24,8 @@ namespace MediaCritica.Server.Testing
                 .Options;
 
             _dbContext = new DatabaseContext(_options);
+
+            _controller = MockSetups.SetupController(_dbContext);
         }
 
         [AfterScenario]
