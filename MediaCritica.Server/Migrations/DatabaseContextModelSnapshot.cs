@@ -17,7 +17,7 @@ namespace MediaCritica.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -136,7 +136,7 @@ namespace MediaCritica.Server.Migrations
                     b.Property<string>("Rated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Released")
+                    b.Property<DateTime?>("Released")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Runtime")
@@ -382,8 +382,8 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Joined")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("Joined")
+                        .HasColumnType("date");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -433,9 +433,6 @@ namespace MediaCritica.Server.Migrations
 
                     b.Property<int>("EpisodeNo")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsFullyPopulated")
-                        .HasColumnType("bit");
 
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
@@ -534,7 +531,7 @@ namespace MediaCritica.Server.Migrations
             modelBuilder.Entity("MediaCritica.Server.Objects.Notification", b =>
                 {
                     b.HasOne("MediaCritica.Server.Objects.User", "Recipient")
-                        .WithMany()
+                        .WithMany("Notifications")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -648,6 +645,8 @@ namespace MediaCritica.Server.Migrations
                     b.Navigation("Following");
 
                     b.Navigation("Milestones");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("Preference")
                         .IsRequired();

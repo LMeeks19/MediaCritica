@@ -10,51 +10,12 @@
     flex-direction: column;
 
     .header {
-      padding-top: 4.5rem !important;
       background-color: var(--palette-colour) !important;
-      justify-content: center !important;
-
-      .MuiFormLabel-root {
-        color: whitesmoke !important;
-      }
-
-      .MuiInputBase-root {
-        color: whitesmoke !important;
-        overflow: hidden !important;
-        padding-left: 15px;
-      }
-
-      .MuiOutlinedInput-notchedOutline {
-        border-color: whitesmoke !important;
-      }
-
-      .MuiSelect-select {
-        color: whitesmoke !important;
-      }
-
-      .MuiSvgIcon-root {
-        color: whitesmoke !important;
-      }
-
-      .MuiAutocomplete-endAdornment {
-        right: 15px !important;
-      }
-
-      .MuiAutocomplete-input {
-        padding: 0 !important;
-      }
-
-      .MuiInputBase-input {
-        font-family: "Orbitron" !important;
-      }
-
-      .MuiInputBase-inputAdornedStart {
-        padding: 5px 0 5px 0 !important;
-      }
     }
 
     .sections {
       overflow: hidden auto;
+      margin-top: 4rem;
     }
   }
 }

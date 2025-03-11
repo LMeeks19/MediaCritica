@@ -8,45 +8,53 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EngagementController(DatabaseContext databaseContext, MilestoneCalculatorHelper milestoneCalculatorHelper) : ControllerBase
+    public class EngagementController(DatabaseContext databaseContext, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
+        private readonly IHelpers _helper = helper;
 
-        [HttpGet(Name = "GetUserEngagement")]
-        [Route("[action]/{reviewId}/{userId}")]
-        public async Task<EngagementType?> GetUserEngagement(int reviewId, int userId)
+        [HttpGet("[action]/{reviewId}/{userId}")]
+        public async Task<IActionResult> GetUserEngagement(int reviewId, int userId)
         {
-            var engagement = await _databaseContext.Engagements
-                .FirstOrDefaultAsync(e => e.ReviewId == reviewId && e.UserId == userId);
+            if (!await _databaseContext.Users.AnyAsync(u => u.Id == userId))
+                return NotFound(new { Message = "User not found" });
 
-            return engagement?.Type ?? null;
+            if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
+                return NotFound(new { Message = "Review not found" });
+
+            var engagement = await _databaseContext.Engagements
+                .SingleOrDefaultAsync(e => e.ReviewId == reviewId && e.UserId == userId);
+
+            if (engagement == null)
+                return Ok(new { Value = false });
+
+            return Ok(engagement.Type);
         }
 
-        [HttpGet(Name = "ToggleEngagement")]
         [Route("[action]/{reviewId}/{userId}/{type}")]
-        public async Task<EngagementType?> ToggleEngagement(int userId, int reviewId, EngagementType type)
+        public async Task<IActionResult> ToggleEngagement(int userId, int reviewId, EngagementType type)
         {
-            // Get User for milestone update
-            var user = await _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Engagements)
-                .Include(user => user.Engagements)
-                .Include(user => user.Milestones)
-                .FirstAsync(user => user.Id == userId);
+            if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
+                return NotFound(new { Message = "Review not found" });
 
-            // Get existing engagement
-            var engagement = user.Engagements
-                .FirstOrDefault(e => e.ReviewId == reviewId);
+            var user = await _databaseContext.Users
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Engagements)
+                .Include(u => u.Engagements)
+                .Include(u => u.Milestones)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound(new { Message = "User not found" });
+
+            var engagement = user.Engagements.FirstOrDefault(e => e.ReviewId == reviewId);
 
             if (engagement != null && type == EngagementType.None)
             {
-                // Remove engagement 
                 _databaseContext.Engagements.Remove(engagement);
             }
             else if (engagement == null && type != EngagementType.None)
             {
-                // Create new engagement
                 engagement = new Engagement
                 {
                     UserId = userId,
@@ -58,15 +66,16 @@ namespace MediaCritica.Server.Controllers
             }
             else if (engagement != null && type != EngagementType.None)
             {
-                // Switch engagement
                 engagement.Type = type;
             }
 
             await _databaseContext.SaveChangesAsync();
+            await _helper.MilestoneCalculatorHelper.UpdateEngagementMilestones(user);
 
-            await _milestoneCalculatorHelper.UpdateEngagementMilestones(user);
+            if (!await _databaseContext.Engagements.AnyAsync(e => e.Id == engagement!.Id))
+                return Ok(new { Message = "Engagement deleted" });
 
-            return type != EngagementType.None ? type : null;
+            return Ok(engagement!.Type);
         }
     }
 }

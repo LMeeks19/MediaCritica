@@ -9,21 +9,18 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> notificationHubContext, NotificationHub notificationHub) : ControllerBase
+    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> notificationHubContext, IHubs hubs) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
-        private readonly NotificationHub _notificationHub = notificationHub;
+        private readonly IHubs _hubs = hubs;
 
         // Get notifications for a specific user
         [HttpGet("[action]/{userId}/{offset}/{limit}")]
         public async Task<IActionResult> GetUserNotifications(int userId, int offset, int limit = 25)
         {
-            var query = _databaseContext.Notifications.Where(n => n.RecipientId == userId);
-
-            var totalNotifications = await query.CountAsync();
-
-            var notifications = await query
+            var notifications = await _databaseContext.Notifications
+                .Where(n => n.RecipientId == userId)
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(offset)
                 .Take(limit)
@@ -38,43 +35,41 @@ namespace MediaCritica.Server.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(new
-            {
-                TotalCount = totalNotifications,
-                Notifications = notifications
-            });
+            return Ok(notifications);
         }
 
         // Mark a single notification as read
         [HttpPut("[action]/{notificationId}")]
         public async Task<IActionResult> MarkAsRead(int notificationId)
         {
-            var updatedCount = await _databaseContext.Notifications
-                .Where(n => n.Id == notificationId)
-                .ExecuteUpdateAsync(n => n.SetProperty(notification => notification.IsRead, true));
+            var notification = await _databaseContext.Notifications
+                .SingleOrDefaultAsync(n => n.Id == notificationId);
 
-            if (updatedCount == 0)
-                return NoContent();
+            if (notification == null)
+                return NotFound(new { Message = "Notification not found" });
 
-            return Ok();
+            notification.IsRead = true;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = $"Notification {notification.Id} marked as read" });
         }
 
         // Mark all notifications as read for a user
         [HttpPut("[action]/{userId}")]
         public async Task<IActionResult> MarkAllAsRead(int userId)
         {
-            var unreadNotificationsExist = await _databaseContext.Notifications
-                .AnyAsync(n => n.RecipientId == userId && !n.IsRead);
-
-            if (!unreadNotificationsExist)
-                return NoContent();
-
-            await _databaseContext.Notifications
+            var unreadNotifications = await _databaseContext.Notifications
                 .Where(n => n.RecipientId == userId && !n.IsRead)
-                .ExecuteUpdateAsync(n => n.SetProperty(notification => notification.IsRead, true));
+                .ToListAsync();
 
+            if (unreadNotifications.Count == 0)
+                return NotFound(new { Message = "No unread notifications" });
+
+            unreadNotifications.ForEach(n => n.IsRead = true);
             await _databaseContext.SaveChangesAsync();
-            return Ok();
+
+            return Ok(new { Message = "All notifications marked as read" });
         }
 
         // update bookmark status of a notification
@@ -86,33 +81,32 @@ namespace MediaCritica.Server.Controllers
                 .SingleOrDefaultAsync();
 
             if (notification == null)
-                return NotFound();
+                return NotFound(new { Message = "Notification not found" });
 
             notification.IsBookmarked = !notification.IsBookmarked;
 
-            if (!notification.IsBookmarked && DateTime.Now > notification.CreatedAt.AddMonths(1))
-                _databaseContext.Notifications.Remove(notification);
-
             await _databaseContext.SaveChangesAsync();
-            return Ok();
+
+            return Ok(new { Message = $"Notification {notification.Id} bookmark status updated" });
         }
 
         // delete a notification
         [HttpDelete("[action]/{notificationId}")]
         public async Task<IActionResult> Delete(int notificationId)
         {
-            var deletedCount = await _databaseContext.Notifications
-                .Where(n => n.Id == notificationId)
-                .ExecuteDeleteAsync();
+            var notification = await _databaseContext.Notifications
+                .FirstOrDefaultAsync(n => n.Id == notificationId);
 
-            if (deletedCount == 0)
-                return NotFound();
+            if (notification == null)
+                return NotFound(new { Message = "Notification not found" });
 
-            return Ok();
+            _databaseContext.Notifications.Remove(notification);
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = $"Notification {notification.Id} deleted" });
         }
 
-        // Notify followers about a new review
-        public async Task<IActionResult> NotifyFollowers(NewNotificationModel newNotificationModel)
+        public async Task<IActionResult> PostNotifications(NewNotificationModel newNotificationModel)
         {
             var notifications = await _databaseContext.UserFollows
                 .Where(f => f.FollowedId == newNotificationModel.AuthorId && f.EnabledNotifications)
@@ -127,17 +121,29 @@ namespace MediaCritica.Server.Controllers
                 .ToListAsync();
 
             if (notifications.Count == 0)
-                return NoContent();
+                return NotFound(new { Message = "No followers to send notifications to" });
 
             await _databaseContext.Notifications.AddRangeAsync(notifications);
-
-            var connectionIds = notifications.Select(n => _notificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
-            if (connectionIds.Count != 0)
-                await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", new { newNotificationModel.AuthorName, newNotificationModel.Message, });
-
             await _databaseContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(notifications);
+        }
+
+        // Notify followers about a new review
+        public async Task<IActionResult> NotifyFollowers(NewNotificationModel newNotificationModel)
+        {
+            var response = (ObjectResult)await PostNotifications(newNotificationModel);
+
+            if (response.Value is not List<Notification> notifications)
+                return NotFound(response.Value);
+
+            var connectionIds = notifications.Select(n => _hubs.NotificationHub.GetUserConnecion(n.RecipientId)).Where(id => id != null).ToList();
+            if (connectionIds.Count != 0)
+            {
+                await _notificationHubContext.Clients.Clients(connectionIds).SendAsync("ReceiveNotification", new { newNotificationModel.AuthorName, newNotificationModel.Message, });
+            }
+
+            return Ok(new { Message = "Followers notified" });
         }
     }
 }

@@ -1,7 +1,7 @@
 import { ReviewModel } from "./ReviewModel";
 import { UserMilestoneModel } from "./UserMilestoneModel";
 
-export interface ViewUserSummaryModel {
+export interface UserSummaryModel {
   id: number;
   name: string;
   joined: Date;

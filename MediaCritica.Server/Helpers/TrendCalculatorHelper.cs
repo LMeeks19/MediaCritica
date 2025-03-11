@@ -5,9 +5,8 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class TrendCalculatorHelper(DatabaseContext databaseContext)
+    public class TrendCalculatorHelper
     {
-        private readonly DatabaseContext _databaseContext = databaseContext;
 
         public MediaTrendModel? GetRisingStar(List<Media> media, DateTime start, DateTime end, string timeframe)
         {
@@ -124,7 +123,7 @@ namespace MediaCritica.Server.Helpers
                 .OrderByDescending(x => x.AverageRating)
                 .FirstOrDefault();
 
-            if (trend == null || trend.AverageRating < 4.5) return null;
+            if (trend == null) return null;
 
             return new MediaTrendModel
             {
@@ -185,7 +184,6 @@ namespace MediaCritica.Server.Helpers
                 .OrderByDescending(x => x.TotalActivity)
                 .FirstOrDefault();
 
-
             if (trend == null) return null;
 
             return new MediaTrendModel
@@ -215,7 +213,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Backlogged",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"Added to backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s " : "")} this week!"
+                Description = $"Added to backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} this {timeframe}!"
             };
         }
 
@@ -239,7 +237,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Unfinished",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"{trend.StartedCount - trend.FinishedCount} user{(trend.StartedCount - trend.FinishedCount > 1 ? "s " : "")} didn’t complete it this {timeframe}!"
+                Description = $"{trend.StartedCount - trend.FinishedCount} user{(trend.StartedCount - trend.FinishedCount > 1 ? "s " : "")} didn't complete it this {timeframe}!"
             };
         }
 
@@ -263,33 +261,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Abandoned",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"{trend.AbandonedCount - trend.FinishedCount} user{(trend.AbandonedCount - trend.FinishedCount > 1 ? "s " : "")} either abandoned it early or never started it this {timeframe}!"
-            };
-        }
-
-        public MediaTrendModel? GetFanFavourite(List<Media> media, DateTime start, DateTime end, string timeframe)
-        {
-            var trend = media
-                .Where(media => media.Reviews.Any(review => review.Date >= start && review.Date <= end))
-                .Select(media => new
-                {
-                    media.Title,
-                    ReEngagementCount = media.Reviews
-                        .GroupBy(review => review.UserId)
-                        .Where(g => g.Count() > 1) // Users who reviewed the same media multiple times
-                        .Count()
-                })
-                .OrderByDescending(x => x.ReEngagementCount)
-                .FirstOrDefault();
-
-            if (trend == null) return null;
-
-            return new MediaTrendModel
-            {
-                AwardType = "Fan Favourite",
-                Timeframe = timeframe,
-                Title = trend.Title,
-                Description = $"{trend.ReEngagementCount} re-reviews this {timeframe}!"
+                Description = $"{trend.AbandonedCount - trend.FinishedCount} user{(trend.AbandonedCount - trend.FinishedCount > 1 ? "s" : "")} either abandoned it early or never started it this {timeframe}!"
             };
         }
 
@@ -431,7 +403,7 @@ namespace MediaCritica.Server.Helpers
                 AwardType = "Most Anticipated",
                 Timeframe = timeframe,
                 Title = trend.Title,
-                Description = $"Added to user backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} ahead of its release on {trend.Released.GetDateByTimeFrame(timeframe)} this {timeframe}!"
+                Description = $"Added to user backlogs {trend.BacklogCount} time{(trend.BacklogCount > 1 ? "s" : "")} ahead of its release on {(trend.Released == null ? "unknown" : trend.Released?.GetDateByTimeFrame(timeframe))} this {timeframe}!"
             };
         }
 

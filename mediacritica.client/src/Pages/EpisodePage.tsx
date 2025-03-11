@@ -36,7 +36,7 @@ function EpisodePage() {
         <Loader />
       ) : (
         <div className="episode">
-          <TopBar whiteText />
+          <TopBar />
           <div className="episode-info">
             <div className="flex flex-col justify-center">
               <h2>{episode.seriesTitle}</h2>

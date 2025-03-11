@@ -22,11 +22,11 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import millify from "millify";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { ViewUserSummaryModel } from "../Interfaces/ViewUserSummaryModel";
+import { UserSummaryModel } from "../Interfaces/UserSummaryModel";
 import {
   FollowUser,
   GetUserFollow,
-  GetViewUserSummary,
+  GetUserSummary,
   ToggleUserFollowNotificationStatus,
   UnfollowUser,
 } from "../Server/Server";
@@ -42,32 +42,30 @@ import { userState } from "../State/GlobalState";
 import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import Snackbar from "../Components/Snackbar";
 
 function ViewUserPage() {
   const user = useRecoilValue(userState);
   const [isLoading, setIsLoading] = useState(true);
   const [userFollow, setUserFollow] = useState<UserFollowModel | null>(null);
-  const [userSummary, setUserSummary] = useState<ViewUserSummaryModel>(
-    {} as ViewUserSummaryModel
+  const [userSummary, setUserSummary] = useState<UserSummaryModel>(
+    {} as UserSummaryModel
   );
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function GetUserSummary() {
+    async function FetchUserSummary() {
       if (location.state?.userId === undefined) navigate("/");
       setIsLoading(true);
-      const userSummaryData = await GetViewUserSummary(location.state.userId);
+      const userSummaryData = await GetUserSummary(location.state.userId);
       setUserSummary(userSummaryData);
-      const userFollowData = await GetUserFollow(
-        user.id ?? -1,
-        location.state.userId
-      );
-      setUserFollow(userFollowData);
+      var userFollowStatus = null;
+      if (user.id !== undefined && user.id !== location.state.userId)
+        userFollowStatus = await GetUserFollow(user.id, location.state.userId);
+      setUserFollow(userFollowStatus);
       setIsLoading(false);
     }
-    GetUserSummary();
+    FetchUserSummary();
   }, []);
 
   async function ToggleFollow(isFollowed: boolean) {
@@ -81,12 +79,10 @@ function ViewUserPage() {
       const userFollowData = await FollowUser(newUserFollow);
       setUserFollow(userFollowData);
       setUserSummary({ ...userSummary, followers: userSummary.followers + 1 });
-      Snackbar.Info(`Now following ${userSummary.name}`);
     } else {
       await UnfollowUser(userFollow!.id);
       setUserFollow(null);
       setUserSummary({ ...userSummary, followers: userSummary.followers - 1 });
-      Snackbar.Info(`${userSummary.name} has been unfollowed`);
     }
   }
 
@@ -96,13 +92,8 @@ function ViewUserPage() {
     );
     setUserFollow({
       ...userFollow!,
-      enabledNotifications: enabledNotifications ?? false,
+      enabledNotifications: enabledNotifications.value ?? false,
     });
-    Snackbar.Info(
-      `Notifications for ${userSummary.name} ${
-        enabledNotifications ? "enabled" : "disabled"
-      }`
-    );
   }
 
   const starRatings: any[] = [];
@@ -118,7 +109,7 @@ function ViewUserPage() {
         <Loader />
       ) : (
         <div className="viewuser">
-          <TopBar whiteText />
+          <TopBar />
           <div className="header">
             <div className="flex flex-col gap-1">
               <h1>{userSummary.name}</h1>

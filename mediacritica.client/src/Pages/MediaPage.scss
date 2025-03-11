@@ -4,9 +4,10 @@
   overflow: hidden;
 
   .media {
-    height: 100%;
+    height: calc(100% - 4rem);
     display: flex;
     overflow: hidden;
+    margin-top: 4rem;
 
     &.empty {
       justify-content: center;
@@ -15,6 +16,7 @@
 
     .media-poster {
       width: 40%;
+      z-index: 999;
 
       &.empty {
         display: flex;
@@ -32,6 +34,7 @@
       flex-direction: column;
       width: 60%;
       position: relative;
+      z-index: 999;
     }
 
     /* Hero Section */
@@ -41,9 +44,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4.5rem 2rem 1.5rem 2rem;
+      padding: 1.5rem 2rem;
       flex-wrap: wrap;
-      box-shadow: 0 2px 5px #00000080;
       z-index: 997;
     }
 
@@ -64,12 +66,12 @@
       }
 
       .MuiIconButton-root:hover {
-        background-color: rgba(palevioletred, 0.15);
+        background-color: rgba(palevioletred, 0.25);
       }
 
       .heart {
         color: var(--backlog-heart);
-
+        
         .MuiSvgIcon-root {
           font-size: 2rem !important;
         }
@@ -81,6 +83,8 @@
     }
 
     .details {
+      display: flex;
+      flex-direction: column;
       overflow: auto;
       height: 100%;
 
@@ -100,10 +104,11 @@
 
       /* Grid Section */
       .grid {
+        flex: 1;
         display: flex;
         flex-wrap: wrap;
         gap: 1.5rem;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         background-color: var(--dark-light);
         border-bottom: 1px solid #444;
 
@@ -140,7 +145,7 @@
       }
 
       .review-details {
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         background-color: light-dark(whitesmoke, #1b1b1b);
         border-bottom: 1px solid #444;
 
@@ -244,7 +249,7 @@
       /* Season Details Section */
       .season-details {
         background-color: var(--dark-light);
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         border-bottom: 1px solid #444;
 
         .season-header {

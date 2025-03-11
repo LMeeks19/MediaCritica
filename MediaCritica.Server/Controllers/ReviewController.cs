@@ -9,111 +9,113 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, IMapper mapper, MilestoneCalculatorHelper milestoneCalculatorHelper, NotificationController notificationController) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IControllers controller) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-        private readonly IMapper _mapper = mapper;
-        private readonly MilestoneCalculatorHelper _milestoneCalculatorHelper = milestoneCalculatorHelper;
-        private readonly NotificationController _notificationController = notificationController;
+        private readonly IMappers _mapper = mapper;
+        private readonly IHelpers _helper = helper;
+        private readonly IControllers _controller = controller;
 
-        [HttpGet(Name = "GetReview")]
-        [Route("[action]/{reviewId}")]
-        public async Task<ReviewModel?> GetReview(int reviewId)
+        [HttpGet("[action]/{reviewId}")]
+        public async Task<IActionResult> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
                 .Include(r => r.Engagements)
                 .Include(r => r.Media)
                     .ThenInclude(m => (m as Episode)!.Season)
-                .SingleOrDefaultAsync(review => review.Id == reviewId);
+                .SingleOrDefaultAsync(r => r.Id == reviewId);
 
             if (review == null)
-                return null;
+                return NotFound(new { Message = "Review not found" });
 
-            return _mapper.ReviewMapper.MapReviewModel(review);
+            return Ok(_mapper.ReviewMapper.MapReviewModel(review));
         }
 
-        [HttpGet(Name = "GetUserReviews")]
-        [Route("[action]/{reviewerId}/{offset}")]
-        public async Task<UserReviewsModelObject> GetUserReviews(int reviewerId, int offset)
+        [HttpGet("[action]/{reviewerId}/{offset}")]
+        public async Task<IActionResult> GetUserReviews(int reviewerId, int offset)
         {
             var reviews = await _databaseContext.Reviews
-                .Include(r => r.Engagements)
-                .Include(r => r.Media)
-                .Where(review => review.UserId == reviewerId)
-                .OrderByDescending(review => review.Date)
-                .Select(review => _mapper.ReviewMapper.MapReviewModel(review))
-                .Skip(offset)
-                .Take(20)
-                .ToListAsync();
+                   .Include(r => r.Engagements)
+                   .Include(r => r.Media)
+                   .Where(r => r.UserId == reviewerId)
+                   .OrderByDescending(r => r.Date)
+                   .Skip(offset)
+                   .Take(20)
+                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r))
+                   .ToListAsync();
 
-            return new UserReviewsModelObject()
-            {
-                Reviews = reviews,
-                Breakdown = await GetUserReviewsBreakdown(reviewerId),
-            };
+            var breakdown = await GetUserReviewsBreakdown(reviewerId);
+            return Ok(new UserReviewsModelObject { Reviews = reviews, Breakdown = breakdown });
         }
 
-        [HttpGet(Name = "GetUserReviewsBreakdown")]
-        [Route("[action]/{userId}")]
-        public async Task<List<double>> GetUserReviewsBreakdown(int userId)
+        private async Task<List<double>> GetUserReviewsBreakdown(int userId)
         {
             var reviews = await _databaseContext.Reviews.Where(r => r.UserId == userId).ToListAsync();
 
-            var reviewBreakdown = new List<double>();
-            for (double rating = 0; rating <= 5; rating += 0.5)
-            {
-                reviewBreakdown.Add(reviews.Count(r => r.Rating == rating));
-            }
+            var reviewBreakdown = Enumerable.Range(0, 11)
+                .Select(i => (double)reviews.Count(r => r.Rating == i * 0.5))
+                .ToList();
 
             return reviewBreakdown;
         }
 
-        [HttpGet(Name = "GeMediaReviews")]
-        [Route("[action]/{mediaId}/{offset}/{limit}")]
-        public async Task<List<ReviewSummaryModel>> GetMediaReviews(string mediaId, int offset, int limit)
+        [HttpGet("[action]/{mediaId}/{offset}/{limit}")]
+        public async Task<IActionResult> GetMediaReviews(string mediaId, int offset, int limit)
         {
-            return await _databaseContext.Reviews
-                .Where(review => review.MediaId == mediaId)
-                .OrderByDescending(review => review.Date)
-                .Select(review => _mapper.ReviewMapper.MapReviewSummaryModel(review))
+            var reviews = await _databaseContext.Reviews
+                .Where(r => r.MediaId == mediaId)
+                .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
+                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r))
                 .ToListAsync();
+
+            return Ok(new { Reviews = reviews, totalCount = reviews.Count });
         }
 
-        [HttpPost(Name = "PostReview")]
-        [Route("[action]")]
-        public async Task<int> PostReview([FromBody] ReviewModel reviewModel)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> PostReview([FromBody] ReviewModel reviewModel)
         {
+            var user = await _databaseContext.Users
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Media)
+                .Include(u => u.Engagements)
+                .Include(u => u.Milestones)
+                .FirstOrDefaultAsync(u => u.Id == reviewModel.ReviewerId);
+
+            if (user == null)
+                return NotFound(new { Message = "User not found" });
+            if (!_databaseContext.Media.Any(m => m.Id == reviewModel.MediaId))
+                return NotFound(new { Message = "Media not found" });
+            if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
+                return Conflict(new { Message = "User has already reviewed this media" });
+
             var review = _mapper.ReviewMapper.MapReview(reviewModel);
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
 
-            await _notificationController.NotifyFollowers(new NewNotificationModel()
+            await _controller.NotificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
                 AuthorName = review.ReviewerName,
                 Message = $"Review created for {review.MediaTitle}"
             });
 
-            var user = await _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Media)
-                .Include(user => user.Engagements)
-                .Include(user => user.Milestones)
-                .FirstAsync(user => user.Id == review.UserId);
+            review.Media = _databaseContext.Media.Single(m => m.Id == review.MediaId);
 
-            await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
+            await _helper.MilestoneCalculatorHelper.UpdateUserReviewMilestones(user);
 
-            return review.Id;
+            return Ok(new { review.Id });
         }
 
-        [HttpPut(Name = "UpdateReview")]
-        [Route("[action]")]
-        public async Task<ReviewModel> UpdateReview([FromBody] UpdateReviewModel updateReviewModel)
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateReview([FromBody] UpdateReviewModel updateReviewModel)
         {
-            var review = _databaseContext.Reviews.Single(review => review.Id == updateReviewModel.ReviewId);
+            var review = await _databaseContext.Reviews.SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId);
+
+            if (review == null)
+                return NotFound(new { Message = "Review not found" });
 
             review.Title = updateReviewModel.Title;
             review.Description = updateReviewModel.Description;
@@ -123,46 +125,36 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
 
-            await _notificationController.NotifyFollowers(new NewNotificationModel()
+            await _controller.NotificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
                 AuthorName = review.ReviewerName,
                 Message = $"{review.MediaTitle} review updated"
             });
 
-            return GetReview(review.Id).Result!;
+            return await GetReview(review.Id);
         }
 
-        [HttpDelete(Name = "DeleteReview")]
-        [Route("[action]/{reviewId}")]
-        public async void DeleteReview(int reviewId)
+        [HttpDelete("[action]/{reviewId}")]
+        public async Task<IActionResult> DeleteReview(int reviewId)
         {
-            var user = _databaseContext.Users
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Media)
-                .Include(user => user.Reviews)
-                    .ThenInclude(review => review.Engagements)
-                .Include(user => user.Engagements)
-                .Include(user => user.Milestones)
-                .Where(user => user.Reviews.Any(r => r.Id == reviewId))
-                .Single();
+            var review = await _databaseContext.Reviews.FindAsync(reviewId);
 
-            var review = user.Reviews.Single(r => r.Id == reviewId);
-
-            await _milestoneCalculatorHelper.UpdateUserReviewMilestones(user);
+            if (review == null)
+                return NotFound(new { Message = "Review not found" });
 
             _databaseContext.Reviews.Remove(review);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = "Review Deleted" });
         }
 
-        [HttpPut(Name = "GetUserReviewStatus")]
-        [Route("[action]/{mediaId}/{userId}")]
-        public IActionResult GetUserReviewStatus(string mediaId, int userId)
+        [HttpGet("[action]/{mediaId}/{userId}")]
+        public async Task<IActionResult> GetUserReviewStatus(string mediaId, int userId)
         {
-            var isReviewed = _databaseContext.Reviews.Any(b => b.MediaId == mediaId && b.UserId == userId);
+            var isReviewed = await _databaseContext.Reviews.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
 
-            return Ok(isReviewed);
-
+            return Ok(new { Value = isReviewed });
         }
     }
 }

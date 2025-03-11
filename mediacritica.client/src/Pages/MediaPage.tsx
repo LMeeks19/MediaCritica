@@ -23,7 +23,6 @@ import { GameModel } from "../Interfaces/GameModel";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import Snackbar from "../Components/Snackbar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import StarIcon from "@mui/icons-material/Star";
@@ -50,7 +49,7 @@ function MediaPage() {
       (mediaId === undefined || mediaType === undefined) && navigate("/");
       setIsLoading(true);
       var backlogStatus = await GetUserMediaBackloggedStatus(mediaId, user.id);
-      setUserBacklogStatus(backlogStatus);
+      setUserBacklogStatus(backlogStatus.value);
       var mediaResponse = await GetMedia(mediaId, mediaType);
       setMedia(mediaResponse);
       setIsLoading(false);
@@ -106,8 +105,6 @@ function MediaPage() {
       ...user,
       totalBacklogs: user.totalBacklogs + 1,
     });
-
-    Snackbar.Success(`${media.title} added to Backlog`);
   }
 
   async function RemoveFromBacklog() {
@@ -119,8 +116,6 @@ function MediaPage() {
       ...user,
       totalBacklogs: user.totalBacklogs - 1,
     });
-
-    Snackbar.Success(`${media.title} removed from Backlog`);
   }
 
   function GetUniqueMovieDetails() {
@@ -205,7 +200,7 @@ function MediaPage() {
         <Loader />
       ) : (
         <div className="media">
-          <TopBar whiteText />
+          <TopBar />
           {media.poster !== "N/A" ? (
             <img
               className="media-poster"

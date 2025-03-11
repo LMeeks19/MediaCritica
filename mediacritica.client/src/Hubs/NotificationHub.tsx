@@ -9,6 +9,7 @@ import Snackbar from "../Components/Snackbar";
 import { SetterOrUpdater } from "recoil";
 import { NotificationModel } from "../Interfaces/NotificationModel";
 import { GetUserNotifications } from "../Server/Server";
+import { UserModel } from "../Interfaces/UserModel";
 
 class NotificationHub {
   private connection: HubConnection | null = null;
@@ -54,26 +55,33 @@ class NotificationHub {
   // Listen for notifications from the hub
   public onReceiveNotification(
     userId: number,
-    setNotificationsObject: SetterOrUpdater<{
-      totalCount: number;
-      notifications: NotificationModel[];
-    }>,
-    limit: number
+    setNotifications: SetterOrUpdater<NotificationModel[]>,
+    limit: number,
+    setUser: SetterOrUpdater<UserModel>
   ): void {
     if (this.connection) {
-      this.connection.on("ReceiveNotification", async (data: {authorName: string, message: string}) => {
-        if (location.pathname.endsWith("/notifications")) {
-          const notificationsData = await GetUserNotifications(
-            userId,
-            0,
-            limit
-          );
-          setNotificationsObject(notificationsData);
-        } else {
-          setNotificationsObject({ totalCount: -1, notifications: [] });
-          Snackbar.Info(`Notification Received: ${data.message} by ${data.authorName}`);
+      this.connection.on(
+        "ReceiveNotification",
+        async (data: { authorName: string; message: string }) => {
+          if (location.pathname.endsWith("/notifications")) {
+            const notificationsData = await GetUserNotifications(
+              userId,
+              0,
+              limit
+            );
+            setNotifications(notificationsData);
+          } else {
+            setNotifications([]);
+            setUser((prev: UserModel) => ({
+              ...prev,
+              totalNotifications: prev.totalNotifications + 1,
+            }));
+            Snackbar.Info(
+              `Notification Received: ${data.message} by ${data.authorName}`
+            );
+          }
         }
-      });
+      );
     }
   }
 

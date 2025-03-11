@@ -13,9 +13,8 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ConfirmationDialogState, userState } from "../State/GlobalState";
-import { formatRelative } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import Snackbar from "../Components/Snackbar";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
@@ -53,11 +52,13 @@ function ViewReviewPage() {
       const reviewData = await GetReview(reviewId);
       setReview(reviewData);
 
-      const engagement = await GetCurrentUserReviewEngagement(
-        reviewId,
-        user.id
-      );
-      setEngagement(engagement);
+      var engagementStatus = null;
+      if (user.id !== undefined)
+        engagementStatus = await GetCurrentUserReviewEngagement(
+          reviewId,
+          user.id
+        );
+      setEngagement(engagementStatus);
 
       setTitle(reviewData.title);
       setRating(reviewData.rating);
@@ -97,8 +98,6 @@ function ViewReviewPage() {
       setReview({ ...review, dislikes: (review.dislikes -= 1) });
 
     setEngagement(newUserEngagement);
-
-    Snackbar.Success("Rating updated");
   }
 
   async function PutReview() {
@@ -113,13 +112,11 @@ function ViewReviewPage() {
     const updatedReview = await UpdateReview(details);
     setReview(updatedReview);
     setIsEditing(false);
-    Snackbar.Success("Review Updated");
   }
 
   async function RemoveReview() {
     await DeleteReview(review.id);
     setUser({ ...user, totalReviews: user.totalReviews - 1 });
-    Snackbar.Success("Review Deleted");
     navigate("/account");
   }
 
@@ -163,7 +160,7 @@ function ViewReviewPage() {
         <Loader />
       ) : (
         <div className="review">
-          <TopBar whiteText />
+          <TopBar />
           <div className="info">
             <div className="hero">
               <div className="heading">
@@ -289,8 +286,8 @@ function ViewReviewPage() {
                 </div>
               </div>
               <div className="review-date">
-                {CapitaliseFirstLetter(formatRelative(review.date, new Date()))}{" "}
-                |{" "}
+                {CapitaliseFirstLetter(formatDistanceToNowStrict(review.date))}{" "}
+                ago |{" "}
                 <span
                   className="reviewer"
                   onClick={() =>

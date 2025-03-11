@@ -11,95 +11,88 @@ namespace MediaCritica.Server.Controllers
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
 
-        [HttpGet(Name = "GetUserFollowers")]
-        [Route("[action]/{userId}/{offset}")]
-        public async Task<UserFollowSummaryObjectModel> GetUserFollowers(int userId, int offset)
+        [HttpGet("[action]/{userId}/{offset}")]
+        public async Task<IActionResult> GetUserFollowers(int userId, int offset)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Followers)
                 .ThenInclude(f => f.Follower)
-                .SingleAsync(u => u.Id == userId);
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound(new { Message = "User not found" });
 
             var followers = user.Followers
-                .OrderByDescending(follow => follow.FollowedOn)
+                .OrderByDescending(f => f.FollowedOn)
                 .Skip(offset)
                 .Take(25)
-                .Select(follow => new UserFollowSummaryModel()
+                .Select(f => new UserFollowSummaryModel
                 {
-                    UserId = follow.Follower.Id,
-                    Name = $"{follow.Follower.Forename} {follow.Follower.Surname}",
-                    FollowedOn = follow.FollowedOn,
+                    Id = f.Id,
+                    UserId = f.Follower.Id,
+                    Name = $"{f.Follower.Forename} {f.Follower.Surname}",
+                    FollowedOn = f.FollowedOn,
                 })
                 .ToList();
 
-            return new UserFollowSummaryObjectModel()
-            {
-                Count = user.Followers.Count,
-                Data = followers
-            };
+            return Ok(followers);
         }
 
-        [HttpGet(Name = "GetUserFollowing")]
-        [Route("[action]/{userId}/{offset}")]
-        public async Task<UserFollowSummaryObjectModel> GetUserFollowing(int userId, int offset)
+        [HttpGet("[action]/{userId}/{offset}")]
+        public async Task<IActionResult> GetUserFollowing(int userId, int offset)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Following)
                 .ThenInclude(f => f.Followed)
-                .SingleAsync(u => u.Id == userId);
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound(new { Message = "User not found" });
 
             var following = user.Following
-                .OrderByDescending(follow => follow.FollowedOn)
+                .OrderByDescending(f => f.FollowedOn)
                 .Skip(offset)
                 .Take(25)
-                .Select(follow => new UserFollowSummaryModel()
+                .Select(f => new UserFollowSummaryModel
                 {
-                    UserId = follow.Followed.Id,
-                    Name = $"{follow.Followed.Forename} {follow.Followed.Surname}",
-                    FollowedOn = follow.FollowedOn,
+                    Id = f.Id,
+                    UserId = f.Followed.Id,
+                    Name = $"{f.Followed.Forename} {f.Followed.Surname}",
+                    FollowedOn = f.FollowedOn,
                 })
                 .ToList();
 
-            return new UserFollowSummaryObjectModel()
-            {
-                Count = user.Following.Count,
-                Data = following
-            };
+            return Ok(following);
         }
 
-        [HttpGet(Name = "GetUserFollowStatus")]
-        [Route("[action]/{followerId}/{followedId}")]
-        public async Task<UserFollowModel?> GetUserFollowStatus(int followerId, int followedId)
+        [HttpGet("[action]/{followerId}/{followedId}")]
+        public async Task<IActionResult> GetUserFollowStatus(int followerId, int followedId)
         {
             var userFollow = await _databaseContext.UserFollows
-                .SingleOrDefaultAsync(follow => follow.FollowerId == followerId && follow.FollowedId == followedId);
+                .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.FollowedId == followedId);
 
             if (userFollow == null)
-                return null;
+                return Ok(new { Message = "Follow relationship not found" });
 
-            return new UserFollowModel()
+            return Ok(new UserFollowModel
             {
                 Id = userFollow.Id,
                 FollowerId = userFollow.FollowerId,
                 FollowedId = userFollow.FollowedId,
                 FollowedOn = userFollow.FollowedOn,
                 EnabledNotifications = userFollow.EnabledNotifications,
-            };
+            });
         }
 
-
-        [HttpPost(Name = "FollowUser")]
-        [Route("[action]")]
-        public async Task<UserFollowModel> FollowUser([FromBody] UserFollowModel userFollowModel)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> FollowUser([FromBody] UserFollowModel userFollowModel)
         {
+            if (!await _databaseContext.Users.AnyAsync(u => u.Id == userFollowModel.FollowedId))
+                return NotFound(new { Message = "User not found" });
             if (userFollowModel.FollowerId == userFollowModel.FollowedId)
-                throw new InvalidOperationException("Users cannot follow themselves.");
-
-            var alreadyFollowing = await _databaseContext.UserFollows
-                .AnyAsync(uf => uf.FollowerId == userFollowModel.FollowerId && uf.FollowedId == userFollowModel.FollowedId);
-
-            if (alreadyFollowing)
-                throw new InvalidOperationException("User is already following.");
+                return BadRequest(new { Message = "Users cannot follow themselves" });
+            if (await _databaseContext.UserFollows.AnyAsync(f => f.FollowerId == userFollowModel.FollowerId && f.FollowedId == userFollowModel.FollowedId))
+                return Conflict(new { Message = "User is already following" });
 
             var newFollow = new UserFollow
             {
@@ -112,45 +105,37 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.UserFollows.AddAsync(newFollow);
             await _databaseContext.SaveChangesAsync();
 
-            var follow = _databaseContext.UserFollows.Single(follow => follow.FollowerId == follow.FollowerId && follow.FollowedId == userFollowModel.FollowedId);
-
-            return new UserFollowModel()
-            {
-                Id = follow.Id,
-                FollowerId = follow.FollowerId,
-                FollowedId = follow.FollowedId,
-                FollowedOn = follow.FollowedOn,
-                EnabledNotifications = follow.EnabledNotifications,
-            };
+            return Ok(new { Message = "User followed" });
         }
 
-        [HttpDelete(Name = "UnfollowUser")]
-        [Route("[action]/{userFollowId}")]
-        public async Task UnfollowUser(int userFollowId)
+        [HttpDelete("[action]/{userFollowId}")]
+        public async Task<IActionResult> UnfollowUser(int userFollowId)
         {
             var follow = await _databaseContext.UserFollows
-                .SingleAsync(follow => follow.Id == userFollowId);
+                .SingleOrDefaultAsync(f => f.Id == userFollowId);
+
+            if (follow == null)
+                return NotFound(new { Message = "Follow relationship not found" });
 
             _databaseContext.UserFollows.Remove(follow);
             await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = "User unfollowed" });
         }
 
-
-        [HttpPut(Name = "ToggleNotificationStatus")]
-        [Route("[action]/{userFollowId}")]
-        public async Task<bool?> ToggleNotificationStatus(int userFollowId)
+        [HttpPut("[action]/{userFollowId}")]
+        public async Task<IActionResult> ToggleNotificationStatus(int userFollowId)
         {
             var userFollow = await _databaseContext.UserFollows
-                .SingleOrDefaultAsync(follow => follow.Id == userFollowId);
+                .SingleOrDefaultAsync(f => f.Id == userFollowId);
 
             if (userFollow == null)
-                return null;
+                return NotFound(new { Message = "Follow relationship not found" });
 
             userFollow.EnabledNotifications = !userFollow.EnabledNotifications;
-
             await _databaseContext.SaveChangesAsync();
 
-            return userFollow.EnabledNotifications;
+            return Ok(userFollow.EnabledNotifications);
         }
     }
 }

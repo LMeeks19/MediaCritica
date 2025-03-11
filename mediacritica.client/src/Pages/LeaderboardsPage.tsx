@@ -84,7 +84,7 @@ function LeaderboardsPage() {
   return (
     <div className="leaderboards-container">
       <div className="leaderboards">
-        <TopBar whiteText />
+        <TopBar />
         <div className="header">
           <h1>Leaderboards</h1>
         </div>
@@ -131,7 +131,7 @@ function LeaderboardsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {rankings?.length !== 0 ? (
+                  {rankings?.length > 0 ? (
                     rankings
                       ?.filter(
                         (item) => item.timeframe === selectedRankingTimeFrame
@@ -147,7 +147,7 @@ function LeaderboardsPage() {
                       })
                   ) : (
                     <tr className="empty">
-                      <td colSpan={4}>No Other Rankings</td>
+                      <td colSpan={3}>No Rankings</td>
                     </tr>
                   )}
                 </tbody>
@@ -195,7 +195,7 @@ function LeaderboardsPage() {
                     {...params}
                     variant="outlined"
                     label="Award Type"
-                    placeholder="Add Award..."
+                    placeholder="Select Awards..."
                     slotProps={{
                       input: {
                         ...params.InputProps,

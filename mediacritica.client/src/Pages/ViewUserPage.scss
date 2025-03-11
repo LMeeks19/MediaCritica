@@ -11,7 +11,9 @@
     overflow: hidden;
 
     .header {
-      padding-top: 4.5rem !important;
+      margin-top: 4rem !important;
+      z-index: 999;
+      border-top: none !important;
       background-color: var(--palette-colour);
       gap: 0.25rem !important;
 

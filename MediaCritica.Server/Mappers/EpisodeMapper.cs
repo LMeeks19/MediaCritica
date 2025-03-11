@@ -4,23 +4,21 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class EpisodeMapper(MediaMapper mediaMapper, ReviewMapper reviewMapper)
+    public class EpisodeMapper(IMappers mapper)
     {
-        private readonly MediaMapper _mediaMapper = mediaMapper;
-        private readonly ReviewMapper _reviewMapper = reviewMapper;
+        private readonly IMappers _mapper = mapper;
 
         public Episode MapEpisode(EpisodeModel episodeModel)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Episode>());
             var mapper = config.CreateMapper();
 
-            Media media = _mediaMapper.MapMedia(episodeModel);
+            Media media = _mapper.MediaMapper.MapMedia(episodeModel);
             Episode episode = mapper.Map<Episode>(media);
 
             episode.EpisodeNo = int.Parse(episodeModel.Episode);
             episode.SeasonNo = int.Parse(episodeModel.Season);
             episode.SeasonId = episodeModel.SeasonId;
-            episode.IsFullyPopulated = true;
 
             return episode;
         }
@@ -30,14 +28,13 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, EpisodeModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(episode);
+            MediaModel mediaModel = _mapper.MediaMapper.MapMediaModel(episode);
             EpisodeModel episodeModel = mapper.Map<EpisodeModel>(mediaModel);
 
             episodeModel.Episode = episode.EpisodeNo.ToString();
             episodeModel.Season = episode.SeasonNo.ToString();
             episodeModel.SeasonId = episode.SeasonId;
             episodeModel.SeriesTitle = episode.Season.Series.Title;
-            episodeModel.Reviews = episode.Reviews!.Select(_reviewMapper.MapReviewSummaryModel).ToList();
 
             return episodeModel;
         }
@@ -49,7 +46,7 @@ namespace MediaCritica.Server.Mappers
                 Id = episode.Id,
                 Episode = episode.EpisodeNo.ToString(),
                 Title = episode.Title,
-                Released = episode.Released.ToLongDateString(),
+                Released = episode.Released != null ? ((DateTime)episode.Released).ToLongDateString() : "N/A",
                 imdbRating = episode.ImdbRating.ToString(),
             };
         }

@@ -5,15 +5,13 @@ import { SnackbarProvider } from "notistack";
 import ConfirmationDialog from "./Components/ConfirmationDialog";
 import { useEffect } from "react";
 import NotificationHub from "./Hubs/NotificationHub";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { setThemePalette } from "./Helpers/ThemePaletteHelper";
-import { notificationsObjectState, userState } from "./State/GlobalState";
+import { notificationsState, userState } from "./State/GlobalState";
 
 function App() {
-  const user = useRecoilValue(userState);
-  const [notificationsObject, setNotificationsObject] = useRecoilState(
-    notificationsObjectState
-  );
+  const [user, setUser] = useRecoilState(userState);
+  const [notifications, setNotifications] = useRecoilState(notificationsState);
 
   useEffect(() => {
     if (user.id !== undefined) {
@@ -26,16 +24,16 @@ function App() {
 
     const notificationHub = NotificationHub.getInstance(user.id);
 
-    if (notificationHub.isDisconnected()) 
-      notificationHub.startConnection();
+    if (notificationHub.isDisconnected()) notificationHub.startConnection();
 
     // Subscribe to notifications
     notificationHub.onReceiveNotification(
       user.id,
-      setNotificationsObject,
-      notificationsObject.notifications?.length < 25
+      setNotifications,
+      notifications?.length < 25
         ? 25
-        : notificationsObject.notifications?.length + 1
+        : notifications?.length + 1,
+      setUser,
     );
 
     return () => {

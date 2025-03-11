@@ -23,6 +23,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Orbitron";
+  letter-spacing: 2px;
 }
 
 * {
@@ -58,7 +59,7 @@ button:disabled {
 .header,
 .sub-header {
   width: calc(100% - 4rem) !important;
-  padding: 1.5rem 2rem !important;
+  padding: 20px 2rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -157,7 +158,9 @@ button:disabled {
     border: 1px solid var(--light-dark) !important;
     transition: none !important;
     font-family: "Orbitron";
-    padding: 6px;
+    padding: 6px 10px;
+    letter-spacing: 2px;
+    font-size: 10px;
 
     &.Mui-selected,
     &.Mui-selected:hover {
@@ -190,7 +193,6 @@ button:disabled {
     padding: 20px !important;
     font-family: "Orbitron" !important;
     font-size: 20px;
-    border-bottom: 4px solid transparent !important;
     color: whitesmoke !important;
   }
 
@@ -326,10 +328,15 @@ button:disabled {
   }
 }
 
+.MuiAutocomplete-paper {
+  box-shadow: 0 5px 15px 0 black !important;
+} 
+
 .MuiPaper-root {
   background-color: var(--dark-light) !important;
   color: var(--light-dark) !important;
-  box-shadow: none !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
 
   .MuiAutocomplete-noOptions,
   .MuiAutocomplete-loading {
@@ -340,10 +347,11 @@ button:disabled {
   .MuiList-root,
   .MuiAutocomplete-listbox {
     background-color: var(--dark-light);
+    padding: 0;
 
     .MuiMenuItem-root,
     .MuiAutocomplete-option {
-      padding: 0.75rem 1rem !important;
+      padding: 0.75rem !important;
       font-family: "Orbitron" !important;
       font-size: 1rem;
       display: flex;

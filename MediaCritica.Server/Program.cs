@@ -1,4 +1,5 @@
 using MediaCritica.Server;
+using MediaCritica.Server.Controllers;
 using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Hubs;
 using MediaCritica.Server.Mappers;
@@ -16,33 +17,12 @@ var api_key = Environment.GetEnvironmentVariable("MEDIA_SERVICE_API_KEY");
 builder.Configuration.AddInMemoryCollection(new Dictionary<string, string> { { "API_KEYS:MEDIA_SERIVE", api_key } });
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddMvc().AddControllersAsServices();
 builder.Services.AddSignalR();
 
-// Add Mappers to Servies
-builder.Services.AddScoped<SeasonMapper>();
-builder.Services.AddScoped<SeriesMapper>();
-builder.Services.AddScoped<EpisodeMapper>();
-builder.Services.AddScoped<MovieMapper>();
-builder.Services.AddScoped<MediaMapper>();
-builder.Services.AddScoped<GameMapper>();
-builder.Services.AddScoped<ReviewMapper>();
-builder.Services.AddScoped<BacklogMapper>();
-builder.Services.AddScoped<RatingMapper>();
-
-builder.Services.AddScoped<IMapper, Mapper>();
-
-// Add Helpers to Services
-builder.Services.AddScoped<ExternalApiHelper>();
-builder.Services.AddScoped<InternalApiHelper>();
-builder.Services.AddScoped<DateRangeCalculatorHelper>();
-builder.Services.AddScoped<TrendCalculatorHelper>();
-builder.Services.AddScoped<MilestoneCalculatorHelper>();
-
-// Add Hubs to Services
-builder.Services.AddScoped<NotificationHub>();
-
+builder.Services.AddScoped<IControllers, Controllers>();
+builder.Services.AddScoped<IMappers, Mappers>();
+builder.Services.AddScoped<IHelpers, Helpers>();
+builder.Services.AddScoped<IHubs, Hubs>();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));
