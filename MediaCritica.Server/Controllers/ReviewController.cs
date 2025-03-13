@@ -9,12 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IControllers controller) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, NotificationController notificationController) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
-        private readonly IControllers _controller = controller;
+        private readonly NotificationController _notificationController = notificationController;
 
         [HttpGet("[action]/{reviewId}")]
         public async Task<IActionResult> GetReview(int reviewId)
@@ -95,7 +95,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
 
-            await _controller.NotificationController.NotifyFollowers(new NewNotificationModel
+            await _notificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
                 AuthorName = review.ReviewerName,
@@ -125,7 +125,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
 
-            await _controller.NotificationController.NotifyFollowers(new NewNotificationModel
+            await _notificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
                 AuthorName = review.ReviewerName,

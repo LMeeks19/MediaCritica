@@ -17,6 +17,7 @@
     .media-poster {
       width: 40%;
       z-index: 999;
+      box-shadow: 0 0 10px 0 black;
 
       &.empty {
         display: flex;
@@ -34,7 +35,6 @@
       flex-direction: column;
       width: 60%;
       position: relative;
-      z-index: 999;
     }
 
     /* Hero Section */
@@ -364,6 +364,7 @@
     .media {
       .info {
         width: 100%;
+        z-index: 999;
 
         .hero {
           justify-content: center;

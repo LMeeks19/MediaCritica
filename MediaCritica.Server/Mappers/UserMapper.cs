@@ -5,10 +5,10 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class UserMapper(IHelpers helper, IMappers mapper)
+    public class UserMapper(IHelpers helper, ReviewMapper reviewMapper)
     {
         private readonly IHelpers _helper = helper;
-        private readonly IMappers _mapper = mapper;
+        private readonly ReviewMapper _reviewMapper = reviewMapper;
 
         public User MapUser(CreateUserModel userModel)
         {
@@ -66,7 +66,7 @@ namespace MediaCritica.Server.Mappers
                      .OrderByDescending(r => r.Date)
                      .ThenByDescending(r => r.Rating)
                      .Take(8)
-                     .Select(_mapper.ReviewMapper.MapReviewModel)
+                     .Select(_reviewMapper.MapReviewModel)
                      .ToList(),
                 Milestones = _helper.MilestoneCalculatorHelper
                      .GetUserMilestones(user)
@@ -88,6 +88,18 @@ namespace MediaCritica.Server.Mappers
             };
 
             return viewUserSummaryModel;
+        }
+
+        public UserSearchModel MapUserSearchModel(User user)
+        {
+            var userSearchModel = new UserSearchModel()
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Joined = user.Joined.ToLongDateString(),
+            };
+
+            return userSearchModel;
         }
 
         private List<double> MapReviewBreakdown(List<Review> reviews)

@@ -24,6 +24,7 @@ import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
+import { UserSearchModel } from "../Interfaces/UserSearchModel";
 import { UserSummaryModel } from "../Interfaces/UserSummaryModel";
 
 interface RequestMessage {
@@ -63,7 +64,7 @@ async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
   } catch (error) {
     Snackbar.Error(error as string);
   }
-  return Array.isArray([] as T) ? [] as T : {} as T;
+  return Array.isArray([] as T) ? ([] as T) : ({} as T);
 }
 
 // User API Calls
@@ -122,8 +123,17 @@ export async function UpdateUserPreference(
   return response;
 }
 
+export async function GetUserSearchResults(
+  searchTerm: string
+): Promise<UserSearchModel[]> {
+  const response = await MakeRequest<UserSearchModel[]>(
+    `/User/GetUsersBySearch/${searchTerm}`
+  );
+  return response;
+}
+
 // Media API Calls
-export async function GetSearchResults(
+export async function GetMediaSearchResults(
   searchTerm: string,
   page: number = 1
 ): Promise<MediaSearchResponse> {

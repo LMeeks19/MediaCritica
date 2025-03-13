@@ -1,7 +1,7 @@
 import "./AccountPage.scss";
 import TopBar from "../Components/TopBar";
 import { userState } from "../State/GlobalState";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import {
   GetBacklog,
   GetBackloggedBacklog,
@@ -485,7 +485,7 @@ function AccountPage() {
             {isLoading ? (
               <Loader />
             ) : (
-              <>
+              <Fragment>
                 <div className="account-details">
                   <AccountDetail
                     accountFieldName="Forename"
@@ -525,7 +525,7 @@ function AccountPage() {
                 <div className="account-details">
                   <DeleteAccountAction />
                 </div>
-              </>
+              </Fragment>
             )}
           </div>
           <div className="social-tab" tabIndex={1} hidden={activeTab !== 1}>
@@ -551,7 +551,7 @@ function AccountPage() {
                   No {activeSocialTab === 0 ? "Followers" : "Followed Users"}
                 </div>
               ) : (
-                <>
+                <Fragment>
                   <div
                     className="followers-tab"
                     tabIndex={0}
@@ -650,7 +650,7 @@ function AccountPage() {
                       })}
                     </div>
                   </div>
-                </>
+                </Fragment>
               )}
             </div>
           </div>
@@ -759,7 +759,7 @@ function AccountPage() {
                     </div>
                   )}
                   {!reviewsBreakdown.every((value) => value === 0) && (
-                    <>
+                    <Fragment>
                       <div className="sub-header dark-shade">
                         <h2>Breakdown</h2>
                       </div>
@@ -782,7 +782,7 @@ function AccountPage() {
                           ]}
                         />
                       </div>
-                    </>
+                    </Fragment>
                   )}
                 </div>
               )}

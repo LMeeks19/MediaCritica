@@ -86,11 +86,18 @@ namespace MediaCritica.Server.Testing.Features
                         "Joined"});
             table111.AddRow(new string[] {
                         "1",
-                        "Test",
-                        "1",
+                        "Bruce",
+                        "Banner",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
+            table111.AddRow(new string[] {
+                        "2",
+                        "Tony",
+                        "Stark",
+                        "test2@email.com",
+                        "Password123!",
+                        "2025-01-02"});
 #line 4
  testRunner.Given("I have the following users", ((string)(null)), table111, "Given ");
 #line hidden
@@ -104,19 +111,24 @@ namespace MediaCritica.Server.Testing.Features
                         "1",
                         "System",
                         "#000000"});
-#line 7
+            table112.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Light",
+                        "#FFFFFF"});
+#line 8
  testRunner.And("I have the following preferences", ((string)(null)), table112, "And ");
 #line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Get a user by email that exists")]
-        public void GetAUserByEmailThatExists()
+        [NUnit.Framework.DescriptionAttribute("Get users by search")]
+        public void GetUsersBySearch()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user by email that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get users by search", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -129,13 +141,54 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 12
- testRunner.When("I call GetUser with the Email \"test1@email.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 14
+ testRunner.When("I call GetUsersBySearch with search term \"Tony\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 15
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "FullName",
+                            "Joined"});
+                table113.AddRow(new string[] {
+                            "2",
+                            "Tony Stark",
+                            "Thursday, January 2, 2025"});
+#line 16
+ testRunner.And("The UserSearchModels should be", ((string)(null)), table113, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get a user by email that exists")]
+        public void GetAUserByEmailThatExists()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user by email that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 20
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 21
+ testRunner.When("I call GetUser with the Email \"test1@email.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 22
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Forename",
                             "Surname",
@@ -144,17 +197,17 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table113.AddRow(new string[] {
+                table114.AddRow(new string[] {
                             "1",
-                            "Test",
-                            "1",
+                            "Bruce",
+                            "Banner",
                             "test1@email.com",
                             "Password123!",
                             "1",
                             "System",
                             "#000000"});
-#line 14
- testRunner.And("The UserModel response should be", ((string)(null)), table113, "And ");
+#line 23
+ testRunner.And("The UserModel response should be", ((string)(null)), table114, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -167,7 +220,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user by email that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 18
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -180,13 +233,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 19
- testRunner.When("I call GetUser with the Email \"test2@email.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 28
+ testRunner.When("I call GetUser with the Email \"test3@email.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 29
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 21
+#line 30
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -200,50 +253,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a user with an email that already exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 23
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-                TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Forename",
-                            "Surname",
-                            "Email",
-                            "Password"});
-                table114.AddRow(new string[] {
-                            "Test",
-                            "2",
-                            "test1@email.com",
-                            "Password456!"});
-#line 24
- testRunner.When("I call PostUser with the User", ((string)(null)), table114, "When ");
-#line hidden
-#line 27
- testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 28
- testRunner.And("The response should be \"Email already in use\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Post a user with an email that doesn\'t already exists")]
-        public void PostAUserWithAnEmailThatDoesntAlreadyExists()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a user with an email that doesn\'t already exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 30
+#line 32
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -264,46 +274,28 @@ this.FeatureBackground();
                 table115.AddRow(new string[] {
                             "Test",
                             "2",
-                            "test2@email.com",
+                            "test1@email.com",
                             "Password456!"});
-#line 31
+#line 33
  testRunner.When("I call PostUser with the User", ((string)(null)), table115, "When ");
 #line hidden
-#line 34
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 36
+ testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "Forename",
-                            "Surname",
-                            "Email",
-                            "Password",
-                            "PreferenceId",
-                            "Theme",
-                            "Palette"});
-                table116.AddRow(new string[] {
-                            "2",
-                            "Test",
-                            "2",
-                            "test2@email.com",
-                            "Password456!",
-                            "2",
-                            "System",
-                            "#971212"});
-#line 35
- testRunner.And("The UserModel response should be", ((string)(null)), table116, "And ");
+#line 37
+ testRunner.And("The response should be \"Email already in use\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Delete a user that exists")]
-        public void DeleteAUserThatExists()
+        [NUnit.Framework.DescriptionAttribute("Post a user with an email that doesn\'t already exists")]
+        public void PostAUserWithAnEmailThatDoesntAlreadyExists()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a user that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a user with an email that doesn\'t already exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 39
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -317,22 +309,83 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
+                TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Forename",
+                            "Surname",
+                            "Email",
+                            "Password"});
+                table116.AddRow(new string[] {
+                            "Steve",
+                            "Rogers",
+                            "test3@email.com",
+                            "Password456!"});
 #line 40
- testRunner.When("I call DeleteUser with the Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 41
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 42
- testRunner.And("The response should be \"User deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I call PostUser with the User", ((string)(null)), table116, "When ");
 #line hidden
 #line 43
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "Forename",
+                            "Surname",
+                            "Email",
+                            "Password",
+                            "PreferenceId",
+                            "Theme",
+                            "Palette"});
+                table117.AddRow(new string[] {
+                            "3",
+                            "Steve",
+                            "Rogers",
+                            "test3@email.com",
+                            "Password456!",
+                            "3",
+                            "System",
+                            "#971212"});
+#line 44
+ testRunner.And("The UserModel response should be", ((string)(null)), table117, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Delete a user that exists")]
+        public void DeleteAUserThatExists()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a user that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 48
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 49
+ testRunner.When("I call DeleteUser with the Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 50
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 51
+ testRunner.And("The response should be \"User deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 52
  testRunner.When("I call GetUser with the Email \"test1@email.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 53
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 45
+#line 54
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -346,7 +399,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 47
+#line 56
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -359,13 +412,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 48
- testRunner.When("I call DeleteUser with the Id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 57
+ testRunner.When("I call DeleteUser with the Id 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 58
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 50
+#line 59
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -379,48 +432,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 52
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-                TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
-                            "UserId",
-                            "Value",
-                            "Type"});
-                table117.AddRow(new string[] {
-                            "2",
-                            "NewEmail@email.com",
-                            "2"});
-#line 53
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table117, "When ");
-#line hidden
-#line 56
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 57
- testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a user with an invalid type")]
-        public void UpdateAUserWithAnInvalidType()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user with an invalid type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 59
+#line 61
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -438,30 +450,30 @@ this.FeatureBackground();
                             "Value",
                             "Type"});
                 table118.AddRow(new string[] {
-                            "1",
+                            "3",
                             "NewEmail@email.com",
-                            "4"});
-#line 60
+                            "2"});
+#line 62
  testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table118, "When ");
 #line hidden
-#line 63
- testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 65
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 64
- testRunner.And("The response should be \"Invalid update type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a users forename")]
-        public void UpdateAUsersForename()
+        [NUnit.Framework.DescriptionAttribute("Update a user with an invalid type")]
+        public void UpdateAUserWithAnInvalidType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users forename", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 66
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user with an invalid type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 68
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -480,46 +492,28 @@ this.FeatureBackground();
                             "Type"});
                 table119.AddRow(new string[] {
                             "1",
-                            "NewForename",
-                            "0"});
-#line 67
+                            "NewEmail@email.com",
+                            "4"});
+#line 69
  testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table119, "When ");
 #line hidden
-#line 70
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
+ testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "Forename",
-                            "Surname",
-                            "Email",
-                            "Password",
-                            "PreferenceId",
-                            "Theme",
-                            "Palette"});
-                table120.AddRow(new string[] {
-                            "1",
-                            "NewForename",
-                            "1",
-                            "test1@email.com",
-                            "Password123!",
-                            "1",
-                            "System",
-                            "#000000"});
-#line 71
- testRunner.And("The UserModel response should be", ((string)(null)), table120, "And ");
+#line 73
+ testRunner.And("The response should be \"Invalid update type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a users surname")]
-        public void UpdateAUsersSurname()
+        [NUnit.Framework.DescriptionAttribute("Update a users forename")]
+        public void UpdateAUsersForename()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users surname", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users forename", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 75
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -533,21 +527,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
                             "UserId",
                             "Value",
                             "Type"});
-                table121.AddRow(new string[] {
+                table120.AddRow(new string[] {
                             "1",
-                            "NewSurname",
-                            "1"});
+                            "NewForename",
+                            "0"});
 #line 76
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table121, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table120, "When ");
 #line hidden
 #line 79
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Forename",
                             "Surname",
@@ -556,29 +550,29 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table122.AddRow(new string[] {
+                table121.AddRow(new string[] {
                             "1",
-                            "Test",
-                            "NewSurname",
+                            "NewForename",
+                            "Banner",
                             "test1@email.com",
                             "Password123!",
                             "1",
                             "System",
                             "#000000"});
 #line 80
- testRunner.And("The UserModel response should be", ((string)(null)), table122, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table121, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a users email")]
-        public void UpdateAUsersEmail()
+        [NUnit.Framework.DescriptionAttribute("Update a users surname")]
+        public void UpdateAUsersSurname()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users email", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users surname", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 84
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -592,21 +586,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
                             "UserId",
                             "Value",
                             "Type"});
-                table123.AddRow(new string[] {
+                table122.AddRow(new string[] {
                             "1",
-                            "NewEmail@email.com",
-                            "2"});
+                            "NewSurname",
+                            "1"});
 #line 85
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table123, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table122, "When ");
 #line hidden
 #line 88
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Forename",
                             "Surname",
@@ -615,29 +609,29 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table124.AddRow(new string[] {
+                table123.AddRow(new string[] {
                             "1",
-                            "Test",
-                            "1",
-                            "NewEmail@email.com",
+                            "Bruce",
+                            "NewSurname",
+                            "test1@email.com",
                             "Password123!",
                             "1",
                             "System",
                             "#000000"});
 #line 89
- testRunner.And("The UserModel response should be", ((string)(null)), table124, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table123, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a users password")]
-        public void UpdateAUsersPassword()
+        [NUnit.Framework.DescriptionAttribute("Update a users email")]
+        public void UpdateAUsersEmail()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users password", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users email", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 93
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -651,21 +645,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
                             "UserId",
                             "Value",
                             "Type"});
-                table125.AddRow(new string[] {
+                table124.AddRow(new string[] {
                             "1",
-                            "NewPassword123!",
-                            "3"});
+                            "NewEmail@email.com",
+                            "2"});
 #line 94
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table125, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table124, "When ");
 #line hidden
 #line 97
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Forename",
                             "Surname",
@@ -674,29 +668,29 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table126.AddRow(new string[] {
+                table125.AddRow(new string[] {
                             "1",
-                            "Test",
-                            "1",
-                            "test1@email.com",
-                            "NewPassword123!",
+                            "Bruce",
+                            "Banner",
+                            "NewEmail@email.com",
+                            "Password123!",
                             "1",
                             "System",
                             "#000000"});
 #line 98
- testRunner.And("The UserModel response should be", ((string)(null)), table126, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table125, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a user preference that doesn\'t exist")]
-        public void UpdateAUserPreferenceThatDoesntExist()
+        [NUnit.Framework.DescriptionAttribute("Update a users password")]
+        public void UpdateAUsersPassword()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user preference that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a users password", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 102
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -710,35 +704,53 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
+                TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+                            "UserId",
+                            "Value",
+                            "Type"});
+                table126.AddRow(new string[] {
+                            "1",
+                            "NewPassword123!",
+                            "3"});
+#line 103
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table126, "When ");
+#line hidden
+#line 106
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
                 TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
+                            "Forename",
+                            "Surname",
+                            "Email",
+                            "Password",
+                            "PreferenceId",
                             "Theme",
                             "Palette"});
                 table127.AddRow(new string[] {
-                            "2",
-                            "Light",
-                            "#FFFFFF"});
-#line 103
- testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table127, "When ");
-#line hidden
-#line 106
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
+                            "1",
+                            "Bruce",
+                            "Banner",
+                            "test1@email.com",
+                            "NewPassword123!",
+                            "1",
+                            "System",
+                            "#000000"});
 #line 107
- testRunner.And("The response should be \"Preference not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table127, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a user preference that exists")]
-        public void UpdateAUserPreferenceThatExists()
+        [NUnit.Framework.DescriptionAttribute("Update a user preference that doesn\'t exist")]
+        public void UpdateAUserPreferenceThatDoesntExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user preference that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 109
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user preference that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -756,37 +768,29 @@ this.FeatureBackground();
                             "Theme",
                             "Palette"});
                 table128.AddRow(new string[] {
-                            "1",
+                            "3",
                             "Light",
                             "#FFFFFF"});
-#line 110
+#line 112
  testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table128, "When ");
 #line hidden
-#line 113
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 115
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "Theme",
-                            "Palette"});
-                table129.AddRow(new string[] {
-                            "1",
-                            "Light",
-                            "#FFFFFF"});
-#line 114
- testRunner.And("The PreferenceModel response should be", ((string)(null)), table129, "And ");
+#line 116
+ testRunner.And("The response should be \"Preference not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Get a user summary that doesn\'t exist")]
-        public void GetAUserSummaryThatDoesntExist()
+        [NUnit.Framework.DescriptionAttribute("Update a user preference that exists")]
+        public void UpdateAUserPreferenceThatExists()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user summary that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a user preference that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 118
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -800,27 +804,43 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
+                TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "Theme",
+                            "Palette"});
+                table129.AddRow(new string[] {
+                            "1",
+                            "Light",
+                            "#FFFFFF"});
 #line 119
- testRunner.When("I call GetViewUserSummary with the Id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table129, "When ");
 #line hidden
-#line 120
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 122
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 121
- testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "Theme",
+                            "Palette"});
+                table130.AddRow(new string[] {
+                            "1",
+                            "Light",
+                            "#FFFFFF"});
+#line 123
+ testRunner.And("The PreferenceModel response should be", ((string)(null)), table130, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("get a user summary that exists")]
-        public void GetAUserSummaryThatExists()
+        [NUnit.Framework.DescriptionAttribute("Get a user summary that doesn\'t exist")]
+        public void GetAUserSummaryThatDoesntExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("get a user summary that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 123
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user summary that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 127
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -833,22 +853,55 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 124
+#line 128
+ testRunner.When("I call GetViewUserSummary with the Id 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 129
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 130
+ testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get a user summary that exists")]
+        public void GetAUserSummaryThatExists()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a user summary that exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 132
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 133
  testRunner.When("I call GetViewUserSummary with the Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 125
+#line 134
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Name",
                             "Joined"});
-                table130.AddRow(new string[] {
+                table131.AddRow(new string[] {
                             "1",
-                            "Test 1",
+                            "Bruce Banner",
                             "2025-01-01"});
-#line 126
- testRunner.And("The UserSummaryModel response should be", ((string)(null)), table130, "And ");
+#line 135
+ testRunner.And("The UserSummaryModel response should be", ((string)(null)), table131, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

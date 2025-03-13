@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import "./LeaderboardsPage.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { GetMediaTrends, GetUserRankings } from "../Server/Server";
@@ -200,12 +200,12 @@ function LeaderboardsPage() {
                       input: {
                         ...params.InputProps,
                         startAdornment: (
-                          <>
+                          <Fragment>
                             <InputAdornment position="start">
                               <FilterAltOutlinedIcon />
                             </InputAdornment>
                             {params.InputProps.startAdornment}
-                          </>
+                          </Fragment>
                         ),
                       },
                     }}

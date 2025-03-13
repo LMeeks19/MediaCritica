@@ -4,20 +4,21 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class SeriesMapper(IMappers mapper)
+    public class SeriesMapper(MediaMapper mediaMapper, SeasonMapper seasonMapper)
     {
-        private readonly IMappers _mapper = mapper;
+        private readonly SeasonMapper _seasonMapper = seasonMapper;
+        private readonly MediaMapper _mediaMapper = mediaMapper;
 
         public Series MapSeries(SeriesModel seriesModel)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Series>());
             var mapper = config.CreateMapper();
 
-            Media media = _mapper.MediaMapper.MapMedia(seriesModel);
+            Media media = _mediaMapper.MapMedia(seriesModel);
             Series series = mapper.Map<Series>(media);
 
             series.TotalSeasons = int.Parse(seriesModel.totalSeasons);
-            series.Seasons = seriesModel.Seasons.Select(season => _mapper.SeasonMapper.MapSeason(season, series.Id)).ToList();
+            series.Seasons = seriesModel.Seasons.Select(season => _seasonMapper.MapSeason(season, series.Id)).ToList();
 
             return series;
         }
@@ -27,11 +28,11 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, SeriesModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mapper.MediaMapper.MapMediaModel(series);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(series);
             SeriesModel seriesModel = mapper.Map<SeriesModel>(mediaModel);
 
             seriesModel.totalSeasons = series.TotalSeasons.ToString();
-            seriesModel.Seasons = series.Seasons.Select(_mapper.SeasonMapper.MapSeasonModel).ToList();
+            seriesModel.Seasons = series.Seasons.Select(_seasonMapper.MapSeasonModel).ToList();
 
             return seriesModel;
         }
