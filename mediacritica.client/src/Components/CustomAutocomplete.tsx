@@ -176,7 +176,7 @@ function CustomAutoComplete() {
   return (
     <Autocomplete
       onClose={handleCloseAutocomplete}
-      sx={{ minWidth: 300, width: 1500 }}
+      sx={{ minWidth: 300, width: 1000 }}
       fullWidth
       autoComplete
       loading={isLoading}

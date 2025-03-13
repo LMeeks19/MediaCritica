@@ -22,8 +22,10 @@ import { UserModel } from "../Interfaces/UserModel";
 import NotificationOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { NotificationModel } from "../Interfaces/NotificationModel";
 import CustomAutoComplete from "./CustomAutocomplete";
+import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
+import { CustomTooltip } from "./Tooltip";
 
-function TopBar() {
+function TopBar(props: { isHome?: boolean }) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const setNotifications = useSetRecoilState(notificationsState);
@@ -39,13 +41,27 @@ function TopBar() {
   };
   return (
     <div className="topbar">
-      <IconButton sx={{ ml: "1.25rem" }} onClick={() => navigate("/")}>
-        <HomeOutlinedIcon fontSize="large" />
-      </IconButton>
+      <div className="flex gap-2 ml-[1.25rem]">
+        <IconButton
+          className={`${props.isHome && "invisible opacity-0 order-2"}`}
+          onClick={() => navigate(-1)}
+        >
+          <CustomTooltip title="Back" arrow>
+            <ArrowCircleLeftOutlinedIcon fontSize="large" />
+          </CustomTooltip>
+        </IconButton>
+        <IconButton onClick={() => navigate("/")}>
+          <CustomTooltip title="Home" arrow>
+            <HomeOutlinedIcon fontSize="large" />
+          </CustomTooltip>
+        </IconButton>
+      </div>
       <CustomAutoComplete />
-      <div style={{ marginRight: "1.25rem" }}>
+      <div className="mr-[1.25rem]">
         <IconButton onClick={handleClick}>
-          <MenuIcon fontSize="large" />
+          <CustomTooltip title="Menu" arrow>
+            <MenuIcon fontSize="large" />
+          </CustomTooltip>
         </IconButton>
       </div>
       <Menu
@@ -54,9 +70,6 @@ function TopBar() {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
       >
         <MenuItem onClick={() => navigate("/")}>
           <ListItemIcon>
