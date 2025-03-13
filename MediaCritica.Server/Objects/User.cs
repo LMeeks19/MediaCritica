@@ -16,6 +16,7 @@
         public virtual List<UserFollow> Followers { get; set; }
         public virtual List<UserFollow> Following { get; set; }
         public virtual List<Notification> Notifications { get; set; }
+        public virtual string FullName => $"{Forename} {Surname}";
 
     }
 }

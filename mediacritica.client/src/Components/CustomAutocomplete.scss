@@ -1,0 +1,86 @@
+.MuiAutocomplete-root {
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover,
+  &:focus-within {
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .MuiFormControl-root {
+    .MuiOutlinedInput-notchedOutline {
+      border-color: whitesmoke !important;
+    }
+
+    .MuiInputBase-root {
+      color: whitesmoke !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+
+      .MuiInputAdornment-root {
+        margin-top: 0;
+
+        .MuiCircularProgress-root {
+          color: whitesmoke;
+        }
+
+        .MuiSvgIcon-root {
+          width: 20px;
+          height: 20px;
+          color: whitesmoke !important;
+        }
+      }
+
+      .MuiInputBase-input {
+        font-family: "Orbitron";
+        font-size: 14px;
+        letter-spacing: 2px;
+      }
+    }
+  }
+}
+
+.MuiPopper-root {
+  .MuiPaper-root {
+    .search-tabs {
+      display: flex;
+      .search-tab {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 0;
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s ease-in-out;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          transition: background-color 0.3s ease-in-out;
+          background-color: transparent;
+        }
+
+        &.active {
+          background-color: var(--palette-colour);
+          pointer-events: none;
+
+          &::before {
+            background-color: whitesmoke;
+          }
+        }
+
+        &:not(&.active):hover {
+          background-color: var(--palette-colour-faded);
+
+          &::before {
+            background-color: whitesmoke;
+          }
+        }
+      }
+    }
+  }
+}

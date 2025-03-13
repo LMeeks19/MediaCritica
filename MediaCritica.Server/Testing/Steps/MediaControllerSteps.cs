@@ -123,8 +123,8 @@ namespace MediaCritica.Server.Testing.Steps
             var actualMediaSearchResultResponse = result.Value as MediaSearchResultResponse;
             Assert.IsNotNull(actualMediaSearchResultResponse);
 
-            Assert.AreEqual(expectedMediaSearchResultResponse.Response, actualMediaSearchResultResponse.response);
-            Assert.AreEqual(expectedMediaSearchResultResponse.SearchResults, actualMediaSearchResultResponse.search.Count);
+            Assert.AreEqual(expectedMediaSearchResultResponse.Response, actualMediaSearchResultResponse.Response);
+            Assert.AreEqual(expectedMediaSearchResultResponse.SearchResults, actualMediaSearchResultResponse.Search.Count);
             Assert.AreEqual(expectedMediaSearchResultResponse.TotalResults, int.Parse(actualMediaSearchResultResponse.totalResults));
         }
 
@@ -137,7 +137,7 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.IsNotNull(result);
             var actualMediaSearchResultResponse = result.Value as MediaSearchResultResponse;
             Assert.IsNotNull(actualMediaSearchResultResponse);
-            var actualMediaSearchModels = actualMediaSearchResultResponse.search;
+            var actualMediaSearchModels = actualMediaSearchResultResponse.Search;
 
 
             Assert.AreEqual(expectedMediaSearchModels.Count, actualMediaSearchModels.Count);

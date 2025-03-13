@@ -4,16 +4,16 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class GameMapper(IMappers mapper)
+    public class GameMapper(MediaMapper mediaMapper)
     {
-        private readonly IMappers _mapper = mapper;
+        private readonly MediaMapper _mediaMapper = mediaMapper;
 
         public Game MapGame(GameModel gameModel)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Game>());
             var mapper = config.CreateMapper();
 
-            Media media = _mapper.MediaMapper.MapMedia(gameModel);
+            Media media = _mediaMapper.MapMedia(gameModel);
             Game game = mapper.Map<Game>(media);
 
             game.BoxOffice = gameModel.BoxOffice;
@@ -29,7 +29,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, GameModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mapper.MediaMapper.MapMediaModel(game);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(game);
             GameModel gameModel = mapper.Map<GameModel>(mediaModel);
 
             gameModel.BoxOffice = game.BoxOffice;

@@ -18,11 +18,38 @@ builder.Configuration.AddInMemoryCollection(new Dictionary<string, string> { { "
 
 // Add services to the container.
 builder.Services.AddSignalR();
+builder.Services.AddControllers();
+builder.Services.AddMvc().AddControllersAsServices();
 
+// Register Controllers
 builder.Services.AddScoped<IControllers, Controllers>();
+
+// Register Mappers
 builder.Services.AddScoped<IMappers, Mappers>();
+builder.Services.AddScoped<UserMapper>();
+builder.Services.AddScoped<SeasonMapper>();
+builder.Services.AddScoped<SeriesMapper>();
+builder.Services.AddScoped<EpisodeMapper>();
+builder.Services.AddScoped<GameMapper>();
+builder.Services.AddScoped<MovieMapper>();
+builder.Services.AddScoped<MediaMapper>();
+builder.Services.AddScoped<RatingMapper>();
+builder.Services.AddScoped<ReviewMapper>();
+builder.Services.AddScoped<BacklogMapper>();
+
+// Register Helpers
 builder.Services.AddScoped<IHelpers, Helpers>();
+builder.Services.AddScoped<IDateTimeProviderHelper, DateTimeProviderHelper>();
+builder.Services.AddScoped<DateTimeProviderHelper>();
+builder.Services.AddScoped<DateRangeCalculatorHelper>();
+builder.Services.AddScoped<ExternalApiHelper>();
+builder.Services.AddScoped<InternalApiHelper>();
+builder.Services.AddScoped<MilestoneCalculatorHelper>();
+builder.Services.AddScoped<TrendCalculatorHelper>();
+
+//Register Hubs
 builder.Services.AddScoped<IHubs, Hubs>();
+builder.Services.AddScoped<NotificationHub>();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));

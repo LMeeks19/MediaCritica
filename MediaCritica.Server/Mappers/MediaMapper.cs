@@ -4,9 +4,10 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class MediaMapper(IMappers mapper)
+    public class MediaMapper(RatingMapper ratingMapper, ReviewMapper reviewMapper)
     {
-        private readonly IMappers _mapper = mapper;
+        private readonly RatingMapper _ratingMapper = ratingMapper;
+        private readonly ReviewMapper _reviewMapper = reviewMapper;
 
         public Media MapMedia(MediaModel mediaModel)
         {
@@ -25,8 +26,8 @@ namespace MediaCritica.Server.Mappers
                 Plot = mediaModel.Plot,
                 Poster = mediaModel.Poster,
                 Rated = mediaModel.Rated,
-                Ratings = mediaModel.Ratings != null ? mediaModel.Ratings.Select(_mapper.RatingMapper.MapRating).ToList() : [],
-                Released = DateTime.Parse(mediaModel.Released),
+                Ratings = mediaModel.Ratings != null ? mediaModel.Ratings.Select(_ratingMapper.MapRating).ToList() : [],
+                Released = mediaModel.Released == "N/A" ? null : DateTime.Parse(mediaModel.Released),
                 Runtime = mediaModel.Runtime,
                 Title = mediaModel.Title,
                 Type = mediaModel.Type,
@@ -54,7 +55,7 @@ namespace MediaCritica.Server.Mappers
                 Plot = media.Plot,
                 Poster = media.Poster,
                 Rated = media.Rated,
-                Ratings = media.Ratings.Select(_mapper.RatingMapper.MapRatingModel).ToList(),
+                Ratings = media.Ratings.Select(_ratingMapper.MapRatingModel).ToList(),
                 Released = media.Released != null ? ((DateTime)media.Released).ToLongDateString() : "N/A",
                 Runtime = media.Runtime,
                 Title = media.Title,
@@ -64,7 +65,7 @@ namespace MediaCritica.Server.Mappers
                 Reviews = media.Reviews
                     .OrderByDescending(review => review.Date)
                     .Take(10)
-                    .Select(_mapper.ReviewMapper.MapReviewSummaryModel)
+                    .Select(_reviewMapper.MapReviewSummaryModel)
                     .ToList(),
             };
 

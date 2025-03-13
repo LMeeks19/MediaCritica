@@ -1,7 +1,12 @@
 ﻿namespace MediaCritica.Server.Helpers
 {
-    public class DateTimeProviderHelper(DateTime? dateTime)
+    public interface IDateTimeProviderHelper
     {
-        public DateTime Now = dateTime ?? DateTime.Now;
+        DateTime Now { get; }
+    }
+
+    public class DateTimeProviderHelper : IDateTimeProviderHelper
+    {
+        public DateTime Now => DateTime.Now;
     }
 }

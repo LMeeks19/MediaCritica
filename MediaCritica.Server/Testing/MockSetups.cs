@@ -16,28 +16,34 @@ namespace MediaCritica.Server.Testing
             mapper.Setup(m => m.ReviewMapper).Returns(new ReviewMapper());
             mapper.Setup(m => m.RatingMapper).Returns(new RatingMapper());
             mapper.Setup(m => m.BacklogMapper).Returns(new BacklogMapper());
-            mapper.Setup(m => m.UserMapper).Returns(new UserMapper(helper, mapper.Object));
-            mapper.Setup(m => m.MediaMapper).Returns(new MediaMapper(mapper.Object));
-            mapper.Setup(m => m.MovieMapper).Returns(new MovieMapper(mapper.Object));
-            mapper.Setup(m => m.GameMapper).Returns(new GameMapper(mapper.Object));
-            mapper.Setup(m => m.EpisodeMapper).Returns(new EpisodeMapper(mapper.Object));
-            mapper.Setup(m => m.SeasonMapper).Returns(new SeasonMapper(mapper.Object));
-            mapper.Setup(m => m.SeriesMapper).Returns(new SeriesMapper(mapper.Object));
+            mapper.Setup(m => m.UserMapper).Returns(new UserMapper(helper, mapper.Object.ReviewMapper));
+            mapper.Setup(m => m.MediaMapper).Returns(new MediaMapper(mapper.Object.RatingMapper, mapper.Object.ReviewMapper));
+            mapper.Setup(m => m.MovieMapper).Returns(new MovieMapper(mapper.Object.MediaMapper));
+            mapper.Setup(m => m.GameMapper).Returns(new GameMapper(mapper.Object.MediaMapper));
+            mapper.Setup(m => m.EpisodeMapper).Returns(new EpisodeMapper(mapper.Object.MediaMapper));
+            mapper.Setup(m => m.SeasonMapper).Returns(new SeasonMapper(mapper.Object.EpisodeMapper));
+            mapper.Setup(m => m.SeriesMapper).Returns(new SeriesMapper(mapper.Object.MediaMapper, mapper.Object.SeasonMapper));
 
             return mapper.Object;
         }
 
-        private static IHelpers SetupHelper(DatabaseContext dbContext, IConfiguration configuration)
+        private static IHelpers SetupHelper(DatabaseContext dbContext, IConfiguration configuration, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var helper = new Mock<IHelpers>();
             helper.Setup(h => h.TrendCalculatorHelper).Returns(new TrendCalculatorHelper());
-            helper.Setup(h => h.DateTimeProviderHelper).Returns(new DateTimeProviderHelper(new(2025, 2, 27)));
-            helper.Setup(h => h.DateRangeCalculatorHelper).Returns(new DateRangeCalculatorHelper(helper.Object));
+            helper.Setup(h => h.DateRangeCalculatorHelper).Returns(new DateRangeCalculatorHelper(dateTimeProviderHelper));
             helper.Setup(h => h.ExternalApiHelper).Returns(new ExternalApiHelper(configuration, true));
             helper.Setup(h => h.InternalApiHelper).Returns(new InternalApiHelper(dbContext));
             helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext));
 
             return helper.Object;
+        }
+
+        private static IDateTimeProviderHelper SetupDateTimeProviderHelper()
+        {
+            var dateTimeProviderHelper = new Mock<IDateTimeProviderHelper>();
+            dateTimeProviderHelper.Setup(provider => provider.Now).Returns(new DateTime(2025, 2, 27));
+            return dateTimeProviderHelper.Object;
         }
 
         private static IConfiguration SetupConfiguration()
@@ -61,7 +67,8 @@ namespace MediaCritica.Server.Testing
         public static IControllers SetupController(DatabaseContext dbContext)
         {
             var configuration = SetupConfiguration();
-            var helper = SetupHelper(dbContext, configuration);
+            var dateTimeProviderHelper = SetupDateTimeProviderHelper();
+            var helper = SetupHelper(dbContext, configuration, dateTimeProviderHelper);
             var mapper = SetupMapper(dbContext, helper);
             var hubContext = SetupNotificationHub();
             var hub = SetupHub();
@@ -75,7 +82,7 @@ namespace MediaCritica.Server.Testing
             controller.Setup(c => c.MediaController).Returns(new MediaController(dbContext, mapper, helper));
             controller.Setup(c => c.MilestoneController).Returns(new MilestoneController(dbContext, helper));
             controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, hubContext, hub));
-            controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, controller.Object));
+            controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, controller.Object.NotificationController));
             controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper));
 
             return controller.Object;

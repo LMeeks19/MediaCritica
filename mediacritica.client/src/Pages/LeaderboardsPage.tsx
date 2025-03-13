@@ -200,12 +200,12 @@ function LeaderboardsPage() {
                       input: {
                         ...params.InputProps,
                         startAdornment: (
-                          <>
+                          <Fragment>
                             <InputAdornment position="start">
                               <FilterAltOutlinedIcon />
                             </InputAdornment>
                             {params.InputProps.startAdornment}
-                          </>
+                          </Fragment>
                         ),
                       },
                     }}

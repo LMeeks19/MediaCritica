@@ -2,8 +2,8 @@
 {
     public class MediaSearchResultResponse
     {
-        public string response { get; set; }
-        public List<MediaSearchModel> search { get; set; }
+        public string Response { get; set; }
+        public List<MediaSearchModel> Search { get; set; }
         public string totalResults { get; set; }
     }
 }

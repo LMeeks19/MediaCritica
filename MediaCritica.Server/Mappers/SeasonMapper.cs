@@ -1,12 +1,11 @@
-﻿using MediaCritica.Server.Enums;
-using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class SeasonMapper(IMappers mapper)
+    public class SeasonMapper(EpisodeMapper episodeMapper)
     {
-        private readonly IMappers _mapper = mapper;
+        private readonly EpisodeMapper _episodeMapper = episodeMapper;
 
         public Season MapSeason(SeasonModel seasonModel, string seriesId)
         {
@@ -15,16 +14,6 @@ namespace MediaCritica.Server.Mappers
                 SeriesId = seriesId,
                 SeasonNo = int.Parse(seasonModel.Season),
                 Title = seasonModel.Title,
-                Episodes = seasonModel.Episodes == null ? [] : seasonModel.Episodes.Select(episode => new Episode()
-                {
-                    Id = episode.imdbID,
-                    EpisodeNo = int.Parse(episode.Episode),
-                    SeasonNo = int.Parse(seasonModel.Season),
-                    Released = episode.Released == "N/A" ? null : DateTime.Parse(episode.Released),
-                    Title = episode.Title,
-                    ImdbRating = episode.imdbRating == "N/A" ? null : double.Parse(episode.imdbRating),
-                    Type = MediaType.Episode,
-                }).ToList()
             };
         }
 
@@ -32,9 +21,10 @@ namespace MediaCritica.Server.Mappers
         {
             var seasonModel = new SeasonModel()
             {
+                SeriesId = season.SeriesId,
                 Season = season.SeasonNo.ToString(),
                 Title = season.Title,
-                Episodes = season.Episodes == null ? [] : season.Episodes.Select(episode => _mapper.EpisodeMapper.MapEpisodeSummaryModel(episode!)).ToList()
+                Episodes = season.Episodes == null ? [] : season.Episodes.Select(episode => _episodeMapper.MapEpisodeSummaryModel(episode!)).ToList()
             };
             return seasonModel;
         }

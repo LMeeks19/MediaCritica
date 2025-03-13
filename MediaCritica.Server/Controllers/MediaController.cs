@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Controllers
         {
             var result = await _helper.ExternalApiHelper.GetSearchMedia(searchTerm, page);
 
-            if (result?.search == null || result?.search.Count == 0 || result == null)
+            if (result?.Search == null || result?.Search.Count == 0 || result == null)
                 return NotFound(new { Message = "No results found" });
 
             return Ok(result);
@@ -310,7 +310,10 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Seasons.AddAsync(season);
             await _databaseContext.SaveChangesAsync();
 
-            season.Episodes.ForEach(async episode => await GetEpisode(episode.Id));
+            foreach (var episode in seasonModel.Episodes)
+            {
+                await GetEpisode(episode.imdbID, season.Id);
+            }
 
             return Ok(_mapper.SeasonMapper.MapSeasonModel(season));
         }
@@ -337,31 +340,23 @@ namespace MediaCritica.Server.Controllers
         }
 
         [HttpGet("[action]/{episodeId}")]
-        public async Task<IActionResult> GetEpisode(string episodeId)
+        public async Task<IActionResult> GetEpisode(string episodeId, int seasonId = -1)
         {
             var episode = await _helper.InternalApiHelper.GetEpisodeMedia(episodeId);
 
-            if (episode != null)
+            if (episode != null && seasonId == -1)
                 return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
 
             var episodeModel = await _helper.ExternalApiHelper.GetEpisodeMedia(episodeId);
+            if (seasonId != -1 && episodeModel != null)
+                episodeModel.SeasonId = seasonId;
 
             if (episodeModel?.Type != MediaType.Episode || episodeModel == null)
                 return NotFound(new { Message = "Episode not found" });
 
-            if (episode != null)
-            {
-                episodeModel.Id = episode.Id;
-                episodeModel.SeasonId = episode.SeasonId;
-            }
-
             episode = _mapper.EpisodeMapper.MapEpisode(episodeModel);
 
-            if (!_databaseContext.Episodes.Any(e => e.Id == episodeId))
-                await _databaseContext.Media.AddAsync(episode);
-            else
-                _databaseContext.Media.Update(episode);
-
+            await _databaseContext.Media.AddAsync(episode);
             await _databaseContext.SaveChangesAsync();
 
             return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));

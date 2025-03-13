@@ -9,6 +9,12 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class UserControllerSteps
     {
+        [When(@"I call GetUsersBySearch with search term ""(.*)""")]
+        public void WhenICallGetUsersBySearchWithSearchTerm(string searchTerm)
+        {
+            GlobalSteps._response = GlobalSteps._controller.UserController.GetUsersBySearch(searchTerm);
+        }
+
         [When(@"I call GetUser with the Email ""(.*)""")]
         public async Task WhenICallGetUserWithTheEmail(string email)
         {
@@ -114,6 +120,27 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(actualUserSummary.Id, expectedUserSummary.Id);
             Assert.AreEqual(actualUserSummary.Name, expectedUserSummary.Name);
             Assert.AreEqual(actualUserSummary.Joined, expectedUserSummary.Joined);
+        }
+
+        [Then(@"The UserSearchModels should be")]
+        public void ThenTheUserSearchModelsShouldBe(Table table)
+        {
+            var expectedUserSearchModels = table.CreateSet<UserSearchModel>().ToList();
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualUserSummaryModels = result.Value as List<UserSearchModel>;
+            Assert.AreEqual(expectedUserSearchModels.Count(), actualUserSummaryModels.Count);
+
+            for (int i = 0; i < expectedUserSearchModels.Count(); i++)
+            {
+                var expectedUserSearchModel = expectedUserSearchModels[i];
+                var actualUserSearchModel = actualUserSummaryModels[i];
+
+                Assert.AreEqual(expectedUserSearchModel.Id, actualUserSearchModel.Id);
+                Assert.AreEqual(expectedUserSearchModel.FullName, actualUserSearchModel.FullName);
+                Assert.AreEqual(expectedUserSearchModel.Joined, actualUserSearchModel.Joined);
+            }
         }
     }
 }

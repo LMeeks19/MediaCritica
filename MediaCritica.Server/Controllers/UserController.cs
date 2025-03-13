@@ -13,6 +13,27 @@ namespace MediaCritica.Server.Controllers
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
 
+        [HttpGet("[action]/{searchTerm}")]
+        public IActionResult GetUsersBySearch(string searchTerm)
+        {
+            var userQuery = _databaseContext.Users
+                .AsEnumerable()
+                .Where(u => u.FullName.StartsWith(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var users = userQuery
+                .Take(20)
+                .Select(u => _mapper.UserMapper
+                .MapUserSearchModel(u))
+                .ToList();
+
+            if (users.Count == 0)
+                return NotFound(new { Message = "No users found" });
+
+            return Ok(users);
+
+        }
+
         [HttpGet("[action]/{email}")]
         public async Task<IActionResult> GetUser(string email)
         {
