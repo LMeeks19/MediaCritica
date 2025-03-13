@@ -24,6 +24,10 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { MediaType } from "../Enums/MediaType";
 import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers/icons";
+import GameIcon from "@mui/icons-material/SportsEsportsOutlined";
+import MovieIcon from "@mui/icons-material/MovieOutlined";
+import SeriesIcon from "@mui/icons-material/LiveTvOutlined";
+import { CustomTooltip } from "./Tooltip";
 
 interface SectionProps {
   title: string;
@@ -33,14 +37,14 @@ interface SectionProps {
 
 const MediaGrid: FC<{
   media: MediaSummaryModelResponse;
-  filter: string;
+  filters: string[];
   isLoading: boolean;
-}> = ({ media, filter, isLoading }) => {
+}> = ({ media, filters: filters, isLoading }) => {
   const navigate = useNavigate();
 
   function filtered(items: MediaSummaryModel[]) {
-    if (filter === "all") return items;
-    return items.filter((item) => item.type === filter);
+    if (filters.length === 0 || filters.length === 0) return items;
+    return items.filter((item) => filters.includes(item.type));
   }
 
   return (
@@ -106,7 +110,7 @@ export const BaseAccordion: FC<SectionProps> = ({
     totalMediaCount: -1,
   } as MediaSummaryModelResponse);
   const [isLaoding, setIsLoading] = useState<boolean>(true);
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   useEffect(() => {
     GetMedia(defaultIsOpen);
@@ -139,17 +143,28 @@ export const BaseAccordion: FC<SectionProps> = ({
         <h2>{title}</h2>
         <div className="actions">
           <ToggleButtonGroup
-            value={selectedFilter}
+            value={selectedFilters}
             onChange={(e, v) => {
               e.stopPropagation();
-              setSelectedFilter(v);
+              if (v !== null) setSelectedFilters(v);
+              else setSelectedFilters((prev) => prev.filter((f) => f !== v));
             }}
-            exclusive
           >
-            <ToggleButton value="all">All</ToggleButton>
-            <ToggleButton value={MediaType.Movie}>Movies</ToggleButton>
-            <ToggleButton value={MediaType.Series}>Series</ToggleButton>
-            <ToggleButton value={MediaType.Game}>Games</ToggleButton>
+            <ToggleButton value={MediaType.Movie}>
+              <CustomTooltip title="Movies" arrow>
+                <MovieIcon />
+              </CustomTooltip>
+            </ToggleButton>
+            <ToggleButton value={MediaType.Series}>
+              <CustomTooltip title="Series" arrow>
+                <SeriesIcon />
+              </CustomTooltip>
+            </ToggleButton>
+            <ToggleButton value={MediaType.Game}>
+              <CustomTooltip title="Games" arrow>
+                <GameIcon />
+              </CustomTooltip>
+            </ToggleButton>
           </ToggleButtonGroup>
         </div>
       </AccordionSummary>
@@ -157,7 +172,7 @@ export const BaseAccordion: FC<SectionProps> = ({
         <MediaGrid
           media={media}
           isLoading={isLaoding}
-          filter={selectedFilter}
+          filters={selectedFilters}
         />
       </AccordionDetails>
     </Accordion>
@@ -179,7 +194,7 @@ export const TabbedAccordion: FC<{
     totalMediaCount: -1,
   } as MediaSummaryModelResponse);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   useEffect(() => {
     GetMedia(defaultIsOpen, activeTab);
@@ -221,17 +236,28 @@ export const TabbedAccordion: FC<{
         <h2>{title}</h2>
         <div className="actions">
           <ToggleButtonGroup
-            value={selectedFilter}
+            value={selectedFilters}
             onChange={(e, v) => {
               e.stopPropagation();
-              setSelectedFilter(v);
+              if (v !== null) setSelectedFilters(v);
+              else setSelectedFilters((prev) => prev.filter((f) => f !== v));
             }}
-            exclusive
           >
-            <ToggleButton value="all">All</ToggleButton>
-            <ToggleButton value={MediaType.Movie}>Movies</ToggleButton>
-            <ToggleButton value={MediaType.Series}>Series</ToggleButton>
-            <ToggleButton value={MediaType.Game}>Games</ToggleButton>
+            <ToggleButton value={MediaType.Movie}>
+              <CustomTooltip title="Movies" arrow>
+                <MovieIcon />
+              </CustomTooltip>
+            </ToggleButton>
+            <ToggleButton value={MediaType.Series}>
+              <CustomTooltip title="Series" arrow>
+                <SeriesIcon />
+              </CustomTooltip>
+            </ToggleButton>
+            <ToggleButton value={MediaType.Game}>
+              <CustomTooltip title="Games" arrow>
+                <GameIcon />
+              </CustomTooltip>
+            </ToggleButton>
           </ToggleButtonGroup>
         </div>
       </AccordionSummary>
@@ -253,14 +279,14 @@ export const TabbedAccordion: FC<{
           <MediaGrid
             media={tab1Media}
             isLoading={isLoading}
-            filter={selectedFilter}
+            filters={selectedFilters}
           />
         </div>
         <div tabIndex={1} hidden={activeTab !== 1}>
           <MediaGrid
             media={tab2Media}
             isLoading={isLoading}
-            filter={selectedFilter}
+            filters={selectedFilters}
           />
         </div>
       </AccordionDetails>

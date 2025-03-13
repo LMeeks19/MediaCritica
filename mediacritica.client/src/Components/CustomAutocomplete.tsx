@@ -3,8 +3,8 @@ import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
 import { GetMediaSearchResults, GetUserSearchResults } from "../Server/Server";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
-import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import PermMediaIconOutlined from "@mui/icons-material/PermMediaOutlined";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { UserSearchModel } from "../Interfaces/UserSearchModel";
@@ -95,10 +95,10 @@ function CustomAutoComplete() {
                 )}
                 <InputAdornment position="start">
                   {selectedSearchTab === 0 ? (
-                    <SubscriptionsIcon />
+                    <PermMediaIcon />
                   ) : (
                     <CustomTooltip title="Activate media search" arrow>
-                      <SubscriptionsOutlinedIcon
+                      <PermMediaIconOutlined
                         sx={{ cursor: "pointer" }}
                         onClick={(e) => handleTabClick(e, 0)}
                       />
@@ -147,7 +147,9 @@ function CustomAutoComplete() {
               }}
             >
               <div className="text-xl">{result.title}</div>
-              <div className="text-sm">{CapitaliseFirstLetter(result.type)}</div>
+              <div className="text-sm">
+                {CapitaliseFirstLetter(result.type)}
+              </div>
               <div className="text-xs">{result.year}</div>
             </Box>
           </Box>
