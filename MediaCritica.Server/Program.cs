@@ -46,6 +46,7 @@ builder.Services.AddScoped<ExternalApiHelper>();
 builder.Services.AddScoped<InternalApiHelper>();
 builder.Services.AddScoped<MilestoneCalculatorHelper>();
 builder.Services.AddScoped<TrendCalculatorHelper>();
+builder.Services.AddScoped<AuthenticationHelper>();
 
 //Register Hubs
 builder.Services.AddScoped<IHubs, Hubs>();
@@ -67,6 +68,7 @@ var app = builder.Build();
 app.UseCors();
 app.UseRouting();
 app.UseWebSockets();
+app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<NotificationHub>("/NotificationHub");
@@ -76,8 +78,6 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

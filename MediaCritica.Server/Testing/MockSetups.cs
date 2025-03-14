@@ -83,7 +83,7 @@ namespace MediaCritica.Server.Testing
             controller.Setup(c => c.MilestoneController).Returns(new MilestoneController(dbContext, helper));
             controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, hubContext, hub));
             controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, controller.Object.NotificationController));
-            controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper));
+            controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper, helper));
 
             return controller.Object;
         }

@@ -102,7 +102,7 @@ namespace MediaCritica.Server.Mappers
             return userSearchModel;
         }
 
-        private List<double> MapReviewBreakdown(List<Review> reviews)
+        private static List<double> MapReviewBreakdown(List<Review> reviews)
         {
             var reviewBreakdown = Enumerable.Range(0, 11)
                 .Select(r => r * 0.5)

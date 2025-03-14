@@ -1,6 +1,6 @@
 import "./AccountPage.scss";
 import TopBar from "../Components/TopBar";
-import { userState } from "../State/GlobalState";
+import { notificationsState, userState } from "../State/GlobalState";
 import { useEffect, useState, Fragment } from "react";
 import {
   GetBacklog,
@@ -40,7 +40,7 @@ import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaType } from "../Enums/MediaType";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import AccountDetail from "../Components/AccountDetail";
 import { AccountFieldType } from "../Enums/AccountFieldType";
 import ThemePreference from "../Components/ThemePreference";
@@ -61,13 +61,15 @@ import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
+import { LogoutUser } from "../Helpers/AuthenticationHelper";
 
 function AccountPage() {
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [reviews, setReviews] = useState<ReviewModel[]>([] as ReviewModel[]);
+  const setNotificationsObject = useSetRecoilState(notificationsState);
 
   const starRatings: any[] = [];
   for (let i = 0; i <= 5; i += 0.5) {
@@ -87,13 +89,16 @@ function AccountPage() {
   );
 
   useEffect(() => {
-    if (user.id === undefined) navigate("/login");
     if (activeTab === 1) FetchSocial();
     else if (activeTab === 2 && reviews.length === 0) FetchReviews(0);
     else if (activeTab === 3 && getTotalLoadedBacklogs() === 0) FetchBacklog();
     else if (activeTab === 4) FetchMilestones();
     else setIsLoading(false);
   }, [activeTab]);
+
+  useEffect(() => {
+    if (user.id === undefined) navigate("/login");
+  }, [user]);
 
   const [activeSocialTab, setActiveSocialTab] = useState<number>(0);
   const [followers, setFollowers] = useState<UserFollowSummaryModel[]>([]);
@@ -237,8 +242,8 @@ function AccountPage() {
       targetStage === "backlog"
         ? BacklogCategoryType.Backlog
         : targetStage === "inProgress"
-        ? BacklogCategoryType.InProgress
-        : BacklogCategoryType.Finished;
+          ? BacklogCategoryType.InProgress
+          : BacklogCategoryType.Finished;
 
     UpdateBacklogState(movedItem.id, newCategory);
 
@@ -475,8 +480,8 @@ function AccountPage() {
               <h2>Details</h2>
               <button
                 className="logout-btn"
-                onClick={() => {
-                  navigate("/login");
+                onClick={async () => {
+                  await LogoutUser(setNotificationsObject, setUser);
                 }}
               >
                 Logout <LogoutIcon fontSize="small" />

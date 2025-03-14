@@ -8,5 +8,6 @@
         InternalApiHelper InternalApiHelper { get; }
         MilestoneCalculatorHelper MilestoneCalculatorHelper { get; }
         TrendCalculatorHelper TrendCalculatorHelper { get; }
+        AuthenticationHelper AuthenticationHelper { get; }
     }
 }

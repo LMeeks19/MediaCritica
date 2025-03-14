@@ -22,6 +22,31 @@ namespace MediaCritica.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MediaCritica.Server.Objects.AuthToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuthTokens");
+                });
+
             modelBuilder.Entity("MediaCritica.Server.Objects.Backlog", b =>
                 {
                     b.Property<int>("Id")
@@ -483,6 +508,17 @@ namespace MediaCritica.Server.Migrations
                     b.HasBaseType("MediaCritica.Server.Objects.Movie");
 
                     b.HasDiscriminator().HasValue("Game");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.AuthToken", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Backlog", b =>

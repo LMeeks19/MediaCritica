@@ -24,6 +24,7 @@ import { NotificationModel } from "../Interfaces/NotificationModel";
 import CustomAutoComplete from "./CustomAutocomplete";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { CustomTooltip } from "./Tooltip";
+import { LogoutUser } from "../Helpers/AuthenticationHelper";
 
 function TopBar(props: { isHome?: boolean }) {
   const navigate = useNavigate();
@@ -116,11 +117,8 @@ function TopBar(props: { isHome?: boolean }) {
         )}
         {user.id !== undefined && (
           <MenuItem
-            onClick={() => {
-              resetThemePalette();
-              setUser({} as UserModel);
-              setNotifications([] as NotificationModel[]);
-              if (location.pathname.endsWith("/account")) navigate("/login");
+            onClick={async () => {
+              await LogoutUser(setNotifications, setUser);
             }}
           >
             <ListItemIcon>

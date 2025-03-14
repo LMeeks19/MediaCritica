@@ -5,7 +5,7 @@
 namespace MediaCritica.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class addbacklogforeignkey : Migration
+    public partial class Addbacklogforeignkey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -18,7 +18,7 @@ namespace MediaCritica.Server.Testing.Steps
         [When(@"I call GetUser with the Email ""(.*)""")]
         public async Task WhenICallGetUserWithTheEmail(string email)
         {
-            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUser(email);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserByEmail(email);
         }
 
         [When(@"I call DeleteUser with the Id (\d+)")]

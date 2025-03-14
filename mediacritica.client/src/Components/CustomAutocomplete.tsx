@@ -47,12 +47,12 @@ function CustomAutoComplete() {
 
   // Handle search term changes and trigger API call after delay
   useEffect(() => {
-    setIsLoading(true);
-    const timeout = setTimeout(() => {
+    const timeout = setTimeout(async () => {
       if (searchTerm.length > 2) {
-        getResults();
+        setIsLoading(true);
+        await getResults();
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timeout);
   }, [searchTerm, selectedSearchTab]);
