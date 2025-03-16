@@ -51,18 +51,18 @@ function isRequestMessageInterface(obj: any): obj is RequestMessage {
 
 async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
   try {
-    const data = await fetch(url, options);
-    const response = await data.json();
+    const response = await fetch(url, options);
+    const data = await response.json();
 
-    if (isRequestMessageInterface(response)) {
-      switch (data.status) {
+    if (isRequestMessageInterface(data)) {
+      switch (response.status) {
         case 200:
-          Snackbar.Success((response as RequestMessage).message);
+          Snackbar.Success((data as RequestMessage).message);
           break;
         default:
-          Snackbar.Error((response as RequestMessage).message);
+          Snackbar.Error((data as RequestMessage).message);
       }
-    } else return response as T;
+    } else return data as T;
   } catch (error) {
     Snackbar.Error(error as string);
   }
@@ -73,7 +73,7 @@ async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
 export async function Login(
   userLoginModel: UserLoginModel
 ): Promise<UserModelObject> {
-  const repsonse = await MakeRequest<UserModelObject>("User/Login", {
+  const repsonse = await MakeRequest<UserModelObject>("/User/Login", {
     method: "POST",
     body: JSON.stringify(userLoginModel),
     headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -82,7 +82,7 @@ export async function Login(
 }
 
 export async function AutoLogin(token: string): Promise<UserModelObject> {
-  const response = await MakeRequest<UserModelObject>("User/AutoLogin", {
+  const response = await MakeRequest<UserModelObject>("/User/AutoLogin", {
     method: "POST",
     body: JSON.stringify({ token: token } as { token: string }),
     headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -91,7 +91,7 @@ export async function AutoLogin(token: string): Promise<UserModelObject> {
 }
 
 export async function Logout(token: string): Promise<void> {
-  await MakeRequest<void>("User/Logout", {
+  await MakeRequest<void>("/User/Logout", {
     method: "POST",
     body: JSON.stringify({ token: token } as { token: string }),
     headers: { "Content-type": "application/json; charset=UTF-8" },

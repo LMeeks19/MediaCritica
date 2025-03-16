@@ -538,7 +538,7 @@ function AccountPage() {
               <div className="sub-header dark-shade">
                 <h2>Social</h2>
               </div>
-              <AppBar position="static" sx={{ paddingTop: "0 !important" }}>
+              <AppBar position="static" sx={{ marginTop: "0 !important" }}>
                 <Tabs
                   value={activeSocialTab}
                   onChange={(_e, v) => setActiveSocialTab(v)}
