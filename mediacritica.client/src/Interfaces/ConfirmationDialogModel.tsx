@@ -1,5 +1,4 @@
 export interface ConfirmationDialogModel {
-  show: boolean;
   title: string;
   dialog: string;
   cancel_text: string;

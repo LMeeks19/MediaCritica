@@ -157,10 +157,11 @@ button:disabled {
     color: var(--light-dark) !important;
     border: 1px solid var(--light-dark) !important;
     transition: none !important;
-    font-family: "Orbitron";
-    padding: 6px 10px;
-    letter-spacing: 2px;
-    font-size: 10px;
+    font-family: "Orbitron" !important;
+    padding: 6px 10px !important;
+    letter-spacing: 2px !important;
+    font-size: 10px !important;
+    transition: backgorund-color 0.3s ease-in-out, color 0.3s ease-in-out !important;
 
     &.Mui-selected,
     &.Mui-selected:hover {
@@ -169,8 +170,37 @@ button:disabled {
     }
 
     &:hover {
-      background-color: var(--palette-colour-faded);
+      background-color: var(--palette-colour-faded) !important;
     }
+
+    .MuiSvgIcon-root {
+      width: 24px !important;
+      height: 24px !important;
+    }
+  }
+}
+
+.MuiButton-root {
+  color: whitesmoke !important;
+  background-color: var(--palette-colour) !important;
+  border: 1px solid var(--light-dark) !important;
+  transition: none !important;
+  font-family: "Orbitron" !important;
+  padding: 6px 10px !important;
+  letter-spacing: 2px !important;
+  font-size: 10px !important;
+  min-width: fit-content !important;
+  transition: backgorund-color 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+  &:hover {
+    background-color: var(--light-dark) !important;
+    color: var(--palette-colour) !important;
+    border-color: var(--palette-colour) !important;
+  }
+
+  .MuiSvgIcon-root {
+    width: 24px !important;
+    height: 24px !important;
   }
 }
 
@@ -317,20 +347,9 @@ button:disabled {
   }
 }
 
-.MuiButton-root {
-  border-color: whitesmoke !important;
-  color: whitesmoke !important;
-  min-width: fit-content !important;
-  padding: 0 0.75rem !important;
-
-  .MuiSvgIcon-root {
-    font-size: 1.75rem;
-  }
-}
-
 .MuiAutocomplete-paper {
   box-shadow: 0 5px 15px 0 black !important;
-} 
+}
 
 .MuiPaper-root {
   background-color: var(--dark-light) !important;

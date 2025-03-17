@@ -33,6 +33,8 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  Button,
+  ButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ReviewModel } from "../Interfaces/ReviewModel";
@@ -52,7 +54,6 @@ import ViewColumnIcon from "@mui/icons-material/ViewColumnOutlined";
 import TableRowsIcon from "@mui/icons-material/TableRowsOutlined";
 import DeleteAccountAction from "../Components/DeleteAccountAction";
 import AddIcon from "@mui/icons-material/Add";
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortIcon from "@mui/icons-material/Sort";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
@@ -62,6 +63,10 @@ import MilestonesAccordion from "../Components/MilestonesAccordion";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
 import { LogoutUser } from "../Helpers/AuthenticationHelper";
+import GameIcon from "@mui/icons-material/SportsEsportsOutlined";
+import MovieIcon from "@mui/icons-material/MovieOutlined";
+import SeriesIcon from "@mui/icons-material/LiveTvOutlined";
+import EpisodeIcon from "@mui/icons-material/SubscriptionsOutlined";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -78,8 +83,9 @@ function AccountPage() {
   }
   const [reviewsBreakdown, setReviewsBreakdown] = useState<number[]>([]);
 
-  const [selectedReviewFilter, setSelectedReviewFilter] =
-    useState<string>("None");
+  const [selectedReviewFilter, setSelectedReviewFilter] = useState<string[]>(
+    []
+  );
   const [backlog, setBacklog] = useState<BacklogObjectModel>(
     {} as BacklogObjectModel
   );
@@ -190,16 +196,9 @@ function AccountPage() {
     setIsLoading(false);
   }
 
-  function filteredReviews() {
-    if (selectedReviewFilter === MediaType.Movie)
-      return reviews.filter((review) => review.mediaType === MediaType.Movie);
-    else if (selectedReviewFilter === MediaType.Series)
-      return reviews.filter((review) => review.mediaType === MediaType.Series);
-    else if (selectedReviewFilter === MediaType.Game)
-      return reviews.filter((review) => review.mediaType === MediaType.Game);
-    else if (selectedReviewFilter === MediaType.Episode)
-      return reviews.filter((review) => review.mediaType === MediaType.Episode);
-    return reviews;
+  function filteredReviews(items: ReviewModel[], filter: string[]) {
+    if (filter.length === 0) return items;
+    return items.filter((item) => filter.includes(item.mediaType));
   }
 
   const handleDragStart = (
@@ -242,8 +241,8 @@ function AccountPage() {
       targetStage === "backlog"
         ? BacklogCategoryType.Backlog
         : targetStage === "inProgress"
-          ? BacklogCategoryType.InProgress
-          : BacklogCategoryType.Finished;
+        ? BacklogCategoryType.InProgress
+        : BacklogCategoryType.Finished;
 
     UpdateBacklogState(movedItem.id, newCategory);
 
@@ -277,15 +276,9 @@ function AccountPage() {
     return (updatedBacklog.totalBacklogCount -= 1);
   }
 
-  function filtered(items: BacklogModel[], filter: number): BacklogModel[] {
-    if (filter === 1) {
-      return items.filter((item) => item.mediaType === MediaType.Movie) ?? [];
-    } else if (filter === 2) {
-      return items.filter((item) => item.mediaType === MediaType.Series) ?? [];
-    } else if (filter === 3) {
-      return items.filter((item) => item.mediaType === MediaType.Game) ?? [];
-    }
-    return items ?? [];
+  function filtered(items: BacklogModel[], filter: string[]): BacklogModel[] {
+    if (filter.length === 0) return items ?? [];
+    return items.filter((item) => filter.includes(item.mediaType)) ?? [];
   }
 
   function sorted(items: BacklogModel[], sorter: number): BacklogModel[] {
@@ -324,7 +317,7 @@ function AccountPage() {
     items: BacklogModel[];
     totalItems: number;
   }) {
-    const [selectedFilter, setSelectedFilter] = useState<number>(0);
+    const [selectedFilter, setSelectedFilter] = useState<string[]>([]);
     const [selectedSorter, setSelectedSorter] = useState<number>(0);
 
     return (
@@ -332,12 +325,7 @@ function AccountPage() {
         <div className="sub-header palette">
           <h2>{title}</h2>
           <div className="actions">
-            <FormControl
-              variant="outlined"
-              sx={{ width: 250 }}
-              disabled={items?.length === 0}
-              fullWidth
-            >
+            <FormControl variant="outlined" sx={{ width: 250 }} fullWidth>
               <InputLabel>Sort</InputLabel>
               <Select
                 label="Sort"
@@ -355,30 +343,30 @@ function AccountPage() {
                 <MenuItem value={3}>Aplhabetical (Z-A)</MenuItem>
               </Select>
             </FormControl>
-
-            <FormControl
-              variant="outlined"
-              sx={{ width: 150 }}
-              disabled={items?.length === 0}
-              fullWidth
+            <ToggleButtonGroup
+              value={selectedFilter}
+              onChange={(e, v) => {
+                e.stopPropagation();
+                if (v !== null) setSelectedFilter(v);
+                else setSelectedFilter((prev) => prev.filter((f) => f !== v));
+              }}
             >
-              <InputLabel>Type</InputLabel>
-              <Select
-                label="Type"
-                value={selectedFilter}
-                onChange={(e) => setSelectedFilter(Number(e.target.value))}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <FilterAltOutlinedIcon />
-                  </InputAdornment>
-                }
-              >
-                <MenuItem value={0}>All</MenuItem>
-                <MenuItem value={1}>Movies</MenuItem>
-                <MenuItem value={2}>Series</MenuItem>
-                <MenuItem value={3}>Games</MenuItem>
-              </Select>
-            </FormControl>
+              <ToggleButton value={MediaType.Movie}>
+                <CustomTooltip title="Movies" arrow>
+                  <MovieIcon />
+                </CustomTooltip>
+              </ToggleButton>
+              <ToggleButton value={MediaType.Series}>
+                <CustomTooltip title="Series" arrow>
+                  <SeriesIcon />
+                </CustomTooltip>
+              </ToggleButton>
+              <ToggleButton value={MediaType.Game}>
+                <CustomTooltip title="Games" arrow>
+                  <GameIcon />
+                </CustomTooltip>
+              </ToggleButton>
+            </ToggleButtonGroup>
           </div>
         </div>
         <div className="items-container">
@@ -392,7 +380,7 @@ function AccountPage() {
             {filtered(items, selectedFilter).length === 0 ? (
               <div
                 className={`flex items-center justify-center w-full ${
-                  selectedBacklogLayout === 0 && "h-[281.25px]"
+                  selectedBacklogLayout === 0 && "h-[225px]"
                 }`}
               >
                 No {title} Media
@@ -478,14 +466,17 @@ function AccountPage() {
           <div className="account-tab" tabIndex={0} hidden={activeTab !== 0}>
             <div className="sub-header dark-shade">
               <h2>Details</h2>
-              <button
-                className="logout-btn"
-                onClick={async () => {
-                  await LogoutUser(setNotificationsObject, setUser);
-                }}
-              >
-                Logout <LogoutIcon fontSize="small" />
-              </button>
+              <ButtonGroup>
+                <Button
+                  onClick={async () => {
+                    await LogoutUser(setNotificationsObject, setUser);
+                  }}
+                >
+                  <CustomTooltip title="Logout" arrow>
+                    <LogoutIcon fontSize="small" />
+                  </CustomTooltip>
+                </Button>
+              </ButtonGroup>
             </div>
             {isLoading ? (
               <Loader />
@@ -664,87 +655,104 @@ function AccountPage() {
               <div className="sub-header dark-shade">
                 <h2>Reviews</h2>
                 <div className="actions">
-                  <FormControl variant="outlined" sx={{ width: 250 }}>
-                    <InputLabel>Filter</InputLabel>
-                    <Select
-                      label="Filter"
-                      value={selectedReviewFilter}
-                      onChange={(e) => setSelectedReviewFilter(e.target.value)}
-                    >
-                      <MenuItem value="None">None</MenuItem>
-                      <MenuItem value={MediaType.Movie}>Movies</MenuItem>
-                      <MenuItem value={MediaType.Series}>Series</MenuItem>
-                      <MenuItem value={MediaType.Game}>Games</MenuItem>
-                      <MenuItem value={MediaType.Episode}>Episodes</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <ToggleButtonGroup
+                    value={selectedReviewFilter}
+                    onChange={(e, v) => {
+                      e.stopPropagation();
+                      if (v !== null) setSelectedReviewFilter(v);
+                      else
+                        setSelectedReviewFilter((prev) =>
+                          prev.filter((f) => f !== v)
+                        );
+                    }}
+                  >
+                    <ToggleButton value={MediaType.Movie}>
+                      <CustomTooltip title="Movies" arrow>
+                        <MovieIcon />
+                      </CustomTooltip>
+                    </ToggleButton>
+                    <ToggleButton value={MediaType.Series}>
+                      <CustomTooltip title="Series" arrow>
+                        <SeriesIcon />
+                      </CustomTooltip>
+                    </ToggleButton>
+                    <ToggleButton value={MediaType.Game}>
+                      <CustomTooltip title="Games" arrow>
+                        <GameIcon />
+                      </CustomTooltip>
+                    </ToggleButton>
+                    <ToggleButton value={MediaType.Episode}>
+                      <CustomTooltip title="Episodes" arrow>
+                        <EpisodeIcon />
+                      </CustomTooltip>
+                    </ToggleButton>
+                  </ToggleButtonGroup>
                 </div>
               </div>
               {isLoading ? (
                 <Loader />
               ) : (
                 <div className="layout">
-                  {filteredReviews().length === 0 ? (
-                    <div className="reviews empty">
-                      No{" "}
-                      {selectedReviewFilter !== "None"
-                        ? CapitaliseFirstLetter(selectedReviewFilter)
-                        : "Media"}{" "}
-                      Reviews
+                  {filteredReviews(reviews, selectedReviewFilter).length ===
+                  0 ? (
+                    <div className="reviews">
+                      <div className="empty">No Reviews</div>
                     </div>
                   ) : (
                     <div className="reviews">
-                      {filteredReviews().map((review) => {
-                        return (
-                          <Card key={review.id}>
-                            <img
-                              className="image"
-                              src={review.mediaPoster?.replace(
-                                "300.jpg",
-                                "180.jpg"
-                              )}
-                              alt={review.mediaTitle}
-                            />
-                            <CardActionArea
-                              onClick={() =>
-                                navigate(
-                                  `/media/${review.mediaId}/view-review/${review.id}}`,
-                                  {
-                                    state: { reviewId: review.id },
-                                  }
-                                )
-                              }
-                            >
-                              <CardMedia component="div" />
-                              <CardHeader title={review.title} />
-                              <Divider />
-                              <CardContent>
-                                <Typography>{review.mediaTitle}</Typography>
-                                <Typography>
-                                  {format(review.date, "do MMMM yyyy")}
-                                </Typography>
-                                <div className="flex justify-around">
+                      {filteredReviews(reviews, selectedReviewFilter).map(
+                        (review) => {
+                          return (
+                            <Card key={review.id}>
+                              <img
+                                className="image"
+                                src={review.mediaPoster?.replace(
+                                  "300.jpg",
+                                  "180.jpg"
+                                )}
+                                alt={review.mediaTitle}
+                              />
+                              <CardActionArea
+                                onClick={() =>
+                                  navigate(
+                                    `/media/${review.mediaId}/view-review/${review.id}}`,
+                                    {
+                                      state: { reviewId: review.id },
+                                    }
+                                  )
+                                }
+                              >
+                                <CardMedia component="div" />
+                                <CardHeader title={review.title} />
+                                <Divider />
+                                <CardContent>
+                                  <Typography>{review.mediaTitle}</Typography>
                                   <Typography>
-                                    {CapitaliseFirstLetter(review.mediaType)}
+                                    {format(review.date, "do MMMM yyyy")}
                                   </Typography>
-                                  <Typography
-                                    component="div"
-                                    className="flex items-center gap-1"
-                                  >
-                                    <GradeIcon
-                                      style={{
-                                        fontSize: 14,
-                                        color: "var(--rating-star)",
-                                      }}
-                                    />
-                                    <div className="">{review.rating}</div>
-                                  </Typography>
-                                </div>
-                              </CardContent>
-                            </CardActionArea>
-                          </Card>
-                        );
-                      })}
+                                  <div className="flex justify-around">
+                                    <Typography>
+                                      {CapitaliseFirstLetter(review.mediaType)}
+                                    </Typography>
+                                    <Typography
+                                      component="div"
+                                      className="flex items-center gap-1"
+                                    >
+                                      <GradeIcon
+                                        style={{
+                                          fontSize: 14,
+                                          color: "var(--rating-star)",
+                                        }}
+                                      />
+                                      <div className="">{review.rating}</div>
+                                    </Typography>
+                                  </div>
+                                </CardContent>
+                              </CardActionArea>
+                            </Card>
+                          );
+                        }
+                      )}
                       <div
                         className={`flex justify-center items-center p-6 ${
                           reviews.length === user.totalReviews && "hidden"

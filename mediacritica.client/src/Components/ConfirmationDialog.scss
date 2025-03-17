@@ -1,87 +1,11 @@
-/* Blur Background */
-.background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(4px);
-  z-index: 999;
-}
+.cancel {
+  background-color: transparent !important;
+  color: var(--light-dark) !important;
+  transition: background-color 0.3s ease-in-out !important;
 
-/* Modal Box Styling */
-.modal {
-  background-color: var(--dark-light);
-  box-shadow: 0 4px 6px #0000001a;
-  border-radius: 20px;
-  padding: 0;
-  min-width: 300px;
-  overflow: hidden;
-  z-index: 1000;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* Modal Header */
-  .header {
+  &:hover {
     background-color: var(--palette-colour) !important;
     color: whitesmoke !important;
-    margin: 0 !important;
-    padding: 15px 20px !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    box-shadow: 0 2px 4px #0000001a !important;
-    width: 100% !important;
-
-    .title {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    /* Close (X) Button */
-    .close {
-      font-size: 24px;
-      color: whitesmoke;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: lightgray;
-    }
-  }
-
-  .dialog {
-    font-size: 14px;
-    color: var(--light-dark);
-    margin: 0 0 0;
-    padding: 15px 20px;
-  }
-
-  /* Button Container */
-  .buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 15px 20px;
-
-    .cancel-btn {
-      border-color: var(--light-dark);
-      color: var(--light-dark);
-    }
-
-    .cancel-btn:hover {
-      background-color: var(--light-dark);
-      color: var(--dark-light);
-    }
-
-    .confirm-btn {
-      color: var(--light-dark);
-      border-color: var(--palette-colour);
-    }
-
-    .confirm-btn:hover {
-      background-color: var(--palette-colour);
-      color: whitesmoke;
-    }
+    border-color: whitesmoke !important;
   }
 }

@@ -95,7 +95,7 @@ function MediaPage() {
       mediaPoster: media.poster,
       mediaTitle: media.title,
       addedDate: new Date(),
-    } as unknown as BacklogModel;
+    } as BacklogModel;
 
     await PostBacklog(backlog);
 

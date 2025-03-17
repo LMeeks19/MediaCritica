@@ -1,45 +1,46 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { ConfirmationDialogState, userState } from "../State/GlobalState";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { DeleteUser } from "../Server/Server";
 import { UserModel } from "../Interfaces/UserModel";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import { Button, ButtonGroup } from "@mui/material";
+import { CustomTooltip } from "./Tooltip";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { useState } from "react";
 
 function DeleteAccountAction() {
   const [user, setUser] = useRecoilState(userState);
-  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const deleteAccountDialog = {
+    title: "Delete Account",
+    dialog: "This can't be undone",
+    cancel_text: "Cancel",
+    confirm_text: "Delete",
+    confirm_action: () => DeleteAccount(),
+  } as ConfirmationDialogModel;
 
   async function DeleteAccount() {
     await DeleteUser(user.id);
     setUser({} as UserModel);
   }
 
-  const deleteAccountDialog = {
-    show: true,
-    title: "Delete Account",
-    dialog: "This can't be undone",
-    cancel_text: "Cancel",
-    confirm_text: "Delete",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
-
   return (
     <div className="info-item">
       <div className="info-label">Delete Account</div>
       <div className="info-value" />
-      <div className="info-action">
-        <button
-          className="delete-btn"
-          onClick={() =>
-            setConfirmationDialog({
-              ...deleteAccountDialog,
-              confirm_action: () => DeleteAccount(),
-            })
-          }
-        >
-          Delete <DeleteIcon fontSize="small" />
-        </button>
-      </div>
+      <ButtonGroup className="info-action">
+        <Button onClick={() => setIsDialogOpen(true)}>
+          <CustomTooltip title="Delete Account" arrow>
+            <DeleteIcon fontSize="small" />
+          </CustomTooltip>
+        </Button>
+      </ButtonGroup>
+      <ConfirmationDialog
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        data={deleteAccountDialog}
+      />
     </div>
   );
 }

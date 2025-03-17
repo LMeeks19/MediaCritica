@@ -11,8 +11,8 @@ import {
   UpdateReview,
 } from "../Server/Server";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { ConfirmationDialogState, userState } from "../State/GlobalState";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
 import { formatDistanceToNowStrict } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
@@ -28,6 +28,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import millify from "millify";
 import { MediaType } from "../Enums/MediaType";
+import ConfirmationDialog from "../Components/ConfirmationDialog";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -38,7 +39,6 @@ function ViewReviewPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
-  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
   const [user, setUser] = useRecoilState(userState);
   const [engagement, setEngagement] = useState<number | null>(null);
 
@@ -128,31 +128,33 @@ function ViewReviewPage() {
   }
 
   const deleteReviewDialog = {
-    show: true,
     title: "Delete review",
     dialog: "This can't be undone",
     cancel_text: "Cancel",
     confirm_text: "Delete",
     confirm_action: () => RemoveReview(),
-  } as unknown as ConfirmationDialogModel;
+  } as ConfirmationDialogModel;
 
   const cancelEditReviewDialog = {
-    show: true,
     title: "Discard unsaved changes",
     dialog: "This will delete all edits since you last saved",
     cancel_text: "Keep Editing",
     confirm_text: "Discard",
     confirm_action: () => ResetReviewEdit(),
-  } as unknown as ConfirmationDialogModel;
+  } as ConfirmationDialogModel;
 
   const saveReviewDialog = {
-    show: true,
+    show: false,
     title: "Save changes",
     dialog: "This will save all changes made to this reiew",
     cancel_text: "Keep Editing",
     confirm_text: "Save",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
+    confirm_action: () => PutReview(),
+  } as ConfirmationDialogModel;
+
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [confirmationDialog, setConfirmationDialog] =
+    useState<ConfirmationDialogModel>({} as ConfirmationDialogModel);
 
   return (
     <div className="viewreviewpage-container">
@@ -215,10 +217,10 @@ function ViewReviewPage() {
                         <ToggleButton
                           value="delete"
                           className="btn"
-                          onClick={() =>
-                            setConfirmationDialog(deleteReviewDialog)
-                          }
-                          disabled={isEditing}
+                          onClick={() => {
+                            setConfirmationDialog(deleteReviewDialog);
+                            setIsDialogOpen(true);
+                          }}
                         >
                           <DeleteIcon />
                         </ToggleButton>
@@ -228,9 +230,10 @@ function ViewReviewPage() {
                         <ToggleButton
                           value="cancel"
                           className="btn"
-                          onClick={() =>
-                            setConfirmationDialog(cancelEditReviewDialog)
-                          }
+                          onClick={() => {
+                            setConfirmationDialog(cancelEditReviewDialog);
+                            setIsDialogOpen(true);
+                          }}
                         >
                           <CancelIcon />
                         </ToggleButton>
@@ -329,10 +332,8 @@ function ViewReviewPage() {
                 className="review-form"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setConfirmationDialog({
-                    ...saveReviewDialog,
-                    confirm_action: () => PutReview(),
-                  });
+                  setConfirmationDialog(saveReviewDialog);
+                  setIsDialogOpen(true);
                 }}
               >
                 <div className="title-section">
@@ -381,6 +382,11 @@ function ViewReviewPage() {
           )}
         </div>
       )}
+      <ConfirmationDialog
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        data={confirmationDialog}
+      />
     </div>
   );
 }

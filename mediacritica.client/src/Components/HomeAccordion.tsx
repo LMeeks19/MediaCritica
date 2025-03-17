@@ -43,7 +43,7 @@ const MediaGrid: FC<{
   const navigate = useNavigate();
 
   function filtered(items: MediaSummaryModel[]) {
-    if (filters.length === 0 || filters.length === 0) return items;
+    if (filters.length === 0) return items;
     return items.filter((item) => filters.includes(item.type));
   }
 

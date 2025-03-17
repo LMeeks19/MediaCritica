@@ -127,7 +127,8 @@ export async function UpdateUser(
 
 export async function DeleteUser(userId: number): Promise<RequestValue> {
   const response = await MakeRequest<RequestValue>(
-    `/User/DeleteUser/${userId}`
+    `/User/DeleteUser/${userId}`,
+    { method: "DELETE" }
   );
   return response;
 }

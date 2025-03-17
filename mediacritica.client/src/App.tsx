@@ -2,7 +2,6 @@ import "./App.scss";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router/Router";
 import { SnackbarProvider } from "notistack";
-import ConfirmationDialog from "./Components/ConfirmationDialog";
 import { useEffect, useState } from "react";
 import NotificationHub from "./Hubs/NotificationHub";
 import { useRecoilState } from "recoil";
@@ -64,7 +63,6 @@ function App() {
       style={{ color: "whitesmoke" }}
     >
       <div className="wrapper">
-        <ConfirmationDialog />
         {isLoading ? <Loader /> : <RouterProvider router={router} />}
       </div>
     </SnackbarProvider>

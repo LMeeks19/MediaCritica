@@ -41,29 +41,5 @@
 
   .info-action {
     display: flex;
-    gap: 1rem;
-  }
-
-  .cancel-btn {
-    border-color: var(--light-dark);
-  }
-
-  .cancel-btn:not(:disabled):hover {
-    background-color: var(--light-dark);
-    color: var(--dark-light);
-  }
-
-  .edit-btn,
-  .save-btn,
-  .delete-btn {
-    background-color: var(--palette-colour);
-    color: whitesmoke;
-  }
-
-  .edit-btn:not(:disabled):hover,
-  .save-btn:not(:disabled):hover,
-  .delete-btn:not(:disabled):hover {
-    background-color: light-dark(#242424, whitesmoke);
-    color: var(--palette-colour);
   }
 }
