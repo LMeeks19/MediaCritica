@@ -1,6 +1,5 @@
 import "./LoginPage.scss";
 import {
-  AppBar,
   Tabs,
   Tab,
   Button,
@@ -8,15 +7,12 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import { FormEvent, Fragment, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UserModel } from "../Interfaces/UserModel";
 import TopBar from "../Components/TopBar";
-import {
-  areCookiesEnabled,
-  storeAuthToken,
-} from "../Helpers/AuthenticationHelper";
+import { storeAuthToken } from "../Helpers/AuthenticationHelper";
 import { useNavigate } from "react-router-dom";
 import { UserLoginModel } from "../Interfaces/UserLoginModel";
 import { Login, PostUser } from "../Server/Server";
@@ -44,10 +40,10 @@ function LoginPage() {
       password: password,
       rememberMe: rememberMe,
     } as UserLoginModel);
-    console.log(userObject);
-    if (userObject.user !== null) {
+    if (userObject.user !== null && userObject.user !== undefined) {
       setUser(userObject.user);
-      if (userObject.authToken !== null) storeAuthToken(userObject.authToken);
+      if (userObject.authToken !== null && userObject.authToken !== undefined)
+        storeAuthToken(userObject.authToken);
       setThemePalette(userObject.user.preference);
       navigate("/account");
     }
@@ -118,7 +114,7 @@ function LoginPage() {
                     sx={{ color: "whitesmoke" }}
                     value={rememberMe}
                     onChange={() => setRememebrMe((prev) => !prev)}
-                    disabled={!areCookiesEnabled()}
+                    disabled={!navigator.cookieEnabled}
                   />
                 }
                 label="Remember Me"
@@ -179,7 +175,9 @@ function LoginPage() {
                 autoComplete="new-password"
                 required
               />
-              <Button className="submit" type="submit">Create Account</Button>
+              <Button className="submit" type="submit">
+                Create Account
+              </Button>
             </form>
           </div>
         </div>

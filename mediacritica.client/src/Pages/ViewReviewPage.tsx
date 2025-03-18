@@ -1,5 +1,5 @@
 import "./ViewReviewPage.scss";
-import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
@@ -212,40 +212,39 @@ function ViewReviewPage() {
                 <div className="flex gap-2">
                   {review.reviewerId === user.id &&
                     (!isEditing ? (
-                      <ToggleButtonGroup>
-                        <ToggleButton
-                          value="edit"
-                          className="btn"
-                          onClick={() => setIsEditing(true)}
-                        >
-                          <EditOutlinedIcon />
-                        </ToggleButton>
-                        <ToggleButton
+                      <ButtonGroup>
+                        <Button value="edit" onClick={() => setIsEditing(true)}>
+                          <CustomTooltip title="Edit" arrow>
+                            <EditOutlinedIcon />
+                          </CustomTooltip>
+                        </Button>
+                        <Button
                           value="delete"
-                          className="btn"
                           onClick={() => {
                             setConfirmationDialog(deleteReviewDialog);
                             setIsDialogOpen(true);
                           }}
                         >
-                          <DeleteIcon />
-                        </ToggleButton>
-                      </ToggleButtonGroup>
+                          <CustomTooltip title="Delete" arrow>
+                            <DeleteIcon />
+                          </CustomTooltip>
+                        </Button>
+                      </ButtonGroup>
                     ) : (
-                      <ToggleButtonGroup>
-                        <ToggleButton
+                      <ButtonGroup>
+                        <Button
                           value="cancel"
-                          className="btn"
                           onClick={() => {
                             setConfirmationDialog(cancelEditReviewDialog);
                             setIsDialogOpen(true);
                           }}
                         >
-                          <CancelIcon />
-                        </ToggleButton>
-                        <ToggleButton
+                          <CustomTooltip title="Cancel" arrow>
+                            <CancelIcon />
+                          </CustomTooltip>
+                        </Button>
+                        <Button
                           value="save"
-                          className="btn"
                           form="review-form"
                           type="submit"
                           disabled={
@@ -254,44 +253,28 @@ function ViewReviewPage() {
                             review.title === title
                           }
                         >
-                          <SaveIcon />
-                        </ToggleButton>
-                      </ToggleButtonGroup>
+                          <CustomTooltip title="Save" arrow>
+                            <SaveIcon />
+                          </CustomTooltip>
+                        </Button>
+                      </ButtonGroup>
                     ))}
-                  <CustomTooltip
-                    title={
-                      user.id === review.reviewerId
-                        ? "Cannot rate own review"
-                        : user.id === undefined && "Login to rate"
-                    }
-                    arrow
-                  >
-                    <span>
-                      <ToggleButtonGroup
-                        value={engagement}
-                        onChange={(_e, v: number) => {
-                          ToggleUserEngagement(v);
-                        }}
-                        disabled={
-                          user.id === undefined || review.reviewerId == user.id
-                        }
-                        exclusive
-                      >
-                        <ToggleButton value={0} className="btn engagement">
-                          <ThumbUpIcon />
-                          <div className="text">
-                            {millify(review.likes, { precision: 0 })}
-                          </div>
-                        </ToggleButton>
-                        <ToggleButton value={1} className="btn engagement">
-                          <ThumbDownIcon />
-                          <div className="text">
-                            {millify(review.dislikes, { precision: 0 })}
-                          </div>
-                        </ToggleButton>
-                      </ToggleButtonGroup>
-                    </span>
-                  </CustomTooltip>
+                  {review.reviewerId != user.id && user.id !== undefined && (
+                    <ButtonGroup>
+                      <Button onClick={() => ToggleUserEngagement(0)}>
+                        <ThumbUpIcon />
+                        <div className="text">
+                          {millify(review.likes, { precision: 0 })}
+                        </div>
+                      </Button>
+                      <Button onClick={() => ToggleUserEngagement(1)}>
+                        <ThumbDownIcon />
+                        <div className="text">
+                          {millify(review.dislikes, { precision: 0 })}
+                        </div>
+                      </Button>
+                    </ButtonGroup>
+                  )}
                 </div>
               </div>
               <div className="review-date">

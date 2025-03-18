@@ -21,10 +21,6 @@ export function getAuthToken() {
   return match ? match[2] : null;
 }
 
-export function areCookiesEnabled() {
-  return navigator.cookieEnabled;
-}
-
 export async function LogoutUser(
   setNotificationsObject: SetterOrUpdater<NotificationModel[]>,
   setUser: SetterOrUpdater<UserModel>

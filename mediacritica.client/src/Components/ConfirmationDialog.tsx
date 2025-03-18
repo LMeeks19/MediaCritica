@@ -1,4 +1,3 @@
-import "./ConfirmationDialog.scss";
 import {
   Button,
   ButtonGroup,
@@ -24,7 +23,7 @@ function ConfirmationDialog(props: {
       <Divider orientation="horizontal" />
       <DialogActions>
         <ButtonGroup>
-          <Button className="cancel" onClick={() => props.setOpen(false)}>
+          <Button onClick={() => props.setOpen(false)}>
             <CustomTooltip title={props.data.cancel_text} arrow>
               {props.data.cancel_icon}
             </CustomTooltip>

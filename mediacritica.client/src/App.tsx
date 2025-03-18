@@ -23,7 +23,7 @@ function App() {
 
       if (token !== null) {
         var userObject = await AutoLogin(token);
-        if (userObject.user !== null) {
+        if (userObject.user !== null && userObject.user !== undefined) {
           storeAuthToken(userObject.authToken);
           setUser(userObject.user);
           setThemePalette(userObject.user.preference);

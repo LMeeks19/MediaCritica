@@ -19,7 +19,7 @@ namespace MediaCritica.Server.Helpers
             return user;
         }
 
-        public async Task<User> GetUser(string? email = null, int? id = null)
+        public async Task<User?> GetUser(string? email = null, int? id = null)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Preference)
@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Helpers
                 .Include(u => u.Followers)
                 .Include(u => u.Following)
                 .Include(u => u.Notifications)
-                .SingleAsync(u => u.Email == email || u.Id == id);
+                .SingleOrDefaultAsync(u => u.Email == email || u.Id == id);
 
             return user;
         }
