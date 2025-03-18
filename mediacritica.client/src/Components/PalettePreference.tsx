@@ -12,6 +12,7 @@ import { CustomTooltip } from "./Tooltip";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { setThemePalette } from "../Helpers/ThemePaletteHelper";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 function PalettePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -41,18 +42,22 @@ function PalettePreference() {
     useState<ConfirmationDialogModel>({} as ConfirmationDialogModel);
 
   var cancelEditDetailDialog = {
-    title: "Discard unsaved changes",
+    title: "Discard unsaved changes?",
     dialog: "This will delete all edits since you last saved",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Discard",
+    confirm_icon: <DeleteIcon />,
     confirm_action: () => ResetPalette(),
   } as ConfirmationDialogModel;
 
   var saveDetailDialog = {
-    title: "Save changes",
+    title: "Save changes?",
     dialog: "This will save your changes",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Save",
+    confirm_icon: <SaveIcon />,
     confirm_action: () => ChangePreference(),
   } as ConfirmationDialogModel;
 

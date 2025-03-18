@@ -66,30 +66,41 @@ function LoginPage() {
     }
   }
 
-  return (
-    <Fragment>
-      <TopBar />
+  const handleTabChange = (tabIndex: number) => {
+    setForename("");
+    setSurname("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setRememebrMe(false);
+    setActiveTab(tabIndex);
+  };
 
-      <div className="login-container">
-        <AppBar className="login" position="static">
+  return (
+    <div className="login-container">
+      <TopBar hideBack />
+      <div className="login">
+        <div className="form-container">
           <Tabs
             value={activeTab}
-            onChange={(_e, v) => setActiveTab(v)}
+            onChange={(_e, v) => handleTabChange(v)}
             variant="fullWidth"
             centered
           >
-            <Tab label="LOGIN" />
-            <Tab label="SIGNUP" />
+            <Tab label="Login" />
+            <Tab label="Create Account" />
           </Tabs>
-          <div tabIndex={0} hidden={activeTab !== 0}>
-            <form onSubmit={(e) => LoginUser(e)}>
-              <div className="login-title">LOGIN</div>
+          <div className="content" tabIndex={0} hidden={activeTab !== 0}>
+            <form className="login-form" onSubmit={(e) => LoginUser(e)}>
+              <div className="title">LOGIN</div>
               <TextField
                 type="email"
                 name="email"
                 label="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                required
               />
               <TextField
                 type="password"
@@ -97,8 +108,9 @@ function LoginPage() {
                 label="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                required
               />
-
               <FormControlLabel
                 sx={{ gap: "0.5rem", marginRight: "auto" }}
                 control={
@@ -114,52 +126,65 @@ function LoginPage() {
               <Button type="submit">Login</Button>
             </form>
           </div>
-          <div tabIndex={1} hidden={activeTab !== 1}>
-            <form onSubmit={(e) => CreateAccount(e)}>
-              <div className="login-title">Create Account</div>
+          <div className="content" tabIndex={1} hidden={activeTab !== 1}>
+            <form className="create-form" onSubmit={(e) => CreateAccount(e)}>
+              <div className="title">CREATE ACCOUNT</div>
               <TextField
                 type="text"
+                className="forename"
                 name="forename"
                 label="Forename"
                 value={forename}
                 onChange={(e) => setForename(e.target.value)}
+                autoComplete="given-name"
+                required
               />
               <TextField
                 type="text"
+                className="surname"
                 name="surname"
                 label="Surname"
                 value={surname}
                 onChange={(e) => setSurname(e.target.value)}
+                autoComplete="family-name"
+                required
               />
-
               <TextField
                 type="email"
+                className="email"
                 name="email"
                 label="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                required
               />
               <TextField
                 type="password"
+                className="password"
                 name="password"
                 label="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
+                required
               />
               <TextField
                 type="password"
+                className="confirm_password"
                 name="confirm_password"
                 label="Confirm Password"
                 value={confirmPassowrd}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                autoComplete="new-password"
+                required
               />
-
-              <Button type="submit">Create Account</Button>
+              <Button className="submit" type="submit">Create Account</Button>
             </form>
           </div>
-        </AppBar>
+        </div>
       </div>
-    </Fragment>
+    </div>
   );
 }
 

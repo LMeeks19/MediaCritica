@@ -128,27 +128,33 @@ function ViewReviewPage() {
   }
 
   const deleteReviewDialog = {
-    title: "Delete review",
-    dialog: "This can't be undone",
+    title: "Delete review?",
+    dialog: "This can't be undone!",
     cancel_text: "Cancel",
+    cancel_icon: <CancelIcon />,
     confirm_text: "Delete",
+    confirm_icon: <DeleteIcon />,
     confirm_action: () => RemoveReview(),
   } as ConfirmationDialogModel;
 
   const cancelEditReviewDialog = {
-    title: "Discard unsaved changes",
+    title: "Discard unsaved changes?",
     dialog: "This will delete all edits since you last saved",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Discard",
+    confirm_icon: <DeleteIcon />,
     confirm_action: () => ResetReviewEdit(),
   } as ConfirmationDialogModel;
 
   const saveReviewDialog = {
     show: false,
-    title: "Save changes",
+    title: "Save changes?",
     dialog: "This will save all changes made to this reiew",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Save",
+    confirm_icon: <SaveIcon />,
     confirm_action: () => PutReview(),
   } as ConfirmationDialogModel;
 

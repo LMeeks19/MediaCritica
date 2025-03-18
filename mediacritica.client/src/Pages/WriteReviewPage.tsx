@@ -15,6 +15,7 @@ import Loader from "../Components/Loader";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import RestartAltIcon from "@mui/icons-material/RestartAltOutlined";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { MediaType } from "../Enums/MediaType";
 import ConfirmationDialog from "../Components/ConfirmationDialog";
 
@@ -39,10 +40,12 @@ function WriteReviewPage() {
   });
 
   const postReviewDialog = {
-    title: "Post review",
+    title: "Post review?",
     dialog: "This will post everything written in this review",
     cancel_text: "Keep Writing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Post",
+    confirm_icon: <PostAddIcon />,
     confirm_action: () => SubmitReview(),
   } as ConfirmationDialogModel;
 

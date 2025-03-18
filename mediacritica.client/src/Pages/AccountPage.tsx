@@ -448,7 +448,7 @@ function AccountPage() {
   return (
     user.id !== undefined && (
       <div className="accountpage-container">
-        <TopBar />
+        <TopBar hideBack />
         <div className="account">
           <AppBar position="static">
             <Tabs

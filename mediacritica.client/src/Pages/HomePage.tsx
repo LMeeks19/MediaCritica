@@ -18,7 +18,7 @@ function HomePage() {
   return (
     <div className="homepage-container">
       <div className="homepage">
-        <TopBar isHome={true} />
+        <TopBar hideBack />
         <div className="sections">
           <BaseAccordion
             title="Seasonal Picks"

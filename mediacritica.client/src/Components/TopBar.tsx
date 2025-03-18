@@ -17,16 +17,13 @@ import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
-import { resetThemePalette } from "../Helpers/ThemePaletteHelper";
-import { UserModel } from "../Interfaces/UserModel";
 import NotificationOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import { NotificationModel } from "../Interfaces/NotificationModel";
 import CustomAutoComplete from "./CustomAutocomplete";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { CustomTooltip } from "./Tooltip";
 import { LogoutUser } from "../Helpers/AuthenticationHelper";
 
-function TopBar(props: { isHome?: boolean }) {
+function TopBar(props: { hideBack?: boolean }) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const setNotifications = useSetRecoilState(notificationsState);
@@ -44,7 +41,7 @@ function TopBar(props: { isHome?: boolean }) {
     <div className="topbar">
       <div className="flex gap-2 ml-[1.25rem]">
         <IconButton
-          className={`${props.isHome && "invisible opacity-0 order-2"}`}
+          className={`${props.hideBack && "invisible opacity-0 order-2"}`}
           onClick={() => navigate(-1)}
         >
           <CustomTooltip title="Back" arrow>

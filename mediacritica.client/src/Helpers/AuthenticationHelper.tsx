@@ -6,7 +6,9 @@ import { resetThemePalette } from "./ThemePaletteHelper";
 import { NotificationModel } from "../Interfaces/NotificationModel";
 
 export function storeAuthToken(authToken: AuthToken) {
-  document.cookie = `authToken=${authToken.token};expires=${new Date(authToken.expiration).toUTCString()};path=/;Secure;SameSite=Strict`;
+  document.cookie = `authToken=${authToken.token};expires=${new Date(
+    authToken.expiration
+  ).toUTCString()};path=/;Secure;SameSite=Strict`;
 }
 
 export function deleteAuthToken() {
@@ -20,8 +22,7 @@ export function getAuthToken() {
 }
 
 export function areCookiesEnabled() {
-  document.cookie = "testcookie=test";
-  return document.cookie.indexOf("testcookie=") != -1;
+  return navigator.cookieEnabled;
 }
 
 export async function LogoutUser(
