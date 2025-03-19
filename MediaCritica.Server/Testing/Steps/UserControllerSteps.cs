@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Models;
+using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -9,6 +10,25 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class UserControllerSteps
     {
+        [When(@"I call Login with the following details")]
+        public async void WhenICallLoginWithTheFollowingDetails(Table table)
+        {
+            var userLoginModel = table.Rows[0].CreateInstance<UserLoginModel>();
+            GlobalSteps._response = await GlobalSteps._controller.UserController.Login(userLoginModel);
+        }
+
+        [When(@"I call AutoLogin with the token ""(.*)""")]
+        public async void WhenICallAutoLoginWithTheToken(string token)
+        {
+            GlobalSteps._response = await GlobalSteps._controller.UserController.AutoLogin(new TokenModel { Token = token });
+        }
+
+        [When(@"I call Logout with token ""(.*)""")]
+        public async void WhenICallLogoutWithToken(string token)
+        {
+            GlobalSteps._response = await GlobalSteps._controller.UserController.Logout(new TokenModel { Token = token });
+        }
+
         [When(@"I call GetUsersBySearch with search term ""(.*)""")]
         public void WhenICallGetUsersBySearchWithSearchTerm(string searchTerm)
         {
@@ -54,6 +74,55 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserSummary(userId);
         }
 
+        [Then(@"The UserAuthModel response should be")]
+        public void ThenTheUserAuthModelResponseShouldBe(Table table)
+        {
+            var row = table.Rows[0];
+            UserModel user = new()
+            {
+                Id = int.Parse(row["UserId"]),
+                Forename = row["Forename"],
+                Surname = row["Surname"],
+                Email = row["Email"],
+                Password = row["Password"],
+            };
+
+            AuthToken? authToken = null;
+            if (!string.IsNullOrEmpty(row["AuthTokenId"]))
+            {
+                authToken = new AuthToken
+                {
+                    Id = int.Parse(row["AuthTokenId"]),
+                    UserId = int.Parse(row["AuthUserId"]),
+                    Token = table.Header.Contains("Token") ? row["Token"] : null,
+                    Expiration = DateTime.Parse(row["Expiration"]),
+                };
+            }
+
+            var expectedAuthModel = new UserAuthModel
+            {
+                AuthToken = authToken,
+                User = user
+            };
+
+            var result = (OkObjectResult)GlobalSteps._response;
+            Assert.IsNotNull(result);
+            var actualUserAuthModel = result.Value as UserAuthModel;
+            Assert.IsNotNull(actualUserAuthModel);
+
+            Assert.AreEqual(expectedAuthModel.AuthToken?.Id, actualUserAuthModel.AuthToken?.Id);
+            Assert.AreEqual(expectedAuthModel.AuthToken?.UserId, actualUserAuthModel.AuthToken?.UserId);
+            Assert.AreEqual(expectedAuthModel.AuthToken?.Expiration, actualUserAuthModel.AuthToken?.Expiration);
+            if (table.Header.Contains("Token"))
+                Assert.AreEqual(expectedAuthModel.AuthToken?.Token, actualUserAuthModel.AuthToken?.Token);
+
+            Assert.AreEqual(expectedAuthModel.User.Id, actualUserAuthModel.User.Id);
+            Assert.AreEqual(expectedAuthModel.User.Forename, actualUserAuthModel.User.Forename);
+            Assert.AreEqual(expectedAuthModel.User.Surname, actualUserAuthModel.User.Surname);
+            Assert.AreEqual(expectedAuthModel.User.Email, actualUserAuthModel.User.Email);
+            Assert.AreEqual(expectedAuthModel.User.Password, actualUserAuthModel.User.Password);
+        }
+
         [Then(@"The UserModel response should be")]
         public void ThenTheUserModelResponseShouldBe(Table table)
         {
@@ -79,7 +148,6 @@ namespace MediaCritica.Server.Testing.Steps
                 },
             };
 
-            // Assert the user and preference properties
             Assert.AreEqual(actualUser.Id, expectedUser.Id);
             Assert.AreEqual(actualUser.Forename, expectedUser.Forename);
             Assert.AreEqual(actualUser.Surname, expectedUser.Surname);
@@ -100,7 +168,6 @@ namespace MediaCritica.Server.Testing.Steps
 
             var actualPreference = table.Rows[0].CreateInstance<PreferenceModel>();
 
-            // Assert the user and preference properties
             Assert.AreEqual(actualPreference.Id, expectedPreference.Id);
             Assert.AreEqual(actualPreference.Theme, expectedPreference.Theme);
             Assert.AreEqual(actualPreference.Palette, expectedPreference.Palette);

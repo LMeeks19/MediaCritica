@@ -6,7 +6,7 @@
 
         public (DateTime start, DateTime end) GetThisWeekRange()
         {
-            DateTime currentDate = _dateTimeProviderHelper.Now.Date;
+            DateTime currentDate = _dateTimeProviderHelper.UtcNow.Date;
 
             int daysSinceMonday = (int)currentDate.DayOfWeek - (int)DayOfWeek.Monday;
             daysSinceMonday = daysSinceMonday < 0 ? 6 : daysSinceMonday; // Back to current week monday
@@ -18,7 +18,7 @@
 
         public (DateTime start, DateTime end) GetThisMonthRange()
         {
-            DateTime currentDate = _dateTimeProviderHelper.Now.Date;
+            DateTime currentDate = _dateTimeProviderHelper.UtcNow.Date;
 
             DateTime startOfMonth = new(currentDate.Year, currentDate.Month, 1); // 1st day of current month
             DateTime endOfMonth = startOfMonth.AddMonths(1); // 1st day of next month
@@ -27,7 +27,7 @@
 
         public (DateTime start, DateTime end) GetThisYearRange()
         {
-            DateTime currentDate = _dateTimeProviderHelper.Now.Date;
+            DateTime currentDate = _dateTimeProviderHelper.UtcNow.Date;
 
             DateTime startOfYear = new(currentDate.Year, 1, 1); // Jan 1st of current year
             DateTime endOfYear = new(currentDate.Year + 1, 1, 1); // Jan 1st of next year
@@ -37,7 +37,7 @@
         public (DateTime start, DateTime end) GetAllTimeRange()
         {
             DateTime startOfAllTime = new(1753, 1, 1); // The earliest possible date allowed
-            DateTime endOfAllTime = _dateTimeProviderHelper.Now; // Current date
+            DateTime endOfAllTime = _dateTimeProviderHelper.UtcNow; // Current date
             return (startOfAllTime, endOfAllTime);
         }
 

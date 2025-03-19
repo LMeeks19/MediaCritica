@@ -2,11 +2,11 @@
 {
     public interface IDateTimeProviderHelper
     {
-        DateTime Now { get; }
+        DateTime UtcNow { get; }
     }
 
     public class DateTimeProviderHelper : IDateTimeProviderHelper
     {
-        public DateTime Now => DateTime.Now;
+        public DateTime UtcNow => DateTime.UtcNow;
     }
 }

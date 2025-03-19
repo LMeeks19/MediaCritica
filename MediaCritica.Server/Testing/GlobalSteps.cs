@@ -62,6 +62,14 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following auth tokens")]
+        public async void GivenIHaveTheFollowingAuthTokens(Table table)
+        {
+            var authTokens = table.CreateSet<AuthToken>().ToList();
+            await _dbContext.AuthTokens.AddRangeAsync(authTokens);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Given(@"I have the following notifications")]
         public async Task GivenIHaveTheFollowingNotifications(Table table)
         {

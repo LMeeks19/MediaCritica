@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class AuthenticationHelper(DatabaseContext databaseContext) : ControllerBase
+    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         public async Task<User?> AuthenticateUser(UserLoginModel userLoginModel)
         {
@@ -50,13 +51,18 @@ namespace MediaCritica.Server.Helpers
             {
                 UserId = userId,
                 Token = token,
-                Expiration = DateTime.UtcNow.AddDays(30)
+                Expiration = _dateTimeProviderHelper.UtcNow.AddDays(30)
             };
 
             await _databaseContext.AuthTokens.AddAsync(authToken);
             await _databaseContext.SaveChangesAsync();
 
             return authToken;
+        }
+
+        public bool HasTokenExpired(AuthToken authToken)
+        {
+            return _dateTimeProviderHelper.UtcNow > authToken.Expiration;
         }
 
         public async Task<AuthToken?> GetAuthToken(string token)
@@ -66,7 +72,7 @@ namespace MediaCritica.Server.Helpers
 
         public async Task<AuthToken> UpdateAuthToken(AuthToken authToken)
         {
-            authToken.Expiration = DateTime.UtcNow.AddDays(30);
+            authToken.Expiration = _dateTimeProviderHelper.UtcNow.AddDays(30);
             await _databaseContext.SaveChangesAsync();
 
             return authToken;

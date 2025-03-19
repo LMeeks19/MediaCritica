@@ -25,7 +25,7 @@ namespace MediaCritica.Server.Controllers
 
             var authToken = userLoginModel.RememberMe ? await _helpers.AuthenticationHelper.GenerateAuthToken(user.Id) : null;
 
-            return Ok(new
+            return Ok(new UserAuthModel
             {
                 AuthToken = authToken,
                 User = _mapper.UserMapper.MapUserModel(user),
@@ -40,7 +40,7 @@ namespace MediaCritica.Server.Controllers
             if (authToken == null)
                 return Unauthorized(new { Message = "Auto Login Failed" });
 
-            if (DateTime.UtcNow > authToken.Expiration)
+            if (_helpers.AuthenticationHelper.HasTokenExpired(authToken))
             {
                 _helpers.AuthenticationHelper.RemoveAuthToken(authToken.Id);
                 return Unauthorized(new { Message = "Authentication Expired" });
@@ -50,7 +50,7 @@ namespace MediaCritica.Server.Controllers
 
             var user = await _helpers.AuthenticationHelper.GetUser(id: authToken.UserId);
 
-            return Ok(new
+            return Ok(new UserAuthModel
             {
                 AuthToken = authToken,
                 User = _mapper.UserMapper.MapUserModel(user)
