@@ -34,7 +34,7 @@ function DeleteAccountAction() {
       <div className="info-value" />
       <ButtonGroup className="info-action">
         <Button onClick={() => setIsDialogOpen(true)}>
-          <CustomTooltip title="Delete Account" arrow>
+          <CustomTooltip title="Delete Account">
             <DeleteIcon fontSize="small" />
           </CustomTooltip>
         </Button>

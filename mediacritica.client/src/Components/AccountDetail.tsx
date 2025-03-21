@@ -108,7 +108,7 @@ function AccountDetail(props: AccountDetailsProps) {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Cancel" arrow>
+            <CustomTooltip title="Cancel">
               <CancelIcon />
             </CustomTooltip>
           </Button>
@@ -119,7 +119,7 @@ function AccountDetail(props: AccountDetailsProps) {
             type="submit"
             disabled={fieldValue.value.length === 0}
           >
-            <CustomTooltip title="Save" arrow>
+            <CustomTooltip title="Save">
               <SaveIcon />
             </CustomTooltip>
           </Button>
@@ -133,7 +133,7 @@ function AccountDetail(props: AccountDetailsProps) {
               })
             }
           >
-            <CustomTooltip title="Edit" arrow>
+            <CustomTooltip title="Edit">
               <EditOutlinedIcon />
             </CustomTooltip>
           </Button>

@@ -224,7 +224,7 @@ function MediaPage() {
                 <div className="title flex items-center gap-5 flex-wrap">
                   <h1>{media.title}</h1>
                   {userBacklogStatus ? (
-                    <CustomTooltip title="Remove from backlog" arrow>
+                    <CustomTooltip title="Remove from backlog">
                       <span>
                         <IconButton
                           className="heart"
@@ -241,7 +241,7 @@ function MediaPage() {
                           ? "Login to update backlog status"
                           : "Add to backlog"
                       }
-                      arrow
+                     
                     >
                       <span>
                         <IconButton
@@ -356,7 +356,7 @@ function MediaPage() {
                           })
                         }
                       >
-                        <CustomTooltip title="View all" arrow>
+                        <CustomTooltip title="View all">
                           <VisibilityIcon />
                         </CustomTooltip>
                       </Button>

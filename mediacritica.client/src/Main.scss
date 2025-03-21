@@ -18,10 +18,6 @@
   color: var(--light-dark);
   background-color: var(--dark-light);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-family: "Orbitron";
   letter-spacing: 2px;
 }
@@ -402,12 +398,11 @@ button:disabled {
 
 .MuiDialog-container {
   .MuiPaper-root {
-    border-radius: 20px !important;
 
     .MuiDialogTitle-root {
       background-color: var(--palette-colour) !important;
       color: whitesmoke;
-      padding: 1rem 2rem;
+      padding: 1rem 1.5rem;
       font-family: "Orbitron";
       font-size: 1.5rem;
       display: flex;
@@ -426,8 +421,8 @@ button:disabled {
     .MuiDialogContent-root {
       display: flex;
       flex-direction: column;
-      padding: 2rem 3rem !important;
-      gap: 2rem;
+      padding: 1rem;
+      gap: 1rem;
 
       &.MuiDialogContent-dividers {
         border-color: light-dark(gray, #333) !important;
@@ -494,7 +489,7 @@ button:disabled {
     }
 
     .MuiDialogActions-root {
-      padding: 1rem 2rem;
+      padding: 1rem;
 
       .reset-btn,
       .cancel-btn {
@@ -627,10 +622,7 @@ button:disabled {
   background-color: var(--palette-colour) !important;
   height: 40px !important;
   width: 40px !important;
-
-  &:hover {
-    background-color: #b62828 !important;
-  }
+  box-shadow: 0 0 10px 0 black !important;
 
   .MuiSvgIcon-root {
     color: whitesmoke !important;

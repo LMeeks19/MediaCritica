@@ -71,7 +71,7 @@ function ReviewsPage() {
               reviews.length === totalCount && "hidden"
             }`}
           >
-            <CustomTooltip title="Load more" arrow>
+            <CustomTooltip title="Load more">
               <span>
                 <Fab
                   disabled={reviews.length === totalCount}

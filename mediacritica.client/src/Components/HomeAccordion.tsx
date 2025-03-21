@@ -151,17 +151,17 @@ export const BaseAccordion: FC<SectionProps> = ({
             }}
           >
             <ToggleButton value={MediaType.Movie}>
-              <CustomTooltip title="Movies" arrow>
+              <CustomTooltip title="Movies">
                 <MovieIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Series}>
-              <CustomTooltip title="Series" arrow>
+              <CustomTooltip title="Series">
                 <SeriesIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Game}>
-              <CustomTooltip title="Games" arrow>
+              <CustomTooltip title="Games">
                 <GameIcon />
               </CustomTooltip>
             </ToggleButton>
@@ -244,17 +244,17 @@ export const TabbedAccordion: FC<{
             }}
           >
             <ToggleButton value={MediaType.Movie}>
-              <CustomTooltip title="Movies" arrow>
+              <CustomTooltip title="Movies">
                 <MovieIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Series}>
-              <CustomTooltip title="Series" arrow>
+              <CustomTooltip title="Series">
                 <SeriesIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Game}>
-              <CustomTooltip title="Games" arrow>
+              <CustomTooltip title="Games">
                 <GameIcon />
               </CustomTooltip>
             </ToggleButton>

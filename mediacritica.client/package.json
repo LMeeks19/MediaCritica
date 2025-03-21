@@ -39,6 +39,7 @@
     "react-drag-drop-container": "^5.2.0",
     "react-draggable": "^4.4.6",
     "react-indiana-drag-scroll": "^2.2.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^7.0.1",
     "react-scroll-ondrag": "^4.0.0",
     "react-spinners": "^0.14.1",

@@ -44,7 +44,7 @@ function StarRating(props: StarRatingProps) {
                 : "Write a review"
               : "Login to review"
           }
-          arrow
+         
         >
           <span>
             <button

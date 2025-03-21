@@ -97,7 +97,7 @@ function CustomAutoComplete() {
                   {selectedSearchTab === 0 ? (
                     <PermMediaIcon />
                   ) : (
-                    <CustomTooltip title="Activate media search" arrow>
+                    <CustomTooltip title="Activate media search">
                       <PermMediaIconOutlined
                         sx={{ cursor: "pointer" }}
                         onClick={(e) => handleTabClick(e, 0)}
@@ -109,7 +109,7 @@ function CustomAutoComplete() {
                   {selectedSearchTab === 1 ? (
                     <AccountCircleIcon />
                   ) : (
-                    <CustomTooltip title="Activate users search" arrow>
+                    <CustomTooltip title="Activate users search">
                       <AccountCircleOutlinedIcon
                         sx={{ cursor: "pointer" }}
                         onClick={(e) => handleTabClick(e, 1)}
@@ -178,7 +178,7 @@ function CustomAutoComplete() {
   return (
     <Autocomplete
       onClose={handleCloseAutocomplete}
-      sx={{ minWidth: 300, width: 1000 }}
+      sx={{ width: 1000 }}
       fullWidth
       autoComplete
       loading={isLoading}

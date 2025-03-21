@@ -25,10 +25,14 @@ import ImageIcon from "@mui/icons-material/ImageOutlined";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
+import CommentIcon from "@mui/icons-material/CommentOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import millify from "millify";
 import { MediaType } from "../Enums/MediaType";
 import ConfirmationDialog from "../Components/ConfirmationDialog";
+import ReactQuill from "react-quill";
+import { DeltaStatic } from "quill";
+import CommentsDialog from "../Components/CommentsDialog";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -41,6 +45,7 @@ function ViewReviewPage() {
   const [rating, setRating] = useState<number>(0);
   const [user, setUser] = useRecoilState(userState);
   const [engagement, setEngagement] = useState<number | null>(null);
+  const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
 
   const reviewId = location.state?.reviewId;
 
@@ -162,6 +167,16 @@ function ViewReviewPage() {
   const [confirmationDialog, setConfirmationDialog] =
     useState<ConfirmationDialogModel>({} as ConfirmationDialogModel);
 
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: ["", "center", "right", "justify"] }],
+      ["link"],
+    ],
+  };
+
   return (
     <div className="viewreviewpage-container">
       {isLoading ? (
@@ -209,150 +224,143 @@ function ViewReviewPage() {
                     </div>
                   )}
                 </div>
-                <div className="flex gap-2">
-                  {review.reviewerId === user.id &&
-                    (!isEditing ? (
-                      <ButtonGroup>
-                        <Button value="edit" onClick={() => setIsEditing(true)}>
-                          <CustomTooltip title="Edit" arrow>
-                            <EditOutlinedIcon />
-                          </CustomTooltip>
-                        </Button>
-                        <Button
-                          value="delete"
-                          onClick={() => {
-                            setConfirmationDialog(deleteReviewDialog);
-                            setIsDialogOpen(true);
-                          }}
-                        >
-                          <CustomTooltip title="Delete" arrow>
-                            <DeleteIcon />
-                          </CustomTooltip>
-                        </Button>
-                      </ButtonGroup>
-                    ) : (
-                      <ButtonGroup>
-                        <Button
-                          value="cancel"
-                          onClick={() => {
-                            setConfirmationDialog(cancelEditReviewDialog);
-                            setIsDialogOpen(true);
-                          }}
-                        >
-                          <CustomTooltip title="Cancel" arrow>
-                            <CancelIcon />
-                          </CustomTooltip>
-                        </Button>
-                        <Button
-                          value="save"
-                          form="review-form"
-                          type="submit"
-                          disabled={
-                            review.description === description &&
-                            review.rating === rating &&
-                            review.title === title
-                          }
-                        >
-                          <CustomTooltip title="Save" arrow>
-                            <SaveIcon />
-                          </CustomTooltip>
-                        </Button>
-                      </ButtonGroup>
-                    ))}
-                  {review.reviewerId != user.id && user.id !== undefined && (
-                    <ButtonGroup>
-                      <Button onClick={() => ToggleUserEngagement(0)}>
-                        <ThumbUpIcon />
-                        <div className="text">
-                          {millify(review.likes, { precision: 0 })}
-                        </div>
-                      </Button>
-                      <Button onClick={() => ToggleUserEngagement(1)}>
-                        <ThumbDownIcon />
-                        <div className="text">
-                          {millify(review.dislikes, { precision: 0 })}
-                        </div>
-                      </Button>
-                    </ButtonGroup>
-                  )}
+                <div className="review-date">
+                  {CapitaliseFirstLetter(
+                    formatDistanceToNowStrict(review.date)
+                  )}{" "}
+                  ago |{" "}
+                  <span
+                    className="reviewer"
+                    onClick={() =>
+                      navigate(`/view-user/${review.reviewerName}`, {
+                        state: {
+                          userId: review.reviewerId,
+                        },
+                      })
+                    }
+                  >
+                    {review.reviewerName}
+                  </span>
                 </div>
               </div>
-              <div className="review-date">
-                {CapitaliseFirstLetter(formatDistanceToNowStrict(review.date))}{" "}
-                ago |{" "}
-                <span
-                  className="reviewer"
-                  onClick={() =>
-                    navigate(`/view-user/${review.reviewerName}`, {
-                      state: {
-                        userId: review.reviewerId,
-                      },
-                    })
-                  }
-                >
-                  {review.reviewerName}
-                </span>
-              </div>
+              <ButtonGroup>
+                <Button onClick={() => setCommentsOpen(true)}>
+                  <CustomTooltip title="Comments (20)">
+                    <CommentIcon />
+                  </CustomTooltip>
+                </Button>
+                {user.id === review.reviewerId && !isEditing ? (
+                  <Button value="edit" onClick={() => setIsEditing(true)}>
+                    <CustomTooltip title="Edit">
+                      <EditOutlinedIcon />
+                    </CustomTooltip>
+                  </Button>
+                ) : (
+                  <Button
+                    value="cancel"
+                    onClick={() => {
+                      setConfirmationDialog(cancelEditReviewDialog);
+                      setIsDialogOpen(true);
+                    }}
+                  >
+                    <CustomTooltip title="Cancel">
+                      <CancelIcon />
+                    </CustomTooltip>
+                  </Button>
+                )}
+                {user.id === review.reviewerId && !isEditing ? (
+                  <Button
+                    value="delete"
+                    onClick={() => {
+                      setConfirmationDialog(deleteReviewDialog);
+                      setIsDialogOpen(true);
+                    }}
+                  >
+                    <CustomTooltip title="Delete">
+                      <DeleteIcon />
+                    </CustomTooltip>
+                  </Button>
+                ) : (
+                  <Button
+                    value="save"
+                    form="review-form"
+                    type="submit"
+                    disabled={
+                      review.description === description &&
+                      review.rating === rating &&
+                      review.title === title
+                    }
+                  >
+                    <CustomTooltip title="Save">
+                      <SaveIcon />
+                    </CustomTooltip>
+                  </Button>
+                )}
+                {user.id !== review.reviewerId && user.id !== undefined && (
+                  <CustomTooltip
+                    title={`Like (${millify(review.likes, {
+                      precision: 0,
+                    })})`}
+                   
+                  >
+                    <Button onClick={() => ToggleUserEngagement(0)}>
+                      <ThumbUpIcon />
+                    </Button>
+                  </CustomTooltip>
+                )}
+                {user.id !== review.reviewerId && user.id !== undefined && (
+                  <CustomTooltip
+                    title={`Dislike (${millify(review.dislikes, {
+                      precision: 0,
+                    })})`}
+                   
+                  >
+                    <Button onClick={() => ToggleUserEngagement(1)}>
+                      <ThumbDownIcon />
+                    </Button>
+                  </CustomTooltip>
+                )}
+              </ButtonGroup>
             </div>
-            {!isEditing ? (
-              <div className="review-details">
-                <div className="title-section">
-                  <h2>{review.title}</h2>
-                  <Rating
-                    value={rating}
-                    precision={0.5}
-                    sx={{ fontSize: "2.5rem" }}
-                    readOnly
-                    onChange={(_event, value) => setRating(value!)}
-                  />
-                </div>
-                <div className="description">
-                  {review.description
-                    .trim()
-                    .split("\n\n")
-                    .map((paragraph) => {
-                      return <p key={paragraph}>{paragraph}</p>;
-                    })}
-                </div>
-              </div>
-            ) : (
-              <form
-                id="review-form"
-                className="review-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setConfirmationDialog(saveReviewDialog);
-                  setIsDialogOpen(true);
-                }}
-              >
-                <div className="title-section">
-                  <input
-                    className="review-title"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    name="title"
-                    placeholder="Enter title..."
-                    maxLength={50}
-                    required
-                  />
-                  <Rating
-                    value={rating}
-                    precision={0.5}
-                    sx={{ fontSize: "2.5rem" }}
-                    onChange={(_event, value) => setRating(value!)}
-                  />
-                </div>
-                <textarea
-                  className="review-description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  name="description"
-                  placeholder="Write review..."
+            <form
+              id="review-form"
+              className="review-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setConfirmationDialog(saveReviewDialog);
+                setIsDialogOpen(true);
+              }}
+            >
+              <div className="title-section">
+                <input
+                  className="review-title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  name="title"
+                  placeholder="Enter title..."
+                  maxLength={50}
                   required
+                  readOnly={!isEditing}
                 />
-              </form>
-            )}
+                <Rating
+                  value={rating}
+                  precision={0.5}
+                  sx={{ fontSize: "2.5rem" }}
+                  onChange={(_event, value) => setRating(value!)}
+                />
+              </div>
+              <ReactQuill
+                className={`review-description ${!isEditing && "readonly"}`}
+                placeholder="Enter review..."
+                value={JSON.parse(description) as DeltaStatic}
+                onChange={(_v, _d, _s, e) => {
+                  setDescription(JSON.stringify(e.getContents()));
+                }}
+                readOnly={!isEditing}
+                modules={modules}
+              />
+            </form>
           </div>
           {review.mediaPoster !== "N/A" ? (
             <div
@@ -376,6 +384,7 @@ function ViewReviewPage() {
         setOpen={setIsDialogOpen}
         data={confirmationDialog}
       />
+      <CommentsDialog open={commentsOpen} setOpen={setCommentsOpen} />
     </div>
   );
 }

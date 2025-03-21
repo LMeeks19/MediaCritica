@@ -352,17 +352,17 @@ function AccountPage() {
               }}
             >
               <ToggleButton value={MediaType.Movie}>
-                <CustomTooltip title="Movies" arrow>
+                <CustomTooltip title="Movies">
                   <MovieIcon />
                 </CustomTooltip>
               </ToggleButton>
               <ToggleButton value={MediaType.Series}>
-                <CustomTooltip title="Series" arrow>
+                <CustomTooltip title="Series">
                   <SeriesIcon />
                 </CustomTooltip>
               </ToggleButton>
               <ToggleButton value={MediaType.Game}>
-                <CustomTooltip title="Games" arrow>
+                <CustomTooltip title="Games">
                   <GameIcon />
                 </CustomTooltip>
               </ToggleButton>
@@ -428,7 +428,7 @@ function AccountPage() {
                 items?.length === totalItems && "hidden"
               }`}
             >
-              <CustomTooltip title="Load more" arrow>
+              <CustomTooltip title="Load more">
                 <span>
                   <Fab
                     disabled={items?.length === totalItems}
@@ -472,7 +472,7 @@ function AccountPage() {
                     await LogoutUser(setNotificationsObject, setUser);
                   }}
                 >
-                  <CustomTooltip title="Logout" arrow>
+                  <CustomTooltip title="Logout">
                     <LogoutIcon fontSize="small" />
                   </CustomTooltip>
                 </Button>
@@ -591,7 +591,7 @@ function AccountPage() {
                           followers.length === user.totalFollowers && "hidden"
                         }`}
                       >
-                        <CustomTooltip title="Load more" arrow>
+                        <CustomTooltip title="Load more">
                           <span>
                             <Fab
                               disabled={
@@ -667,22 +667,22 @@ function AccountPage() {
                     }}
                   >
                     <ToggleButton value={MediaType.Movie}>
-                      <CustomTooltip title="Movies" arrow>
+                      <CustomTooltip title="Movies">
                         <MovieIcon />
                       </CustomTooltip>
                     </ToggleButton>
                     <ToggleButton value={MediaType.Series}>
-                      <CustomTooltip title="Series" arrow>
+                      <CustomTooltip title="Series">
                         <SeriesIcon />
                       </CustomTooltip>
                     </ToggleButton>
                     <ToggleButton value={MediaType.Game}>
-                      <CustomTooltip title="Games" arrow>
+                      <CustomTooltip title="Games">
                         <GameIcon />
                       </CustomTooltip>
                     </ToggleButton>
                     <ToggleButton value={MediaType.Episode}>
-                      <CustomTooltip title="Episodes" arrow>
+                      <CustomTooltip title="Episodes">
                         <EpisodeIcon />
                       </CustomTooltip>
                     </ToggleButton>
@@ -758,7 +758,7 @@ function AccountPage() {
                           reviews.length === user.totalReviews && "hidden"
                         }`}
                       >
-                        <CustomTooltip title="All reviewed media loaded" arrow>
+                        <CustomTooltip title="All reviewed media loaded">
                           <span>
                             <Fab
                               disabled={reviews.length === user.totalReviews}

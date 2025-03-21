@@ -347,13 +347,13 @@ export async function GetMediaReviews(
   return response;
 }
 
-export async function PostReview(review: ReviewModel): Promise<RequestId> {
+export async function PostReview(review: ReviewModel): Promise<number> {
   const response = await MakeRequest<RequestId>(`/Review/PostReview`, {
     method: "POST",
     body: JSON.stringify(review),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
-  return response;
+  return response.id;
 }
 
 export async function UpdateReview(

@@ -151,7 +151,7 @@ function NotificationsPage() {
                 title={
                   notifications.some((n) => !n.isRead) && "Mark all as read"
                 }
-                arrow
+               
               >
                 <Button
                   onClick={() => MarkAllAsRead()}
@@ -161,7 +161,7 @@ function NotificationsPage() {
                 </Button>
               </CustomTooltip>
             )}
-            <CustomTooltip title="Sort by" arrow>
+            <CustomTooltip title="Sort by">
               <FormControl variant="outlined" sx={{ minWidth: 250 }}>
                 <Select
                   value={selectedSorter}
@@ -188,12 +188,12 @@ function NotificationsPage() {
               }}
               exclusive
             >
-              <CustomTooltip title="Filter by unread" arrow>
+              <CustomTooltip title="Filter by unread">
                 <ToggleButton value="unread">
                   <MarkEmailUnreadIcon />
                 </ToggleButton>
               </CustomTooltip>
-              <CustomTooltip title="Filter by bookmarked" arrow>
+              <CustomTooltip title="Filter by bookmarked">
                 <ToggleButton value="bookmarked">
                   <BookmarkIcon />
                 </ToggleButton>
@@ -228,7 +228,7 @@ function NotificationsPage() {
                     </div>
                     <div className="actions">
                       {!notification.isRead && (
-                        <CustomTooltip title="Mark as read" arrow>
+                        <CustomTooltip title="Mark as read">
                           <IconButton
                             disabled={notification.isRead}
                             onClick={() => MarkAsRead(notification.id)}
@@ -242,7 +242,7 @@ function NotificationsPage() {
                         title={
                           notification.isBookmarked ? "Unbookmark" : "Bookmark"
                         }
-                        arrow
+                       
                       >
                         <IconButton
                           onClick={() => UpdateBookmarkStatus(notification.id)}
@@ -255,7 +255,7 @@ function NotificationsPage() {
                         </IconButton>
                       </CustomTooltip>
 
-                      <CustomTooltip title="Delete" arrow>
+                      <CustomTooltip title="Delete">
                         <IconButton
                           onClick={() => DeleteNotification(notification.id)}
                         >
@@ -271,7 +271,7 @@ function NotificationsPage() {
                   notifications.length === user.totalNotifications && "hidden"
                 }`}
               >
-                <CustomTooltip title="Load more" arrow>
+                <CustomTooltip title="Load more">
                   <span>
                     <Fab
                       onClick={() => FetchNotifications()}

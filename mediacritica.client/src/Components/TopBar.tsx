@@ -41,15 +41,15 @@ function TopBar(props: { hideBack?: boolean }) {
     <div className="topbar">
       <div className="flex gap-2 ml-[1.25rem]">
         <IconButton
-          className={`${props.hideBack && "invisible opacity-0 order-2"}`}
+          className={`${props.hideBack && "hidden"}`}
           onClick={() => navigate(-1)}
         >
-          <CustomTooltip title="Back" arrow>
+          <CustomTooltip title="Back">
             <ArrowCircleLeftOutlinedIcon fontSize="large" />
           </CustomTooltip>
         </IconButton>
         <IconButton onClick={() => navigate("/")}>
-          <CustomTooltip title="Home" arrow>
+          <CustomTooltip title="Home">
             <HomeOutlinedIcon fontSize="large" />
           </CustomTooltip>
         </IconButton>
@@ -57,7 +57,7 @@ function TopBar(props: { hideBack?: boolean }) {
       <CustomAutoComplete />
       <div className="mr-[1.25rem]">
         <IconButton onClick={handleClick}>
-          <CustomTooltip title="Menu" arrow>
+          <CustomTooltip title="Menu">
             <MenuIcon fontSize="large" />
           </CustomTooltip>
         </IconButton>

@@ -153,7 +153,7 @@ function ExplorePage() {
                 <MenuItem value="5">Release (Old-New)</MenuItem>
               </Select>
             </FormControl>
-            <CustomTooltip title="Advanced Filters" arrow>
+            <CustomTooltip title="Advanced Filters">
               <span>
                 <Button
                   className={`h-full ${isFilterDialogOpen ? "active" : ""}`}
@@ -235,7 +235,7 @@ function ExplorePage() {
                   baseMedia.length >= totalCount && "hidden"
                 }`}
               >
-                <CustomTooltip title="Load more" arrow>
+                <CustomTooltip title="Load more">
                   <span>
                     <Fab
                       onClick={() => FetchExplore(baseMedia.length)}

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { userState } from "../State/GlobalState";
 import { useRecoilState } from "recoil";
 import TopBar from "../Components/TopBar";
-import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Rating } from "@mui/material";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
@@ -18,13 +18,17 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { MediaType } from "../Enums/MediaType";
 import ConfirmationDialog from "../Components/ConfirmationDialog";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { CustomTooltip } from "../Components/Tooltip";
+import { DeltaStatic } from "quill";
 
 function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>(JSON.stringify(""));
   const [rating, setRating] = useState<number | null>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -86,6 +90,16 @@ function WriteReviewPage() {
     return `${episode.title} - S${episode.season}:E${episode.episode}`;
   }
 
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: ["", "center", "right", "justify"] }],
+      ["link"],
+    ],
+  };
+
   return (
     user.id !== undefined && (
       <div className="writereviewpage-container">
@@ -102,25 +116,22 @@ function WriteReviewPage() {
                     <div className="sub-title">{getHeaderSubTitle()}</div>
                   )}
                 </div>
-                <ToggleButtonGroup>
-                  <ToggleButton
-                    value="reset"
-                    type="reset"
-                    className="btn"
-                    onClick={() => ResetFields()}
-                  >
-                    <RestartAltIcon />
-                  </ToggleButton>
-                  <ToggleButton
-                    value="post"
-                    className="btn"
+                <ButtonGroup>
+                  <Button type="reset" onClick={() => ResetFields()}>
+                    <CustomTooltip title="Reset">
+                      <RestartAltIcon />
+                    </CustomTooltip>
+                  </Button>
+                  <Button
                     form="review-form"
                     type="submit"
                     disabled={description === "" || title == ""}
                   >
-                    <PostAddIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                    <CustomTooltip title="Post">
+                      <PostAddIcon />
+                    </CustomTooltip>
+                  </Button>
+                </ButtonGroup>
               </div>
               <form
                 id="review-form"
@@ -148,13 +159,14 @@ function WriteReviewPage() {
                     onChange={(_event, value) => setRating(value)}
                   />
                 </div>
-                <textarea
+                <ReactQuill
                   className="review-description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  name="description"
-                  placeholder="Write review..."
-                  required
+                  placeholder="Enter review..."
+                  value={JSON.parse(description) as DeltaStatic}
+                  onChange={(_v, _d, _s, e) =>
+                    setDescription(JSON.stringify(e.getContents()))
+                  }
+                  modules={modules}
                 />
               </form>
             </div>

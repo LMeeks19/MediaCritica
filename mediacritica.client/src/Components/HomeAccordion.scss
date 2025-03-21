@@ -4,6 +4,8 @@
     .MuiAccordionSummary-content {
       margin: 0 !important;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
 
       .actions {
         margin-right: 10px;
