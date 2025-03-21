@@ -3,10 +3,15 @@ import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
-import { Select, MenuItem } from "@mui/material";
-import CancelIcon from '@mui/icons-material/CancelOutlined';
-import SaveIcon from '@mui/icons-material/SaveOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Select, MenuItem, Button, ButtonGroup } from "@mui/material";
+import CancelIcon from "@mui/icons-material/CancelOutlined";
+import SaveIcon from "@mui/icons-material/SaveOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { CustomTooltip } from "./Tooltip";
+import { setThemePalette } from "../Helpers/ThemePaletteHelper";
+import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import ConfirmationDialog from "./ConfirmationDialog";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 function ThemePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -22,8 +27,38 @@ function ThemePreference() {
     } as PreferenceModel);
 
     setUser({ ...user, preference: preference });
+    setThemePalette(preference);
     setIsEditing(false);
   }
+
+  function ResetTheme() {
+    setTheme(user.preference.theme);
+    setIsEditing(false);
+  }
+
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [confirmationDialog, setConfirmationDialog] =
+    useState<ConfirmationDialogModel>({} as ConfirmationDialogModel);
+
+  var cancelEditDetailDialog = {
+    title: "Discard unsaved changes?",
+    dialog: "This will delete all edits since you last saved",
+    cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
+    confirm_text: "Discard",
+    confirm_icon: <DeleteIcon />,
+    confirm_action: () => ResetTheme(),
+  } as ConfirmationDialogModel;
+
+  var saveDetailDialog = {
+    title: "Save changes?",
+    dialog: "This will save your changes",
+    cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
+    confirm_text: "Save",
+    confirm_icon: <SaveIcon />,
+    confirm_action: () => ChangePreference(),
+  } as ConfirmationDialogModel;
 
   return (
     <div className="info-item">
@@ -44,27 +79,44 @@ function ThemePreference() {
       ) : (
         <div className="info-value">{user.preference?.theme}</div>
       )}
-      <div className="info-action">
+      <ButtonGroup className="info-action">
         {isEditing && (
-          <button
-            disabled={!isEditing}
-            className="cancel-btn"
-            onClick={() => setIsEditing(false)}
+          <Button
+            onClick={() => {
+              setConfirmationDialog(cancelEditDetailDialog);
+              setIsDialogOpen(true);
+            }}
           >
-            Cancel <CancelIcon fontSize="small" />
-          </button>
+            <CustomTooltip title="Cancel" arrow>
+              <CancelIcon />
+            </CustomTooltip>
+          </Button>
         )}
         {isEditing && (
-          <button className="save-btn" onClick={() => ChangePreference()}>
-            Save <SaveIcon fontSize="small" />
-          </button>
+          <Button
+            onClick={() => {
+              setConfirmationDialog(saveDetailDialog);
+              setIsDialogOpen(true);
+            }}
+          >
+            <CustomTooltip title="Cancel" arrow>
+              <SaveIcon />
+            </CustomTooltip>
+          </Button>
         )}
         {!isEditing && (
-          <button className="edit-btn" onClick={() => setIsEditing(true)}>
-            Edit <EditOutlinedIcon fontSize="small" />
-          </button>
+          <Button onClick={() => setIsEditing(true)}>
+            <CustomTooltip title="Cancel" arrow>
+              <EditOutlinedIcon />
+            </CustomTooltip>
+          </Button>
         )}
-      </div>
+      </ButtonGroup>
+      <ConfirmationDialog
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        data={confirmationDialog}
+      />
     </div>
   );
 }

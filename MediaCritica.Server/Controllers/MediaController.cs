@@ -310,9 +310,12 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Seasons.AddAsync(season);
             await _databaseContext.SaveChangesAsync();
 
-            foreach (var episode in seasonModel.Episodes)
+            if (seasonModel.Episodes != null)
             {
-                await GetEpisode(episode.imdbID, season.Id);
+                foreach (var episode in seasonModel.Episodes)
+                {
+                    await GetEpisode(episode.imdbID, season.Id);
+                }
             }
 
             return Ok(_mapper.SeasonMapper.MapSeasonModel(season));

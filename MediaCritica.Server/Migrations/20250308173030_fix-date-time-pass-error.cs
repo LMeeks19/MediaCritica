@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MediaCritica.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class fixdatetimepasserror : Migration
+    public partial class Fixdatetimepasserror : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

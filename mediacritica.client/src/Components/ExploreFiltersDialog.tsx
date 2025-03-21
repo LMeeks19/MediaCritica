@@ -2,7 +2,6 @@ import { SetterOrUpdater } from "recoil";
 import {
   Dialog,
   DialogTitle,
-  Fab,
   DialogContent,
   FormControl,
   InputLabel,
@@ -15,7 +14,6 @@ import {
   Slider,
   Box,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { useState, Fragment } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -151,12 +149,7 @@ function ExploreFiltersDialog(props: ExploreFiltersDialogProps) {
       }}
       scroll="paper"
     >
-      <DialogTitle>
-        Filters
-        <Fab size="small" onClick={() => props.setIsOpen(false)}>
-          <CloseIcon />
-        </Fab>
-      </DialogTitle>
+      <DialogTitle>Filters</DialogTitle>
       <DialogContent dividers>
         <FormControl variant="outlined" fullWidth>
           <InputLabel>Type</InputLabel>

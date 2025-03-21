@@ -80,16 +80,6 @@
           }
         }
       }
-
-      .logout-btn {
-        background-color: var(--palette-colour);
-        color: whitesmoke;
-      }
-
-      .logout-btn:not(:disabled):hover {
-        background-color: var(--light-dark);
-        color: var(--palette-colour);
-      }
     }
 
     .account-tab,
@@ -152,7 +142,8 @@
               max-width: fit-content;
               cursor: pointer;
               box-shadow: 0 2px 5px #0000004d;
-              transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+              transition: transform 0.3s ease-in-out,
+                box-shadow 0.3s ease-in-out;
               height: fit-content;
               align-self: center;
 
@@ -193,10 +184,12 @@
             gap: 1rem;
             padding: 2rem;
 
-            &.empty {
-              display: flex;
-              flex: 1;
-              align-items: center;
+            .empty {
+              height: 225px !important;
+            }
+
+            &:has(.empty) {
+              display: flex !important;
             }
           }
 
@@ -225,6 +218,22 @@
             overflow: hidden auto;
 
             .backlog-section {
+              .sub-header {
+                .MuiToggleButtonGroup-root {
+                  .MuiToggleButton-root {
+                    &.Mui-selected,
+                    &.Mui-selected:hover {
+                      background-color: whitesmoke !important;
+                      color: var(--palette-colour) !important;
+                    }
+
+                    &:hover {
+                      background-color: rgba($color: whitesmoke, $alpha: 0.15);
+                    }
+                  }
+                }
+              }
+
               .items-container {
                 .items {
                   width: 100%;

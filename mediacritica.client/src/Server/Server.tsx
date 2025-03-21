@@ -20,8 +20,10 @@ import { SeriesModel } from "../Interfaces/SeriesModel";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
+import { UserLoginModel } from "../Interfaces/UserLoginModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
+import { UserModelObject } from "../Interfaces/UserModelObject";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
 import { UserSearchModel } from "../Interfaces/UserSearchModel";
@@ -49,18 +51,18 @@ function isRequestMessageInterface(obj: any): obj is RequestMessage {
 
 async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
   try {
-    const data = await fetch(url, options);
-    const response = await data.json();
+    const response = await fetch(url, options);
+    const data = await response.json();
 
-    if (isRequestMessageInterface(response)) {
-      switch (data.status) {
+    if (isRequestMessageInterface(data)) {
+      switch (response.status) {
         case 200:
-          Snackbar.Success((response as RequestMessage).message);
+          Snackbar.Success((data as RequestMessage).message);
           break;
         default:
-          Snackbar.Error((response as RequestMessage).message);
+          Snackbar.Error((data as RequestMessage).message);
       }
-    } else return response as T;
+    } else return data as T;
   } catch (error) {
     Snackbar.Error(error as string);
   }
@@ -68,8 +70,38 @@ async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
 }
 
 // User API Calls
+export async function Login(
+  userLoginModel: UserLoginModel
+): Promise<UserModelObject> {
+  const repsonse = await MakeRequest<UserModelObject>("/User/Login", {
+    method: "POST",
+    body: JSON.stringify(userLoginModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return repsonse;
+}
+
+export async function AutoLogin(token: string): Promise<UserModelObject> {
+  const response = await MakeRequest<UserModelObject>("/User/AutoLogin", {
+    method: "POST",
+    body: JSON.stringify({ token: token } as { token: string }),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response;
+}
+
+export async function Logout(token: string): Promise<void> {
+  await MakeRequest<void>("/User/Logout", {
+    method: "POST",
+    body: JSON.stringify({ token: token } as { token: string }),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+}
+
 export async function GetUser(email: string): Promise<UserModel> {
-  const response = await MakeRequest<UserModel>(`/User/GetUser/${email}`);
+  const response = await MakeRequest<UserModel>(
+    `/User/GetUserByEmail/${email}`
+  );
   return response;
 }
 
@@ -95,7 +127,8 @@ export async function UpdateUser(
 
 export async function DeleteUser(userId: number): Promise<RequestValue> {
   const response = await MakeRequest<RequestValue>(
-    `/User/DeleteUser/${userId}`
+    `/User/DeleteUser/${userId}`,
+    { method: "DELETE" }
   );
   return response;
 }

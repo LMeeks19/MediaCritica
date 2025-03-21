@@ -5,17 +5,20 @@ import {
   AccountEditModel,
   AccountFieldValue,
 } from "../Interfaces/AccountModels";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { ConfirmationDialogState, userState } from "../State/GlobalState";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
 import { UpdateUser } from "../Server/Server";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
-import CancelIcon from '@mui/icons-material/CancelOutlined';
-import SaveIcon from '@mui/icons-material/SaveOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import CancelIcon from "@mui/icons-material/CancelOutlined";
+import SaveIcon from "@mui/icons-material/SaveOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { Button, ButtonGroup } from "@mui/material";
+import { CustomTooltip } from "./Tooltip";
+import ConfirmationDialog from "./ConfirmationDialog";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 function AccountDetail(props: AccountDetailsProps) {
   const [user, setUser] = useRecoilState(userState);
-  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   const [accountEditState, setAccountEditState] = useState<AccountEditModel>({
     isEditing: false,
@@ -41,23 +44,29 @@ function AccountDetail(props: AccountDetailsProps) {
     ResetAccountField();
   }
 
-  const cancelEditDetailDialog = {
-    show: true,
-    title: "Discard unsaved changes",
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [confirmationDialog, setConfirmationDialog] =
+    useState<ConfirmationDialogModel>({} as ConfirmationDialogModel);
+
+  var cancelEditDetailDialog = {
+    title: "Discard unsaved changes?",
     dialog: "This will delete all edits since you last saved",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Discard",
+    confirm_icon: <DeleteIcon />,
     confirm_action: () => ResetAccountField(),
-  } as unknown as ConfirmationDialogModel;
+  } as ConfirmationDialogModel;
 
-  const saveDetailDialog = {
-    show: true,
-    title: "Save changes",
+  var saveDetailDialog = {
+    title: "Save changes?",
     dialog: "This will save your changes",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Save",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
+    confirm_icon: <SaveIcon />,
+    confirm_action: () => UpdateAccountField(),
+  } as ConfirmationDialogModel;
 
   return (
     <div className="info-item">
@@ -68,10 +77,8 @@ function AccountDetail(props: AccountDetailsProps) {
           id={`${props.accountFieldName}-form`}
           onSubmit={(e) => {
             e.preventDefault();
-            setConfirmationDialog({
-              ...saveDetailDialog,
-              confirm_action: () => UpdateAccountField(),
-            });
+            setConfirmationDialog(saveDetailDialog);
+            setIsDialogOpen(true);
           }}
         >
           <input
@@ -93,25 +100,32 @@ function AccountDetail(props: AccountDetailsProps) {
       ) : (
         <span className="info-value">{props.accountFieldValue}</span>
       )}
-      <div className="info-action">
+      <ButtonGroup className="info-action">
         {accountEditState.isEditing && (
-          <button
-            disabled={!accountEditState.isEditing}
-            className="cancel-btn"
-            onClick={() => setConfirmationDialog(cancelEditDetailDialog)}
+          <Button
+            onClick={() => {
+              setConfirmationDialog(cancelEditDetailDialog);
+              setIsDialogOpen(true);
+            }}
           >
-            Cancel <CancelIcon fontSize="small" />
-          </button>
+            <CustomTooltip title="Cancel" arrow>
+              <CancelIcon />
+            </CustomTooltip>
+          </Button>
         )}
         {accountEditState.isEditing && (
-          <button className="save-btn" form={`${props.accountFieldName}-form`}>
-            Save <SaveIcon fontSize="small" />
-          </button>
+          <Button
+            form={`${props.accountFieldName}-form`}
+            type="submit"
+            disabled={fieldValue.value.length === 0}
+          >
+            <CustomTooltip title="Save" arrow>
+              <SaveIcon />
+            </CustomTooltip>
+          </Button>
         )}
         {!accountEditState.isEditing && (
-          <button
-            className="edit-btn"
-            disabled={accountEditState.isEditing}
+          <Button
             onClick={() =>
               setAccountEditState({
                 ...accountEditState,
@@ -119,10 +133,17 @@ function AccountDetail(props: AccountDetailsProps) {
               })
             }
           >
-            Edit <EditOutlinedIcon fontSize="small" />
-          </button>
+            <CustomTooltip title="Edit" arrow>
+              <EditOutlinedIcon />
+            </CustomTooltip>
+          </Button>
         )}
-      </div>
+      </ButtonGroup>
+      <ConfirmationDialog
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        data={confirmationDialog}
+      />
     </div>
   );
 }

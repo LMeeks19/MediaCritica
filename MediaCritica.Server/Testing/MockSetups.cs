@@ -35,6 +35,7 @@ namespace MediaCritica.Server.Testing
             helper.Setup(h => h.ExternalApiHelper).Returns(new ExternalApiHelper(configuration, true));
             helper.Setup(h => h.InternalApiHelper).Returns(new InternalApiHelper(dbContext));
             helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext));
+            helper.Setup(h => h.AuthenticationHelper).Returns(new AuthenticationHelper(dbContext, dateTimeProviderHelper));
 
             return helper.Object;
         }
@@ -42,7 +43,7 @@ namespace MediaCritica.Server.Testing
         private static IDateTimeProviderHelper SetupDateTimeProviderHelper()
         {
             var dateTimeProviderHelper = new Mock<IDateTimeProviderHelper>();
-            dateTimeProviderHelper.Setup(provider => provider.Now).Returns(new DateTime(2025, 2, 27));
+            dateTimeProviderHelper.Setup(provider => provider.UtcNow).Returns(new DateTime(2025, 2, 27));
             return dateTimeProviderHelper.Object;
         }
 
@@ -83,7 +84,7 @@ namespace MediaCritica.Server.Testing
             controller.Setup(c => c.MilestoneController).Returns(new MilestoneController(dbContext, helper));
             controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, hubContext, hub));
             controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, controller.Object.NotificationController));
-            controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper));
+            controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper, helper));
 
             return controller.Object;
         }

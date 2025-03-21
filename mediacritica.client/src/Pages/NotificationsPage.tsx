@@ -6,7 +6,7 @@ import TopBar from "../Components/TopBar";
 import Loader from "../Components/Loader";
 import { useNavigate } from "react-router-dom";
 import { GetUserNotifications } from "../Server/Server";
-import { formatDistanceToNowStrict, formatRelative } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import {
   Button,
   Fab,

@@ -1,51 +1,46 @@
-import "./ConfirmationDialog.scss";
-import { Divider } from "@mui/material";
-import { useRecoilState } from "recoil";
-import { ConfirmationDialogState } from "../State/GlobalState";
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+} from "@mui/material";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
+import { SetterOrUpdater } from "recoil";
+import { CustomTooltip } from "./Tooltip";
 
-function ConfirmationDialog() {
-  const [confirmationDialog, setConfirmationDialog] = useRecoilState(
-    ConfirmationDialogState
-  );
-
-  const blankDialog = {
-    show: false,
-    title: "",
-    dialog: "",
-    cancel_text: "",
-    confirm_text: "",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
-
+function ConfirmationDialog(props: {
+  open: boolean;
+  setOpen: SetterOrUpdater<boolean>;
+  data: ConfirmationDialogModel;
+}) {
   return (
-    <div hidden={!confirmationDialog.show}>
-      <div className="background"></div>
-      <div className="modal">
-        <div className="header">
-          <div className="title">{confirmationDialog.title}?</div>
-        </div>
-        <div className="dialog">{confirmationDialog.dialog}</div>
-        <Divider className="divider" />
-        <div className="buttons">
-          <button
-            className="cancel-btn"
-            onClick={() => setConfirmationDialog(blankDialog)}
-          >
-            {confirmationDialog.cancel_text}
-          </button>
-          <button
-            className="confirm-btn"
+    <Dialog open={props.open} onClose={() => props.setOpen(false)}>
+      <DialogTitle>{props.data.title}</DialogTitle>
+      <DialogContent>{props.data.dialog}</DialogContent>
+      <Divider orientation="horizontal" />
+      <DialogActions>
+        <ButtonGroup>
+          <Button onClick={() => props.setOpen(false)}>
+            <CustomTooltip title={props.data.cancel_text} arrow>
+              {props.data.cancel_icon}
+            </CustomTooltip>
+          </Button>
+          <Button
             onClick={() => {
-              confirmationDialog.confirm_action();
-              setConfirmationDialog(blankDialog);
+              props.data.confirm_action();
+              props.setOpen(false);
             }}
           >
-            {confirmationDialog.confirm_text}
-          </button>
-        </div>
-      </div>
-    </div>
+            <CustomTooltip title={props.data.confirm_text} arrow>
+              {props.data.confirm_icon}
+            </CustomTooltip>
+          </Button>
+        </ButtonGroup>
+      </DialogActions>
+    </Dialog>
   );
 }
 

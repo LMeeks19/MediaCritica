@@ -1,5 +1,5 @@
 import "./ViewReviewPage.scss";
-import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
@@ -11,8 +11,8 @@ import {
   UpdateReview,
 } from "../Server/Server";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { ConfirmationDialogState, userState } from "../State/GlobalState";
+import { useRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
 import { formatDistanceToNowStrict } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
@@ -28,6 +28,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import millify from "millify";
 import { MediaType } from "../Enums/MediaType";
+import ConfirmationDialog from "../Components/ConfirmationDialog";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -38,7 +39,6 @@ function ViewReviewPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
-  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
   const [user, setUser] = useRecoilState(userState);
   const [engagement, setEngagement] = useState<number | null>(null);
 
@@ -128,31 +128,39 @@ function ViewReviewPage() {
   }
 
   const deleteReviewDialog = {
-    show: true,
-    title: "Delete review",
-    dialog: "This can't be undone",
+    title: "Delete review?",
+    dialog: "This can't be undone!",
     cancel_text: "Cancel",
+    cancel_icon: <CancelIcon />,
     confirm_text: "Delete",
+    confirm_icon: <DeleteIcon />,
     confirm_action: () => RemoveReview(),
-  } as unknown as ConfirmationDialogModel;
+  } as ConfirmationDialogModel;
 
   const cancelEditReviewDialog = {
-    show: true,
-    title: "Discard unsaved changes",
+    title: "Discard unsaved changes?",
     dialog: "This will delete all edits since you last saved",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Discard",
+    confirm_icon: <DeleteIcon />,
     confirm_action: () => ResetReviewEdit(),
-  } as unknown as ConfirmationDialogModel;
+  } as ConfirmationDialogModel;
 
   const saveReviewDialog = {
-    show: true,
-    title: "Save changes",
+    show: false,
+    title: "Save changes?",
     dialog: "This will save all changes made to this reiew",
     cancel_text: "Keep Editing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Save",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
+    confirm_icon: <SaveIcon />,
+    confirm_action: () => PutReview(),
+  } as ConfirmationDialogModel;
+
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [confirmationDialog, setConfirmationDialog] =
+    useState<ConfirmationDialogModel>({} as ConfirmationDialogModel);
 
   return (
     <div className="viewreviewpage-container">
@@ -204,39 +212,39 @@ function ViewReviewPage() {
                 <div className="flex gap-2">
                   {review.reviewerId === user.id &&
                     (!isEditing ? (
-                      <ToggleButtonGroup>
-                        <ToggleButton
-                          value="edit"
-                          className="btn"
-                          onClick={() => setIsEditing(true)}
-                        >
-                          <EditOutlinedIcon />
-                        </ToggleButton>
-                        <ToggleButton
+                      <ButtonGroup>
+                        <Button value="edit" onClick={() => setIsEditing(true)}>
+                          <CustomTooltip title="Edit" arrow>
+                            <EditOutlinedIcon />
+                          </CustomTooltip>
+                        </Button>
+                        <Button
                           value="delete"
-                          className="btn"
-                          onClick={() =>
-                            setConfirmationDialog(deleteReviewDialog)
-                          }
-                          disabled={isEditing}
+                          onClick={() => {
+                            setConfirmationDialog(deleteReviewDialog);
+                            setIsDialogOpen(true);
+                          }}
                         >
-                          <DeleteIcon />
-                        </ToggleButton>
-                      </ToggleButtonGroup>
+                          <CustomTooltip title="Delete" arrow>
+                            <DeleteIcon />
+                          </CustomTooltip>
+                        </Button>
+                      </ButtonGroup>
                     ) : (
-                      <ToggleButtonGroup>
-                        <ToggleButton
+                      <ButtonGroup>
+                        <Button
                           value="cancel"
-                          className="btn"
-                          onClick={() =>
-                            setConfirmationDialog(cancelEditReviewDialog)
-                          }
+                          onClick={() => {
+                            setConfirmationDialog(cancelEditReviewDialog);
+                            setIsDialogOpen(true);
+                          }}
                         >
-                          <CancelIcon />
-                        </ToggleButton>
-                        <ToggleButton
+                          <CustomTooltip title="Cancel" arrow>
+                            <CancelIcon />
+                          </CustomTooltip>
+                        </Button>
+                        <Button
                           value="save"
-                          className="btn"
                           form="review-form"
                           type="submit"
                           disabled={
@@ -245,44 +253,28 @@ function ViewReviewPage() {
                             review.title === title
                           }
                         >
-                          <SaveIcon />
-                        </ToggleButton>
-                      </ToggleButtonGroup>
+                          <CustomTooltip title="Save" arrow>
+                            <SaveIcon />
+                          </CustomTooltip>
+                        </Button>
+                      </ButtonGroup>
                     ))}
-                  <CustomTooltip
-                    title={
-                      user.id === review.reviewerId
-                        ? "Cannot rate own review"
-                        : user.id === undefined && "Login to rate"
-                    }
-                    arrow
-                  >
-                    <span>
-                      <ToggleButtonGroup
-                        value={engagement}
-                        onChange={(_e, v: number) => {
-                          ToggleUserEngagement(v);
-                        }}
-                        disabled={
-                          user.id === undefined || review.reviewerId == user.id
-                        }
-                        exclusive
-                      >
-                        <ToggleButton value={0} className="btn engagement">
-                          <ThumbUpIcon />
-                          <div className="text">
-                            {millify(review.likes, { precision: 0 })}
-                          </div>
-                        </ToggleButton>
-                        <ToggleButton value={1} className="btn engagement">
-                          <ThumbDownIcon />
-                          <div className="text">
-                            {millify(review.dislikes, { precision: 0 })}
-                          </div>
-                        </ToggleButton>
-                      </ToggleButtonGroup>
-                    </span>
-                  </CustomTooltip>
+                  {review.reviewerId != user.id && user.id !== undefined && (
+                    <ButtonGroup>
+                      <Button onClick={() => ToggleUserEngagement(0)}>
+                        <ThumbUpIcon />
+                        <div className="text">
+                          {millify(review.likes, { precision: 0 })}
+                        </div>
+                      </Button>
+                      <Button onClick={() => ToggleUserEngagement(1)}>
+                        <ThumbDownIcon />
+                        <div className="text">
+                          {millify(review.dislikes, { precision: 0 })}
+                        </div>
+                      </Button>
+                    </ButtonGroup>
+                  )}
                 </div>
               </div>
               <div className="review-date">
@@ -329,10 +321,8 @@ function ViewReviewPage() {
                 className="review-form"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setConfirmationDialog({
-                    ...saveReviewDialog,
-                    confirm_action: () => PutReview(),
-                  });
+                  setConfirmationDialog(saveReviewDialog);
+                  setIsDialogOpen(true);
                 }}
               >
                 <div className="title-section">
@@ -381,6 +371,11 @@ function ViewReviewPage() {
           )}
         </div>
       )}
+      <ConfirmationDialog
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        data={confirmationDialog}
+      />
     </div>
   );
 }

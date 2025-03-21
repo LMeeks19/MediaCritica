@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +9,85 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext, IMappers mapper) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, IMappers mapper, IHelpers helpers) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
+        private readonly IHelpers _helpers = helpers;
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
+        {
+            var user = await _helpers.AuthenticationHelper.AuthenticateUser(userLoginModel);
+
+            if (user == null)
+                return Unauthorized(new { Message = "Invalid Credentials" });
+
+            var authToken = userLoginModel.RememberMe ? await _helpers.AuthenticationHelper.GenerateAuthToken(user.Id) : null;
+
+            return Ok(new UserAuthModel
+            {
+                AuthToken = authToken,
+                User = _mapper.UserMapper.MapUserModel(user),
+            });
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AutoLogin([FromBody] TokenModel tokenModel)
+        {
+            var authToken = await _helpers.AuthenticationHelper.GetAuthToken(tokenModel.Token);
+
+            if (authToken == null)
+                return Unauthorized(new { Message = "Auto Login Failed" });
+
+            if (_helpers.AuthenticationHelper.HasTokenExpired(authToken))
+            {
+                _helpers.AuthenticationHelper.RemoveAuthToken(authToken.Id);
+                return Unauthorized(new { Message = "Authentication Expired" });
+            }
+
+            authToken = await _helpers.AuthenticationHelper.UpdateAuthToken(authToken);
+
+            var user = await _helpers.AuthenticationHelper.GetUser(id: authToken.UserId);
+
+            return Ok(new UserAuthModel
+            {
+                AuthToken = authToken,
+                User = _mapper.UserMapper.MapUserModel(user)
+            });
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Logout([FromBody] TokenModel tokenModel)
+        {
+            var authToken = await _helpers.AuthenticationHelper.GetAuthToken(tokenModel.Token);
+
+            if (authToken == null)
+                return NotFound(new { Message = "Token Not Found" });
+
+            _databaseContext.AuthTokens.Remove(authToken);
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = "Token Deleted" });
+        }
+
+        [HttpGet("[action]/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var user = await _databaseContext.Users
+                .Include(u => u.Preference)
+                .Include(u => u.Reviews)
+                .Include(u => u.Backlogs)
+                .Include(u => u.Followers)
+                .Include(u => u.Following)
+                .Include(u => u.Notifications)
+                .SingleOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+                return NotFound(new { Message = "User not found" });
+
+            return Ok(_mapper.UserMapper.MapUserModel(user));
+        }
 
         [HttpGet("[action]/{searchTerm}")]
         public IActionResult GetUsersBySearch(string searchTerm)
@@ -31,25 +107,6 @@ namespace MediaCritica.Server.Controllers
                 return NotFound(new { Message = "No users found" });
 
             return Ok(users);
-
-        }
-
-        [HttpGet("[action]/{email}")]
-        public async Task<IActionResult> GetUser(string email)
-        {
-            var user = await _databaseContext.Users
-                .Include(u => u.Preference)
-                .Include(u => u.Reviews)
-                .Include(u => u.Backlogs)
-                .Include(u => u.Followers)
-                .Include(u => u.Following)
-                .Include(u => u.Notifications)
-                .SingleOrDefaultAsync(u => u.Email == email);
-
-            if (user == null)
-                return NotFound(new { Message = "User not found" });
-
-            return Ok(_mapper.UserMapper.MapUserModel(user));
         }
 
         [HttpPost("[action]")]
@@ -65,7 +122,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
 
-            return await GetUser(user.Email);
+            return Ok(new { Message = "Account Created" });
         }
 
         [HttpDelete("[action]/{userId}")]
@@ -112,7 +169,7 @@ namespace MediaCritica.Server.Controllers
             _databaseContext.Users.Update(user);
             await _databaseContext.SaveChangesAsync();
 
-            return await GetUser(user.Email);
+            return await GetUserByEmail(user.Email);
         }
 
         [HttpPut("[action]")]

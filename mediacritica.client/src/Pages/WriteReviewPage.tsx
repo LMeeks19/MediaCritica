@@ -1,8 +1,8 @@
 import "./WriteReviewPage.scss";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ConfirmationDialogState, userState } from "../State/GlobalState";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { userState } from "../State/GlobalState";
+import { useRecoilState } from "recoil";
 import TopBar from "../Components/TopBar";
 import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { MovieModel } from "../Interfaces/MovieModel";
@@ -15,7 +15,9 @@ import Loader from "../Components/Loader";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import RestartAltIcon from "@mui/icons-material/RestartAltOutlined";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { MediaType } from "../Enums/MediaType";
+import ConfirmationDialog from "../Components/ConfirmationDialog";
 
 function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -25,7 +27,6 @@ function WriteReviewPage() {
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number | null>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const setConfirmationDialog = useSetRecoilState(ConfirmationDialogState);
 
   const media = location.state?.media as
     | MovieModel
@@ -34,18 +35,21 @@ function WriteReviewPage() {
 
   useEffect(() => {
     if (user.id === undefined) navigate("/login");
-    if (media === undefined) navigate("/")
+    if (media === undefined) navigate("/");
     setIsLoading(false);
   });
 
   const postReviewDialog = {
-    show: true,
-    title: "Post review",
+    title: "Post review?",
     dialog: "This will post everything written in this review",
     cancel_text: "Keep Writing",
+    cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Post",
-    confirm_action: null,
-  } as unknown as ConfirmationDialogModel;
+    confirm_icon: <PostAddIcon />,
+    confirm_action: () => SubmitReview(),
+  } as ConfirmationDialogModel;
+
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   async function SubmitReview() {
     setIsLoading(true);
@@ -123,10 +127,7 @@ function WriteReviewPage() {
                 className="review-form"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setConfirmationDialog({
-                    ...postReviewDialog,
-                    confirm_action: () => SubmitReview(),
-                  });
+                  setIsDialogOpen(true);
                 }}
               >
                 <div className="title-section">
@@ -174,6 +175,11 @@ function WriteReviewPage() {
             )}
           </div>
         )}
+        <ConfirmationDialog
+          open={isDialogOpen}
+          setOpen={setIsDialogOpen}
+          data={postReviewDialog}
+        />
       </div>
     )
   );

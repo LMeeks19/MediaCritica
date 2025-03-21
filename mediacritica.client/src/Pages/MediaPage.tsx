@@ -6,7 +6,14 @@ import {
   ConvertRatingStringToFiveScale,
 } from "../Helpers/StringHelper";
 import TopBar from "../Components/TopBar";
-import { IconButton, MenuItem, Rating, Select } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  IconButton,
+  MenuItem,
+  Rating,
+  Select,
+} from "@mui/material";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import {
   DeleteBacklog,
@@ -95,7 +102,7 @@ function MediaPage() {
       mediaPoster: media.poster,
       mediaTitle: media.title,
       addedDate: new Date(),
-    } as unknown as BacklogModel;
+    } as BacklogModel;
 
     await PostBacklog(backlog);
 
@@ -338,19 +345,22 @@ function MediaPage() {
                 <div className="review-details">
                   <div className="review-header">
                     <h2>Reviews</h2>
-                    <button
-                      className="view-btn"
-                      onClick={() =>
-                        navigate("reviews", {
-                          state: {
-                            mediaId: media.id,
-                            mediaTitle: media.title,
-                          },
-                        })
-                      }
-                    >
-                      View all <VisibilityIcon />
-                    </button>
+                    <ButtonGroup>
+                      <Button
+                        onClick={() =>
+                          navigate("reviews", {
+                            state: {
+                              mediaId: media.id,
+                              mediaTitle: media.title,
+                            },
+                          })
+                        }
+                      >
+                        <CustomTooltip title="View all" arrow>
+                          <VisibilityIcon />
+                        </CustomTooltip>
+                      </Button>
+                    </ButtonGroup>
                   </div>
                   <div className="review-cards">
                     {media.reviews.map((review) => {

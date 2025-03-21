@@ -2,22 +2,37 @@ import "./App.scss";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router/Router";
 import { SnackbarProvider } from "notistack";
-import ConfirmationDialog from "./Components/ConfirmationDialog";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NotificationHub from "./Hubs/NotificationHub";
 import { useRecoilState } from "recoil";
 import { setThemePalette } from "./Helpers/ThemePaletteHelper";
 import { notificationsState, userState } from "./State/GlobalState";
+import { getAuthToken, storeAuthToken } from "./Helpers/AuthenticationHelper";
+import { AutoLogin } from "./Server/Server";
+import Loader from "./Components/Loader";
 
 function App() {
   const [user, setUser] = useRecoilState(userState);
   const [notifications, setNotifications] = useRecoilState(notificationsState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (user.id !== undefined) {
-      setThemePalette(user.preference);
+    async function AutoLoginUser() {
+      setIsLoading(true);
+      var token = getAuthToken();
+
+      if (token !== null) {
+        var userObject = await AutoLogin(token);
+        if (userObject.user !== null && userObject.user !== undefined) {
+          storeAuthToken(userObject.authToken);
+          setUser(userObject.user);
+          setThemePalette(userObject.user.preference);
+        }
+      }
+      setIsLoading(false);
     }
-  }, [user]);
+    AutoLoginUser();
+  }, []);
 
   useEffect(() => {
     if (user.id === undefined) return;
@@ -30,10 +45,8 @@ function App() {
     notificationHub.onReceiveNotification(
       user.id,
       setNotifications,
-      notifications?.length < 25
-        ? 25
-        : notifications?.length + 1,
-      setUser,
+      notifications?.length < 25 ? 25 : notifications?.length + 1,
+      setUser
     );
 
     return () => {
@@ -50,8 +63,7 @@ function App() {
       style={{ color: "whitesmoke" }}
     >
       <div className="wrapper">
-        <ConfirmationDialog />
-        <RouterProvider router={router} />
+        {isLoading ? <Loader /> : <RouterProvider router={router} />}
       </div>
     </SnackbarProvider>
   );

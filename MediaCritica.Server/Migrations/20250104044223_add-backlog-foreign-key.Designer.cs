@@ -13,7 +13,7 @@ namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20250104044223_add-backlog-foreign-key")]
-    partial class addbacklogforeignkey
+    partial class Addbacklogforeignkey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

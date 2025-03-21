@@ -3,7 +3,7 @@ import { MediaType } from "../Enums/MediaType";
 
 export interface BacklogModel {
   id: number;
-  userId: string;
+  userId: number;
   mediaId: string;
   mediaType: MediaType;
   mediaPoster: string;
