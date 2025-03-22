@@ -129,71 +129,14 @@
               display: none !important;
             }
           }
+        }
 
-          .ql-toolbar {
-            font-family: "Orbitron";
-            border-color: gray transparent gray transparent;
-            text-align: center;
-
-            .ql-formats {
-              .ql-picker-options {
-                background-color: var(--dark-light);
-                color: var(--light-dark);
-
-                .ql-picker-item:hover {
-                  color: var(--palette-colour);
-                }
-              }
-
-              .ql-picker-label,
-              button[type="button"] {
-                color: var(--light-dark);
-
-                svg {
-                  .ql-stroke {
-                    stroke: var(--light-dark);
-                  }
-                }
-
-                &.ql-active {
-                  color: var(--palette-colour);
-
-                  svg {
-                    .ql-stroke {
-                      stroke: var(--palette-colour);
-                    }
-                  }
-                }
-              }
-
-              .ql-picker-label:hover,
-              button[type="button"]:hover {
-                color: var(--palette-colour);
-
-                svg {
-                  .ql-stroke {
-                    stroke: var(--palette-colour);
-                  }
-                }
-              }
-            }
-          }
-
-          .ql-container {
-            border-color: transparent;
-            color: var(--light-dark);
-            font-size: 15px;
-
-            .ql-editor {
-              font-family: "Orbitron";
-              padding: 1.5rem 2rem;
-
-              &::before {
-                color: gray;
-                left: 2rem;
-              }
-            }
-          }
+        .character-count {
+          text-align: right;
+          padding: 15px;
+          font-size: 12.5px;
+          color: gray;
+          border-top: 1px solid gray;
         }
       }
     }

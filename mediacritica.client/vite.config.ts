@@ -51,6 +51,10 @@ export default defineConfig({
                 target,
                 secure: false
             },
+            '^/Comment': {
+                target,
+                secure: false
+            },
             '^/Backlog': {
                 target,
                 secure: false

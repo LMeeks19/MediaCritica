@@ -44,25 +44,22 @@ function StarRating(props: StarRatingProps) {
                 : "Write a review"
               : "Login to review"
           }
-         
         >
-          <span>
-            <button
-              className="review-btn"
-              onClick={() =>
-                navigate(`/media/${props.media.id}/write-review`, {
-                  state: { media: props.media },
-                })
-              }
-              disabled={
-                user.id === undefined ||
-                hasUserReviewed ||
-                new Date(props.media.released).getTime() > new Date().getTime()
-              }
-            >
-              Review
-            </button>
-          </span>
+          <button
+            className="review-btn"
+            onClick={() =>
+              navigate(`/media/${props.media.id}/write-review`, {
+                state: { media: props.media },
+              })
+            }
+            disabled={
+              user.id === undefined ||
+              hasUserReviewed ||
+              new Date(props.media.released).getTime() > new Date().getTime()
+            }
+          >
+            Review
+          </button>
         </CustomTooltip>
       </div>
     </div>

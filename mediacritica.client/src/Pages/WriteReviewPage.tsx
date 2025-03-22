@@ -1,5 +1,5 @@
 import "./WriteReviewPage.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userState } from "../State/GlobalState";
 import { useRecoilState } from "recoil";
@@ -31,6 +31,8 @@ function WriteReviewPage() {
   const [description, setDescription] = useState<string>(JSON.stringify(""));
   const [rating, setRating] = useState<number | null>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [characterCount, setCharacterCount] = useState<number>(0);
+  const quillRef = useRef<ReactQuill>(null);
 
   const media = location.state?.media as
     | MovieModel
@@ -159,15 +161,26 @@ function WriteReviewPage() {
                     onChange={(_event, value) => setRating(value)}
                   />
                 </div>
-                <ReactQuill
-                  className="review-description"
-                  placeholder="Enter review..."
-                  value={JSON.parse(description) as DeltaStatic}
-                  onChange={(_v, _d, _s, e) =>
-                    setDescription(JSON.stringify(e.getContents()))
-                  }
-                  modules={modules}
-                />
+                <div className="flex flex-col w-full h-full overflow-hidden">
+                  <ReactQuill
+                    ref={quillRef}
+                    className="review-description"
+                    placeholder="Enter review..."
+                    value={JSON.parse(description) as DeltaStatic}
+                    onChange={(_v, _d, _s, editor) => {
+                      const textLength = editor.getLength() - 1;
+                      const quill = quillRef.current?.getEditor();
+                      if (textLength <= 2000) {
+                        setDescription(JSON.stringify(editor.getContents()));
+                        setCharacterCount(textLength);
+                      } else if (quill) {
+                        quill.deleteText(2000, textLength - 2000); // Remove extra characters
+                      }
+                    }}
+                    modules={modules}
+                  />
+                  <div className="character-count">{characterCount}/2000</div>
+                </div>
               </form>
             </div>
             {media.poster !== "N/A" ? (

@@ -398,7 +398,6 @@ button:disabled {
 
 .MuiDialog-container {
   .MuiPaper-root {
-
     .MuiDialogTitle-root {
       background-color: var(--palette-colour) !important;
       color: whitesmoke;
@@ -682,6 +681,80 @@ button:disabled {
         color: var(--light-dark) !important;
         font-size: 2rem;
       }
+    }
+  }
+}
+
+.ql-toolbar {
+  font-family: "Orbitron";
+  border-color: gray transparent gray transparent;
+  text-align: center;
+
+  .ql-formats {
+    .ql-picker-options {
+      background-color: var(--dark-light);
+      color: var(--light-dark);
+
+      .ql-picker-item:hover {
+        color: var(--palette-colour);
+      }
+    }
+
+    .ql-picker-label,
+    button[type="button"] {
+      color: var(--light-dark);
+
+      svg {
+        .ql-stroke {
+          stroke: var(--light-dark);
+        }
+      }
+
+      &.ql-active {
+        color: var(--palette-colour);
+
+        svg {
+          .ql-stroke {
+            stroke: var(--palette-colour);
+          }
+
+          .ql-fill {
+            fill: var(--palette-colour);     
+          }
+        }
+      }
+    }
+
+    .ql-picker-label:hover,
+    button[type="button"]:hover {
+      color: var(--palette-colour);
+
+      svg {
+        .ql-stroke {
+          stroke: var(--palette-colour);
+        }
+
+        .ql-fill {
+          fill: var(--palette-colour);     
+        }
+      }
+    }
+  }
+}
+
+.ql-container {
+  border-color: transparent !important;
+  color: var(--light-dark);
+  font-size: 15px;
+
+  .ql-editor {
+    font-family: "Orbitron";
+    padding: 1.5rem 2rem;
+    height: calc(100% - 4rem);
+
+    &::before {
+      color: gray;
+      left: 2rem;
     }
   }
 }

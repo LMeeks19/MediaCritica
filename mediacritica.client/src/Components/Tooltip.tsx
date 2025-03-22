@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 
 export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }}>
-    <span style={{ display: "flex" }}>{props.children}</span>
+    <span style={{ display: "flex", justifyContent: "center" }}>{props.children}</span>
   </Tooltip>
 ))(() => ({
   [`& .${tooltipClasses.arrow}`]: {

@@ -17,4 +17,5 @@ export interface ReviewModel {
   date: Date;
   likes: number;
   dislikes: number;
+  totalComments: number;
 }

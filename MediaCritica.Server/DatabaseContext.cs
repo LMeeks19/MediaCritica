@@ -9,6 +9,7 @@ namespace MediaCritica.Server
 
         public DbSet<AuthToken> AuthTokens { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Backlog> Backlogs { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<Milestone> Milestones { get; set; }

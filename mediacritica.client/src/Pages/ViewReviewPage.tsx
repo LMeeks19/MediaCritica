@@ -1,7 +1,7 @@
 import "./ViewReviewPage.scss";
 import { Button, ButtonGroup, Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import {
   DeleteReview,
@@ -46,6 +46,8 @@ function ViewReviewPage() {
   const [user, setUser] = useRecoilState(userState);
   const [engagement, setEngagement] = useState<number | null>(null);
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
+  const [characterCount, setCharacterCount] = useState<number>(0);
+  const quillRef = useRef<ReactQuill>(null);
 
   const reviewId = location.state?.reviewId;
 
@@ -245,17 +247,18 @@ function ViewReviewPage() {
               </div>
               <ButtonGroup>
                 <Button onClick={() => setCommentsOpen(true)}>
-                  <CustomTooltip title="Comments (20)">
+                  <CustomTooltip title={`Comments (${review.totalComments})`}>
                     <CommentIcon />
                   </CustomTooltip>
                 </Button>
-                {user.id === review.reviewerId && !isEditing ? (
+                {user.id === review.reviewerId && !isEditing && (
                   <Button value="edit" onClick={() => setIsEditing(true)}>
                     <CustomTooltip title="Edit">
                       <EditOutlinedIcon />
                     </CustomTooltip>
                   </Button>
-                ) : (
+                )}
+                {user.id === review.reviewerId && isEditing && (
                   <Button
                     value="cancel"
                     onClick={() => {
@@ -268,7 +271,7 @@ function ViewReviewPage() {
                     </CustomTooltip>
                   </Button>
                 )}
-                {user.id === review.reviewerId && !isEditing ? (
+                {user.id === review.reviewerId && !isEditing && (
                   <Button
                     value="delete"
                     onClick={() => {
@@ -280,7 +283,8 @@ function ViewReviewPage() {
                       <DeleteIcon />
                     </CustomTooltip>
                   </Button>
-                ) : (
+                )}
+                {user.id === review.reviewerId && isEditing && (
                   <Button
                     value="save"
                     form="review-form"
@@ -301,7 +305,6 @@ function ViewReviewPage() {
                     title={`Like (${millify(review.likes, {
                       precision: 0,
                     })})`}
-                   
                   >
                     <Button onClick={() => ToggleUserEngagement(0)}>
                       <ThumbUpIcon />
@@ -313,7 +316,6 @@ function ViewReviewPage() {
                     title={`Dislike (${millify(review.dislikes, {
                       precision: 0,
                     })})`}
-                   
                   >
                     <Button onClick={() => ToggleUserEngagement(1)}>
                       <ThumbDownIcon />
@@ -350,16 +352,29 @@ function ViewReviewPage() {
                   onChange={(_event, value) => setRating(value!)}
                 />
               </div>
-              <ReactQuill
-                className={`review-description ${!isEditing && "readonly"}`}
-                placeholder="Enter review..."
-                value={JSON.parse(description) as DeltaStatic}
-                onChange={(_v, _d, _s, e) => {
-                  setDescription(JSON.stringify(e.getContents()));
-                }}
-                readOnly={!isEditing}
-                modules={modules}
-              />
+              <div className="flex flex-col w-full h-full overflow-hidden">
+                <ReactQuill
+                  ref={quillRef}
+                  className={`review-description ${!isEditing && "readonly"}`}
+                  placeholder="Enter review..."
+                  value={JSON.parse(description) as DeltaStatic}
+                  onChange={(_v, _d, _s, editor) => {
+                    const textLength = editor.getLength() - 1;
+                    const quill = quillRef.current?.getEditor();
+                    if (textLength <= 2000) {
+                      setDescription(JSON.stringify(editor.getContents()));
+                      setCharacterCount(textLength);
+                    } else if (quill) {
+                      quill.deleteText(2000, textLength - 2000); // Remove extra characters
+                    }
+                  }}
+                  readOnly={!isEditing}
+                  modules={modules}
+                />
+                {isEditing && (
+                  <div className="character-count">{characterCount}/2000</div>
+                )}
+              </div>
             </form>
           </div>
           {review.mediaPoster !== "N/A" ? (
@@ -384,7 +399,11 @@ function ViewReviewPage() {
         setOpen={setIsDialogOpen}
         data={confirmationDialog}
       />
-      <CommentsDialog open={commentsOpen} setOpen={setCommentsOpen} />
+      <CommentsDialog
+        open={commentsOpen}
+        setOpen={setCommentsOpen}
+        reviewId={reviewId}
+      />
     </div>
   );
 }

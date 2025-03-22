@@ -3,85 +3,244 @@ import { formatDistanceToNowStrict } from "date-fns";
 import ReplyIcon from "@mui/icons-material/MapsUgcOutlined";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
-import LikeIcon from "@mui/icons-material/ThumbUpAltOutlined";
-import DislikeIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import LoadMoreIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-
+import CancelIcon from "@mui/icons-material/CancelOutlined";
+import SendIcon from "@mui/icons-material/SendOutlined";
+import SaveIcon from "@mui/icons-material/SaveOutlined";
 import { CustomTooltip } from "./Tooltip";
 import { useRecoilValue } from "recoil";
 import { userState } from "../State/GlobalState";
+import {
+  DeleteComment,
+  GetCommentsRemainingChildren,
+  PostComment,
+  UpdateComment,
+} from "../Server/Server";
+import { useState } from "react";
+import ReactQuill from "react-quill";
+import { DeltaStatic } from "quill";
 
-interface CommentType {
+export interface Comment {
   id: number;
-  message: string;
-  commenterName: string;
-  commenterId: number;
-  commentedAt: string;
-  children: CommentType[];
+  parentId?: number;
+  reviewId: number;
+  comment?: string;
+  commenterId?: number;
+  commenterName?: string;
+  commentedAt?: string;
+  children: Comment[];
   totalChildren: number;
+  isDeleted: boolean;
 }
 
 // Comment component
-export function Comment({ comment }: { comment: CommentType }) {
+export function Comment({
+  comment,
+  reviewId,
+}: {
+  comment: Comment;
+  reviewId: number;
+}) {
   const user = useRecoilValue(userState);
+  const [curComment, setCurComment] = useState<Comment>(comment);
+  const [isReplying, setIsReplying] = useState<boolean>(false);
+  const [reply, setReply] = useState<string>("{}");
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedComment, setEditedComment] = useState<string>(
+    curComment.comment!
+  );
 
-  const canLoadMore = comment.totalChildren - comment.children.length > 0;
+  const canLoadMore = curComment.totalChildren - curComment.children.length > 0;
+  const unloadedReplies = curComment.totalChildren - curComment.children.length;
+
+  async function getRemainingChildren() {
+    const offset = curComment.totalChildren - unloadedReplies;
+    const commentData = await GetCommentsRemainingChildren(comment.id, offset);
+    setCurComment({
+      ...curComment,
+      children: [...curComment.children, ...commentData],
+    });
+  }
+
+  async function deleteComment() {
+    await DeleteComment(comment.id).then(() =>
+      setCurComment({
+        ...curComment,
+        comment: undefined,
+        commenterId: undefined,
+        commenterName: undefined,
+        commentedAt: undefined,
+        isDeleted: true,
+      })
+    );
+  }
+
+  async function sendReply() {
+    const newComment = {
+      reviewId: reviewId,
+      parentId: comment.id,
+      comment: reply,
+      commenterId: user.id,
+      commenterName: `${user.forename} ${user.surname}`,
+      children: [],
+      totalChildren: 0,
+    };
+
+    await PostComment(newComment)
+      .then((data) =>
+        setCurComment({
+          ...curComment,
+          children: [data, ...curComment.children],
+        })
+      )
+      .then(() => setReply("{}"))
+      .then(() => setIsReplying(false));
+  }
+
+  async function saveComment() {
+    await UpdateComment({
+      id: curComment.id,
+      message: editedComment!,
+    })
+      .then(() =>
+        setCurComment({ ...curComment, commentedAt: new Date().toUTCString() })
+      )
+      .then(() => setIsEditing(false));
+  }
+
+  function resetEdit() {
+    setEditedComment(curComment.comment!);
+    setIsEditing(false);
+  }
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: ["", "center", "right", "justify"] }],
+      ["link"],
+    ],
+  };
 
   return (
     <div className="comment">
       <div className="details">
-        <AccountIcon fontSize="small" /> {comment.commenterName} -{" "}
-        {formatDistanceToNowStrict(comment.commentedAt)} ago
-      </div>
-      <div className={`content ${!canLoadMore && "blank"}`}>
-        <div className={`message ${user.id === comment.commenterId && "mine"}`}>
-          {comment.message}
-        </div>
-        <div
-          className={`actions ${user.id === comment.commenterId && "mine"} ${
-            comment.children.length === 0 && "blank"
-          }`}
-        >
-          <CustomTooltip title="Reply">
-            <ReplyIcon className="icon" fontSize="small" />
-          </CustomTooltip>
-          <CustomTooltip title="Report">
-            <FlagIcon className="icon" fontSize="small" />
-          </CustomTooltip>
-          <CustomTooltip title="Share">
-            <ShareIcon className="icon" fontSize="small" />
-          </CustomTooltip>
-          {user.id !== comment.commenterId && user.id !== undefined && (
-            <CustomTooltip title="Like">
-              <LikeIcon className="icon" fontSize="small" />
-            </CustomTooltip>
-          )}
-          {user.id !== comment.commenterId && user.id !== undefined && (
-            <CustomTooltip title="Dislike">
-              <DislikeIcon className="icon" fontSize="small" />
-            </CustomTooltip>
-          )}
-          {user.id === comment.commenterId && (
+        <AccountIcon fontSize="small" />{" "}
+        {curComment.isDeleted
+          ? "deleted"
+          : `${curComment.commenterName} - ${formatDistanceToNowStrict(
+              curComment.commentedAt!
+            )} ago`}
+        <div className="flex gap-2 ml-auto">
+          {user.id === curComment.commenterId && !isEditing && (
             <CustomTooltip title="Edit">
-              <EditIcon className="icon" fontSize="small" />
+              <EditIcon
+                className="icon"
+                fontSize="small"
+                onClick={() => setIsEditing(true)}
+              />
             </CustomTooltip>
           )}
-          {user.id === comment.commenterId && (
+          {user.id === curComment.commenterId && !isEditing && (
             <CustomTooltip title="Delete">
-              <DeleteIcon className="icon" fontSize="small" />
+              <DeleteIcon
+                className="icon"
+                fontSize="small"
+                onClick={() => deleteComment()}
+              />
+            </CustomTooltip>
+          )}
+          {user.id === curComment.commenterId && isEditing && (
+            <CustomTooltip title="Cancel">
+              <CancelIcon
+                className="icon"
+                fontSize="small"
+                onClick={() => resetEdit()}
+              />
+            </CustomTooltip>
+          )}
+          {user.id === curComment.commenterId && isEditing && (
+            <CustomTooltip title="Save">
+              <SaveIcon
+                className="icon"
+                fontSize="small"
+                onClick={() => saveComment()}
+              />
             </CustomTooltip>
           )}
         </div>
-        {comment.children.length > 0 && (
-          <CommentsContainer comments={comment.children} />
+      </div>
+      <div
+        className={`content ${!canLoadMore && "blank"} ${
+          user.id === curComment.commenterId && "mine"
+        }`}
+      >
+        {curComment.comment && (
+          <ReactQuill
+            className={`message ${!isEditing && "readonly"}`}
+            modules={modules}
+            value={JSON.parse(editedComment) as DeltaStatic}
+            onChange={(_v, _d, _s, e) =>
+              setEditedComment(JSON.stringify(e.getContents()))
+            }
+            readOnly={!isEditing}
+          />
+        )}
+        {!curComment.isDeleted && (
+          <div
+            className={`actions ${curComment.children.length === 0 && "blank"}`}
+          >
+            {user.id !== curComment.commenterId && user.id !== undefined && (
+              <CustomTooltip title="Report">
+                <FlagIcon className="icon" />
+              </CustomTooltip>
+            )}
+            <CustomTooltip title="Share">
+              <ShareIcon className="icon" />
+            </CustomTooltip>
+            {isReplying ? (
+              <CustomTooltip
+                title="Cancel"
+                onClick={() => setIsReplying(false)}
+              >
+                <CancelIcon className="icon" />
+              </CustomTooltip>
+            ) : (
+              <CustomTooltip title="Reply" onClick={() => setIsReplying(true)}>
+                <ReplyIcon className="icon" />
+              </CustomTooltip>
+            )}
+            {isReplying && (
+              <CustomTooltip title="Send" onClick={() => sendReply()}>
+                <SendIcon className="icon" />
+              </CustomTooltip>
+            )}
+          </div>
+        )}
+        {isReplying && (
+          <ReactQuill
+            className="reply"
+            placeholder="Enter reply..."
+            value={JSON.parse(reply) as DeltaStatic}
+            onChange={(_v, _d, _S, e) =>
+              setReply(JSON.stringify(e.getContents()))
+            }
+            modules={modules}
+          />
+        )}
+        {curComment.children.length > 0 && (
+          <CommentsContainer
+            comments={curComment.children}
+            reviewId={reviewId}
+          />
         )}
         {canLoadMore && (
-          <div className="load">
-            <LoadMoreIcon fontSize="small" />{" "}
-            {comment.totalChildren - comment.children.length} more replies
+          <div className="load" onClick={() => getRemainingChildren()}>
+            <LoadMoreIcon fontSize="small" /> {unloadedReplies} more replies
           </div>
         )}
       </div>
@@ -90,56 +249,22 @@ export function Comment({ comment }: { comment: CommentType }) {
 }
 
 // CommentsContainer component
-export function CommentsContainer({ comments }: { comments: CommentType[] }) {
+export function CommentsContainer({
+  comments,
+  reviewId,
+}: {
+  comments: Comment[];
+  reviewId: number;
+}) {
   return (
     <div className="comments-container">
-      {comments.map((comment) => (
-        <Comment key={comment.id} comment={comment} />
-      ))}
+      {comments.length === 0 ? (
+        <div className="empty flex-1">No Comments</div>
+      ) : (
+        comments.map((comment) => (
+          <Comment key={comment.id} comment={comment} reviewId={reviewId} />
+        ))
+      )}
     </div>
   );
 }
-
-// Sample data structure for comments
-export // Sample data structure for comments
-const commentsData: CommentType[] = [
-  {
-    id: 1,
-    message:
-      "This is the first comment This is the first comment This is the first comment This is the first comment This is the first comment This is the first comment This is the first comment ",
-    commenterName: "commenter1",
-    commenterId: 8,
-    commentedAt: "2025-03-21T10:00:00Z",
-    totalChildren: 8,
-    children: [
-      {
-        id: 2,
-        message: "This is a reply to the first comment",
-        commenterName: "commenter2",
-        commenterId: 22,
-        commentedAt: "2025-03-21T10:30:00Z",
-        totalChildren: 4,
-        children: [
-          {
-            id: 3,
-            message: "This is a nested reply",
-            commenterName: "commenter3",
-            commentedAt: "2025-03-21T11:00:00Z",
-            commenterId: 8,
-            totalChildren: 0,
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 4,
-    message: "This is another top-level comment",
-    commenterName: "commenter4",
-    commentedAt: "2025-03-21T12:00:00Z",
-    commenterId: 4,
-    totalChildren: 0,
-    children: [],
-  },
-];

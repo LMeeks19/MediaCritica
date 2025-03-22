@@ -198,6 +198,8 @@ namespace MediaCritica.Server.Controllers
                     .ThenInclude(r => r.Engagements)
                 .Include(u => u.Reviews)
                     .ThenInclude(r => r.Media)
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Comments)
                 .Include(u => u.Milestones)
                 .Include(u => u.Engagements)
                 .Include(u => u.Followers)

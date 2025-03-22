@@ -1,3 +1,4 @@
+import { Comment } from "../Components/Comments";
 import Snackbar from "../Components/Snackbar";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import { MediaType } from "../Enums/MediaType";
@@ -52,6 +53,7 @@ function isRequestMessageInterface(obj: any): obj is RequestMessage {
 async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
   try {
     const response = await fetch(url, options);
+
     const data = await response.json();
 
     if (isRequestMessageInterface(data)) {
@@ -588,5 +590,50 @@ export async function GetUserNotifications(
   const response = await MakeRequest<NotificationModel[]>(
     `/Notification/GetUserNotifications/${userId}/${offset}/${limit}`
   );
+  return response;
+}
+
+// Comment API Calls
+export async function GetReviewComments(reviewId: number): Promise<Comment[]> {
+  const response = await MakeRequest<Comment[]>(
+    `/Comment/GetReviewComments/${reviewId}`
+  );
+  return response;
+}
+
+export async function GetCommentsRemainingChildren(
+  commentId: number,
+  offset: number
+): Promise<Comment[]> {
+  const response = await MakeRequest<Comment[]>(
+    `/Comment/GetCommentsRemainingChildren/${commentId}/${offset}`
+  );
+  return response;
+}
+
+export async function DeleteComment(commentId: number): Promise<void> {
+  await MakeRequest<void>(`/Comment/DeleteComment/${commentId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function PostComment(commentModel: any): Promise<Comment> {
+  const response = await MakeRequest<Comment>(`/Comment/PostComment`, {
+    method: "POST",
+    body: JSON.stringify(commentModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response;
+}
+
+export async function UpdateComment(updateCommentModel: {
+  id: number;
+  message: string;
+}): Promise<Comment> {
+  const response = await MakeRequest<Comment>(`/Comment/UpdateComment`, {
+    method: "PUT",
+    body: JSON.stringify(updateCommentModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
   return response;
 }
