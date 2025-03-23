@@ -66,15 +66,19 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{mediaId}/{offset}/{limit}")]
         public async Task<IActionResult> GetMediaReviews(string mediaId, int offset, int limit)
         {
-            var reviews = await _databaseContext.Reviews
-                .Where(r => r.MediaId == mediaId)
+            var media = await _databaseContext.Media
+                .Include(m => m.Reviews)
+                .Where(m => m.Id == mediaId)
+                .SingleAsync();
+
+            var reviews = media.Reviews
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
                 .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r))
-                .ToListAsync();
+                .ToList();
 
-            return Ok(new { Reviews = reviews, totalCount = reviews.Count });
+            return Ok(new { media.Title, Reviews = reviews, totalCount = reviews.Count });
         }
 
         [HttpPost("[action]")]

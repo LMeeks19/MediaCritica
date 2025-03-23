@@ -61,16 +61,7 @@ const MediaGrid: FC<{
               src={item.poster?.replace("300.jpg", "180.jpg")}
               alt={item.title}
             />
-            <CardActionArea
-              onClick={() =>
-                navigate(`/media/${item.id}`, {
-                  state: {
-                    mediaId: item.id,
-                    mediaType: item.type,
-                  },
-                })
-              }
-            >
+            <CardActionArea onClick={() => navigate(`/${item.type}/${item.id}`)}>
               <CardMedia component="div" />
               <CardHeader title={item.title} />
               <Divider />

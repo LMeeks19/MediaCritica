@@ -271,9 +271,11 @@ export async function GetBestOfAllTime(
 export async function GetMedia(
   mediId: string,
   type: MediaType
-): Promise<MovieModel | SeriesModel | GameModel> {
+): Promise<MovieModel | SeriesModel | GameModel | EpisodeModel> {
   if (type === MediaType.Movie) return GetMovie(mediId);
   else if (type === MediaType.Series) return GetSeries(mediId);
+  else if (type === MediaType.Episode) return GetEpisode(mediId);
+
   return GetGame(mediId);
 }
 
@@ -341,8 +343,13 @@ export async function GetUserReviewsBreakdown(
 export async function GetMediaReviews(
   mediaId: string,
   offset: number = 0
-): Promise<{ reviews: ReviewSummaryModel[]; totalCount: number }> {
+): Promise<{
+  title: string;
+  reviews: ReviewSummaryModel[];
+  totalCount: number;
+}> {
   const response = await MakeRequest<{
+    title: string;
     reviews: ReviewSummaryModel[];
     totalCount: number;
   }>(`/Review/GetMediaReviews/${mediaId}/${offset}/${40}`);
@@ -594,7 +601,9 @@ export async function GetUserNotifications(
 }
 
 // Comment API Calls
-export async function GetReviewComments(reviewId: number): Promise<CommentModel[]> {
+export async function GetReviewComments(
+  reviewId: number
+): Promise<CommentModel[]> {
   const response = await MakeRequest<CommentModel[]>(
     `/Comment/GetReviewComments/${reviewId}`
   );

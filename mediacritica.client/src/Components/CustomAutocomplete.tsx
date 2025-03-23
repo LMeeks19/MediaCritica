@@ -30,22 +30,20 @@ function CustomAutoComplete() {
     UserSearchModel[]
   >([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedSearchTab, setSelectedSearchTab] = useState<number>(0); // 0 for media, 1 for users
+  const [selectedSearchTab, setSelectedSearchTab] = useState<number>(0);
 
-  // Method for fetching results based on selected tab
   async function getResults() {
     if (selectedSearchTab === 0) {
-      setUserSearchResults([]); // Clear previous user results
+      setUserSearchResults([]);
       const mediaSearchResponse = await GetMediaSearchResults(searchTerm);
       setMediaSearchResults(mediaSearchResponse.search ?? []);
     } else if (selectedSearchTab === 1) {
-      setMediaSearchResults([]); // Clear previous media results
+      setMediaSearchResults([]);
       const usersSearchResponse = await GetUserSearchResults(searchTerm);
       setUserSearchResults(usersSearchResponse ?? []);
     }
   }
 
-  // Handle search term changes and trigger API call after delay
   useEffect(() => {
     const timeout = setTimeout(async () => {
       if (searchTerm.length > 2) {
@@ -57,20 +55,17 @@ function CustomAutoComplete() {
     return () => clearTimeout(timeout);
   }, [searchTerm, selectedSearchTab]);
 
-  // Handle tab switch (media or users)
   const handleTabClick = (e: React.MouseEvent, tabIndex: number) => {
     e.preventDefault();
     e.stopPropagation();
     setSelectedSearchTab(tabIndex);
   };
 
-  // Method to close the autocomplete
   const handleCloseAutocomplete = () => {
     setMediaSearchResults([]);
     setUserSearchResults([]);
   };
 
-  // Method to handle the rendering of the search input field based on the selected tab
   const getRenderInput = (params: any) => {
     return (
       <TextField
@@ -125,13 +120,11 @@ function CustomAutoComplete() {
     );
   };
 
-  // Dynamic renderOption based on selected tab (media or users)
   const getRenderOption = (props: any, result: any) => {
     const { key, ...resultProps } = props;
     return (
       <Box key={result.id || result.imdbID} component="li" {...resultProps}>
         {selectedSearchTab === 0 ? (
-          // Render media options - Full media card style for media results
           <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
             {result.poster === "N/A" ? (
               <ImageIcon style={{ width: 60, height: 75 }} />
@@ -189,25 +182,16 @@ function CustomAutoComplete() {
       getOptionLabel={(result) =>
         selectedSearchTab === 0 ? result.title : result.fullName
       }
-      onInputChange={(_e, v) => setSearchTerm(v)} // Use the method to handle input change
+      onInputChange={(_e, v) => setSearchTerm(v)}
       onChange={(_e, result) => {
         if (selectedSearchTab === 0 && result?.imdbID) {
-          navigate(`/media/${result.imdbID}`, {
-            state: {
-              mediaId: result.imdbID,
-              mediaType: result.type,
-            },
-          });
+          navigate(`/${result.type}/${result.imdbID}`);
         } else if (selectedSearchTab === 1 && result?.id) {
-          navigate(`/view-user/${result.fullName}`, {
-            state: {
-              userId: result.id,
-            },
-          });
+          navigate(`/view-user/${result.id}`);
         }
       }}
-      renderOption={getRenderOption} // Use the dynamically assigned method to render options
-      renderInput={getRenderInput} // Use the method to render the input field
+      renderOption={getRenderOption}
+      renderInput={getRenderInput}
     />
   );
 }

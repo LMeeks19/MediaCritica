@@ -189,14 +189,7 @@ function ExplorePage() {
                       alt={item.title}
                     />
                     <CardActionArea
-                      onClick={() =>
-                        navigate(`/media/${item.id}`, {
-                          state: {
-                            mediaId: item.id,
-                            mediaType: item.type,
-                          },
-                        })
-                      }
+                      onClick={() => navigate(`/${item.type}/${item.id}`)}
                     >
                       <CardMedia component="div" />
                       <CardHeader title={item.title} />
@@ -237,9 +230,7 @@ function ExplorePage() {
               >
                 <CustomTooltip title="Load more">
                   <span>
-                    <Fab
-                      onClick={() => FetchExplore(baseMedia.length)}
-                    >
+                    <Fab onClick={() => FetchExplore(baseMedia.length)}>
                       <AddIcon />
                     </Fab>
                   </span>

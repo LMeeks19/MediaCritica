@@ -400,12 +400,7 @@ function AccountPage() {
                     />
                     <CardActionArea
                       onClick={() =>
-                        navigate(`/media/${item.mediaId}`, {
-                          state: {
-                            mediaId: item.mediaId,
-                            mediaType: item.mediaType,
-                          },
-                        })
+                        navigate(`/${item.mediaType}/${item.mediaId}`)
                       }
                     >
                       <CardMedia component="div" />
@@ -560,11 +555,7 @@ function AccountPage() {
                             className="follower"
                             key={follower.userId}
                             onClick={() =>
-                              navigate(`/view-user/${follower.userId}`, {
-                                state: {
-                                  userId: follower.userId,
-                                },
-                              })
+                              navigate(`/view-user/${follower.userId}`)
                             }
                           >
                             <Avatar
@@ -618,11 +609,7 @@ function AccountPage() {
                             className="follower"
                             key={follower.userId}
                             onClick={() =>
-                              navigate(`/view-user/${follower.userId}`, {
-                                state: {
-                                  userId: follower.userId,
-                                },
-                              })
+                              navigate(`/view-user/${follower.userId}`)
                             }
                           >
                             <Avatar
@@ -715,10 +702,7 @@ function AccountPage() {
                               <CardActionArea
                                 onClick={() =>
                                   navigate(
-                                    `/media/${review.mediaId}/view-review/${review.id}}`,
-                                    {
-                                      state: { reviewId: review.id },
-                                    }
+                                    `/${review.mediaType}/${review.mediaId}/reviews/${review.id}}`
                                   )
                                 }
                               >

@@ -16,15 +16,18 @@ import RedditIcon from "@mui/icons-material/Reddit";
 import ClipboardCopyIcon from "@mui/icons-material/ContentCopyOutlined";
 import { CustomTooltip } from "./Tooltip";
 import { ReviewModel } from "../Interfaces/ReviewModel";
-import { CommentModel } from "./Comments";
 
 export function ShareDialog(props: {
   open: boolean;
   setOpen: SetterOrUpdater<boolean>;
-  message: string;
-  review?: ReviewModel;
-  comment?: CommentModel;
+  review: ReviewModel;
 }) {
+  function copyToClipboard() {
+    navigator.clipboard.writeText(
+      `Check out this review on MediaCritica: ${window.location.href}`
+    );
+  }
+
   return (
     <Dialog
       fullWidth
@@ -45,11 +48,11 @@ export function ShareDialog(props: {
           <CloseIcon />
         </Fab>
       </DialogTitle>
-      <DialogContent>{props.message}</DialogContent>
+      <DialogContent>Where would you like to share this review?</DialogContent>
       <Divider />
       <DialogActions>
         <ButtonGroup>
-          <Button>
+          <Button onClick={copyToClipboard}>
             <CustomTooltip title="Copy to clipboard">
               <ClipboardCopyIcon />
             </CustomTooltip>

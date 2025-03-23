@@ -30,7 +30,7 @@ import {
   ToggleUserFollowNotificationStatus,
   UnfollowUser,
 } from "../Server/Server";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../Components/Loader";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import GradeIcon from "@mui/icons-material/Grade";
@@ -50,18 +50,30 @@ function ViewUserPage() {
   const [userSummary, setUserSummary] = useState<UserSummaryModel>(
     {} as UserSummaryModel
   );
-  const location = useLocation();
   const navigate = useNavigate();
+  const { userId } = useParams();
 
   useEffect(() => {
     async function FetchUserSummary() {
-      if (location.state?.userId === undefined) navigate("/");
+      try {
+        Number(userId!);
+      } catch {
+        navigate("/");
+      }
       setIsLoading(true);
-      const userSummaryData = await GetUserSummary(location.state.userId);
+      const userSummaryData = await GetUserSummary(
+        Number(userId!)
+      );
       setUserSummary(userSummaryData);
       var userFollowStatus = null;
-      if (user.id !== undefined && user.id !== location.state.userId)
-        userFollowStatus = await GetUserFollow(user.id, location.state.userId);
+      if (
+        user.id !== undefined &&
+        user.id !== Number(userId!)
+      )
+        userFollowStatus = await GetUserFollow(
+          user.id,
+          Number(userId!)
+        );
       setUserFollow(userFollowStatus);
       setIsLoading(false);
     }
@@ -298,12 +310,7 @@ function ViewUserPage() {
                           <CardActionArea
                             onClick={() =>
                               navigate(
-                                `/media/${item.mediaId}/view-review/${item.id}}`,
-                                {
-                                  state: {
-                                    reviewId: item.id,
-                                  },
-                                }
+                                `/${item.mediaType}/${item.mediaId}/reviews/${item.id}}`
                               )
                             }
                           >

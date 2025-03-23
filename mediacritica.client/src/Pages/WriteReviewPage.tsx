@@ -75,9 +75,7 @@ function WriteReviewPage() {
 
     const reviewId = await PostReview(review);
     setUser({ ...user, totalReviews: user.totalReviews + 1 });
-    navigate(`/media/${media.id}/view-review/${reviewId}`, {
-      state: { reviewId: reviewId },
-    });
+    navigate(`/${media.type}/${media.id}/reviews/${reviewId}`);
     setIsLoading(false);
   }
 

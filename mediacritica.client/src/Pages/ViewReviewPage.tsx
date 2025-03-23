@@ -10,7 +10,7 @@ import {
   ToggleReviewEngagement,
   UpdateReview,
 } from "../Server/Server";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -26,18 +26,19 @@ import CancelIcon from "@mui/icons-material/CancelOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import CommentIcon from "@mui/icons-material/CommentOutlined";
+import ShareIcon from "@mui/icons-material/ShareOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import millify from "millify";
-import { MediaType } from "../Enums/MediaType";
 import ConfirmationDialog from "../Components/ConfirmationDialog";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
 import CommentsDialog from "../Components/CommentsDialog";
+import { ShareDialog } from "../Components/ShareDialog";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const location = useLocation();
+  const { reviewId } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -48,21 +49,23 @@ function ViewReviewPage() {
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [characterCount, setCharacterCount] = useState<number>(0);
   const quillRef = useRef<ReactQuill>(null);
-
-  const reviewId = location.state?.reviewId;
+  const [shareOpen, setShareOpen] = useState<boolean>(false);
 
   useEffect(() => {
     async function FetchReview() {
-      reviewId === undefined && navigate("/");
+      try {
+        Number(reviewId!);
+      } catch {
+        navigate("/");
+      }
       setIsLoading(true);
-
-      const reviewData = await GetReview(reviewId);
+      const reviewData = await GetReview(Number(reviewId!));
       setReview(reviewData);
 
       var engagementStatus = null;
       if (user.id !== undefined)
         engagementStatus = await GetCurrentUserReviewEngagement(
-          reviewId,
+          Number(reviewId!),
           user.id
         );
       setEngagement(engagementStatus);
@@ -194,15 +197,9 @@ function ViewReviewPage() {
                     className="parent-title"
                     onClick={() =>
                       navigate(
-                        `/media/${review.mediaSeriesId ?? review.mediaId}`,
-                        {
-                          state: {
-                            mediaId: review.mediaSeriesId ?? review.mediaId,
-                            mediaType: review.mediaSeriesId
-                              ? MediaType.Series
-                              : review.mediaType,
-                          },
-                        }
+                        `/${review.mediaType}/${
+                          review.mediaSeriesId ?? review.mediaId
+                        }`
                       )
                     }
                   >
@@ -213,12 +210,7 @@ function ViewReviewPage() {
                       className="sub-title"
                       onClick={() =>
                         navigate(
-                          `/media/${review.mediaSeriesId}/seasons/${review.mediaEpisode}/episodes/${review.mediaId}`,
-                          {
-                            state: {
-                              episodeId: review.mediaId,
-                            },
-                          }
+                          `/${review.mediaType}/${review.mediaSeriesId}/seasons/${review.mediaEpisode}/episodes/${review.mediaId}`
                         )
                       }
                     >
@@ -234,11 +226,7 @@ function ViewReviewPage() {
                   <span
                     className="reviewer"
                     onClick={() =>
-                      navigate(`/view-user/${review.reviewerName}`, {
-                        state: {
-                          userId: review.reviewerId,
-                        },
-                      })
+                      navigate(`/view-user/${review.reviewerName}`)
                     }
                   >
                     {review.reviewerName}
@@ -249,6 +237,11 @@ function ViewReviewPage() {
                 <Button onClick={() => setCommentsOpen(true)}>
                   <CustomTooltip title={`Comments (${review.totalComments})`}>
                     <CommentIcon />
+                  </CustomTooltip>
+                </Button>
+                <Button onClick={() => setShareOpen(true)}>
+                  <CustomTooltip title="Share">
+                    <ShareIcon />
                   </CustomTooltip>
                 </Button>
                 {user.id === review.reviewerId && !isEditing && (
@@ -402,8 +395,9 @@ function ViewReviewPage() {
       <CommentsDialog
         open={commentsOpen}
         setOpen={setCommentsOpen}
-        reviewId={reviewId}
+        reviewId={review.id}
       />
+      <ShareDialog open={shareOpen} setOpen={setShareOpen} review={review} />
     </div>
   );
 }

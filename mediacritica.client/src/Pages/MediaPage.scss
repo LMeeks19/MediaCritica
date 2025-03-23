@@ -44,13 +44,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 2rem;
+      padding: 1rem 2rem;
       flex-wrap: wrap;
       z-index: 997;
       box-shadow: 0 0 10px 0 black;
     }
 
-    .release {
+    .sub-info {
       font-size: 1rem;
       color: #bbb;
     }
@@ -59,27 +59,15 @@
       display: flex;
       justify-content: center;
       flex-direction: column;
-      gap: 0.25rem;
 
       h1 {
         font-size: 2.25rem;
         margin: 0;
-      }
 
-      .MuiIconButton-root:hover {
-        background-color: rgba(palevioletred, 0.25);
-      }
-
-      .heart {
-        color: var(--backlog-heart);
-        
-        .MuiSvgIcon-root {
-          font-size: 2rem !important;
+        &.episode-title:hover {
+          text-decoration: underline;
+          cursor: pointer;
         }
-      }
-
-      .heart:disabled {
-        opacity: 50%;
       }
     }
 

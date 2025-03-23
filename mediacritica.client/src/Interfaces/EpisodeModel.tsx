@@ -5,4 +5,5 @@ export interface EpisodeModel extends MediaModel {
   season: string;
   seasonId: string;
   seriesTitle: string;
+  seriesId: string;
 }

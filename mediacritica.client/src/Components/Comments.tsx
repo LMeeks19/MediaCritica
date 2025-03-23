@@ -4,7 +4,6 @@ import ReplyIcon from "@mui/icons-material/MapsUgcOutlined";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ShareIcon from "@mui/icons-material/ShareOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import LoadMoreIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
@@ -22,7 +21,6 @@ import {
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
-import { ShareDialog } from "./ShareDialog";
 
 export interface CommentModel {
   id: number;
@@ -52,7 +50,6 @@ export function Comment({
   const [editedComment, setEditedComment] = useState<string>(
     curComment.comment!
   );
-  const [openShare, setOpenShare] = useState<boolean>(false);
 
   const canLoadMore = curComment.totalChildren - curComment.children.length > 0;
   const unloadedReplies = curComment.totalChildren - curComment.children.length;
@@ -200,9 +197,6 @@ export function Comment({
                 <FlagIcon className="icon" />
               </CustomTooltip>
             )}
-            <CustomTooltip title="Share">
-              <ShareIcon className="icon" onClick={() => setOpenShare(true)} />
-            </CustomTooltip>
             {isReplying ? (
               <CustomTooltip
                 title="Cancel"
@@ -243,12 +237,6 @@ export function Comment({
           </div>
         )}
       </div>
-      <ShareDialog
-        open={openShare}
-        setOpen={setOpenShare}
-        message="Where would you like to share this comment?"
-        comment={curComment}
-      />
     </div>
   );
 }

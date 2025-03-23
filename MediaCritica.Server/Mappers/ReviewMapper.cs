@@ -56,6 +56,7 @@ namespace MediaCritica.Server.Mappers
                 Date = review.Date,
                 Rating = review.Rating,
                 ReviewerName = review.ReviewerName,
+                MediaType = review.MediaType,
                 Title = review.Title,
             };
         }
