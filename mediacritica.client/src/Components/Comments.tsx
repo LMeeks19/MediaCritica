@@ -22,8 +22,9 @@ import {
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
+import { ShareDialog } from "./ShareDialog";
 
-export interface Comment {
+export interface CommentModel {
   id: number;
   parentId?: number;
   reviewId: number;
@@ -31,27 +32,27 @@ export interface Comment {
   commenterId?: number;
   commenterName?: string;
   commentedAt?: string;
-  children: Comment[];
+  children: CommentModel[];
   totalChildren: number;
   isDeleted: boolean;
 }
 
-// Comment component
 export function Comment({
   comment,
   reviewId,
 }: {
-  comment: Comment;
+  comment: CommentModel;
   reviewId: number;
 }) {
   const user = useRecoilValue(userState);
-  const [curComment, setCurComment] = useState<Comment>(comment);
+  const [curComment, setCurComment] = useState<CommentModel>(comment);
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [reply, setReply] = useState<string>("{}");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedComment, setEditedComment] = useState<string>(
     curComment.comment!
   );
+  const [openShare, setOpenShare] = useState<boolean>(false);
 
   const canLoadMore = curComment.totalChildren - curComment.children.length > 0;
   const unloadedReplies = curComment.totalChildren - curComment.children.length;
@@ -127,7 +128,7 @@ export function Comment({
   };
 
   return (
-    <div className="comment">
+    <div className={`comment ${user.id === curComment.commenterId && "mine"}`}>
       <div className="details">
         <AccountIcon fontSize="small" />{" "}
         {curComment.isDeleted
@@ -175,9 +176,9 @@ export function Comment({
         </div>
       </div>
       <div
-        className={`content ${!canLoadMore && "blank"} ${
-          user.id === curComment.commenterId && "mine"
-        }`}
+        className={`content ${
+          curComment.isDeleted && curComment.children.length === 0 && "blank"
+        } ${user.id === curComment.commenterId && "mine"}`}
       >
         {curComment.comment && (
           <ReactQuill
@@ -200,7 +201,7 @@ export function Comment({
               </CustomTooltip>
             )}
             <CustomTooltip title="Share">
-              <ShareIcon className="icon" />
+              <ShareIcon className="icon" onClick={() => setOpenShare(true)} />
             </CustomTooltip>
             {isReplying ? (
               <CustomTooltip
@@ -232,39 +233,22 @@ export function Comment({
             modules={modules}
           />
         )}
-        {curComment.children.length > 0 && (
-          <CommentsContainer
-            comments={curComment.children}
-            reviewId={reviewId}
-          />
-        )}
+        {curComment.children.length > 0 &&
+          curComment.children.map((comment) => (
+            <Comment key={comment.id} comment={comment} reviewId={reviewId} />
+          ))}
         {canLoadMore && (
           <div className="load" onClick={() => getRemainingChildren()}>
             <LoadMoreIcon fontSize="small" /> {unloadedReplies} more replies
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-// CommentsContainer component
-export function CommentsContainer({
-  comments,
-  reviewId,
-}: {
-  comments: Comment[];
-  reviewId: number;
-}) {
-  return (
-    <div className="comments-container">
-      {comments.length === 0 ? (
-        <div className="empty flex-1">No Comments</div>
-      ) : (
-        comments.map((comment) => (
-          <Comment key={comment.id} comment={comment} reviewId={reviewId} />
-        ))
-      )}
+      <ShareDialog
+        open={openShare}
+        setOpen={setOpenShare}
+        message="Where would you like to share this comment?"
+        comment={curComment}
+      />
     </div>
   );
 }

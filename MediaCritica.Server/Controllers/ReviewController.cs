@@ -24,6 +24,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(r => r.Media)
                     .ThenInclude(m => (m as Episode)!.Season)
                 .Include(r => r.Comments)
+                    .ThenInclude(c => c.Children)
                 .SingleOrDefaultAsync(r => r.Id == reviewId);
 
             if (review == null)
@@ -39,6 +40,7 @@ namespace MediaCritica.Server.Controllers
                    .Include(r => r.Engagements)
                    .Include(r => r.Media)
                    .Include(r => r.Comments)
+                       .ThenInclude(c => c.Children)
                    .Where(r => r.UserId == reviewerId)
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)

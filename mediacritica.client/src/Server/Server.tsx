@@ -1,4 +1,4 @@
-import { Comment } from "../Components/Comments";
+import { CommentModel } from "../Components/Comments";
 import Snackbar from "../Components/Snackbar";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import { MediaType } from "../Enums/MediaType";
@@ -594,8 +594,8 @@ export async function GetUserNotifications(
 }
 
 // Comment API Calls
-export async function GetReviewComments(reviewId: number): Promise<Comment[]> {
-  const response = await MakeRequest<Comment[]>(
+export async function GetReviewComments(reviewId: number): Promise<CommentModel[]> {
+  const response = await MakeRequest<CommentModel[]>(
     `/Comment/GetReviewComments/${reviewId}`
   );
   return response;
@@ -604,8 +604,8 @@ export async function GetReviewComments(reviewId: number): Promise<Comment[]> {
 export async function GetCommentsRemainingChildren(
   commentId: number,
   offset: number
-): Promise<Comment[]> {
-  const response = await MakeRequest<Comment[]>(
+): Promise<CommentModel[]> {
+  const response = await MakeRequest<CommentModel[]>(
     `/Comment/GetCommentsRemainingChildren/${commentId}/${offset}`
   );
   return response;
@@ -617,8 +617,8 @@ export async function DeleteComment(commentId: number): Promise<void> {
   });
 }
 
-export async function PostComment(commentModel: any): Promise<Comment> {
-  const response = await MakeRequest<Comment>(`/Comment/PostComment`, {
+export async function PostComment(commentModel: any): Promise<CommentModel> {
+  const response = await MakeRequest<CommentModel>(`/Comment/PostComment`, {
     method: "POST",
     body: JSON.stringify(commentModel),
     headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -629,8 +629,8 @@ export async function PostComment(commentModel: any): Promise<Comment> {
 export async function UpdateComment(updateCommentModel: {
   id: number;
   message: string;
-}): Promise<Comment> {
-  const response = await MakeRequest<Comment>(`/Comment/UpdateComment`, {
+}): Promise<CommentModel> {
+  const response = await MakeRequest<CommentModel>(`/Comment/UpdateComment`, {
     method: "PUT",
     body: JSON.stringify(updateCommentModel),
     headers: { "Content-type": "application/json; charset=UTF-8" },

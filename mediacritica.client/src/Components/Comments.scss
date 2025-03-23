@@ -1,114 +1,8 @@
-.comments-container {
+.comment {
+  margin: 0 10px;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  overflow: hidden auto;
-  gap: 10px;
-
-  .icon {
-    cursor: pointer;
-    transition: color 0.3s ease-in-out;
-
-    &:hover {
-      color: var(--palette-colour);
-    }
-  }
-
-  .comment {
-    padding: 0 10px;
-    display: flex;
-    flex-direction: column;
-
-    .details {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 12.5px;
-      margin-bottom: 10px;
-    }
-
-    .content {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 0 10px;
-      padding: 10px 0;
-      border-left: 1px solid var(--palette-colour);
-      border-right: 1px solid var(--palette-colour);
-
-      &.mine {
-        background-color: var(--palette-colour-faded);
-      }
-
-      &.blank {
-        margin-bottom: 0;
-      }
-
-      .message,
-      .actions {
-        padding: 0 15px;
-
-        .icon {
-          height: 20px;
-          width: 20px;
-        }
-      }
-
-      .message {
-        font-size: 12.5px;
-        padding-bottom: 0;
-
-        &.readonly {
-          .ql-toolbar {
-            display: none;
-          }
-
-          .ql-container {
-            border: none;
-
-            .ql-editor {
-              padding: 0;
-            }
-          }
-        }
-      }
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        padding-top: 0;
-
-        .icon {
-          cursor: pointer;
-          transition: color 0.3s ease-in-out;
-
-          &:hover {
-            color: var(--palette-colour);
-          }
-        }
-      }
-
-      .reply {
-        margin: 0 15px;
-      }
-
-      .load {
-        display: flex;
-        width: fit-content;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 12.5px;
-        transition: color 0.3s ease-in-out;
-        cursor: pointer;
-        padding: 0 10px;
-
-        &:hover {
-          color: var(--palette-colour);
-        }
-      }
-    }
-  }
+  background-color: var(--dark-light);
 
   .ql-toolbar,
   .ql-container {
@@ -126,6 +20,104 @@
       &::before {
         color: gray;
         left: 15px;
+      }
+    }
+  }
+
+  .icon {
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: var(--palette-colour);
+    }
+  }
+
+  &.mine {
+    background-color: var(--palette-colour-faded) !important;
+  }
+
+  .details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12.5px;
+    padding: 10px 10px 0 10px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 20px;
+    border: 1px solid;
+    border-color: transparent gray;
+
+    &.blank {
+      margin-top: 0;
+    }
+
+    .message,
+    .actions {
+      padding: 0 15px;
+
+      .icon {
+        height: 20px;
+        width: 20px;
+      }
+    }
+
+    .message {
+      font-size: 12.5px;
+      padding-bottom: 0;
+
+      &.readonly {
+        .ql-toolbar {
+          display: none;
+        }
+
+        .ql-container {
+          border: none;
+
+          .ql-editor {
+            padding: 0;
+          }
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-top: 0;
+
+      .icon {
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+
+        &:hover {
+          color: var(--palette-colour);
+        }
+      }
+    }
+
+    .reply {
+      margin: 0 15px;
+    }
+
+    .load {
+      display: flex;
+      width: fit-content;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 12.5px;
+      transition: color 0.3s ease-in-out;
+      cursor: pointer;
+      padding: 0 10px;
+
+      &:hover {
+        color: var(--palette-colour);
       }
     }
   }

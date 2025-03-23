@@ -18,6 +18,7 @@ namespace MediaCritica.Server.Controllers
         {
             var comments = await _databaseContext.Comments
                 .Where(c => c.ReviewId == reviewId)
+                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Children.Count > 0 && !c.Children.All(c => c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
                 .ToListAsync();
 
@@ -45,6 +46,7 @@ namespace MediaCritica.Server.Controllers
         {
             var children = allComments
                 .Where(c => c.ParentId == parentId)
+                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Children.Count > 0 && !c.Children.All(c => c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Skip(offset)
                 .Take(limit)

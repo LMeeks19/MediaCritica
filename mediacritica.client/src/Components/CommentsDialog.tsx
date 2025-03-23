@@ -1,9 +1,14 @@
 import "./CommentsDialog.scss";
-import { Dialog, DialogContent, DialogTitle, Fab } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Fab,
+} from "@mui/material";
 import { SetterOrUpdater, useRecoilValue } from "recoil";
-import { CommentsContainer } from "./Comments";
 import CloseIcon from "@mui/icons-material/Close";
-import { Comment } from "./Comments";
+import { Comment, CommentModel } from "./Comments";
 import { useEffect, useState } from "react";
 import { GetReviewComments, PostComment } from "../Server/Server";
 import ReactQuill from "react-quill";
@@ -13,6 +18,7 @@ import { DeltaStatic } from "quill";
 import ReplyIcon from "@mui/icons-material/MapsUgcOutlined";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import SendIcon from "@mui/icons-material/SendOutlined";
+import RefreshIcon from "@mui/icons-material/CachedOutlined";
 import Loader from "./Loader";
 
 function CommentsDialog(props: {
@@ -20,20 +26,21 @@ function CommentsDialog(props: {
   setOpen: SetterOrUpdater<boolean>;
   reviewId: number;
 }) {
-  const [comments, setComments] = useState<Comment[]>([] as Comment[]);
+  const [comments, setComments] = useState<CommentModel[]>([] as CommentModel[]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function FetchComments() {
-      if (props.open) {
-        setIsLoading(true);
-        const commentsData = await GetReviewComments(props.reviewId);
-        setComments(commentsData);
-        setIsLoading(false);
-      }
-    }
     FetchComments();
   }, [props.open]);
+
+  async function FetchComments() {
+    if (props.open) {
+      setIsLoading(true);
+      const commentsData = await GetReviewComments(props.reviewId);
+      setComments(commentsData);
+      setIsLoading(false);
+    }
+  }
 
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("{}");
@@ -76,11 +83,19 @@ function CommentsDialog(props: {
         },
       }}
       open={props.open}
-      onClose={() => props.setOpen(false)}
+      onClose={() => {
+        setIsCommenting(false);
+        props.setOpen(false);
+      }}
     >
       <DialogTitle>
         Comments
-        <Fab onClick={() => props.setOpen(false)}>
+        <Fab
+          onClick={() => {
+            setIsCommenting(false);
+            props.setOpen(false);
+          }}
+        >
           <CloseIcon />
         </Fab>
       </DialogTitle>
@@ -89,10 +104,15 @@ function CommentsDialog(props: {
           <Loader />
         </DialogContent>
       ) : (
-        <DialogContent sx={{ padding: "2rem !important" }}>
-          <div className="flex items-center mb-[5px]">
+        <DialogContent
+          sx={{ padding: "1.5rem !important", gap: "10px !important" }}
+        >
+          <div className="flex items-center mx-[10px]">
             Actions
-            <div className="flex gap-2 ml-auto">
+            <div className="flex gap-3 ml-auto">
+              <CustomTooltip title="Refresh">
+                <RefreshIcon className="icon" onClick={() => FetchComments()} />
+              </CustomTooltip>
               {!isCommenting && (
                 <CustomTooltip title="Comment">
                   <ReplyIcon
@@ -118,6 +138,7 @@ function CommentsDialog(props: {
           </div>
           {isCommenting && (
             <ReactQuill
+              className="mx-[10px]"
               value={JSON.parse(comment) as DeltaStatic}
               onChange={(_V, _D, _S, e) =>
                 setComment(JSON.stringify(e.getContents()))
@@ -126,7 +147,21 @@ function CommentsDialog(props: {
               modules={modules}
             />
           )}
-          <CommentsContainer comments={comments} reviewId={props.reviewId} />
+          <Divider
+            component="div"
+            sx={{ borderColor: "gray !important", margin: "0 10px" }}
+          />
+          {comments.length === 0 ? (
+            <div className="empty flex-1">No Comments</div>
+          ) : (
+            comments.map((comment) => (
+              <Comment
+                key={comment.id}
+                comment={comment}
+                reviewId={props.reviewId}
+              />
+            ))
+          )}
         </DialogContent>
       )}
     </Dialog>
