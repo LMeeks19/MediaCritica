@@ -11,7 +11,6 @@ import {
 import { SetterOrUpdater } from "recoil";
 import CloseIcon from "@mui/icons-material/Close";
 import XIcon from "@mui/icons-material/X";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import RedditIcon from "@mui/icons-material/Reddit";
 import ClipboardCopyIcon from "@mui/icons-material/ContentCopyOutlined";
 import { CustomTooltip } from "./Tooltip";
@@ -22,11 +21,27 @@ export function ShareDialog(props: {
   setOpen: SetterOrUpdater<boolean>;
   review: ReviewModel;
 }) {
-  function copyToClipboard() {
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(
-      `Check out this review on MediaCritica: ${window.location.href}`
+      `Check out this review for: ${props.review.title} ${window.location.href}`
     );
-  }
+  };
+
+  const handleRedditShare = () => {
+    const redditUrl = `https://www.reddit.com/submit?url=${encodeURIComponent(
+      window.location.href
+    )}&title=${encodeURIComponent(
+      `Check out this review for: ${props.review.mediaTitle}`
+    )}`;
+    window.open(redditUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const handleXShare = () => {
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      `Check out this review for: ${props.review.mediaTitle}`
+    )}&url=${encodeURIComponent(window.location.href)}`;
+    window.open(twitterUrl, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <Dialog
@@ -57,18 +72,13 @@ export function ShareDialog(props: {
               <ClipboardCopyIcon />
             </CustomTooltip>
           </Button>
-          <Button>
+          <Button onClick={handleRedditShare}>
             <CustomTooltip title="Reddit">
               <RedditIcon />
             </CustomTooltip>
           </Button>
-          <Button>
-            <CustomTooltip title="Facebook">
-              <FacebookIcon />
-            </CustomTooltip>
-          </Button>
-          <Button>
-            <CustomTooltip title="X">
+          <Button onClick={handleXShare}>
+            <CustomTooltip title="X (formerly Twitter)">
               <XIcon />
             </CustomTooltip>
           </Button>
