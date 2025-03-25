@@ -77,28 +77,28 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table92.AddRow(new string[] {
+            table103.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table92.AddRow(new string[] {
+            table103.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table92.AddRow(new string[] {
+            table103.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
@@ -106,9 +106,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password789!",
                         "2025-01-03"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table92, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table103, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "RecipientId",
                         "AuthorName",
@@ -116,7 +116,7 @@ namespace MediaCritica.Server.Testing.Features
                         "IsRead",
                         "IsBookmarked",
                         "CreatedAt"});
-            table93.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "1",
                         "1",
                         "Test 2",
@@ -124,7 +124,7 @@ namespace MediaCritica.Server.Testing.Features
                         "false",
                         "false",
                         "2024-04-01"});
-            table93.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "2",
                         "1",
                         "Test 2",
@@ -132,7 +132,7 @@ namespace MediaCritica.Server.Testing.Features
                         "true",
                         "true",
                         "2024-01-01"});
-            table93.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "3",
                         "1",
                         "Test 2",
@@ -140,7 +140,7 @@ namespace MediaCritica.Server.Testing.Features
                         "false",
                         "true",
                         "2024-03-01"});
-            table93.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "4",
                         "1",
                         "Test 2",
@@ -148,7 +148,7 @@ namespace MediaCritica.Server.Testing.Features
                         "true",
                         "false",
                         "2024-02-01"});
-            table93.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "5",
                         "2",
                         "Test 3",
@@ -157,7 +157,7 @@ namespace MediaCritica.Server.Testing.Features
                         "false",
                         "2024-05-01"});
 #line 9
- testRunner.And("I have the following notifications", ((string)(null)), table93, "And ");
+ testRunner.And("I have the following notifications", ((string)(null)), table104, "And ");
 #line hidden
         }
         
@@ -187,35 +187,35 @@ this.FeatureBackground();
 #line 19
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "AuthorName",
                             "Message",
                             "IsRead",
                             "IsBookmarked",
                             "CreatedAt"});
-                table94.AddRow(new string[] {
+                table105.AddRow(new string[] {
                             "1",
                             "Test 2",
                             "Test Message 1",
                             "false",
                             "false",
                             "2024-04-01"});
-                table94.AddRow(new string[] {
+                table105.AddRow(new string[] {
                             "3",
                             "Test 2",
                             "Test Message 3",
                             "false",
                             "true",
                             "2024-03-01"});
-                table94.AddRow(new string[] {
+                table105.AddRow(new string[] {
                             "4",
                             "Test 2",
                             "Test Message 4",
                             "true",
                             "false",
                             "2024-02-01"});
-                table94.AddRow(new string[] {
+                table105.AddRow(new string[] {
                             "2",
                             "Test 2",
                             "Test Message 2",
@@ -223,7 +223,7 @@ this.FeatureBackground();
                             "true",
                             "2024-01-01"});
 #line 20
- testRunner.And("The NotificationModels should be", ((string)(null)), table94, "And ");
+ testRunner.And("The NotificationModels should be", ((string)(null)), table105, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -594,37 +594,37 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table95.AddRow(new string[] {
+                table106.AddRow(new string[] {
                             "1",
                             "1",
                             "2",
                             "2025-01-01",
                             "true"});
-                table95.AddRow(new string[] {
+                table106.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "2025-01-02",
                             "false"});
 #line 83
- testRunner.Given("I have the following userFollows", ((string)(null)), table95, "Given ");
+ testRunner.Given("I have the following userFollows", ((string)(null)), table106, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthorId",
                             "AuthorName",
                             "Message"});
-                table96.AddRow(new string[] {
+                table107.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "Test Notification Message"});
 #line 87
- testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table96, "When ");
+ testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table107, "When ");
 #line hidden
 #line 90
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -656,49 +656,49 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table97.AddRow(new string[] {
+                table108.AddRow(new string[] {
                             "1",
                             "2",
                             "1",
                             "2025-01-01",
                             "true"});
-                table97.AddRow(new string[] {
+                table108.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "2025-01-02",
                             "true"});
 #line 94
- testRunner.Given("I have the following userFollows", ((string)(null)), table97, "Given ");
+ testRunner.Given("I have the following userFollows", ((string)(null)), table108, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthorId",
                             "AuthorName",
                             "Message"});
-                table98.AddRow(new string[] {
+                table109.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "Test Notification Message"});
 #line 98
- testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table98, "When ");
+ testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table109, "When ");
 #line hidden
 #line 101
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "RecipientId",
                             "AuthorName",
                             "Message",
                             "IsRead",
                             "IsBookmarked"});
-                table99.AddRow(new string[] {
+                table110.AddRow(new string[] {
                             "6",
                             "2",
                             "Test 1",
@@ -706,7 +706,7 @@ this.FeatureBackground();
                             "false",
                             "false"});
 #line 102
- testRunner.And("The following notifications should have been created", ((string)(null)), table99, "And ");
+ testRunner.And("The following notifications should have been created", ((string)(null)), table110, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

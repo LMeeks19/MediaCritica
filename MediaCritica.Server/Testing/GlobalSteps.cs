@@ -155,6 +155,14 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following comments")]
+        public async Task GivenIHaveTheFollowingComments(Table table)
+        {
+            var comments = table.CreateSet<Comment>().ToList();
+            await _dbContext.Comments.AddRangeAsync(comments);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Then(@"The status code should be (\d+)")]
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {

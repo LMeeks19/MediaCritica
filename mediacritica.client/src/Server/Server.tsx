@@ -1,4 +1,3 @@
-import { CommentModel } from "../Components/Comments";
 import Snackbar from "../Components/Snackbar";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import { MediaType } from "../Enums/MediaType";
@@ -6,6 +5,7 @@ import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
 import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
+import { CommentModel } from "../Interfaces/CommentModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
@@ -637,7 +637,7 @@ export async function PostComment(commentModel: any): Promise<CommentModel> {
 
 export async function UpdateComment(updateCommentModel: {
   id: number;
-  message: string;
+  content: string;
 }): Promise<CommentModel> {
   const response = await MakeRequest<CommentModel>(`/Comment/UpdateComment`, {
     method: "PUT",

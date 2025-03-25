@@ -21,19 +21,7 @@ import {
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
-
-export interface CommentModel {
-  id: number;
-  parentId?: number;
-  reviewId: number;
-  comment?: string;
-  commenterId?: number;
-  commenterName?: string;
-  commentedAt?: string;
-  children: CommentModel[];
-  totalChildren: number;
-  isDeleted: boolean;
-}
+import { CommentModel } from "../Interfaces/CommentModel";
 
 export function Comment({
   comment,
@@ -48,18 +36,18 @@ export function Comment({
   const [reply, setReply] = useState<string>("{}");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedComment, setEditedComment] = useState<string>(
-    curComment.comment!
+    curComment.content!
   );
 
-  const canLoadMore = curComment.totalChildren - curComment.children.length > 0;
-  const unloadedReplies = curComment.totalChildren - curComment.children.length;
+  const canLoadMore = curComment.totalChildren - curComment.replies.length > 0;
+  const unloadedReplies = curComment.totalChildren - curComment.replies.length;
 
   async function getRemainingChildren() {
     const offset = curComment.totalChildren - unloadedReplies;
     const commentData = await GetCommentsRemainingChildren(comment.id, offset);
     setCurComment({
       ...curComment,
-      children: [...curComment.children, ...commentData],
+      replies: [...curComment.replies, ...commentData],
     });
   }
 
@@ -67,7 +55,7 @@ export function Comment({
     await DeleteComment(comment.id).then(() =>
       setCurComment({
         ...curComment,
-        comment: undefined,
+        content: undefined,
         commenterId: undefined,
         commenterName: undefined,
         commentedAt: undefined,
@@ -83,7 +71,7 @@ export function Comment({
       comment: reply,
       commenterId: user.id,
       commenterName: `${user.forename} ${user.surname}`,
-      children: [],
+      replies: [],
       totalChildren: 0,
     };
 
@@ -91,7 +79,7 @@ export function Comment({
       .then((data) =>
         setCurComment({
           ...curComment,
-          children: [data, ...curComment.children],
+          replies: [data, ...curComment.replies],
         })
       )
       .then(() => setReply("{}"))
@@ -101,7 +89,7 @@ export function Comment({
   async function saveComment() {
     await UpdateComment({
       id: curComment.id,
-      message: editedComment!,
+      content: editedComment!,
     })
       .then(() =>
         setCurComment({ ...curComment, commentedAt: new Date().toUTCString() })
@@ -110,7 +98,7 @@ export function Comment({
   }
 
   function resetEdit() {
-    setEditedComment(curComment.comment!);
+    setEditedComment(curComment.content!);
     setIsEditing(false);
   }
 
@@ -174,10 +162,10 @@ export function Comment({
       </div>
       <div
         className={`content ${
-          curComment.isDeleted && curComment.children.length === 0 && "blank"
+          curComment.isDeleted && curComment.replies.length === 0 && "blank"
         } ${user.id === curComment.commenterId && "mine"}`}
       >
-        {curComment.comment && (
+        {curComment.content && (
           <ReactQuill
             className={`message ${!isEditing && "readonly"}`}
             modules={modules}
@@ -190,7 +178,7 @@ export function Comment({
         )}
         {!curComment.isDeleted && (
           <div
-            className={`actions ${curComment.children.length === 0 && "blank"}`}
+            className={`actions ${curComment.replies.length === 0 && "blank"}`}
           >
             {user.id !== curComment.commenterId && user.id !== undefined && (
               <CustomTooltip title="Report">
@@ -227,8 +215,8 @@ export function Comment({
             modules={modules}
           />
         )}
-        {curComment.children.length > 0 &&
-          curComment.children.map((comment) => (
+        {curComment.replies.length > 0 &&
+          curComment.replies.map((comment) => (
             <Comment key={comment.id} comment={comment} reviewId={reviewId} />
           ))}
         {canLoadMore && (

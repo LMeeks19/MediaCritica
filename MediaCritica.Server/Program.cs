@@ -36,6 +36,7 @@ builder.Services.AddScoped<MediaMapper>();
 builder.Services.AddScoped<RatingMapper>();
 builder.Services.AddScoped<ReviewMapper>();
 builder.Services.AddScoped<BacklogMapper>();
+builder.Services.AddScoped<CommentMapper>();
 
 // Register Helpers
 builder.Services.AddScoped<IHelpers, Helpers>();

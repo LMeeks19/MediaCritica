@@ -10,14 +10,6 @@ namespace MediaCritica.Server.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AuthTokens_Users_UserId",
-                table: "AuthTokens");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AuthTokens_UserId",
-                table: "AuthTokens");
-
             migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
@@ -26,7 +18,7 @@ namespace MediaCritica.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReviewId = table.Column<int>(type: "int", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CommenterId = table.Column<int>(type: "int", nullable: true),
                     CommenterName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CommentedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -76,19 +68,6 @@ namespace MediaCritica.Server.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comments");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AuthTokens_UserId",
-                table: "AuthTokens",
-                column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AuthTokens_Users_UserId",
-                table: "AuthTokens",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

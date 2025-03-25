@@ -23,6 +23,7 @@ namespace MediaCritica.Server.Testing
             mapper.Setup(m => m.EpisodeMapper).Returns(new EpisodeMapper(mapper.Object.MediaMapper));
             mapper.Setup(m => m.SeasonMapper).Returns(new SeasonMapper(mapper.Object.EpisodeMapper));
             mapper.Setup(m => m.SeriesMapper).Returns(new SeriesMapper(mapper.Object.MediaMapper, mapper.Object.SeasonMapper));
+            mapper.Setup(m => m.CommentMapper).Returns(new CommentMapper());
 
             return mapper.Object;
         }
@@ -85,6 +86,7 @@ namespace MediaCritica.Server.Testing
             controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, hubContext, hub));
             controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, controller.Object.NotificationController));
             controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper, helper));
+            controller.Setup(c => c.CommentController).Returns(new CommentController(dbContext, mapper, dateTimeProviderHelper));
 
             return controller.Object;
         }

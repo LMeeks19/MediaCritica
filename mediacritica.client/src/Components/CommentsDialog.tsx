@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { SetterOrUpdater, useRecoilValue } from "recoil";
 import CloseIcon from "@mui/icons-material/Close";
-import { Comment, CommentModel } from "./Comments";
+import { Comment } from "./Comments";
 import { useEffect, useState } from "react";
 import { GetReviewComments, PostComment } from "../Server/Server";
 import ReactQuill from "react-quill";
@@ -20,6 +20,7 @@ import CancelIcon from "@mui/icons-material/CancelOutlined";
 import SendIcon from "@mui/icons-material/SendOutlined";
 import RefreshIcon from "@mui/icons-material/CachedOutlined";
 import Loader from "./Loader";
+import { CommentModel } from "../Interfaces/CommentModel";
 
 function CommentsDialog(props: {
   open: boolean;
@@ -63,7 +64,7 @@ function CommentsDialog(props: {
       comment: comment,
       commenterId: user.id,
       commenterName: `${user.forename} ${user.surname}`,
-      children: [],
+      replies: [],
       totalChildren: 0,
     };
 

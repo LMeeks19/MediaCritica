@@ -42,7 +42,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuthTokens");
+                    b.ToTable("AuthTokens", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Backlog", b =>
@@ -84,7 +84,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Backlogs");
+                    b.ToTable("Backlogs", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Comment", b =>
@@ -105,12 +105,12 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
@@ -126,7 +126,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("ReviewId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Engagement", b =>
@@ -152,7 +152,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Engagements");
+                    b.ToTable("Engagements", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
@@ -223,7 +223,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Media");
+                    b.ToTable("Media", (string)null);
 
                     b.HasDiscriminator().HasValue("Media");
 
@@ -254,7 +254,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Milestones");
+                    b.ToTable("Milestones", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Notification", b =>
@@ -291,7 +291,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("RecipientId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Preference", b =>
@@ -318,7 +318,7 @@ namespace MediaCritica.Server.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Preferences");
+                    b.ToTable("Preferences", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Rating", b =>
@@ -345,7 +345,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("MediaId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Review", b =>
@@ -402,7 +402,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Season", b =>
@@ -428,7 +428,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("SeriesId");
 
-                    b.ToTable("Seasons");
+                    b.ToTable("Seasons", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.User", b =>
@@ -460,7 +460,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.UserFollow", b =>
@@ -489,7 +489,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasIndex("FollowerId");
 
-                    b.ToTable("UserFollows");
+                    b.ToTable("UserFollows", (string)null);
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Episode", b =>
