@@ -55,7 +55,7 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(expectedCommentModel.CommenterName, actualCommentModel.CommenterName);
             Assert.AreEqual(expectedCommentModel.CommentedAt, actualCommentModel.CommentedAt);
             Assert.AreEqual(expectedCommentModel.IsDeleted, actualCommentModel.IsDeleted);
-            Assert.AreEqual(expectedCommentModel.TotalChildren, actualCommentModel.TotalChildren);
+            Assert.AreEqual(expectedCommentModel.TotalReplies, actualCommentModel.TotalReplies);
 
         }
 
@@ -80,7 +80,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedCommentModel.CommenterName, actualCommentModel.CommenterName);
                 Assert.AreEqual(expectedCommentModel.CommentedAt, actualCommentModel.CommentedAt);
                 Assert.AreEqual(expectedCommentModel.IsDeleted, actualCommentModel.IsDeleted);
-                Assert.AreEqual(expectedCommentModel.TotalChildren, actualCommentModel.TotalChildren);
+                Assert.AreEqual(expectedCommentModel.TotalReplies, actualCommentModel.TotalReplies);
             }
         }
 
@@ -101,5 +101,58 @@ namespace MediaCritica.Server.Testing.Steps
                 }
             }
         }
+
+        [Then(@"The returned comments structure should match the expected hierarchy:")]
+        public void ThenTheReturnedCommentsStructureShouldMatchTheExpectedHierarchy(Table table)
+        {
+            var expectedCommentModels = ParseExpectedCommentsFromTable(table);
+
+            var actualCommentModels = (List<CommentModel>)((OkObjectResult)GlobalSteps._response).Value;
+
+            ValidateCommentHierarchy(actualCommentModels, expectedCommentModels);
+        }
+
+        private static List<CommentModel> ParseExpectedCommentsFromTable(Table table)
+        {
+            var tableComments = table.Rows.Select(row => new CommentModel
+            {
+                Id = int.Parse(row["Id"]),
+                ReviewId = int.Parse(row["ReviewId"]),
+                ParentId = row["ParentId"] == "<null>" ? null : int.Parse(row["ParentId"]),
+                Content = row["Content"],
+                CommenterId = int.Parse(row["CommenterId"]),
+                CommenterName = row["CommenterName"],
+                CommentedAt = DateTime.Parse(row["CommentedAt"]),
+                IsDeleted = bool.Parse(row["IsDeleted"]),
+                Replies = [],
+                TotalReplies = int.Parse(row["TotalReplies"])
+            }).ToList();
+
+            foreach (var comment in tableComments)
+                comment.Replies = [.. tableComments.Where(c => c.ParentId == comment.Id)];
+
+            return [.. tableComments.Where(c => c.ParentId == null)];
+        }
+
+        private static void ValidateCommentHierarchy(List<CommentModel> actual, List<CommentModel> expected)
+        {
+            Assert.AreEqual(expected.Count, actual.Count);
+
+            for (int i = 0; i < expected.Count; i++)
+            {
+                var expectedComment = expected[i];
+                var actualComment = actual[i];
+
+                Assert.AreEqual(expectedComment.Id, actualComment.Id);
+                Assert.AreEqual(expectedComment.ReviewId, actualComment.ReviewId);
+                Assert.AreEqual(expectedComment.ParentId, actualComment.ParentId);
+                Assert.AreEqual(expectedComment.Content, actualComment.Content);
+                Assert.AreEqual(expectedComment.IsDeleted, actualComment.IsDeleted);
+
+                // Recursively validate replies
+                ValidateCommentHierarchy(actualComment.Replies, expectedComment.Replies);
+            }
+        }
+
     }
 }

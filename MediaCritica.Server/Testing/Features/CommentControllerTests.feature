@@ -21,12 +21,21 @@ Background:
 		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29  | false     |
 		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30  | false     |
 		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | false     |
-		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | true      |
+		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | false     |
+		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-02-01  | true      |
+
 
 Scenario: Get review comments
-	When I call GetReviewComments with the review id 1
-	Then The status code should be 200
-	And # TODO:
+    When I call GetReviewComments with the review id 1
+    Then The status code should be 200
+    And The returned comments structure should match the expected hierarchy:
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
+		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29  | false     | 3            |
+		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30  | false     | 1            |
+		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | false     | 0            |
+		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | false     | 0            |
+		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27  | false     | 1            |
+		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28  | false     | 0            |
 
 Scenario: Get review comments for a review that doesn't exist
 	When I call GetReviewComments with the review id 99
@@ -37,8 +46,8 @@ Scenario: Get comments remaining children
 	When I call GetCommentsRemainingChildren with the comment id 3 and offset 2
 	Then The status code should be 200
 	And The CommentModels should be
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalChildren |
-		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29  | false     | 0             |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
+		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29  | false     | 0            |
 	And The children should be empty
 
 Scenario: Delete a comment
@@ -57,8 +66,8 @@ Scenario: Post a comment
 		| 1        | 1        | New Comment | 1           | Test 1        |
 	Then The status code should be 200
 	And The CommentModel should be
-		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalChildren |
-		| 8  | 1        | 1        | New Comment | 1           | Test 1        | 2025-02-27  | false     | 0             |
+		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
+		| 9  | 1        | 1        | New Comment | 1           | Test 1        | 2025-02-27  | false     | 0             |
 	And The children should be empty
 
 Scenario: Post a comment but the parent doesn't exist
@@ -71,7 +80,7 @@ Scenario: Post a comment but the parent doesn't exist
 Scenario: Post a comment but the parent is deleted
 	When I call PostComment with the following data
 		| ReviewId | ParentId | Content     | CommenterId | CommenterName |
-		| 1        | 7        | New Comment | 1           | Test 1        |
+		| 1        | 8        | New Comment | 1           | Test 1        |
 	Then The status code should be 409
 	And The response should be "Cannot reply to a deleted comment"
 

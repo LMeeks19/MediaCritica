@@ -7,6 +7,6 @@ export interface CommentModel {
   commenterName?: string;
   commentedAt?: string;
   replies: CommentModel[];
-  totalChildren: number;
+  totalReplies: number;
   isDeleted: boolean;
 }

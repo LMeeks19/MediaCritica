@@ -10,7 +10,7 @@
         public string? CommenterName { get; set; }
         public DateTime? CommentedAt { get; set; }
         public List<CommentModel> Replies { get; set; }
-        public int TotalChildren { get; set; }
+        public int TotalReplies { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

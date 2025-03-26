@@ -21,7 +21,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public CommentModel MapCommentModel(Comment comment, List<CommentModel> children, int totalChildren)
+        public CommentModel MapCommentModel(Comment comment, List<CommentModel> replies, int totalReplies)
         {
             return new CommentModel()
             {
@@ -33,8 +33,8 @@ namespace MediaCritica.Server.Mappers
                 CommenterName = comment.IsDeleted ? null : comment.CommenterName,
                 CommentedAt = comment.IsDeleted ? null : comment.CommentedAt,
                 IsDeleted = comment.IsDeleted,
-                Replies = children,
-                TotalChildren = totalChildren
+                Replies = replies,
+                TotalReplies = totalReplies
             };
         }
     }

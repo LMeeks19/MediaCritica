@@ -39,11 +39,11 @@ export function Comment({
     curComment.content!
   );
 
-  const canLoadMore = curComment.totalChildren - curComment.replies.length > 0;
-  const unloadedReplies = curComment.totalChildren - curComment.replies.length;
+  const canLoadMore = curComment.totalReplies - curComment.replies.length > 0;
+  const unloadedReplies = curComment.totalReplies - curComment.replies.length;
 
   async function getRemainingChildren() {
-    const offset = curComment.totalChildren - unloadedReplies;
+    const offset = curComment.totalReplies - unloadedReplies;
     const commentData = await GetCommentsRemainingChildren(comment.id, offset);
     setCurComment({
       ...curComment,
@@ -72,7 +72,7 @@ export function Comment({
       commenterId: user.id,
       commenterName: `${user.forename} ${user.surname}`,
       replies: [],
-      totalChildren: 0,
+      totalReplies: 0,
     };
 
     await PostComment(newComment)

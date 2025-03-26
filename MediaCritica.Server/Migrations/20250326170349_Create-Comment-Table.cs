@@ -5,7 +5,7 @@
 namespace MediaCritica.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateCommentsTable : Migration
+    public partial class CreateCommentTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,8 +31,7 @@ namespace MediaCritica.Server.Migrations
                         name: "FK_Comments_Comments_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Comments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Reviews_ReviewId",
                         column: x => x.ReviewId,
@@ -43,8 +42,7 @@ namespace MediaCritica.Server.Migrations
                         name: "FK_Comments_Users_CommenterId",
                         column: x => x.CommenterId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

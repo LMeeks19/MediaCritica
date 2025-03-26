@@ -77,21 +77,21 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table101.AddRow(new string[] {
+            table102.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table101.AddRow(new string[] {
+            table102.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
@@ -99,7 +99,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Password456!",
                         "2025-01-02"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table101, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table102, "Given ");
 #line hidden
         }
         
@@ -129,29 +129,29 @@ this.FeatureBackground();
 #line 11
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                             "Category",
                             "Milestones"});
-                table102.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "Reviewed Media",
                             "5"});
-                table102.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "Backlogged Media",
                             "2"});
-                table102.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "Review Engagement",
                             "3"});
-                table102.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "Interaction Variety",
                             "6"});
-                table102.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "Consecutive Activity",
                             "3"});
-                table102.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "Social Connectivity",
                             "2"});
 #line 12
- testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table102, "And ");
+ testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table103, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

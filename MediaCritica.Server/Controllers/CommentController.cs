@@ -23,27 +23,26 @@ namespace MediaCritica.Server.Controllers
 
             var comments = await _databaseContext.Comments
                 .Where(c => c.ReviewId == reviewId)
-                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && !c.Replies.All(c => c.IsDeleted)))
+                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
                 .ToListAsync();
 
             var rootComments = comments
                 .Where(c => c.ParentId == null)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetCommentChildren(c.Id, comments, 0, 0), comments.Count(child => child.ParentId == c.Id)))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
                 .ToList();
 
             return Ok(rootComments);
         }
 
-        private List<CommentModel> GetCommentChildren(int parentId, List<Comment> allComments, int offset, int limit)
+        private List<CommentModel> GetReplies(int parentId, List<Comment> comments)
         {
-            var children = allComments
+            var children = comments
                 .Where(c => c.ParentId == parentId)
-                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && !c.Replies.All(c => c.IsDeleted)))
+                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
-                .Skip(offset)
-                .Take(limit)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetCommentChildren(c.Id, allComments, 0, 0), allComments.Count(child => child.ParentId == c.Id)))
+                .Take(2)
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
                 .ToList();
 
             return children;
@@ -56,7 +55,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(c => c.ParentId == commentId)
                 .OrderByDescending(c => c.CommentedAt)
                 .Skip(offset)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetCommentChildren(c.Id, c.Replies, 0, 0), c.Replies.Count))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, c.Replies), c.Replies.Count))
                 .ToListAsync();
 
             return Ok(comments);
@@ -81,7 +80,7 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostComment([FromBody] CommentModel commentModel)
         {
-            var comment = _mapper.CommentMapper.MapComment(commentModel, dateTimeProviderHelper);
+            var comment = _mapper.CommentMapper.MapComment(commentModel, _dateTimeProviderHelper);
 
             if (!_databaseContext.Comments.Any(c => c.Id == comment.ParentId))
                 return NotFound(new { Message = "Parent Comment Not Found" });
@@ -100,7 +99,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(c => c.Replies)
                 .SingleAsync(c => c.Id == commentId);
 
-            return _mapper.CommentMapper.MapCommentModel(comment, GetCommentChildren(comment.Id, comment.Replies, 0, 0), comment.Replies.Count);
+            return _mapper.CommentMapper.MapCommentModel(comment, GetReplies(comment.Id, comment.Replies), comment.Replies.Count);
         }
 
         [HttpPut("[action]")]

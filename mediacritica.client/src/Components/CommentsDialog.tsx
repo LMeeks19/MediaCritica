@@ -65,7 +65,7 @@ function CommentsDialog(props: {
       commenterId: user.id,
       commenterName: `${user.forename} ${user.surname}`,
       replies: [],
-      totalChildren: 0,
+      totalReplies: 0,
     };
 
     await PostComment(newComment)

@@ -158,7 +158,17 @@ namespace MediaCritica.Server.Testing
         [Given(@"I have the following comments")]
         public async Task GivenIHaveTheFollowingComments(Table table)
         {
-            var comments = table.CreateSet<Comment>().ToList();
+            var comments = table.Rows.Select(row => new Comment
+            {
+                Id = int.Parse(row["Id"]),
+                ReviewId = int.Parse(row["ReviewId"]),
+                ParentId = row["ParentId"] == "<null>" ? null : int.Parse(row["ParentId"]),
+                Content = row["Content"],
+                CommenterId = int.Parse(row["CommenterId"]),
+                CommenterName = row["CommenterName"],
+                CommentedAt = DateTime.Parse(row["CommentedAt"]),
+                IsDeleted = bool.Parse(row["IsDeleted"]),
+            }).ToList();
             await _dbContext.Comments.AddRangeAsync(comments);
             await _dbContext.SaveChangesAsync();
         }

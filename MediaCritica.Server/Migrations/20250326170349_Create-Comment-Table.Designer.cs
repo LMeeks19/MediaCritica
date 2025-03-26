@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250325162419_Create-Comments-Table")]
-    partial class CreateCommentsTable
+    [Migration("20250326170349_Create-Comment-Table")]
+    partial class CreateCommentTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -577,7 +577,7 @@ namespace MediaCritica.Server.Migrations
                         .HasForeignKey("CommenterId");
 
                     b.HasOne("MediaCritica.Server.Objects.Comment", "Parent")
-                        .WithMany("Children")
+                        .WithMany("Replies")
                         .HasForeignKey("ParentId");
 
                     b.HasOne("MediaCritica.Server.Objects.Review", "Review")
@@ -708,7 +708,7 @@ namespace MediaCritica.Server.Migrations
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Comment", b =>
                 {
-                    b.Navigation("Children");
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
