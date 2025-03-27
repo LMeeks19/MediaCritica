@@ -41,6 +41,13 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.CommentController.DeleteComment(commentId);
         }
 
+        [When(@"I call ReportComment with the following data")]
+        public async void WhenICallReportCommentWithTheFollowingData(Table table)
+        {
+            var reportModel = table.Rows[0].CreateInstance<ReportModel>();
+            GlobalSteps._response = await GlobalSteps._controller.CommentController.ReportComment(reportModel);
+        }
+
         [Then(@"The CommentModel should be")]
         public void ThenTheCommentModelShouldBe(Table table)
         {

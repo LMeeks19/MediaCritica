@@ -53,6 +53,13 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviewStatus(mediaId, userId);
         }
 
+        [When(@"I call ReportReview with the following data")]
+        public async void WhenICallReportReviewWithTheFollowingData(Table table)
+        {
+            var reportModel = table.Rows[0].CreateInstance<ReportModel>();
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.ReportReview(reportModel);
+        }
+
         [Then(@"The ReviewModel should be")]
         public void ThenTheReviewModelShouldBe(Table table)
         {

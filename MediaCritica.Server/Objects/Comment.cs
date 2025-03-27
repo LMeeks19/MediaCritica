@@ -15,5 +15,6 @@
         public virtual Comment Parent { get; set; }
         public virtual User Commenter { get; set; }
         public virtual List<Comment> Replies { get; set; }
+        public virtual List<Report> Reports { get; set; }
     }
 }

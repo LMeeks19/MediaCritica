@@ -67,7 +67,7 @@ Scenario: Post a comment
 	Then The status code should be 200
 	And The CommentModel should be
 		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
-		| 9  | 1        | 1        | New Comment | 1           | Test 1        | 2025-02-27  | false     | 0             |
+		| 9  | 1        | 1        | New Comment | 1           | Test 1        | 2025-02-27  | false     | 0            |
 	And The children should be empty
 
 Scenario: Post a comment but the parent doesn't exist
@@ -97,3 +97,27 @@ Scenario: Update a comment tah doesn't exist
 		| 99 | Updated Comment |
 	Then The status code should be 404
 	And The response should be "Comment Not Found"
+
+Scenario: Report a comment
+	When I call ReportComment with the following data
+		| CommentId | ReporterId | Reason | Details      |
+		| 1         | 1          | Spam   | Spam Comment |
+	Then The status code should be 200
+	And The response should be "Comment Reported"
+	And The following report should be in the database
+		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt |
+		| 1  | 1         | 1          | Spam   | Spam Comment | 2025-02-27 |
+
+Scenario: Report a comment that doesn't exist
+	When I call ReportComment with the following data
+		| CommentId | ReporterId | Reason | Details      |
+		| 99        | 1          | Spam   | Spam Comment |
+	Then The status code should be 404
+	And The response should be "Comment Not Found"
+
+Scenario: Report a comment with an invalid user
+	When I call ReportComment with the following data
+		| CommentId | ReporterId | Reason | Details      |
+		| 1         | 99         | Spam   | Spam Comment |
+	Then The status code should be 404
+	And The response should be "User Not Found"

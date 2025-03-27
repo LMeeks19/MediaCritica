@@ -97,3 +97,27 @@ Scenario: Get a users review status that is false
 	When I call GetUserReviewStatus with media id 1 and user id 2
 	Then The status code should be 200
 	And The response should be false
+
+Scenario: Report a review
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 1        | 1          | Hate   | Hate Comment |
+	Then The status code should be 200
+	And The response should be "Review Reported"
+	And The following report should be in the database
+		| Id | ReviewId | ReporterId | Reason | Details      | ReportedAt |
+		| 1  | 1        | 1          | Hate   | Hate Comment | 2025-02-27 |
+
+Scenario: Report a review that doesn't exist
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 99       | 1          | Hate   | Hate Comment |
+	Then The status code should be 404
+	And The response should be "Review Not Found"
+
+Scenario: Report a review with an invalid user
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 1        | 99         | Hate   | Hate Comment |
+	Then The status code should be 404
+	And The response should be "User Not Found"

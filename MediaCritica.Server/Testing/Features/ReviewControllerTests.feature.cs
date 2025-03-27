@@ -77,35 +77,35 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table112.AddRow(new string[] {
+            table116.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table112.AddRow(new string[] {
+            table116.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table112.AddRow(new string[] {
+            table116.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table112.AddRow(new string[] {
+            table116.AddRow(new string[] {
                         "4",
                         "Test",
                         "4",
@@ -113,9 +113,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table112, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table116, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -139,7 +139,7 @@ namespace MediaCritica.Server.Testing.Features
                         "DVD",
                         "Website",
                         "Production"});
-            table113.AddRow(new string[] {
+            table117.AddRow(new string[] {
                         "1",
                         "Actor 1, Actor 2",
                         "Award 1",
@@ -164,9 +164,9 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         ""});
 #line 10
- testRunner.And("I have the following movies", ((string)(null)), table113, "And ");
+ testRunner.And("I have the following movies", ((string)(null)), table117, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
@@ -178,7 +178,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title",
                         "Description",
                         "Date"});
-            table114.AddRow(new string[] {
+            table118.AddRow(new string[] {
                         "1",
                         "1",
                         "Media Poster 1",
@@ -191,7 +191,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test Description",
                         "2025-01-01"});
 #line 13
- testRunner.And("I have the following reviews", ((string)(null)), table114, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table118, "And ");
 #line hidden
         }
         
@@ -221,7 +221,7 @@ this.FeatureBackground();
 #line 19
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Date",
                             "Description",
@@ -238,7 +238,7 @@ this.FeatureBackground();
                             "Title",
                             "Likes",
                             "Dislikes"});
-                table115.AddRow(new string[] {
+                table119.AddRow(new string[] {
                             "1",
                             "2025-01-01",
                             "Test Description",
@@ -256,7 +256,7 @@ this.FeatureBackground();
                             "0",
                             "0"});
 #line 20
- testRunner.And("The ReviewModel should be", ((string)(null)), table115, "And ");
+ testRunner.And("The ReviewModel should be", ((string)(null)), table119, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -375,7 +375,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
                             "Date",
                             "Description",
                             "MediaType",
@@ -389,7 +389,7 @@ this.FeatureBackground();
                             "ReviewerId",
                             "ReviewerName",
                             "Title"});
-                table116.AddRow(new string[] {
+                table120.AddRow(new string[] {
                             "2025-02-02",
                             "Test Description 2",
                             "movie",
@@ -404,7 +404,7 @@ this.FeatureBackground();
                             "Test 1",
                             "Test Title"});
 #line 38
- testRunner.When("I call PostReview with the following data", ((string)(null)), table116, "When ");
+ testRunner.When("I call PostReview with the following data", ((string)(null)), table120, "When ");
 #line hidden
 #line 41
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -436,7 +436,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
                             "Date",
                             "Description",
                             "MediaType",
@@ -450,7 +450,7 @@ this.FeatureBackground();
                             "ReviewerId",
                             "ReviewerName",
                             "Title"});
-                table117.AddRow(new string[] {
+                table121.AddRow(new string[] {
                             "2025-02-02",
                             "Test Description 2",
                             "movie",
@@ -465,7 +465,7 @@ this.FeatureBackground();
                             "Test 10",
                             "Test Title"});
 #line 45
- testRunner.When("I call PostReview with the following data", ((string)(null)), table117, "When ");
+ testRunner.When("I call PostReview with the following data", ((string)(null)), table121, "When ");
 #line hidden
 #line 48
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -497,7 +497,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
                             "Date",
                             "Description",
                             "MediaType",
@@ -511,7 +511,7 @@ this.FeatureBackground();
                             "ReviewerId",
                             "ReviewerName",
                             "Title"});
-                table118.AddRow(new string[] {
+                table122.AddRow(new string[] {
                             "2025-02-02",
                             "Test Description 2",
                             "movie",
@@ -526,7 +526,7 @@ this.FeatureBackground();
                             "Test 1",
                             "Test Title"});
 #line 52
- testRunner.When("I call PostReview with the following data", ((string)(null)), table118, "When ");
+ testRunner.When("I call PostReview with the following data", ((string)(null)), table122, "When ");
 #line hidden
 #line 55
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -558,7 +558,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
                             "Date",
                             "Description",
                             "MediaType",
@@ -572,7 +572,7 @@ this.FeatureBackground();
                             "ReviewerId",
                             "ReviewerName",
                             "Title"});
-                table119.AddRow(new string[] {
+                table123.AddRow(new string[] {
                             "2025-02-02",
                             "Test Description 2",
                             "movie",
@@ -587,7 +587,7 @@ this.FeatureBackground();
                             "Test 1",
                             "Test Title"});
 #line 59
- testRunner.When("I call PostReview with the following data", ((string)(null)), table119, "When ");
+ testRunner.When("I call PostReview with the following data", ((string)(null)), table123, "When ");
 #line hidden
 #line 62
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -619,25 +619,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
                             "ReviewId",
                             "Title",
                             "Description",
                             "Rating",
                             "Date"});
-                table120.AddRow(new string[] {
+                table124.AddRow(new string[] {
                             "1",
                             "Updated Title",
                             "Updated Description",
                             "1",
                             "2025-03-01"});
 #line 66
- testRunner.When("I call UpdateReview with the following data", ((string)(null)), table120, "When ");
+ testRunner.When("I call UpdateReview with the following data", ((string)(null)), table124, "When ");
 #line hidden
 #line 69
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Date",
                             "Description",
@@ -654,7 +654,7 @@ this.FeatureBackground();
                             "Title",
                             "Likes",
                             "Dislikes"});
-                table121.AddRow(new string[] {
+                table125.AddRow(new string[] {
                             "1",
                             "2025-03-01",
                             "Updated Description",
@@ -672,7 +672,7 @@ this.FeatureBackground();
                             "0",
                             "0"});
 #line 70
- testRunner.And("The ReviewModel should be", ((string)(null)), table121, "And ");
+ testRunner.And("The ReviewModel should be", ((string)(null)), table125, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -698,20 +698,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
                             "ReviewId",
                             "Title",
                             "Description",
                             "Rating",
                             "Date"});
-                table122.AddRow(new string[] {
+                table126.AddRow(new string[] {
                             "10",
                             "Updated Title",
                             "Updated Description",
                             "1",
                             "2025-03-01"});
 #line 75
- testRunner.When("I call UpdateReview with the following data", ((string)(null)), table122, "When ");
+ testRunner.When("I call UpdateReview with the following data", ((string)(null)), table126, "When ");
 #line hidden
 #line 78
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -850,6 +850,152 @@ this.FeatureBackground();
 #line hidden
 #line 99
  testRunner.And("The response should be false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Report a review")]
+        public void ReportAReview()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a review", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 101
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+                            "ReviewId",
+                            "ReporterId",
+                            "Reason",
+                            "Details"});
+                table127.AddRow(new string[] {
+                            "1",
+                            "1",
+                            "Hate",
+                            "Hate Comment"});
+#line 102
+ testRunner.When("I call ReportReview with the following data", ((string)(null)), table127, "When ");
+#line hidden
+#line 105
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 106
+ testRunner.And("The response should be \"Review Reported\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Id",
+                            "ReviewId",
+                            "ReporterId",
+                            "Reason",
+                            "Details",
+                            "ReportedAt"});
+                table128.AddRow(new string[] {
+                            "1",
+                            "1",
+                            "1",
+                            "Hate",
+                            "Hate Comment",
+                            "2025-02-27"});
+#line 107
+ testRunner.And("The following report should be in the database", ((string)(null)), table128, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Report a review that doesn\'t exist")]
+        public void ReportAReviewThatDoesntExist()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a review that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 111
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
+                            "ReviewId",
+                            "ReporterId",
+                            "Reason",
+                            "Details"});
+                table129.AddRow(new string[] {
+                            "99",
+                            "1",
+                            "Hate",
+                            "Hate Comment"});
+#line 112
+ testRunner.When("I call ReportReview with the following data", ((string)(null)), table129, "When ");
+#line hidden
+#line 115
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 116
+ testRunner.And("The response should be \"Review Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Report a review with an invalid user")]
+        public void ReportAReviewWithAnInvalidUser()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a review with an invalid user", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 118
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
+                            "ReviewId",
+                            "ReporterId",
+                            "Reason",
+                            "Details"});
+                table130.AddRow(new string[] {
+                            "1",
+                            "99",
+                            "Hate",
+                            "Hate Comment"});
+#line 119
+ testRunner.When("I call ReportReview with the following data", ((string)(null)), table130, "When ");
+#line hidden
+#line 122
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 123
+ testRunner.And("The response should be \"User Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

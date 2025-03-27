@@ -28,13 +28,14 @@ namespace MediaCritica.Server.Mappers
                 Id = comment.Id,
                 ParentId = comment.ParentId,
                 ReviewId = comment.ReviewId,
-                Content = comment.IsDeleted ? null : comment.Content,
-                CommenterId = comment.IsDeleted ? null : comment.CommenterId,
-                CommenterName = comment.IsDeleted ? null : comment.CommenterName,
-                CommentedAt = comment.IsDeleted ? null : comment.CommentedAt,
+                Content = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Content,
+                CommenterId = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommenterId,
+                CommenterName = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommenterName,
+                CommentedAt = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommentedAt,
                 IsDeleted = comment.IsDeleted,
                 Replies = replies,
-                TotalReplies = totalReplies
+                TotalReplies = totalReplies,
+                TotalReports = comment.Reports.Count,
             };
         }
     }

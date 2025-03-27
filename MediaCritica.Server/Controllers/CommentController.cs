@@ -22,9 +22,9 @@ namespace MediaCritica.Server.Controllers
                 return NotFound(new { Message = "Review Not Found" });
 
             var comments = await _databaseContext.Comments
+                .Include(c => c.Reports)
                 .Where(c => c.ReviewId == reviewId)
-                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
-                .OrderByDescending(c => c.CommentedAt)
+                .Where(c => (!c.IsDeleted && c.Reports.Count < 5) || ((c.IsDeleted || c.Reports.Count >= 5) && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted))).OrderByDescending(c => c.CommentedAt)
                 .ToListAsync();
 
             var rootComments = comments
@@ -39,7 +39,7 @@ namespace MediaCritica.Server.Controllers
         {
             var children = comments
                 .Where(c => c.ParentId == parentId)
-                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
+                .Where(c => (!c.IsDeleted && c.Reports.Count < 5) || ((c.IsDeleted || c.Reports.Count >= 5) && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Take(2)
                 .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
@@ -52,6 +52,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetCommentsRemainingChildren(int commentId, int offset)
         {
             var comments = await _databaseContext.Comments
+                .Include(c => c.Reports)
                 .Where(c => c.ParentId == commentId)
                 .OrderByDescending(c => c.CommentedAt)
                 .Skip(offset)
@@ -96,6 +97,7 @@ namespace MediaCritica.Server.Controllers
         private async Task<CommentModel> GetComment(int commentId)
         {
             var comment = await _databaseContext.Comments
+                .Include(c => c.Reports)
                 .Include(c => c.Replies)
                 .SingleAsync(c => c.Id == commentId);
 
@@ -117,6 +119,30 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.SaveChangesAsync();
 
             return Ok(new { Message = "Comment Updated" });
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ReportComment([FromBody] ReportModel reportModel)
+        {
+            if (!_databaseContext.Comments.Any(c => c.Id == reportModel.CommentId))
+                return NotFound(new { Message = "Comment Not Found" });
+
+            if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
+                return NotFound(new { Message = "User Not Found" });
+
+            var report = new Report
+            {
+                CommentId = reportModel.CommentId,
+                ReporterId = reportModel.ReporterId,
+                Reason = reportModel.Reason,
+                Details = reportModel.Details,
+                ReportedAt = _dateTimeProviderHelper.UtcNow,
+            };
+
+            await _databaseContext.Reports.AddAsync(report);
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = "Comment Reported" });
         }
     }
 }

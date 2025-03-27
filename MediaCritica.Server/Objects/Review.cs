@@ -19,6 +19,7 @@
         public DateTime Date { get; set; }
         public virtual List<Engagement> Engagements { get; set; }
         public virtual List<Comment> Comments { get; set; }
+        public virtual List<Report> Reports { get; set; }
 
     }
 }

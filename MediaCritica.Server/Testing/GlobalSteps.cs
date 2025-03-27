@@ -193,5 +193,20 @@ namespace MediaCritica.Server.Testing
             var result = (ObjectResult)_response;
             Assert.AreEqual(new { Value = value }, result.Value);
         }
+
+        [Then(@"The following report should be in the database")]
+        public async Task ThenTheFollowingReportShouldBeInTheDatabase(Table table)
+        {
+            var expectedReport = table.Rows[0].CreateInstance<Report>();
+            var actualReport = await _dbContext.Reports.SingleOrDefaultAsync(r => r.Id == expectedReport.Id);
+
+            Assert.AreEqual(expectedReport.Id, actualReport.Id);
+            Assert.AreEqual(expectedReport.ReviewId, actualReport.ReviewId);
+            Assert.AreEqual(expectedReport.CommentId, actualReport.CommentId);
+            Assert.AreEqual(expectedReport.ReporterId, actualReport.ReporterId);
+            Assert.AreEqual(expectedReport.Reason, actualReport.Reason);
+            Assert.AreEqual(expectedReport.Details, actualReport.Details);
+            Assert.AreEqual(expectedReport.ReportedAt, actualReport.ReportedAt);
+        }
     }
 }

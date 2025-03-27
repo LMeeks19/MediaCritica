@@ -9,12 +9,13 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, NotificationController notificationController) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper, NotificationController notificationController) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
         private readonly NotificationController _notificationController = notificationController;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{reviewId}")]
         public async Task<IActionResult> GetReview(int reviewId)
@@ -163,6 +164,30 @@ namespace MediaCritica.Server.Controllers
             var isReviewed = await _databaseContext.Reviews.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
 
             return Ok(new { Value = isReviewed });
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ReportReview([FromBody] ReportModel reportModel)
+        {
+            if (!_databaseContext.Reviews.Any(c => c.Id == reportModel.ReviewId))
+                return NotFound(new { Message = "Review Not Found" });
+
+            if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
+                return NotFound(new { Message = "User Not Found" });
+
+            var report = new Report
+            {
+                ReviewId = reportModel.ReviewId,
+                ReporterId = reportModel.ReporterId,
+                Reason = reportModel.Reason,
+                Details = reportModel.Details,
+                ReportedAt = _dateTimeProviderHelper.UtcNow,
+            };
+
+            await _databaseContext.Reports.AddAsync(report);
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = "Review Reported" });
         }
     }
 }
