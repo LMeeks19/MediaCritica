@@ -173,6 +173,14 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following reports")]
+        public async Task GivenIHaveTheFollowingReports(Table table)
+        {
+            var reports = table.CreateSet<Report>().ToList();
+            await _dbContext.Reports.AddRangeAsync(reports);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Then(@"The status code should be (\d+)")]
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {

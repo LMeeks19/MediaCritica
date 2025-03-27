@@ -34,6 +34,8 @@ import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
 import CommentsDialog from "../Components/CommentsDialog";
 import { ShareDialog } from "../Components/ShareDialog";
+import FlagIcon from "@mui/icons-material/FlagOutlined";
+import ReportDialog from "../Components/ReportDialog";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -50,6 +52,7 @@ function ViewReviewPage() {
   const [characterCount, setCharacterCount] = useState<number>(0);
   const quillRef = useRef<ReactQuill>(null);
   const [shareOpen, setShareOpen] = useState<boolean>(false);
+  const [isReporting, setIsReporting] = useState<boolean>(false);
 
   useEffect(() => {
     async function FetchReview() {
@@ -294,6 +297,13 @@ function ViewReviewPage() {
                   </Button>
                 )}
                 {user.id !== review.reviewerId && user.id !== undefined && (
+                  <CustomTooltip title="Report">
+                    <Button onClick={() => setIsReporting(true)}>
+                      <FlagIcon className="icon" />
+                    </Button>
+                  </CustomTooltip>
+                )}
+                {user.id !== review.reviewerId && user.id !== undefined && (
                   <CustomTooltip
                     title={`Like (${millify(review.likes, {
                       precision: 0,
@@ -398,6 +408,11 @@ function ViewReviewPage() {
         reviewId={review.id}
       />
       <ShareDialog open={shareOpen} setOpen={setShareOpen} review={review} />
+      <ReportDialog
+        open={isReporting}
+        setOpen={setIsReporting}
+        reviewId={review.id}
+      />
     </div>
   );
 }

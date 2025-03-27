@@ -22,6 +22,7 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
 import { CommentModel } from "../Interfaces/CommentModel";
+import ReportDialog from "./ReportDialog";
 
 export function Comment({
   comment,
@@ -32,6 +33,7 @@ export function Comment({
 }) {
   const user = useRecoilValue(userState);
   const [curComment, setCurComment] = useState<CommentModel>(comment);
+  const [isReporting, setIsReporting] = useState<boolean>(false);
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [reply, setReply] = useState<string>("{}");
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -68,7 +70,7 @@ export function Comment({
     const newComment = {
       reviewId: reviewId,
       parentId: comment.id,
-      comment: reply,
+      content: reply,
       commenterId: user.id,
       commenterName: `${user.forename} ${user.surname}`,
       replies: [],
@@ -181,7 +183,10 @@ export function Comment({
             className={`actions ${curComment.replies.length === 0 && "blank"}`}
           >
             {user.id !== curComment.commenterId && user.id !== undefined && (
-              <CustomTooltip title="Report">
+              <CustomTooltip
+                title="Report"
+                onClick={() => setIsReporting(true)}
+              >
                 <FlagIcon className="icon" />
               </CustomTooltip>
             )}
@@ -225,6 +230,11 @@ export function Comment({
           </div>
         )}
       </div>
+      <ReportDialog
+        open={isReporting}
+        setOpen={setIsReporting}
+        commentId={curComment.id}
+      />
     </div>
   );
 }

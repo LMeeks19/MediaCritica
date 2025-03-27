@@ -23,7 +23,9 @@ Background:
 		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | false     |
 		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | false     |
 		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-02-01  | true      |
-
+	And I have the following reports
+		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt |
+		| 1  | 1         | 2          | Spam   | Spam Comment | 2025-02-20 |
 
 Scenario: Get review comments
     When I call GetReviewComments with the review id 1
@@ -106,7 +108,14 @@ Scenario: Report a comment
 	And The response should be "Comment Reported"
 	And The following report should be in the database
 		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt |
-		| 1  | 1         | 1          | Spam   | Spam Comment | 2025-02-27 |
+		| 2  | 1         | 1          | Spam   | Spam Comment | 2025-02-27 |
+
+Scenario: Report a comment that a user has already reported
+	When I call ReportComment with the following data
+		| CommentId | ReporterId | Reason | Details      |
+		| 1         | 2          | Spam   | Spam Comment |
+	Then The status code should be 409
+	And The response should be "Already Reported This Comment"
 
 Scenario: Report a comment that doesn't exist
 	When I call ReportComment with the following data

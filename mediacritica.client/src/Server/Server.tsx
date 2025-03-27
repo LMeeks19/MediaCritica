@@ -14,6 +14,7 @@ import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelRespon
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { NotificationModel } from "../Interfaces/NotificationModel";
+import { ReportModel } from "../Interfaces/ReportModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
@@ -645,4 +646,20 @@ export async function UpdateComment(updateCommentModel: {
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
   return response;
+}
+
+export async function ReportComment(reportModel: ReportModel): Promise<void> {
+  await MakeRequest<void>(`/Comment/ReportComment`, {
+    method: "POST",
+    body: JSON.stringify(reportModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+}
+
+export async function ReportReview(reportModel: ReportModel): Promise<void> {
+  await MakeRequest<void>(`/Review/ReportReview`, {
+    method: "POST",
+    body: JSON.stringify(reportModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
 }

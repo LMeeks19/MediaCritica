@@ -83,7 +83,7 @@ namespace MediaCritica.Server.Controllers
         {
             var comment = _mapper.CommentMapper.MapComment(commentModel, _dateTimeProviderHelper);
 
-            if (!_databaseContext.Comments.Any(c => c.Id == comment.ParentId))
+            if (comment.ParentId != null && !_databaseContext.Comments.Any(c => c.Id == comment.ParentId))
                 return NotFound(new { Message = "Parent Comment Not Found" });
             if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.IsDeleted))
                 return Conflict(new { Message = "Cannot reply to a deleted comment" });
@@ -124,6 +124,9 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> ReportComment([FromBody] ReportModel reportModel)
         {
+            if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId))
+                return Conflict(new { Message = "Already Reported This Comment" });
+
             if (!_databaseContext.Comments.Any(c => c.Id == reportModel.CommentId))
                 return NotFound(new { Message = "Comment Not Found" });
 

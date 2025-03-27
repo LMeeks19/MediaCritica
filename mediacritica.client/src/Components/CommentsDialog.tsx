@@ -61,7 +61,7 @@ function CommentsDialog(props: {
     const newComment = {
       reviewId: props.reviewId,
       parentId: null,
-      comment: comment,
+      content: comment,
       commenterId: user.id,
       commenterName: `${user.forename} ${user.surname}`,
       replies: [],
