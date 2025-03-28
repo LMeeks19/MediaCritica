@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { SetterOrUpdater, useRecoilValue } from "recoil";
 import { CustomTooltip } from "./Tooltip";
-import CancelIcon from "@mui/icons-material/CancelOutlined";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReportReason } from "../Enums/ReportReason";

@@ -784,6 +784,12 @@ button:disabled {
       border: 1px solid whitesmoke !important;
 
       .ql-editor {
+        padding: 12px 15px !important;
+
+        &::before {
+          color: gray;
+        }
+
         &:hover {
           background-color: var(--palette-colour-faded) !important;
         }

@@ -24,7 +24,8 @@ namespace MediaCritica.Server.Controllers
             var comments = await _databaseContext.Comments
                 .Include(c => c.Reports)
                 .Where(c => c.ReviewId == reviewId)
-                .Where(c => (!c.IsDeleted && c.Reports.Count < 5) || ((c.IsDeleted || c.Reports.Count >= 5) && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted))).OrderByDescending(c => c.CommentedAt)
+                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
+                .OrderByDescending(c => c.CommentedAt)
                 .ToListAsync();
 
             var rootComments = comments
@@ -39,7 +40,7 @@ namespace MediaCritica.Server.Controllers
         {
             var children = comments
                 .Where(c => c.ParentId == parentId)
-                .Where(c => (!c.IsDeleted && c.Reports.Count < 5) || ((c.IsDeleted || c.Reports.Count >= 5) && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
+                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Take(2)
                 .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
@@ -124,10 +125,13 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> ReportComment([FromBody] ReportModel reportModel)
         {
-            if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId))
+            if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId && r.CommentId == reportModel.CommentId))
                 return Conflict(new { Message = "Already Reported This Comment" });
 
-            if (!_databaseContext.Comments.Any(c => c.Id == reportModel.CommentId))
+            var comment = await _databaseContext.Comments
+                .Include(c => c.Reports)
+                .FirstOrDefaultAsync(c => c.Id == reportModel.CommentId);
+            if (comment == null)
                 return NotFound(new { Message = "Comment Not Found" });
 
             if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
@@ -143,6 +147,10 @@ namespace MediaCritica.Server.Controllers
             };
 
             await _databaseContext.Reports.AddAsync(report);
+
+            if (comment.Reports.Count >= 5)
+                comment.IsDeleted = true;
+
             await _databaseContext.SaveChangesAsync();
 
             return Ok(new { Message = "Comment Reported" });

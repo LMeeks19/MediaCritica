@@ -1,5 +1,11 @@
 import "./ViewReviewPage.scss";
-import { Button, ButtonGroup, Rating } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Rating,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { useEffect, useRef, useState } from "react";
 import { ReviewModel } from "../Interfaces/ReviewModel";
@@ -47,7 +53,7 @@ function ViewReviewPage() {
   const [description, setDescription] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
   const [user, setUser] = useRecoilState(userState);
-  const [engagement, setEngagement] = useState<number | null>(null);
+  const [engagement, setEngagement] = useState<number>(-1);
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [characterCount, setCharacterCount] = useState<number>(0);
   const quillRef = useRef<ReactQuill>(null);
@@ -65,13 +71,13 @@ function ViewReviewPage() {
       const reviewData = await GetReview(Number(reviewId!));
       setReview(reviewData);
 
-      var engagementStatus = null;
-      if (user.id !== undefined)
-        engagementStatus = await GetCurrentUserReviewEngagement(
+      if (user.id !== undefined) {
+        var engagementStatus = await GetCurrentUserReviewEngagement(
           Number(reviewId!),
           user.id
         );
-      setEngagement(engagementStatus);
+        setEngagement(engagementStatus);
+      }
 
       setTitle(reviewData.title);
       setRating(reviewData.rating);
@@ -89,9 +95,9 @@ function ViewReviewPage() {
       value
     );
 
-    if (engagement === null && newUserEngagement === 0)
+    if (engagement === -1 && newUserEngagement === 0)
       setReview({ ...review, likes: (review.likes += 1) });
-    else if (engagement === null && newUserEngagement === 1)
+    else if (engagement === -1 && newUserEngagement === 1)
       setReview({ ...review, dislikes: (review.dislikes += 1) });
     else if (engagement === 0 && newUserEngagement === 1)
       setReview({
@@ -105,9 +111,9 @@ function ViewReviewPage() {
         likes: (review.likes += 1),
         dislikes: (review.dislikes -= 1),
       });
-    else if (engagement === 0 && newUserEngagement === null)
+    else if (engagement === 0 && newUserEngagement === -1)
       setReview({ ...review, likes: (review.likes -= 1) });
-    else if (engagement === 1 && newUserEngagement === null)
+    else if (engagement === 1 && newUserEngagement === -1)
       setReview({ ...review, dislikes: (review.dislikes -= 1) });
 
     setEngagement(newUserEngagement);
@@ -236,96 +242,102 @@ function ViewReviewPage() {
                   </span>
                 </div>
               </div>
-              <ButtonGroup>
-                <Button onClick={() => setCommentsOpen(true)}>
-                  <CustomTooltip title={`Comments (${review.totalComments})`}>
-                    <CommentIcon />
-                  </CustomTooltip>
-                </Button>
-                <Button onClick={() => setShareOpen(true)}>
-                  <CustomTooltip title="Share">
-                    <ShareIcon />
-                  </CustomTooltip>
-                </Button>
-                {user.id === review.reviewerId && !isEditing && (
-                  <Button value="edit" onClick={() => setIsEditing(true)}>
-                    <CustomTooltip title="Edit">
-                      <EditOutlinedIcon />
+              <div className="flex gap-2 items-center">
+                <ButtonGroup>
+                  <Button onClick={() => setCommentsOpen(true)}>
+                    <CustomTooltip title={`Comments (${review.totalComments})`}>
+                      <CommentIcon />
                     </CustomTooltip>
                   </Button>
-                )}
-                {user.id === review.reviewerId && isEditing && (
-                  <Button
-                    value="cancel"
-                    onClick={() => {
-                      setConfirmationDialog(cancelEditReviewDialog);
-                      setIsDialogOpen(true);
-                    }}
-                  >
-                    <CustomTooltip title="Cancel">
-                      <CancelIcon />
+                  <Button onClick={() => setShareOpen(true)}>
+                    <CustomTooltip title="Share">
+                      <ShareIcon />
                     </CustomTooltip>
                   </Button>
-                )}
-                {user.id === review.reviewerId && !isEditing && (
-                  <Button
-                    value="delete"
-                    onClick={() => {
-                      setConfirmationDialog(deleteReviewDialog);
-                      setIsDialogOpen(true);
-                    }}
-                  >
-                    <CustomTooltip title="Delete">
-                      <DeleteIcon />
-                    </CustomTooltip>
-                  </Button>
-                )}
-                {user.id === review.reviewerId && isEditing && (
-                  <Button
-                    value="save"
-                    form="review-form"
-                    type="submit"
-                    disabled={
-                      review.description === description &&
-                      review.rating === rating &&
-                      review.title === title
-                    }
-                  >
-                    <CustomTooltip title="Save">
-                      <SaveIcon />
-                    </CustomTooltip>
-                  </Button>
-                )}
-                {user.id !== review.reviewerId && user.id !== undefined && (
-                  <CustomTooltip title="Report">
-                    <Button onClick={() => setIsReporting(true)}>
-                      <FlagIcon className="icon" />
+                  {user.id === review.reviewerId && !isEditing && (
+                    <Button value="edit" onClick={() => setIsEditing(true)}>
+                      <CustomTooltip title="Edit">
+                        <EditOutlinedIcon />
+                      </CustomTooltip>
                     </Button>
-                  </CustomTooltip>
-                )}
-                {user.id !== review.reviewerId && user.id !== undefined && (
-                  <CustomTooltip
-                    title={`Like (${millify(review.likes, {
-                      precision: 0,
-                    })})`}
-                  >
-                    <Button onClick={() => ToggleUserEngagement(0)}>
-                      <ThumbUpIcon />
+                  )}
+                  {user.id === review.reviewerId && isEditing && (
+                    <Button
+                      value="cancel"
+                      onClick={() => {
+                        setConfirmationDialog(cancelEditReviewDialog);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <CustomTooltip title="Cancel">
+                        <CancelIcon />
+                      </CustomTooltip>
                     </Button>
-                  </CustomTooltip>
-                )}
-                {user.id !== review.reviewerId && user.id !== undefined && (
-                  <CustomTooltip
-                    title={`Dislike (${millify(review.dislikes, {
-                      precision: 0,
-                    })})`}
-                  >
-                    <Button onClick={() => ToggleUserEngagement(1)}>
-                      <ThumbDownIcon />
+                  )}
+                  {user.id === review.reviewerId && !isEditing && (
+                    <Button
+                      value="delete"
+                      onClick={() => {
+                        setConfirmationDialog(deleteReviewDialog);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <CustomTooltip title="Delete">
+                        <DeleteIcon />
+                      </CustomTooltip>
                     </Button>
-                  </CustomTooltip>
+                  )}
+                  {user.id === review.reviewerId && isEditing && (
+                    <Button
+                      value="save"
+                      form="review-form"
+                      type="submit"
+                      disabled={
+                        review.description === description &&
+                        review.rating === rating &&
+                        review.title === title
+                      }
+                    >
+                      <CustomTooltip title="Save">
+                        <SaveIcon />
+                      </CustomTooltip>
+                    </Button>
+                  )}
+                  {user.id !== review.reviewerId && user.id !== undefined && (
+                    <CustomTooltip title="Report">
+                      <Button onClick={() => setIsReporting(true)}>
+                        <FlagIcon className="icon" />
+                      </Button>
+                    </CustomTooltip>
+                  )}
+                </ButtonGroup>
+                {user.id !== review.reviewerId && user.id !== undefined && (
+                  <ToggleButtonGroup
+                    onChange={(_e, v) => ToggleUserEngagement(v)}
+                    value={engagement}
+                    exclusive
+                  >
+                    <CustomTooltip
+                      title={`Like (${millify(review.likes, {
+                        precision: 0,
+                      })})`}
+                    >
+                      <ToggleButton className="engagement-button" value={0}>
+                        <ThumbUpIcon />
+                      </ToggleButton>
+                    </CustomTooltip>
+                    <CustomTooltip
+                      title={`Dislike (${millify(review.dislikes, {
+                        precision: 0,
+                      })})`}
+                    >
+                      <ToggleButton className="engagement-button" value={1}>
+                        <ThumbDownIcon />
+                      </ToggleButton>
+                    </CustomTooltip>
+                  </ToggleButtonGroup>
                 )}
-              </ButtonGroup>
+              </div>
             </div>
             <form
               id="review-form"

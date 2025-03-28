@@ -123,44 +123,46 @@ export function Comment({
           : `${curComment.commenterName} - ${formatDistanceToNowStrict(
               curComment.commentedAt!
             )} ago`}
-        <div className="flex gap-2 ml-auto">
-          {user.id === curComment.commenterId && !isEditing && (
-            <CustomTooltip title="Edit">
-              <EditIcon
-                className="icon"
-                fontSize="small"
-                onClick={() => setIsEditing(true)}
-              />
-            </CustomTooltip>
-          )}
-          {user.id === curComment.commenterId && !isEditing && (
-            <CustomTooltip title="Delete">
-              <DeleteIcon
-                className="icon"
-                fontSize="small"
-                onClick={() => deleteComment()}
-              />
-            </CustomTooltip>
-          )}
-          {user.id === curComment.commenterId && isEditing && (
-            <CustomTooltip title="Cancel">
-              <CancelIcon
-                className="icon"
-                fontSize="small"
-                onClick={() => resetEdit()}
-              />
-            </CustomTooltip>
-          )}
-          {user.id === curComment.commenterId && isEditing && (
-            <CustomTooltip title="Save">
-              <SaveIcon
-                className="icon"
-                fontSize="small"
-                onClick={() => saveComment()}
-              />
-            </CustomTooltip>
-          )}
-        </div>
+        {!curComment.isDeleted && (
+          <div className="flex gap-2 ml-auto">
+            {user.id === curComment.commenterId && !isEditing && (
+              <CustomTooltip title="Edit">
+                <EditIcon
+                  className="icon"
+                  fontSize="small"
+                  onClick={() => setIsEditing(true)}
+                />
+              </CustomTooltip>
+            )}
+            {user.id === curComment.commenterId && !isEditing && (
+              <CustomTooltip title="Delete">
+                <DeleteIcon
+                  className="icon"
+                  fontSize="small"
+                  onClick={() => deleteComment()}
+                />
+              </CustomTooltip>
+            )}
+            {user.id === curComment.commenterId && isEditing && (
+              <CustomTooltip title="Cancel">
+                <CancelIcon
+                  className="icon"
+                  fontSize="small"
+                  onClick={() => resetEdit()}
+                />
+              </CustomTooltip>
+            )}
+            {user.id === curComment.commenterId && isEditing && (
+              <CustomTooltip title="Save">
+                <SaveIcon
+                  className="icon"
+                  fontSize="small"
+                  onClick={() => saveComment()}
+                />
+              </CustomTooltip>
+            )}
+          </div>
+        )}
       </div>
       <div
         className={`content ${
@@ -178,37 +180,42 @@ export function Comment({
             readOnly={!isEditing}
           />
         )}
-        {!curComment.isDeleted && (
-          <div
-            className={`actions ${curComment.replies.length === 0 && "blank"}`}
-          >
-            {user.id !== curComment.commenterId && user.id !== undefined && (
+        {!curComment.isDeleted &&
+          user.id !== curComment.commenterId &&
+          user.id !== undefined && (
+            <div
+              className={`actions ${
+                curComment.replies.length === 0 && "blank"
+              }`}
+            >
               <CustomTooltip
                 title="Report"
                 onClick={() => setIsReporting(true)}
               >
                 <FlagIcon className="icon" />
               </CustomTooltip>
-            )}
-            {isReplying ? (
-              <CustomTooltip
-                title="Cancel"
-                onClick={() => setIsReplying(false)}
-              >
-                <CancelIcon className="icon" />
-              </CustomTooltip>
-            ) : (
-              <CustomTooltip title="Reply" onClick={() => setIsReplying(true)}>
-                <ReplyIcon className="icon" />
-              </CustomTooltip>
-            )}
-            {isReplying && (
-              <CustomTooltip title="Send" onClick={() => sendReply()}>
-                <SendIcon className="icon" />
-              </CustomTooltip>
-            )}
-          </div>
-        )}
+              {isReplying ? (
+                <CustomTooltip
+                  title="Cancel"
+                  onClick={() => setIsReplying(false)}
+                >
+                  <CancelIcon className="icon" />
+                </CustomTooltip>
+              ) : (
+                <CustomTooltip
+                  title="Reply"
+                  onClick={() => setIsReplying(true)}
+                >
+                  <ReplyIcon className="icon" />
+                </CustomTooltip>
+              )}
+              {isReplying && (
+                <CustomTooltip title="Send" onClick={() => sendReply()}>
+                  <SendIcon className="icon" />
+                </CustomTooltip>
+              )}
+            </div>
+          )}
         {isReplying && (
           <ReactQuill
             className="reply"

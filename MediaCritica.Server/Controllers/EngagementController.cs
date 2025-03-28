@@ -25,10 +25,7 @@ namespace MediaCritica.Server.Controllers
             var engagement = await _databaseContext.Engagements
                 .SingleOrDefaultAsync(e => e.ReviewId == reviewId && e.UserId == userId);
 
-            if (engagement == null)
-                return Ok(new { Value = false });
-
-            return Ok(engagement.Type);
+            return Ok(engagement?.Type ?? EngagementType.None);
         }
 
         [Route("[action]/{reviewId}/{userId}/{type}")]
@@ -65,15 +62,13 @@ namespace MediaCritica.Server.Controllers
                 _databaseContext.Engagements.Add(engagement);
             }
             else if (engagement != null && type != EngagementType.None)
-            {
                 engagement.Type = type;
-            }
 
             await _databaseContext.SaveChangesAsync();
             await _helper.MilestoneCalculatorHelper.UpdateEngagementMilestones(user);
 
             if (!await _databaseContext.Engagements.AnyAsync(e => e.Id == engagement!.Id))
-                return Ok(new { Message = "Engagement deleted" });
+                return Ok(EngagementType.None);
 
             return Ok(engagement!.Type);
         }

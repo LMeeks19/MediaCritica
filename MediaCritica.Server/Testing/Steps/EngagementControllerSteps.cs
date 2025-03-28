@@ -24,11 +24,11 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.EngagementController.ToggleEngagement(userId, reviewId, Enum.Parse<EngagementType>(engagementType));
         }
 
-        [Then(@"The response should be a (like|dislike)")]
+        [Then(@"The response should be a (like|dislike|none)")]
         public void ThenTheResponseShouldBeALikeOrDislike(string type)
         {
-            Assert.IsTrue(Regex.IsMatch(type, @"^(like|dislike)$"));
-            var expectedEngagementType = type == "like" ? EngagementType.Like : EngagementType.Dislike;
+            Assert.IsTrue(Regex.IsMatch(type, @"^(like|dislike|none)$"));
+            var expectedEngagementType = type == "like" ? EngagementType.Like : type == "none" ? EngagementType.None : EngagementType.Dislike;
             Assert.IsNotNull(expectedEngagementType);
 
             var result = (OkObjectResult)GlobalSteps._response;

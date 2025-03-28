@@ -1,4 +1,7 @@
-.MuiDialogContent-root {
+.comments-dialog {
+  padding: 1.5rem !important;
+  gap: 10px !important;
+
   .icon {
     cursor: pointer;
     transition: color 0.3s ease-in-out;
@@ -10,7 +13,7 @@
 
   .ql-toolbar,
   .ql-container {
-    border-color: gray;
+    border-color: gray !important;
   }
 
   .ql-container {

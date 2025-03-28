@@ -28,7 +28,7 @@ Scenario: Get a users engagement for a review that is a dislike
 Scenario: Get a users engagement that doesn't exist
 	When I call GetUserEngagement with review id 1 and user id 3
 	Then The status code should be 200
-	And The response should be false
+	And The response should be a none
 
 Scenario: Get a users engagement but the user doesn't exist
 	When I call GetUserEngagement with review id 1 and user id 5
@@ -67,7 +67,7 @@ Scenario: Toggle an engagement on a review for a user to dislike
 Scenario: Toggle an engagement on a review for a user to none
 	When I call ToggleEngagement with review id 1, user id 2 and engagement type -1
 	Then The status code should be 200
-	And The response should be "Engagement deleted"
+	And The response should be a none
 	And The engagement should have been deleted
 		| Id | UserId | ReviewId | Type |
 

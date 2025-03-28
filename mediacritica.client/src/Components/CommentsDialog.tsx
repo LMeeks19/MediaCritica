@@ -27,7 +27,9 @@ function CommentsDialog(props: {
   setOpen: SetterOrUpdater<boolean>;
   reviewId: number;
 }) {
-  const [comments, setComments] = useState<CommentModel[]>([] as CommentModel[]);
+  const [comments, setComments] = useState<CommentModel[]>(
+    [] as CommentModel[]
+  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -90,7 +92,7 @@ function CommentsDialog(props: {
       }}
     >
       <DialogTitle>
-        Comments
+        Comments ({comments.length})
         <Fab
           onClick={() => {
             setIsCommenting(false);
@@ -105,9 +107,7 @@ function CommentsDialog(props: {
           <Loader />
         </DialogContent>
       ) : (
-        <DialogContent
-          sx={{ padding: "1.5rem !important", gap: "10px !important" }}
-        >
+        <DialogContent className="comments-dialog">
           <div className="flex items-center mx-[10px]">
             Actions
             <div className="flex gap-3 ml-auto">

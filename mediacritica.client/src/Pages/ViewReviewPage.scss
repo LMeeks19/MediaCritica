@@ -49,6 +49,7 @@
         color: whitesmoke;
         box-shadow: 0 2px 5px #00000080;
 
+
         .heading {
           display: flex;
           flex-direction: column;
@@ -81,6 +82,13 @@
                 text-decoration: underline;
               }
             }
+          }
+        }
+
+        .engagement-button {
+          &.Mui-selected {
+            background-color: whitesmoke !important;
+            color: var(--palette-colour) !important;
           }
         }
       }

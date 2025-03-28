@@ -9,9 +9,8 @@
         public int? CommenterId { get; set; }
         public string? CommenterName { get; set; }
         public DateTime? CommentedAt { get; set; }
-        public List<CommentModel> Replies { get; set; }
+        public List<CommentModel> Replies { get; set; } = [];
         public int TotalReplies { get; set; }
         public bool IsDeleted { get; set; }
-        public int TotalReports { get; set; }
     }
 }

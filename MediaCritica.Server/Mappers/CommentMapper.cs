@@ -35,7 +35,6 @@ namespace MediaCritica.Server.Mappers
                 IsDeleted = comment.IsDeleted,
                 Replies = replies,
                 TotalReplies = totalReplies,
-                TotalReports = comment.Reports.Count,
             };
         }
     }

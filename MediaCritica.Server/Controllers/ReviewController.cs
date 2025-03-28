@@ -169,7 +169,7 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> ReportReview([FromBody] ReportModel reportModel)
         {
-            if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId))
+            if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId && r.ReviewId == reportModel.ReviewId))
                 return Conflict(new { Message = "Already Reported This Review" });
 
             if (!_databaseContext.Reviews.Any(c => c.Id == reportModel.ReviewId))
