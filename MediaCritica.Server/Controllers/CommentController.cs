@@ -74,7 +74,6 @@ namespace MediaCritica.Server.Controllers
 
             comment.IsDeleted = true;
 
-            _databaseContext.Comments.Update(comment);
             await _databaseContext.SaveChangesAsync();
 
             return Ok(new { Message = "Comment Deleted" });
@@ -118,7 +117,6 @@ namespace MediaCritica.Server.Controllers
             comment.Content = updateCommentModel.Content;
             comment.CommentedAt = _dateTimeProviderHelper.UtcNow;
 
-            _databaseContext.Comments.Update(comment);
             await _databaseContext.SaveChangesAsync();
 
             return Ok(new { Message = "Comment Updated" });

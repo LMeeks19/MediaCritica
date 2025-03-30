@@ -130,7 +130,6 @@ namespace MediaCritica.Server.Controllers
 
             backlog.Category = newState;
 
-            _databaseContext.Backlogs.Update(backlog);
             await _databaseContext.SaveChangesAsync();
 
             await _helper.MilestoneCalculatorHelper.UpdateUserBacklogMilestones(user);

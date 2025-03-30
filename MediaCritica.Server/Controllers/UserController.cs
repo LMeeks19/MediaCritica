@@ -166,7 +166,6 @@ namespace MediaCritica.Server.Controllers
                     return BadRequest(new { Message = "Invalid update type" });
             }
 
-            _databaseContext.Users.Update(user);
             await _databaseContext.SaveChangesAsync();
 
             return await GetUserByEmail(user.Email);
@@ -183,7 +182,6 @@ namespace MediaCritica.Server.Controllers
             preference.Theme = preferenceModel.Theme;
             preference.Palette = preferenceModel.Palette;
 
-            _databaseContext.Preferences.Update(preference);
             await _databaseContext.SaveChangesAsync();
 
             return Ok(preferenceModel);

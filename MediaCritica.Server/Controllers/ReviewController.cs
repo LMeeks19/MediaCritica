@@ -135,7 +135,6 @@ namespace MediaCritica.Server.Controllers
             review.Rating = updateReviewModel.Rating;
             review.Date = updateReviewModel.Date;
 
-            _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
 
             await _notificationController.NotifyFollowers(new NewNotificationModel
