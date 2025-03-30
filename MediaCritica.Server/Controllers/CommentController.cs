@@ -66,7 +66,8 @@ namespace MediaCritica.Server.Controllers
         [HttpDelete("[action]/{commentId}")]
         public async Task<IActionResult> DeleteComment(int commentId)
         {
-            var comment = await _databaseContext.Comments.SingleOrDefaultAsync(c => c.Id == commentId);
+            var comment = await _databaseContext.Comments
+                .SingleOrDefaultAsync(c => c.Id == commentId && !c.IsDeleted);
 
             if (comment == null)
                 return NotFound(new { Message = "Comment Not Found" });
@@ -108,7 +109,8 @@ namespace MediaCritica.Server.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentModel updateCommentModel)
         {
-            var comment = await _databaseContext.Comments.SingleOrDefaultAsync(c => c.Id == updateCommentModel.Id);
+            var comment = await _databaseContext.Comments
+                .SingleOrDefaultAsync(c => c.Id == updateCommentModel.Id && !c.IsDeleted);
 
             if (comment == null)
                 return NotFound(new { Message = "Comment Not Found" });
@@ -126,11 +128,11 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> ReportComment([FromBody] ReportModel reportModel)
         {
             if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId && r.CommentId == reportModel.CommentId))
-                return Conflict(new { Message = "Already Reported This Comment" });
+                return Conflict(new { Message = "Comment Already Reported" });
 
             var comment = await _databaseContext.Comments
                 .Include(c => c.Reports)
-                .FirstOrDefaultAsync(c => c.Id == reportModel.CommentId);
+                .FirstOrDefaultAsync(c => c.Id == reportModel.CommentId && !c.IsDeleted);
             if (comment == null)
                 return NotFound(new { Message = "Comment Not Found" });
 

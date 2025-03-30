@@ -26,7 +26,7 @@ namespace MediaCritica.Server.Controllers
                     .ThenInclude(m => (m as Episode)!.Season)
                 .Include(r => r.Comments)
                     .ThenInclude(c => c.Replies)
-                .SingleOrDefaultAsync(r => r.Id == reviewId);
+                .SingleOrDefaultAsync(r => r.Id == reviewId && !r.IsDeleted);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -42,7 +42,7 @@ namespace MediaCritica.Server.Controllers
                    .Include(r => r.Media)
                    .Include(r => r.Comments)
                        .ThenInclude(c => c.Replies)
-                   .Where(r => r.UserId == reviewerId)
+                   .Where(r => r.UserId == reviewerId && !r.IsDeleted)
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
@@ -55,7 +55,9 @@ namespace MediaCritica.Server.Controllers
 
         private async Task<List<double>> GetUserReviewsBreakdown(int userId)
         {
-            var reviews = await _databaseContext.Reviews.Where(r => r.UserId == userId).ToListAsync();
+            var reviews = await _databaseContext.Reviews
+                .Where(r => r.UserId == userId && !r.IsDeleted)
+                .ToListAsync();
 
             var reviewBreakdown = Enumerable.Range(0, 11)
                 .Select(i => (double)reviews.Count(r => r.Rating == i * 0.5))
@@ -73,6 +75,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleAsync();
 
             var reviews = media.Reviews
+                .Where(r => !r.IsDeleted)
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
@@ -121,7 +124,8 @@ namespace MediaCritica.Server.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateReview([FromBody] UpdateReviewModel updateReviewModel)
         {
-            var review = await _databaseContext.Reviews.SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId);
+            var review = await _databaseContext.Reviews
+                .SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId && !r.IsDeleted);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -147,7 +151,8 @@ namespace MediaCritica.Server.Controllers
         [HttpDelete("[action]/{reviewId}")]
         public async Task<IActionResult> DeleteReview(int reviewId)
         {
-            var review = await _databaseContext.Reviews.FindAsync(reviewId);
+            var review = await _databaseContext.Reviews
+                .SingleOrDefaultAsync(r => r.Id == reviewId && !r.IsDeleted);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -161,7 +166,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{mediaId}/{userId}")]
         public async Task<IActionResult> GetUserReviewStatus(string mediaId, int userId)
         {
-            var isReviewed = await _databaseContext.Reviews.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
+            var isReviewed = await _databaseContext.Reviews
+                .AnyAsync(r => r.MediaId == mediaId && r.UserId == userId && !r.IsDeleted);
 
             return Ok(new { Value = isReviewed });
         }
@@ -170,9 +176,12 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> ReportReview([FromBody] ReportModel reportModel)
         {
             if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId && r.ReviewId == reportModel.ReviewId))
-                return Conflict(new { Message = "Already Reported This Review" });
+                return Conflict(new { Message = "Review Already Reported" });
 
-            if (!_databaseContext.Reviews.Any(c => c.Id == reportModel.ReviewId))
+            var review = await _databaseContext.Reviews
+                .Include(c => c.Reports)
+                .FirstOrDefaultAsync(c => c.Id == reportModel.ReviewId);
+            if (review == null)
                 return NotFound(new { Message = "Review Not Found" });
 
             if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
@@ -188,6 +197,10 @@ namespace MediaCritica.Server.Controllers
             };
 
             await _databaseContext.Reports.AddAsync(report);
+
+            if (review.Reports.Count >= 10)
+                review.IsDeleted = true;
+
             await _databaseContext.SaveChangesAsync();
 
             return Ok(new { Message = "Review Reported" });

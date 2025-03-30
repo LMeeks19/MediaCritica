@@ -115,7 +115,7 @@ Scenario: Report a comment that a user has already reported
 		| CommentId | ReporterId | Reason | Details      |
 		| 1         | 2          | Spam   | Spam Comment |
 	Then The status code should be 409
-	And The response should be "Already Reported This Comment"
+	And The response should be "Comment Already Reported"
 
 Scenario: Report a comment that doesn't exist
 	When I call ReportComment with the following data

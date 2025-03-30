@@ -116,7 +116,7 @@ Scenario: Report a review that a user has already reported
 		| ReviewId | ReporterId | Reason | Details      |
 		| 1        | 2          | Spam   | Spam Comment |
 	Then The status code should be 409
-	And The response should be "Already Reported This Review"
+	And The response should be "Review Already Reported"
 
 Scenario: Report a review that doesn't exist
 	When I call ReportReview with the following data
