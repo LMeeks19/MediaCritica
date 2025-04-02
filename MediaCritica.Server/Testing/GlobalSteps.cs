@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Controllers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,13 @@ namespace MediaCritica.Server.Testing
 
             await _dbContext.Users.AddRangeAsync(users);
             await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I am the following user")]
+        public async Task GivenIAmTheFollowingUser(Table table)
+        {
+            var userLoginModel = table.Rows[0].CreateInstance<UserLoginModel>();
+            await _controller.UserController.Login(userLoginModel);
         }
 
         [Given(@"I have the following preferences")]

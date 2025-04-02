@@ -91,7 +91,6 @@ function ViewReviewPage() {
   async function ToggleUserEngagement(value: number | null) {
     const newUserEngagement = await ToggleReviewEngagement(
       review.id,
-      user.id,
       value
     );
 

@@ -71,7 +71,6 @@ function ViewUserPage() {
         user.id !== Number(userId!)
       )
         userFollowStatus = await GetUserFollow(
-          user.id,
           Number(userId!)
         );
       setUserFollow(userFollowStatus);

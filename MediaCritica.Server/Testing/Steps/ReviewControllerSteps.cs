@@ -15,10 +15,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetReview(id);
         }
 
-        [When(@"I call GetUserReviews with the user id (\d+)")]
-        public async void WhenICallGetUserReviewsWithUserId(int userId)
+        [When(@"I call GetUserReviews")]
+        public async void WhenICallGetUserReviews()
         {
-            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviews(userId, 0);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviews(0);
         }
 
         [When(@"I call GetMediaReviews with the media id (.*)")]
@@ -47,10 +47,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.ReviewController.DeleteReview(id);
         }
 
-        [When(@"I call GetUserReviewStatus with media id (.*) and user id (\d+)")]
-        public async void WhenICallGetUserReviewStatusWithMediaIdAndUserId(string mediaId, int userId)
+        [When(@"I call GetUserReviewStatus with media id (.*)")]
+        public async void WhenICallGetUserReviewStatusWithMediaId(string mediaId)
         {
-            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviewStatus(mediaId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.ReviewController.GetUserReviewStatus(mediaId);
         }
 
         [When(@"I call ReportReview with the following data")]

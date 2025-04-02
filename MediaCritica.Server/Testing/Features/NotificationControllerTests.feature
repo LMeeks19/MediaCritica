@@ -15,7 +15,10 @@ Background:
 		| 5  | 2           | Test 3     | Test Message 5 | true   | false        | 2024-05-01 |
 
 Scenario: Get Notifications
-	When I call GetUserNotifications with userId 1 
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserNotifications 
 	Then The status code should be 200
 	And The NotificationModels should be
 		| Id | AuthorName | Message        | IsRead | IsBookmarked | CreatedAt  |
@@ -25,7 +28,7 @@ Scenario: Get Notifications
 		| 2  | Test 2     | Test Message 2 | true   | true         | 2024-01-01 |
 
 Scenario: Get Notifications but the user has none
-	When I call GetUserNotifications with userId 3 
+	When I call GetUserNotifications 
 	Then The status code should be 200
 	And The NotificationModels should be empty
 
@@ -41,12 +44,15 @@ Scenario: Mark Notification as read
 	And The Notification with Id 1 should be read
 
 Scenario: Mark all notifications as read but all already read
-	When I call MarkAllAsRead with UserId 2
+	When I call MarkAllAsRead
 	Then The status code should be 404
 	And The response should be "No unread notifications"
 
 Scenario: Mark all notifications as read
-	When I call MarkAllAsRead with UserId 1
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call MarkAllAsRead
 	Then The status code should be 200
 	And The response should be "All notifications marked as read"
 	And The Notifications for UserId 1 should all be read

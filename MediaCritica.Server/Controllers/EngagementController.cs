@@ -13,9 +13,10 @@ namespace MediaCritica.Server.Controllers
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHelpers _helper = helper;
 
-        [HttpGet("[action]/{reviewId}/{userId}")]
-        public async Task<IActionResult> GetUserEngagement(int reviewId, int userId)
+        [HttpGet("[action]/{reviewId}")]
+        public async Task<IActionResult> GetUserEngagement(int reviewId)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             if (!await _databaseContext.Users.AnyAsync(u => u.Id == userId))
                 return NotFound(new { Message = "User not found" });
 
@@ -28,9 +29,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(engagement?.Type ?? EngagementType.None);
         }
 
-        [Route("[action]/{reviewId}/{userId}/{type}")]
-        public async Task<IActionResult> ToggleEngagement(int userId, int reviewId, EngagementType type)
+        [Route("[action]/{reviewId}/{type}")]
+        public async Task<IActionResult> ToggleEngagement(int reviewId, EngagementType type)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             if (!await _databaseContext.Reviews.AnyAsync(r => r.Id == reviewId))
                 return NotFound(new { Message = "Review not found" });
 
@@ -54,7 +56,7 @@ namespace MediaCritica.Server.Controllers
             {
                 engagement = new Engagement
                 {
-                    UserId = userId,
+                    UserId = user.Id,
                     ReviewId = reviewId,
                     Type = type,
                 };

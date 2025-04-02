@@ -7,7 +7,10 @@ Background:
 		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
 
 Scenario: GetUserMilestones of user
-	When I call GetUserMilestones with UserId 1
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserMilestones
 	Then The status code should be 200
 	And The MilestoneCategoryModels should be
 		| Category             | Milestones |
@@ -19,6 +22,6 @@ Scenario: GetUserMilestones of user
 		| Social Connectivity  | 2          |
 
 Scenario: GetUserMilestones of user that doesn't exist
-	When I call GetUserMilestones with UserId 3
+	When I call GetUserMilestones
 	Then The status code should be 404
 	And The response should be "User not found"

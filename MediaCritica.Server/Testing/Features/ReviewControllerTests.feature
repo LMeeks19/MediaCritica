@@ -30,7 +30,7 @@ Scenario: Get a review by id that doesn't exist
 	And The response should be "Review not found"
 
 Scenario: Get a user reviews
-	When I call GetUserReviews with the user id 3
+	When I call GetUserReviews
 	Then The status code should be 200
 
 Scenario: Get a media reviews
@@ -92,12 +92,18 @@ Scenario: Delete a review that doesn't exist
 	And The response should be "Review not found"
 
 Scenario: Get a users review status that is true
-	When I call GetUserReviewStatus with media id 1 and user id 3
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test3@email.com | Password789! | false      |
+	When I call GetUserReviewStatus with media id 1
 	Then The status code should be 200
 	And The response should be true
 
 Scenario: Get a users review status that is false
-	When I call GetUserReviewStatus with media id 1 and user id 2
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test2@email.com | Password456! | false      |
+	When I call GetUserReviewStatus with media id 1
 	Then The status code should be 200
 	And The response should be false
 

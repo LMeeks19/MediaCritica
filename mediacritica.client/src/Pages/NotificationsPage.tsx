@@ -57,7 +57,7 @@ function NotificationsPage() {
   }
 
   async function MarkAllAsRead() {
-    await fetch(`/Notification/MarkAllAsRead/${user.id}`, {
+    await fetch("/Notification/MarkAllAsRead", {
       method: "PUT",
     }).then(() => {
       setNotifications(

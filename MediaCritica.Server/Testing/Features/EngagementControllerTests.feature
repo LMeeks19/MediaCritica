@@ -16,32 +16,47 @@ Background:
 		| 2  | 2      | 1        | 1    |
 
 Scenario: Get a users engagement for a review that is a like
-	When I call GetUserEngagement with review id 1 and user id 1
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserEngagement with review id 1
 	Then The status code should be 200
 	And The response should be a like
 
 Scenario: Get a users engagement for a review that is a dislike
-	When I call GetUserEngagement with review id 1 and user id 2
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test2@email.com | Password456! | false      |
+	When I call GetUserEngagement with review id 1
 	Then The status code should be 200
 	And The response should be a dislike
 
 Scenario: Get a users engagement that doesn't exist
-	When I call GetUserEngagement with review id 1 and user id 3
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test3@email.com | Password789! | false      |
+	When I call GetUserEngagement with review id 1
 	Then The status code should be 200
 	And The response should be a none
 
 Scenario: Get a users engagement but the user doesn't exist
-	When I call GetUserEngagement with review id 1 and user id 5
+	When I call GetUserEngagement with review id 1
 	Then The status code should be 404
 	And The response should be "User not found"
 
 Scenario: Get a users engagement but the review doesn't exist
-	When I call GetUserEngagement with review id 2 and user id 1
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserEngagement with review id 2
 	Then The status code should be 404
 	And The response should be "Review not found"
 
 Scenario: Toggle an engagement on a review that didn't previously exist
-	When I call ToggleEngagement with review id 1, user id 4 and engagement type 0
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test4@email.com | Password012! | false      |
+	When I call ToggleEngagement with review id 1 and engagement type 0
 	Then The status code should be 200
 	And The response should be a like
 	And The engagement should have been created
@@ -49,7 +64,10 @@ Scenario: Toggle an engagement on a review that didn't previously exist
 		| 3  | 4      | 1        | 0    |
 
 Scenario: Toggle an engagement on a review for a user to like
-	When I call ToggleEngagement with review id 1, user id 2 and engagement type 0
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test2@email.com | Password456! | false      |
+	When I call ToggleEngagement with review id 1 and engagement type 0
 	Then The status code should be 200
 	And The response should be a like
 	And The engagement should have been updated
@@ -57,7 +75,10 @@ Scenario: Toggle an engagement on a review for a user to like
 		| 2  | 2      | 1        | 0    |
 
 Scenario: Toggle an engagement on a review for a user to dislike
-	When I call ToggleEngagement with review id 1, user id 1 and engagement type 1
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call ToggleEngagement with review id 1 and engagement type 1
 	Then The status code should be 200
 	And The response should be a dislike
 	And The engagement should have been updated
@@ -65,18 +86,21 @@ Scenario: Toggle an engagement on a review for a user to dislike
 		| 1  | 1      | 1        | 1    |
 
 Scenario: Toggle an engagement on a review for a user to none
-	When I call ToggleEngagement with review id 1, user id 2 and engagement type -1
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call ToggleEngagement with review id 1 and engagement type -1
 	Then The status code should be 200
 	And The response should be a none
 	And The engagement should have been deleted
 		| Id | UserId | ReviewId | Type |
 
 Scenario: Toggle an engagement for a user that doesn't exist
-	When I call ToggleEngagement with review id 1, user id 5 and engagement type 0
+	When I call ToggleEngagement with review id 1 and engagement type 0
 	Then The status code should be 404
 	And The response should be "User not found"
 
 Scenario: Toggle an engagement for a user on a review that doesn't exist
-	When I call ToggleEngagement with review id 2, user id 2 and engagement type 0
+	When I call ToggleEngagement with review id 2 and engagement type 0
 	Then The status code should be 404
 	And The response should be "Review not found"

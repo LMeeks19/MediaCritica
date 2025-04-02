@@ -34,27 +34,31 @@ namespace MediaCritica.Server.Controllers
             return Ok(_mapper.ReviewMapper.MapReviewModel(review));
         }
 
-        [HttpGet("[action]/{reviewerId}/{offset}")]
-        public async Task<IActionResult> GetUserReviews(int reviewerId, int offset)
+        [HttpGet("[action]/{offset}")]
+        public async Task<IActionResult> GetUserReviews(int offset)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var reviews = await _databaseContext.Reviews
                    .Include(r => r.Engagements)
                    .Include(r => r.Media)
                    .Include(r => r.Comments)
                        .ThenInclude(c => c.Replies)
-                   .Where(r => r.UserId == reviewerId && !r.IsDeleted)
+                   .Where(r => r.UserId == userId && !r.IsDeleted)
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
                    .Select(r => _mapper.ReviewMapper.MapReviewModel(r))
                    .ToListAsync();
 
-            var breakdown = await GetUserReviewsBreakdown(reviewerId);
+            var breakdown = await GetUserReviewsBreakdown(userId);
             return Ok(new UserReviewsModelObject { Reviews = reviews, Breakdown = breakdown });
         }
 
-        private async Task<List<double>> GetUserReviewsBreakdown(int userId)
+        private async Task<List<double>> GetUserReviewsBreakdown(int? userId)
         {
+            if (userId == null)
+                return [];
+
             var reviews = await _databaseContext.Reviews
                 .Where(r => r.UserId == userId && !r.IsDeleted)
                 .ToListAsync();
@@ -162,9 +166,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = "Review Deleted" });
         }
 
-        [HttpGet("[action]/{mediaId}/{userId}")]
-        public async Task<IActionResult> GetUserReviewStatus(string mediaId, int userId)
+        [HttpGet("[action]/{mediaId}")]
+        public async Task<IActionResult> GetUserReviewStatus(string mediaId)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var isReviewed = await _databaseContext.Reviews
                 .AnyAsync(r => r.MediaId == mediaId && r.UserId == userId && !r.IsDeleted);
 

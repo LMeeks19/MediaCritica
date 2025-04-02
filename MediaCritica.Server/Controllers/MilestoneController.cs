@@ -12,9 +12,10 @@ namespace MediaCritica.Server.Controllers
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHelpers _helper = helper;
 
-        [HttpGet("[action]/{userId}")]
-        public async Task<IActionResult> GetUserMilestones(int userId)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetUserMilestones()
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
                 .Include(u => u.Reviews)
                     .ThenInclude(r => r.Media)

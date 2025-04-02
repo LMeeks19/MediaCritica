@@ -15,9 +15,10 @@ namespace MediaCritica.Server.Controllers
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
 
-        [HttpGet("[action]/{userId}")]
-        public async Task<IActionResult> GetBacklog(int userId)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetBacklog()
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var backlog = new BacklogObjectModel
             {
                 Backlog = await GetBacklogByCategory(userId, BacklogCategoryType.Backlog, 0, 10),
@@ -33,8 +34,11 @@ namespace MediaCritica.Server.Controllers
             return Ok(backlog);
         }
 
-        private async Task<List<BacklogModel>> GetBacklogByCategory(int userId, BacklogCategoryType category, int offset, int limit)
+        private async Task<List<BacklogModel>> GetBacklogByCategory(int? userId, BacklogCategoryType category, int offset, int limit)
         {
+            if (userId == null)
+                return [];
+
             var backlog = await _databaseContext.Backlogs
                 .Where(media => media.UserId == userId && media.Category == category)
                 .OrderByDescending(media => media.AddedDate)
@@ -47,26 +51,31 @@ namespace MediaCritica.Server.Controllers
             return backlog;
         }
 
-        private async Task<int> GetBacklogCount(int userId, BacklogCategoryType category)
+        private async Task<int> GetBacklogCount(int? userId, BacklogCategoryType category)
         {
+            if (userId == null)
+                return 0;
             return await _databaseContext.Backlogs.CountAsync(backlog => backlog.UserId == userId && backlog.Category == category);
         }
 
-        [HttpGet("[action]/{userId}/{offset}/{limit}")]
-        public async Task<IActionResult> GetBackloggedBacklog(int userId, int offset = 0, int limit = 10)
+        [HttpGet("[action]/{offset}/{limit}")]
+        public async Task<IActionResult> GetBackloggedBacklog(int offset = 0, int limit = 10)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             return Ok(await GetBacklogByCategory(userId, BacklogCategoryType.Backlog, offset, limit));
         }
 
-        [HttpGet("[action]/{userId}/{offset}/{limit}")]
-        public async Task<IActionResult> GetInProgressBacklog(int userId, int offset = 0, int limit = 10)
+        [HttpGet("[action]/{offset}/{limit}")]
+        public async Task<IActionResult> GetInProgressBacklog(int offset = 0, int limit = 10)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             return Ok(await GetBacklogByCategory(userId, BacklogCategoryType.InProgress, offset, limit));
         }
 
-        [HttpGet("[action]/{userId}/{offset}/{limit}")]
-        public async Task<IActionResult> GetFinishedBacklog(int userId, int offset = 0, int limit = 10)
+        [HttpGet("[action]/{offset}/{limit}")]
+        public async Task<IActionResult> GetFinishedBacklog(int offset = 0, int limit = 10)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             return Ok(await GetBacklogByCategory(userId, BacklogCategoryType.Finished, offset, limit));
         }
 
@@ -94,9 +103,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = $"{backlogModel.MediaTitle} added to backlog" });
         }
 
-        [HttpDelete("[action]/{mediaId}/{userId}")]
-        public async Task<IActionResult> DeleteBacklog(string mediaId, int userId)
+        [HttpDelete("[action]/{mediaId}")]
+        public async Task<IActionResult> DeleteBacklog(string mediaId)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
                 .Include(u => u.Backlogs)
                 .Include(u => u.Milestones)
@@ -137,9 +147,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = $"Backlog {backlog.Id} updated to {backlog.Category} state" });
         }
 
-        [HttpGet("[action]/{mediaId}/{userId}")]
-        public async Task<IActionResult> GetUserBacklogStatus(string mediaId, int userId)
+        [HttpGet("[action]/{mediaId}")]
+        public async Task<IActionResult> GetUserBacklogStatus(string mediaId)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var isBacklogged = await _databaseContext.Backlogs.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
 
             return Ok(new { Value = isBacklogged });

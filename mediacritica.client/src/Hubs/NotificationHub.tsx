@@ -54,7 +54,6 @@ class NotificationHub {
 
   // Listen for notifications from the hub
   public onReceiveNotification(
-    userId: number,
     setNotifications: SetterOrUpdater<NotificationModel[]>,
     limit: number,
     setUser: SetterOrUpdater<UserModel>
@@ -64,11 +63,7 @@ class NotificationHub {
         "ReceiveNotification",
         async (data: { authorName: string; message: string }) => {
           if (location.pathname.endsWith("/notifications")) {
-            const notificationsData = await GetUserNotifications(
-              userId,
-              0,
-              limit
-            );
+            const notificationsData = await GetUserNotifications(0, limit);
             setNotifications(notificationsData);
           } else {
             setNotifications([]);

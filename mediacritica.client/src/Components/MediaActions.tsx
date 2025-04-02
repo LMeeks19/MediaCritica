@@ -33,13 +33,12 @@ function MediaActions(props: {
     async function FetchUserActionStatus() {
       if (props.media.type !== MediaType.Episode) {
         const backlogStatus = await GetUserMediaBackloggedStatus(
-          props.media.id!,
-          user.id
+          props.media.id!
         );
         setUserBacklogStatus(backlogStatus.value);
       }
       if (user.id !== undefined) {
-        const reviewStatus = await GetUserReviewStatus(props.media.id, user.id);
+        const reviewStatus = await GetUserReviewStatus(props.media.id);
         setHasUserReviewed(reviewStatus.value);
       }
     }
@@ -66,7 +65,7 @@ function MediaActions(props: {
   }
 
   async function RemoveFromBacklog() {
-    await DeleteBacklog(props.media.id, user.id).then(() => {
+    await DeleteBacklog(props.media.id).then(() => {
       setUserBacklogStatus(false);
       setUser({
         ...user,

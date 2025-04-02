@@ -23,6 +23,8 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return Unauthorized(new { Message = "Invalid Credentials" });
 
+            await _helpers.AuthenticationHelper.SetUserId(user.Id);
+
             var authToken = userLoginModel.RememberMe ? await _helpers.AuthenticationHelper.GenerateAuthToken(user.Id) : null;
 
             return Ok(new UserAuthModel
@@ -50,6 +52,11 @@ namespace MediaCritica.Server.Controllers
 
             var user = await _helpers.AuthenticationHelper.GetUser(id: authToken.UserId);
 
+            if (user == null)
+                return Unauthorized(new { Message = "Auto Login Failed" });
+
+            await _helpers.AuthenticationHelper.SetUserId(user.Id);
+
             return Ok(new UserAuthModel
             {
                 AuthToken = authToken,
@@ -62,13 +69,15 @@ namespace MediaCritica.Server.Controllers
         {
             var authToken = await _helpers.AuthenticationHelper.GetAuthToken(tokenModel.Token);
 
-            if (authToken == null)
-                return NotFound(new { Message = "Token Not Found" });
+            if (authToken != null)
+            {
+                _databaseContext.AuthTokens.Remove(authToken);
+                await _databaseContext.SaveChangesAsync();
+            }
 
-            _databaseContext.AuthTokens.Remove(authToken);
-            await _databaseContext.SaveChangesAsync();
+            await _helpers.AuthenticationHelper.UnSetUserId();
 
-            return Ok(new { Message = "Token Deleted" });
+            return Ok(new { Message = "User Logged Out" });
         }
 
         [HttpGet("[action]/{email}")]
@@ -125,9 +134,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = "Account Created" });
         }
 
-        [HttpDelete("[action]/{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteUser()
         {
+            var userId = _helpers.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
@@ -143,7 +153,8 @@ namespace MediaCritica.Server.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
         {
-            var user = await _databaseContext.Users.SingleOrDefaultAsync(user => user.Id == updateUserModel.UserId);
+            var userId = _helpers.AuthenticationHelper.GetUserId();
+            var user = await _databaseContext.Users.SingleOrDefaultAsync(user => user.Id == userId);
 
             if (user == null)
                 return NotFound(new { Message = "User not found" });

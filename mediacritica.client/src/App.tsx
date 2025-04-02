@@ -43,7 +43,6 @@ function App() {
 
     // Subscribe to notifications
     notificationHub.onReceiveNotification(
-      user.id,
       setNotifications,
       notifications?.length < 25 ? 25 : notifications?.length + 1,
       setUser

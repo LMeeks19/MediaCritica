@@ -93,7 +93,7 @@ export async function AutoLogin(token: string): Promise<UserModelObject> {
   return response;
 }
 
-export async function Logout(token: string): Promise<void> {
+export async function Logout(token: string | null): Promise<void> {
   await MakeRequest<void>("/User/Logout", {
     method: "POST",
     body: JSON.stringify({ token: token } as { token: string }),
@@ -128,20 +128,15 @@ export async function UpdateUser(
   return response;
 }
 
-export async function DeleteUser(userId: number): Promise<RequestValue> {
-  const response = await MakeRequest<RequestValue>(
-    `/User/DeleteUser/${userId}`,
-    { method: "DELETE" }
-  );
+export async function DeleteUser(): Promise<RequestValue> {
+  const response = await MakeRequest<RequestValue>("/User/DeleteUser", {
+    method: "DELETE",
+  });
   return response;
 }
 
-export async function GetUserSummary(
-  userId: number
-): Promise<UserSummaryModel> {
-  const response = await MakeRequest<UserSummaryModel>(
-    `/User/GetUserSummary/${userId}`
-  );
+export async function GetUserSummary(userId: number): Promise<UserSummaryModel> {
+  const response = await MakeRequest<UserSummaryModel>(`/User/GetUserSummary/${userId}`);
   return response;
 }
 
@@ -323,11 +318,10 @@ export async function GetReview(reviewId: number): Promise<ReviewModel> {
 
 // Review API Calls
 export async function GetUserReviews(
-  reviewerId: number,
   offset: number = 0
 ): Promise<UserReviewsModelObject> {
   const response = await MakeRequest<UserReviewsModelObject>(
-    `/Review/GetUserReviews/${reviewerId ?? -1}/${offset}`
+    `/Review/GetUserReviews/${offset}`
   );
   return response;
 }
@@ -384,64 +378,55 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
 }
 
 export async function GetUserReviewStatus(
-  mediaId: string,
-  userId: number
+  mediaId: string
 ): Promise<RequestValue> {
-  if (userId === undefined) return { value: false } as RequestValue;
   const response = await MakeRequest<RequestValue>(
-    `/Review/GetUserReviewStatus/${mediaId}/${userId}`
+    `/Review/GetUserReviewStatus/${mediaId}`
   );
   return response;
 }
 
 // Backlog API Calls
-export async function GetBacklog(userId: number): Promise<BacklogObjectModel> {
-  const response = await MakeRequest<BacklogObjectModel>(
-    `/Backlog/GetBacklog/${userId ?? -1}`
-  );
+export async function GetBacklog(): Promise<BacklogObjectModel> {
+  const response = await MakeRequest<BacklogObjectModel>("/Backlog/GetBacklog");
   return response;
 }
 
 export async function GetUserMediaBackloggedStatus(
   mediaId: string,
-  userId: number
 ): Promise<RequestValue> {
-  if (userId === undefined) return { value: false } as RequestValue;
   const response = await MakeRequest<RequestValue>(
-    `/Backlog/GetUserBacklogStatus/${mediaId}/${userId}`
+    `/Backlog/GetUserBacklogStatus/${mediaId}`
   );
   return response;
 }
 
 export async function GetBackloggedBacklog(
-  userId: number,
   offset: number,
   limit: number
 ): Promise<BacklogModel[]> {
   const response = await MakeRequest<BacklogModel[]>(
-    `/Backlog/GetBackloggedBacklog/${userId ?? -1}/${offset}/${limit}`
+    `/Backlog/GetBackloggedBacklog/${offset}/${limit}`
   );
   return response;
 }
 
 export async function GetInProgressBacklog(
-  userId: number,
   offset: number,
   limit: number
 ): Promise<BacklogModel[]> {
   const response = await MakeRequest<BacklogModel[]>(
-    `/Backlog/GetInProgressBacklog/${userId ?? -1}/${offset}/${limit}`
+    `/Backlog/GetInProgressBacklog/${offset}/${limit}`
   );
   return response;
 }
 
 export async function GetFinishedBacklog(
-  userId: number,
   offset: number,
   limit: number
 ): Promise<BacklogModel[]> {
   const response = await MakeRequest<BacklogModel[]>(
-    `/Backlog/GetFinishedBacklog/${userId ?? -1}/${offset}/${limit}`
+    `/Backlog/GetFinishedBacklog/${offset}/${limit}`
   );
   return response;
 }
@@ -461,11 +446,8 @@ export async function PostBacklog(
   return response;
 }
 
-export async function DeleteBacklog(
-  mediaId: string,
-  userId: number
-): Promise<void> {
-  await MakeRequest<void>(`/Backlog/DeleteBacklog/${mediaId}/${userId}`, {
+export async function DeleteBacklog(mediaId: string): Promise<void> {
+  await MakeRequest<void>(`/Backlog/DeleteBacklog/${mediaId}`, {
     method: "DELETE",
   });
 }
@@ -502,11 +484,9 @@ export async function GetMediaTrends(
 }
 
 // Milestones API Calls
-export async function GetUserMilestones(
-  userId: number
-): Promise<UserMilestoneModelObject[]> {
+export async function GetUserMilestones(): Promise<UserMilestoneModelObject[]> {
   const response = await MakeRequest<UserMilestoneModelObject[]>(
-    `/Milestone/GetUserMilestones/${userId}`
+    "/Milestone/GetUserMilestones"
   );
   return response;
 }
@@ -524,21 +504,19 @@ export async function GetCurrentUserReviewEngagement(
 
 export async function ToggleReviewEngagement(
   reviewId: number,
-  userId: number,
   type: number | null
 ): Promise<number> {
   const response = await MakeRequest<number>(
-    `/Engagement/ToggleEngagement/${reviewId}/${userId}/${type ?? -1}`
+    `/Engagement/ToggleEngagement/${reviewId}/${type ?? -1}`
   );
   return response;
 }
 
 export async function GetUserFollow(
-  followerId: number,
   followedId: number
 ): Promise<UserFollowModel> {
   const response = await MakeRequest<UserFollowModel>(
-    `/Follow/GetUserFollowStatus/${followerId}/${followedId}`
+    `/Follow/GetUserFollowStatus/${followedId}`
   );
   return response;
 }
@@ -571,32 +549,29 @@ export async function ToggleUserFollowNotificationStatus(
 }
 
 export async function GetUserFollowers(
-  userId: number,
   offset: number = 0
 ): Promise<UserFollowSummaryModel[]> {
   const response = await MakeRequest<UserFollowSummaryModel[]>(
-    `/Follow/GetUserFollowers/${userId}/${offset}`
+    `/Follow/GetUserFollowers/${offset}`
   );
   return response;
 }
 
 export async function GetUserFollowing(
-  userId: number,
   offset: number = 0
 ): Promise<UserFollowSummaryModel[]> {
   const response = await MakeRequest<UserFollowSummaryModel[]>(
-    `/Follow/GetUserFollowing/${userId}/${offset}`
+    `/Follow/GetUserFollowing/${offset}`
   );
   return response;
 }
 
 export async function GetUserNotifications(
-  userId: number,
   offset: number,
   limit: number = 25
 ): Promise<NotificationModel[]> {
   const response = await MakeRequest<NotificationModel[]>(
-    `/Notification/GetUserNotifications/${userId}/${offset}/${limit}`
+    `/Notification/GetUserNotifications/${offset}/${limit}`
   );
   return response;
 }

@@ -118,13 +118,13 @@ function AccountPage() {
     setIsLoading(true);
     if (activeTab === 1) {
       if (activeSocialTab === 0 && followers.length < user.totalFollowers) {
-        const followersData = await GetUserFollowers(user.id, followers.length);
+        const followersData = await GetUserFollowers(followers.length);
         setFollowers(followersData);
       } else if (
         activeSocialTab === 1 &&
         following.length < user.totalFollowing
       ) {
-        const followingData = await GetUserFollowing(user.id, following.length);
+        const followingData = await GetUserFollowing(following.length);
         setFollowing(followingData);
       }
     }
@@ -141,14 +141,14 @@ function AccountPage() {
 
   async function FetchMilestones() {
     setIsLoading(true);
-    const milestoneData = await GetUserMilestones(user.id);
+    const milestoneData = await GetUserMilestones();
     setMilestones(milestoneData);
     setIsLoading(false);
   }
 
   async function FetchReviews(offset: number) {
     setIsLoading(true);
-    const reviewsData = await GetUserReviews(user.id, offset);
+    const reviewsData = await GetUserReviews(offset);
     setReviews(reviewsData.reviews);
     setReviewsBreakdown(reviewsData.breakdown);
     setIsLoading(false);
@@ -156,14 +156,14 @@ function AccountPage() {
 
   async function FetchBacklog() {
     setIsLoading(true);
-    const backlogData = await GetBacklog(user.id);
+    const backlogData = await GetBacklog();
     setBacklog(backlogData);
     setIsLoading(false);
   }
 
   async function LoadMoreReviews() {
     setIsLoading(true);
-    const reviewsData = await GetUserReviews(user.id, reviews.length);
+    const reviewsData = await GetUserReviews(reviews.length);
     setReviews([...reviews, ...reviewsData.reviews]);
     setIsLoading(false);
   }
@@ -173,10 +173,10 @@ function AccountPage() {
     offset: number
   ): Promise<BacklogModel[]> {
     if (stage === "inProgress")
-      return await GetInProgressBacklog(user.id, offset, 10);
+      return await GetInProgressBacklog(offset, 10);
     else if (stage === "finished")
-      return await GetFinishedBacklog(user.id, offset, 10);
-    return await GetBackloggedBacklog(user.id, offset, 10);
+      return await GetFinishedBacklog(offset, 10);
+    return await GetBackloggedBacklog(offset, 10);
   }
 
   async function LoadMoreBacklogs(stage: keyof BacklogObjectModel) {
