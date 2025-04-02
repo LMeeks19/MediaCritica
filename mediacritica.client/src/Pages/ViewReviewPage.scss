@@ -19,6 +19,7 @@
       width: 40%;
       z-index: 999;
       background-size: 100% 100%;
+      box-shadow: 0 0 10px 0 black;
 
       &.empty {
         display: flex;
@@ -29,114 +30,65 @@
       }
     }
 
-    /* Container */
     .info {
       margin: 0;
       display: flex;
       flex-direction: column;
       width: 60%;
-      z-index: 999;
       position: relative;
       overflow: hidden auto;
 
       .hero {
-        padding: 1.5rem 2rem 1.5rem 2rem;
+        padding: 1.5rem 2rem;
         background-color: var(--palette-colour);
         display: flex;
         flex-wrap: wrap;
-        flex-direction: column;
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-between;
+        gap: 0.5rem;
         color: whitesmoke;
         box-shadow: 0 2px 5px #00000080;
 
-        .review-date {
-          font-size: 0.7rem;
-          width: 100%;
-          text-align: start;
-
-          .reviewer {
-            cursor: pointer;
-
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-        }
 
         .heading {
-          width: 100%;
           display: flex;
+          flex-direction: column;
           flex-wrap: wrap;
-          align-items: center;
           justify-content: space-between;
-          gap: 0.5rem;
 
           .title {
             font-size: 2rem;
 
-            .parent-title:hover, .sub-title:hover {
+            .parent-title:hover,
+            .sub-title:hover {
               text-decoration: underline;
               cursor: pointer;
             }
 
             .sub-title {
-              font-size: 1.25rem;
+              font-size: 1rem;
+              color: #bbb;
             }
-        
           }
 
-          .btn {
-            border-color: whitesmoke !important;
-            color: whitesmoke !important;
-            transition: background-color 0.3s ease-in-out,
-              color 0.3s ease-in-out !important;
-            background-color: transparent !important;
-            padding: 8px !important;
+          .review-date {
+            font-size: 0.7rem;
+            text-align: start;
 
-            &:not(:disabled):hover,
-            &.Mui-selected {
-              background-color: whitesmoke !important;
-              color: var(--palette-colour) !important;
-            }
+            .reviewer {
+              cursor: pointer;
 
-            .text {
-              font-size: 0.9rem;
+              &:hover {
+                text-decoration: underline;
+              }
             }
           }
         }
-      }
 
-      .review-details {
-        overflow: hidden auto;
-
-        .title-section {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
-          align-items: center;
-          justify-content: space-between;
-          width: calc(100% - 4rem);
-          padding: 2rem;
-          background-color: light-dark(whitesmoke, #242424);
-
-          h2 {
-            margin-top: 0;
-            margin: auto 0 auto 0;
-            font-size: 1.5rem;
-          }
-        }
-
-        .description {
-          padding: 2rem;
-          font-size: 1.25rem;
-
-          p {
-            margin-top: 0;
-          }
-
-          p:last-child {
-            margin: 0;
+        .engagement-button {
+          &.Mui-selected {
+            background-color: whitesmoke !important;
+            color: var(--palette-colour) !important;
           }
         }
       }
@@ -146,24 +98,21 @@
         flex-direction: column;
         align-items: center;
         height: 100%;
+        overflow: hidden;
 
         .title-section {
           display: flex;
           flex-wrap: wrap;
-          gap: 2rem;
+          gap: 0.5rem;
           align-items: center;
           justify-content: space-between;
           width: calc(100% - 4rem);
-          padding: 2rem;
+          padding: 1rem 2rem;
           background-color: light-dark(whitesmoke, #242424);
 
           .review-title {
-            flex-grow: 1;
+            font-size: 1.5rem;
           }
-        }
-
-        .review-title {
-          font-size: 1.5rem;
         }
 
         .review-title,
@@ -173,24 +122,37 @@
           font-family: "Orbitron";
           border: none;
           outline: none;
-          line-height: inherit;
-          letter-spacing: 0.1rem;
           padding: 0;
         }
 
         .review-description {
           resize: none;
-          height: 100%;
-          width: calc(100% - 4rem);
-          padding: 2rem;
-          font-size: 1.25rem !important;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          overflow: hidden;
+
+          &.readonly {
+            .ql-toolbar {
+              display: none !important;
+            }
+          }
+        }
+
+        .character-count {
+          text-align: right;
+          padding: 15px;
+          font-size: 12.5px;
+          color: gray;
+          border-top: 1px solid gray;
         }
       }
     }
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1080px) {
   .viewreviewpage-container {
     .review {
       .media-poster {
@@ -199,24 +161,6 @@
 
       .info {
         width: 100%;
-
-        .hero {
-          justify-content: center !important;
-          gap: 0.5rem;
-
-          .review-date {
-            text-align: center;
-          }
-
-          .heading {
-            justify-content: center;
-            flex-direction: column;
-
-            .parent-title {
-              text-align: center;
-            }
-          }
-        }
       }
     }
   }

@@ -1,68 +1,48 @@
 import "./MediaPage.scss";
 import { ReactNode, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   CapitaliseFirstLetter,
   ConvertRatingStringToFiveScale,
 } from "../Helpers/StringHelper";
 import TopBar from "../Components/TopBar";
-import {
-  Button,
-  ButtonGroup,
-  IconButton,
-  MenuItem,
-  Rating,
-  Select,
-} from "@mui/material";
+import { Button, ButtonGroup, MenuItem, Rating, Select } from "@mui/material";
 import { format, formatDistanceToNowStrict } from "date-fns";
-import {
-  DeleteBacklog,
-  GetMedia,
-  GetSeason,
-  GetUserMediaBackloggedStatus,
-  PostBacklog,
-} from "../Server/Server";
+import { GetMedia, GetSeason } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { MovieModel } from "../Interfaces/MovieModel";
-import StarRating from "../Components/StarRating";
+import MediaActions from "../Components/MediaActions";
 import { GameModel } from "../Interfaces/GameModel";
-import { BacklogModel } from "../Interfaces/BacklogModel";
-import { useRecoilState } from "recoil";
-import { userState } from "../State/GlobalState";
+
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import StarIcon from "@mui/icons-material/Star";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
+import { EpisodeModel } from "../Interfaces/EpisodeModel";
 
 function MediaPage() {
-  const [media, setMedia] = useState<MovieModel | SeriesModel | GameModel>(
-    {} as MovieModel | SeriesModel | GameModel
-  );
+  const [media, setMedia] = useState<
+    MovieModel | SeriesModel | GameModel | EpisodeModel
+  >({} as MovieModel | SeriesModel | GameModel | EpisodeModel);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const location = useLocation();
-  const mediaId = location.state?.mediaId;
-  const mediaType = location.state.mediaType;
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
-  const [userBacklogStatus, setUserBacklogStatus] = useState<boolean>(false);
-  const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
+
+  const { type, mediaId } = useParams();
 
   useEffect(() => {
     async function FetchMedia() {
-      (mediaId === undefined || mediaType === undefined) && navigate("/");
       setIsLoading(true);
-      var backlogStatus = await GetUserMediaBackloggedStatus(mediaId, user.id);
-      setUserBacklogStatus(backlogStatus.value);
-      var mediaResponse = await GetMedia(mediaId, mediaType);
+      var mediaResponse = await GetMedia(mediaId!, type as MediaType);
+      if (mediaResponse.id === undefined) navigate("/");
       setMedia(mediaResponse);
       setIsLoading(false);
     }
     FetchMedia();
-  }, []);
+  }, [type, mediaId]);
 
   function GetSeasonOptions(): ReactNode[] {
     let series = media as SeriesModel;
@@ -84,7 +64,7 @@ function MediaPage() {
         (season) => Number(season.season) === selectedSeason
       )
     ) {
-      let mediaSeasonResponse = await GetSeason(mediaId, selectedSeason);
+      let mediaSeasonResponse = await GetSeason(mediaId!, selectedSeason);
       setMedia({
         ...series,
         seasons: [...series.seasons!, mediaSeasonResponse],
@@ -92,37 +72,6 @@ function MediaPage() {
     }
 
     setSelectedSeason(selectedSeason);
-  }
-
-  async function AddToBacklog() {
-    const backlog = {
-      userId: user.id,
-      mediaId: media.id,
-      mediaType: media.type,
-      mediaPoster: media.poster,
-      mediaTitle: media.title,
-      addedDate: new Date(),
-    } as BacklogModel;
-
-    await PostBacklog(backlog);
-
-    setUserBacklogStatus(true);
-
-    setUser({
-      ...user,
-      totalBacklogs: user.totalBacklogs + 1,
-    });
-  }
-
-  async function RemoveFromBacklog() {
-    await DeleteBacklog(media.id, user.id);
-
-    setUserBacklogStatus(false);
-
-    setUser({
-      ...user,
-      totalBacklogs: user.totalBacklogs - 1,
-    });
   }
 
   function GetUniqueMovieDetails() {
@@ -168,16 +117,7 @@ function MediaPage() {
                 <div
                   key={episode.id}
                   className="episode-card"
-                  onClick={() =>
-                    navigate(
-                      `seasons/${selectedSeason}/episodes/${episode.id}`,
-                      {
-                        state: {
-                          episodeId: episode.id,
-                        },
-                      }
-                    )
-                  }
+                  onClick={() => navigate(`/episode/${episode.id}`)}
                 >
                   <div className="episode-number">{episode.episode}</div>
                   <div className="episode-info">
@@ -201,6 +141,29 @@ function MediaPage() {
     );
   }
 
+  function getMediaTitle() {
+    if (media.type === MediaType.Episode) {
+      return (
+        <h1
+          className="episode-title"
+          onClick={() =>
+            navigate(`/series/${(media as EpisodeModel).seriesId}`)
+          }
+        >
+          {(media as EpisodeModel).seriesTitle}
+        </h1>
+      );
+    }
+    return <h1>{media.title}</h1>;
+  }
+
+  function getMediaSubInfo() {
+    if (media.type === MediaType.Episode) {
+      var episode = media as EpisodeModel;
+      return `S${episode.season}:E${episode.episode} - ${episode.title}`;
+    }
+  }
+
   return (
     <div className="mediapage-container">
       {isLoading ? (
@@ -221,49 +184,10 @@ function MediaPage() {
           <div className="info">
             <div className="hero">
               <div className="title-section">
-                <div className="title flex items-center gap-5 flex-wrap">
-                  <h1>{media.title}</h1>
-                  {userBacklogStatus ? (
-                    <CustomTooltip title="Remove from backlog" arrow>
-                      <span>
-                        <IconButton
-                          className="heart"
-                          onClick={() => RemoveFromBacklog()}
-                        >
-                          <FavoriteIcon />
-                        </IconButton>
-                      </span>
-                    </CustomTooltip>
-                  ) : (
-                    <CustomTooltip
-                      title={
-                        user.id === undefined
-                          ? "Login to update backlog status"
-                          : "Add to backlog"
-                      }
-                      arrow
-                    >
-                      <span>
-                        <IconButton
-                          className="heart"
-                          disabled={user.id === undefined}
-                          onClick={() => AddToBacklog()}
-                        >
-                          <FavoriteBorderIcon />
-                        </IconButton>
-                      </span>
-                    </CustomTooltip>
-                  )}
-                </div>
-                <div className="release">
-                  <div>Initial Release: {media.released}</div>
-                </div>
+                <div className="title">{getMediaTitle()}</div>
+                <div className="sub-info">{getMediaSubInfo()}</div>
               </div>
-              <StarRating
-                rating={media.imdbRating}
-                reviews={media.imdbVotes}
-                media={media}
-              />
+              <MediaActions media={media} />
             </div>
             <div className="details">
               <div className="summary">
@@ -284,6 +208,7 @@ function MediaPage() {
                   <p>Language: {media.language}</p>
                   <p>Country: {media.country}</p>
                   <p>Rated: {media.rated}</p>
+                  <p>Released: {media.released}</p>
                 </div>
 
                 {(media.writer !== "N/A" || media.director !== "N/A") && (
@@ -346,17 +271,8 @@ function MediaPage() {
                   <div className="review-header">
                     <h2>Reviews</h2>
                     <ButtonGroup>
-                      <Button
-                        onClick={() =>
-                          navigate("reviews", {
-                            state: {
-                              mediaId: media.id,
-                              mediaTitle: media.title,
-                            },
-                          })
-                        }
-                      >
-                        <CustomTooltip title="View all" arrow>
+                      <Button onClick={() => navigate("reviews")}>
+                        <CustomTooltip title="View all">
                           <VisibilityIcon />
                         </CustomTooltip>
                       </Button>
@@ -368,11 +284,7 @@ function MediaPage() {
                         <div
                           className="review-card"
                           key={review.id}
-                          onClick={() =>
-                            navigate(`view-review/${review.id}`, {
-                              state: { reviewId: review.id },
-                            })
-                          }
+                          onClick={() => navigate(`reviews/${review.id}`)}
                         >
                           <div className="rating">
                             <StarIcon className="icon" fontSize="large" />

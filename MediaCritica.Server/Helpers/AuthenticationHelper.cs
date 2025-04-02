@@ -1,14 +1,19 @@
 ﻿using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
+    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, HttpContext httpContext, bool isTestEnvironment = false) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
+        private readonly HttpContext _httpContext = httpContext;
+        private readonly bool _isTestEnvironment = isTestEnvironment;
 
         public async Task<User?> AuthenticateUser(UserLoginModel userLoginModel)
         {
@@ -32,6 +37,32 @@ namespace MediaCritica.Server.Helpers
                 .SingleOrDefaultAsync(u => u.Email == email || u.Id == id);
 
             return user;
+        }
+
+        public async Task SetUserId(int userId)
+        {
+            var claims = new List<Claim> { new(ClaimTypes.Name, userId.ToString()) };
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            if (_isTestEnvironment)
+                _httpContext.User = claimsPrincipal;
+            else
+                await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+        }
+
+        public int? GetUserId()
+        {
+            try { return int.Parse(_httpContext.User.Identity.Name); }
+            catch { return null; }
+        }
+
+        public async Task UnSetUserId()
+        {
+            if (_isTestEnvironment)
+                _httpContext.User = null;
+            else
+                await _httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public async Task<AuthToken> GenerateAuthToken(int userId)

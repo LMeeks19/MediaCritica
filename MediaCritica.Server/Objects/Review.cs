@@ -17,7 +17,10 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
+        public bool IsDeleted { get; set; }
         public virtual List<Engagement> Engagements { get; set; }
+        public virtual List<Comment> Comments { get; set; }
+        public virtual List<Report> Reports { get; set; }
 
     }
 }

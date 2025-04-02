@@ -118,13 +118,13 @@ function AccountPage() {
     setIsLoading(true);
     if (activeTab === 1) {
       if (activeSocialTab === 0 && followers.length < user.totalFollowers) {
-        const followersData = await GetUserFollowers(user.id, followers.length);
+        const followersData = await GetUserFollowers(followers.length);
         setFollowers(followersData);
       } else if (
         activeSocialTab === 1 &&
         following.length < user.totalFollowing
       ) {
-        const followingData = await GetUserFollowing(user.id, following.length);
+        const followingData = await GetUserFollowing(following.length);
         setFollowing(followingData);
       }
     }
@@ -141,14 +141,14 @@ function AccountPage() {
 
   async function FetchMilestones() {
     setIsLoading(true);
-    const milestoneData = await GetUserMilestones(user.id);
+    const milestoneData = await GetUserMilestones();
     setMilestones(milestoneData);
     setIsLoading(false);
   }
 
   async function FetchReviews(offset: number) {
     setIsLoading(true);
-    const reviewsData = await GetUserReviews(user.id, offset);
+    const reviewsData = await GetUserReviews(offset);
     setReviews(reviewsData.reviews);
     setReviewsBreakdown(reviewsData.breakdown);
     setIsLoading(false);
@@ -156,14 +156,14 @@ function AccountPage() {
 
   async function FetchBacklog() {
     setIsLoading(true);
-    const backlogData = await GetBacklog(user.id);
+    const backlogData = await GetBacklog();
     setBacklog(backlogData);
     setIsLoading(false);
   }
 
   async function LoadMoreReviews() {
     setIsLoading(true);
-    const reviewsData = await GetUserReviews(user.id, reviews.length);
+    const reviewsData = await GetUserReviews(reviews.length);
     setReviews([...reviews, ...reviewsData.reviews]);
     setIsLoading(false);
   }
@@ -173,10 +173,10 @@ function AccountPage() {
     offset: number
   ): Promise<BacklogModel[]> {
     if (stage === "inProgress")
-      return await GetInProgressBacklog(user.id, offset, 10);
+      return await GetInProgressBacklog(offset, 10);
     else if (stage === "finished")
-      return await GetFinishedBacklog(user.id, offset, 10);
-    return await GetBackloggedBacklog(user.id, offset, 10);
+      return await GetFinishedBacklog(offset, 10);
+    return await GetBackloggedBacklog(offset, 10);
   }
 
   async function LoadMoreBacklogs(stage: keyof BacklogObjectModel) {
@@ -352,17 +352,17 @@ function AccountPage() {
               }}
             >
               <ToggleButton value={MediaType.Movie}>
-                <CustomTooltip title="Movies" arrow>
+                <CustomTooltip title="Movies">
                   <MovieIcon />
                 </CustomTooltip>
               </ToggleButton>
               <ToggleButton value={MediaType.Series}>
-                <CustomTooltip title="Series" arrow>
+                <CustomTooltip title="Series">
                   <SeriesIcon />
                 </CustomTooltip>
               </ToggleButton>
               <ToggleButton value={MediaType.Game}>
-                <CustomTooltip title="Games" arrow>
+                <CustomTooltip title="Games">
                   <GameIcon />
                 </CustomTooltip>
               </ToggleButton>
@@ -400,12 +400,7 @@ function AccountPage() {
                     />
                     <CardActionArea
                       onClick={() =>
-                        navigate(`/media/${item.mediaId}`, {
-                          state: {
-                            mediaId: item.mediaId,
-                            mediaType: item.mediaType,
-                          },
-                        })
+                        navigate(`/${item.mediaType}/${item.mediaId}`)
                       }
                     >
                       <CardMedia component="div" />
@@ -428,7 +423,7 @@ function AccountPage() {
                 items?.length === totalItems && "hidden"
               }`}
             >
-              <CustomTooltip title="Load more" arrow>
+              <CustomTooltip title="Load more">
                 <span>
                   <Fab
                     disabled={items?.length === totalItems}
@@ -472,7 +467,7 @@ function AccountPage() {
                     await LogoutUser(setNotificationsObject, setUser);
                   }}
                 >
-                  <CustomTooltip title="Logout" arrow>
+                  <CustomTooltip title="Logout">
                     <LogoutIcon fontSize="small" />
                   </CustomTooltip>
                 </Button>
@@ -560,11 +555,7 @@ function AccountPage() {
                             className="follower"
                             key={follower.userId}
                             onClick={() =>
-                              navigate(`/view-user/${follower.userId}`, {
-                                state: {
-                                  userId: follower.userId,
-                                },
-                              })
+                              navigate(`/view-user/${follower.userId}`)
                             }
                           >
                             <Avatar
@@ -591,7 +582,7 @@ function AccountPage() {
                           followers.length === user.totalFollowers && "hidden"
                         }`}
                       >
-                        <CustomTooltip title="Load more" arrow>
+                        <CustomTooltip title="Load more">
                           <span>
                             <Fab
                               disabled={
@@ -618,11 +609,7 @@ function AccountPage() {
                             className="follower"
                             key={follower.userId}
                             onClick={() =>
-                              navigate(`/view-user/${follower.userId}`, {
-                                state: {
-                                  userId: follower.userId,
-                                },
-                              })
+                              navigate(`/view-user/${follower.userId}`)
                             }
                           >
                             <Avatar
@@ -667,22 +654,22 @@ function AccountPage() {
                     }}
                   >
                     <ToggleButton value={MediaType.Movie}>
-                      <CustomTooltip title="Movies" arrow>
+                      <CustomTooltip title="Movies">
                         <MovieIcon />
                       </CustomTooltip>
                     </ToggleButton>
                     <ToggleButton value={MediaType.Series}>
-                      <CustomTooltip title="Series" arrow>
+                      <CustomTooltip title="Series">
                         <SeriesIcon />
                       </CustomTooltip>
                     </ToggleButton>
                     <ToggleButton value={MediaType.Game}>
-                      <CustomTooltip title="Games" arrow>
+                      <CustomTooltip title="Games">
                         <GameIcon />
                       </CustomTooltip>
                     </ToggleButton>
                     <ToggleButton value={MediaType.Episode}>
-                      <CustomTooltip title="Episodes" arrow>
+                      <CustomTooltip title="Episodes">
                         <EpisodeIcon />
                       </CustomTooltip>
                     </ToggleButton>
@@ -715,10 +702,7 @@ function AccountPage() {
                               <CardActionArea
                                 onClick={() =>
                                   navigate(
-                                    `/media/${review.mediaId}/view-review/${review.id}}`,
-                                    {
-                                      state: { reviewId: review.id },
-                                    }
+                                    `/${review.mediaType}/${review.mediaId}/reviews/${review.id}}`
                                   )
                                 }
                               >
@@ -758,7 +742,7 @@ function AccountPage() {
                           reviews.length === user.totalReviews && "hidden"
                         }`}
                       >
-                        <CustomTooltip title="All reviewed media loaded" arrow>
+                        <CustomTooltip title="All reviewed media loaded">
                           <span>
                             <Fab
                               disabled={reviews.length === user.totalReviews}

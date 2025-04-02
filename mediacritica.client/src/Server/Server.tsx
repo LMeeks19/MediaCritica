@@ -5,6 +5,7 @@ import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
 import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
+import { CommentModel } from "../Interfaces/CommentModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
@@ -13,6 +14,7 @@ import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelRespon
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { NotificationModel } from "../Interfaces/NotificationModel";
+import { ReportModel } from "../Interfaces/ReportModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
@@ -52,6 +54,7 @@ function isRequestMessageInterface(obj: any): obj is RequestMessage {
 async function MakeRequest<T>(url: string, options?: RequestInit): Promise<T> {
   try {
     const response = await fetch(url, options);
+
     const data = await response.json();
 
     if (isRequestMessageInterface(data)) {
@@ -90,7 +93,7 @@ export async function AutoLogin(token: string): Promise<UserModelObject> {
   return response;
 }
 
-export async function Logout(token: string): Promise<void> {
+export async function Logout(token: string | null): Promise<void> {
   await MakeRequest<void>("/User/Logout", {
     method: "POST",
     body: JSON.stringify({ token: token } as { token: string }),
@@ -125,20 +128,15 @@ export async function UpdateUser(
   return response;
 }
 
-export async function DeleteUser(userId: number): Promise<RequestValue> {
-  const response = await MakeRequest<RequestValue>(
-    `/User/DeleteUser/${userId}`,
-    { method: "DELETE" }
-  );
+export async function DeleteUser(): Promise<RequestValue> {
+  const response = await MakeRequest<RequestValue>("/User/DeleteUser", {
+    method: "DELETE",
+  });
   return response;
 }
 
-export async function GetUserSummary(
-  userId: number
-): Promise<UserSummaryModel> {
-  const response = await MakeRequest<UserSummaryModel>(
-    `/User/GetUserSummary/${userId}`
-  );
+export async function GetUserSummary(userId: number): Promise<UserSummaryModel> {
+  const response = await MakeRequest<UserSummaryModel>(`/User/GetUserSummary/${userId}`);
   return response;
 }
 
@@ -269,9 +267,11 @@ export async function GetBestOfAllTime(
 export async function GetMedia(
   mediId: string,
   type: MediaType
-): Promise<MovieModel | SeriesModel | GameModel> {
+): Promise<MovieModel | SeriesModel | GameModel | EpisodeModel> {
   if (type === MediaType.Movie) return GetMovie(mediId);
   else if (type === MediaType.Series) return GetSeries(mediId);
+  else if (type === MediaType.Episode) return GetEpisode(mediId);
+
   return GetGame(mediId);
 }
 
@@ -318,11 +318,10 @@ export async function GetReview(reviewId: number): Promise<ReviewModel> {
 
 // Review API Calls
 export async function GetUserReviews(
-  reviewerId: number,
   offset: number = 0
 ): Promise<UserReviewsModelObject> {
   const response = await MakeRequest<UserReviewsModelObject>(
-    `/Review/GetUserReviews/${reviewerId ?? -1}/${offset}`
+    `/Review/GetUserReviews/${offset}`
   );
   return response;
 }
@@ -339,21 +338,26 @@ export async function GetUserReviewsBreakdown(
 export async function GetMediaReviews(
   mediaId: string,
   offset: number = 0
-): Promise<{ reviews: ReviewSummaryModel[]; totalCount: number }> {
+): Promise<{
+  title: string;
+  reviews: ReviewSummaryModel[];
+  totalCount: number;
+}> {
   const response = await MakeRequest<{
+    title: string;
     reviews: ReviewSummaryModel[];
     totalCount: number;
   }>(`/Review/GetMediaReviews/${mediaId}/${offset}/${40}`);
   return response;
 }
 
-export async function PostReview(review: ReviewModel): Promise<RequestId> {
+export async function PostReview(review: ReviewModel): Promise<number> {
   const response = await MakeRequest<RequestId>(`/Review/PostReview`, {
     method: "POST",
     body: JSON.stringify(review),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
-  return response;
+  return response.id;
 }
 
 export async function UpdateReview(
@@ -374,64 +378,55 @@ export async function DeleteReview(reviewerId: number): Promise<void> {
 }
 
 export async function GetUserReviewStatus(
-  mediaId: string,
-  userId: number
+  mediaId: string
 ): Promise<RequestValue> {
-  if (userId === undefined) return { value: false } as RequestValue;
   const response = await MakeRequest<RequestValue>(
-    `/Review/GetUserReviewStatus/${mediaId}/${userId}`
+    `/Review/GetUserReviewStatus/${mediaId}`
   );
   return response;
 }
 
 // Backlog API Calls
-export async function GetBacklog(userId: number): Promise<BacklogObjectModel> {
-  const response = await MakeRequest<BacklogObjectModel>(
-    `/Backlog/GetBacklog/${userId ?? -1}`
-  );
+export async function GetBacklog(): Promise<BacklogObjectModel> {
+  const response = await MakeRequest<BacklogObjectModel>("/Backlog/GetBacklog");
   return response;
 }
 
 export async function GetUserMediaBackloggedStatus(
   mediaId: string,
-  userId: number
 ): Promise<RequestValue> {
-  if (userId === undefined) return { value: false } as RequestValue;
   const response = await MakeRequest<RequestValue>(
-    `/Backlog/GetUserBacklogStatus/${mediaId}/${userId}`
+    `/Backlog/GetUserBacklogStatus/${mediaId}`
   );
   return response;
 }
 
 export async function GetBackloggedBacklog(
-  userId: number,
   offset: number,
   limit: number
 ): Promise<BacklogModel[]> {
   const response = await MakeRequest<BacklogModel[]>(
-    `/Backlog/GetBackloggedBacklog/${userId ?? -1}/${offset}/${limit}`
+    `/Backlog/GetBackloggedBacklog/${offset}/${limit}`
   );
   return response;
 }
 
 export async function GetInProgressBacklog(
-  userId: number,
   offset: number,
   limit: number
 ): Promise<BacklogModel[]> {
   const response = await MakeRequest<BacklogModel[]>(
-    `/Backlog/GetInProgressBacklog/${userId ?? -1}/${offset}/${limit}`
+    `/Backlog/GetInProgressBacklog/${offset}/${limit}`
   );
   return response;
 }
 
 export async function GetFinishedBacklog(
-  userId: number,
   offset: number,
   limit: number
 ): Promise<BacklogModel[]> {
   const response = await MakeRequest<BacklogModel[]>(
-    `/Backlog/GetFinishedBacklog/${userId ?? -1}/${offset}/${limit}`
+    `/Backlog/GetFinishedBacklog/${offset}/${limit}`
   );
   return response;
 }
@@ -451,11 +446,8 @@ export async function PostBacklog(
   return response;
 }
 
-export async function DeleteBacklog(
-  mediaId: string,
-  userId: number
-): Promise<void> {
-  await MakeRequest<void>(`/Backlog/DeleteBacklog/${mediaId}/${userId}`, {
+export async function DeleteBacklog(mediaId: string): Promise<void> {
+  await MakeRequest<void>(`/Backlog/DeleteBacklog/${mediaId}`, {
     method: "DELETE",
   });
 }
@@ -492,11 +484,9 @@ export async function GetMediaTrends(
 }
 
 // Milestones API Calls
-export async function GetUserMilestones(
-  userId: number
-): Promise<UserMilestoneModelObject[]> {
+export async function GetUserMilestones(): Promise<UserMilestoneModelObject[]> {
   const response = await MakeRequest<UserMilestoneModelObject[]>(
-    `/Milestone/GetUserMilestones/${userId}`
+    "/Milestone/GetUserMilestones"
   );
   return response;
 }
@@ -514,21 +504,19 @@ export async function GetCurrentUserReviewEngagement(
 
 export async function ToggleReviewEngagement(
   reviewId: number,
-  userId: number,
   type: number | null
 ): Promise<number> {
   const response = await MakeRequest<number>(
-    `/Engagement/ToggleEngagement/${reviewId}/${userId}/${type ?? -1}`
+    `/Engagement/ToggleEngagement/${reviewId}/${type ?? -1}`
   );
   return response;
 }
 
 export async function GetUserFollow(
-  followerId: number,
   followedId: number
 ): Promise<UserFollowModel> {
   const response = await MakeRequest<UserFollowModel>(
-    `/Follow/GetUserFollowStatus/${followerId}/${followedId}`
+    `/Follow/GetUserFollowStatus/${followedId}`
   );
   return response;
 }
@@ -561,32 +549,92 @@ export async function ToggleUserFollowNotificationStatus(
 }
 
 export async function GetUserFollowers(
-  userId: number,
   offset: number = 0
 ): Promise<UserFollowSummaryModel[]> {
   const response = await MakeRequest<UserFollowSummaryModel[]>(
-    `/Follow/GetUserFollowers/${userId}/${offset}`
+    `/Follow/GetUserFollowers/${offset}`
   );
   return response;
 }
 
 export async function GetUserFollowing(
-  userId: number,
   offset: number = 0
 ): Promise<UserFollowSummaryModel[]> {
   const response = await MakeRequest<UserFollowSummaryModel[]>(
-    `/Follow/GetUserFollowing/${userId}/${offset}`
+    `/Follow/GetUserFollowing/${offset}`
   );
   return response;
 }
 
 export async function GetUserNotifications(
-  userId: number,
   offset: number,
   limit: number = 25
 ): Promise<NotificationModel[]> {
   const response = await MakeRequest<NotificationModel[]>(
-    `/Notification/GetUserNotifications/${userId}/${offset}/${limit}`
+    `/Notification/GetUserNotifications/${offset}/${limit}`
   );
   return response;
+}
+
+// Comment API Calls
+export async function GetReviewComments(
+  reviewId: number
+): Promise<CommentModel[]> {
+  const response = await MakeRequest<CommentModel[]>(
+    `/Comment/GetReviewComments/${reviewId}`
+  );
+  return response;
+}
+
+export async function GetCommentsRemainingChildren(
+  commentId: number,
+  offset: number
+): Promise<CommentModel[]> {
+  const response = await MakeRequest<CommentModel[]>(
+    `/Comment/GetCommentsRemainingChildren/${commentId}/${offset}`
+  );
+  return response;
+}
+
+export async function DeleteComment(commentId: number): Promise<void> {
+  await MakeRequest<void>(`/Comment/DeleteComment/${commentId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function PostComment(commentModel: any): Promise<CommentModel> {
+  const response = await MakeRequest<CommentModel>(`/Comment/PostComment`, {
+    method: "POST",
+    body: JSON.stringify(commentModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response;
+}
+
+export async function UpdateComment(updateCommentModel: {
+  id: number;
+  content: string;
+}): Promise<CommentModel> {
+  const response = await MakeRequest<CommentModel>(`/Comment/UpdateComment`, {
+    method: "PUT",
+    body: JSON.stringify(updateCommentModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  return response;
+}
+
+export async function ReportComment(reportModel: ReportModel): Promise<void> {
+  await MakeRequest<void>(`/Comment/ReportComment`, {
+    method: "POST",
+    body: JSON.stringify(reportModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+}
+
+export async function ReportReview(reportModel: ReportModel): Promise<void> {
+  await MakeRequest<void>(`/Review/ReportReview`, {
+    method: "POST",
+    body: JSON.stringify(reportModel),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
 }

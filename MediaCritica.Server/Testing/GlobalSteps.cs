@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Controllers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,13 @@ namespace MediaCritica.Server.Testing
 
             await _dbContext.Users.AddRangeAsync(users);
             await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I am the following user")]
+        public async Task GivenIAmTheFollowingUser(Table table)
+        {
+            var userLoginModel = table.Rows[0].CreateInstance<UserLoginModel>();
+            await _controller.UserController.Login(userLoginModel);
         }
 
         [Given(@"I have the following preferences")]
@@ -155,6 +163,32 @@ namespace MediaCritica.Server.Testing
             await _dbContext.SaveChangesAsync();
         }
 
+        [Given(@"I have the following comments")]
+        public async Task GivenIHaveTheFollowingComments(Table table)
+        {
+            var comments = table.Rows.Select(row => new Comment
+            {
+                Id = int.Parse(row["Id"]),
+                ReviewId = int.Parse(row["ReviewId"]),
+                ParentId = row["ParentId"] == "<null>" ? null : int.Parse(row["ParentId"]),
+                Content = row["Content"],
+                CommenterId = int.Parse(row["CommenterId"]),
+                CommenterName = row["CommenterName"],
+                CommentedAt = DateTime.Parse(row["CommentedAt"]),
+                IsDeleted = bool.Parse(row["IsDeleted"]),
+            }).ToList();
+            await _dbContext.Comments.AddRangeAsync(comments);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        [Given(@"I have the following reports")]
+        public async Task GivenIHaveTheFollowingReports(Table table)
+        {
+            var reports = table.CreateSet<Report>().ToList();
+            await _dbContext.Reports.AddRangeAsync(reports);
+            await _dbContext.SaveChangesAsync();
+        }
+
         [Then(@"The status code should be (\d+)")]
         public void ThenTheStatusCodeShouldBe(int statusCode)
         {
@@ -174,6 +208,21 @@ namespace MediaCritica.Server.Testing
         {
             var result = (ObjectResult)_response;
             Assert.AreEqual(new { Value = value }, result.Value);
+        }
+
+        [Then(@"The following report should be in the database")]
+        public async Task ThenTheFollowingReportShouldBeInTheDatabase(Table table)
+        {
+            var expectedReport = table.Rows[0].CreateInstance<Report>();
+            var actualReport = await _dbContext.Reports.SingleOrDefaultAsync(r => r.Id == expectedReport.Id);
+
+            Assert.AreEqual(expectedReport.Id, actualReport.Id);
+            Assert.AreEqual(expectedReport.ReviewId, actualReport.ReviewId);
+            Assert.AreEqual(expectedReport.CommentId, actualReport.CommentId);
+            Assert.AreEqual(expectedReport.ReporterId, actualReport.ReporterId);
+            Assert.AreEqual(expectedReport.Reason, actualReport.Reason);
+            Assert.AreEqual(expectedReport.Details, actualReport.Details);
+            Assert.AreEqual(expectedReport.ReportedAt, actualReport.ReportedAt);
         }
     }
 }

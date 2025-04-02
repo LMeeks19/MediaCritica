@@ -10,19 +10,19 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class BacklogControllerSteps
     {
-        [When(@"I call GetBacklog with user id (\d+)")]
-        public async Task WhenICallGetBacklogWithUserId(int userId)
+        [When(@"I call GetBacklog")]
+        public async Task WhenICallGetBacklog()
         {
-            GlobalSteps._response = await GlobalSteps._controller.BacklogController.GetBacklog(userId);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.GetBacklog();
         }
 
-        [When(@"I call Get(Backlogged|InProgress|Finished)Backlog with user id (\d+)")]
-        public async Task WhenICallGetTypeBacklogWithUserId(string type, int userId)
+        [When(@"I call Get(Backlogged|InProgress|Finished)Backlog")]
+        public async Task WhenICallGetTypeBacklog(string type)
         {
             GlobalSteps._response = await (type == "Backlogged" ?
-                GlobalSteps._controller.BacklogController.GetBackloggedBacklog(userId) : type == "InProgress" ?
-                GlobalSteps._controller.BacklogController.GetInProgressBacklog(userId) :
-                GlobalSteps._controller.BacklogController.GetFinishedBacklog(userId));
+                GlobalSteps._controller.BacklogController.GetBackloggedBacklog() : type == "InProgress" ?
+                GlobalSteps._controller.BacklogController.GetInProgressBacklog() :
+                GlobalSteps._controller.BacklogController.GetFinishedBacklog());
         }
 
         [When(@"I call PostBacklog with the backlog model")]
@@ -32,10 +32,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.BacklogController.PostBacklog(backlogModel);
         }
 
-        [When(@"I call DeleteBacklog with the media id (.*) and user id (\d+)")]
-        public async Task WhenICallDeleteBacklogWithTheMediaIdAndUserId(string mediaId, int userId)
+        [When(@"I call DeleteBacklog with the media id (.*)")]
+        public async Task WhenICallDeleteBacklogWithTheMediaId(string mediaId)
         {
-            GlobalSteps._response = await GlobalSteps._controller.BacklogController.DeleteBacklog(mediaId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.DeleteBacklog(mediaId);
         }
 
         [When(@"I call UpdateBacklogState with the id (\d+) and new state (Backlog|InProgress|Finished)")]
@@ -44,10 +44,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.BacklogController.UpdateBacklogState(backlogId, newState);
         }
 
-        [When(@"I call GetUserBacklogStatus with the media id (.*) and user id (\d+)")]
-        public async Task WhenICallGetUserBacklogStatusWithTheMediaIdAndUserId(string mediaId, int userId)
+        [When(@"I call GetUserBacklogStatus with the media id (.*)")]
+        public async Task WhenICallGetUserBacklogStatusWithTheMediaId(string mediaId)
         {
-            GlobalSteps._response = await GlobalSteps._controller.BacklogController.GetUserBacklogStatus(mediaId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.BacklogController.GetUserBacklogStatus(mediaId);
         }
 
         [Then(@"The BacklokObjectModel should be")]

@@ -99,7 +99,7 @@ function PalettePreference() {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Cancel" arrow>
+            <CustomTooltip title="Cancel">
               <CancelIcon />
             </CustomTooltip>
           </Button>
@@ -111,14 +111,14 @@ function PalettePreference() {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Save" arrow>
+            <CustomTooltip title="Save">
               <SaveIcon />
             </CustomTooltip>
           </Button>
         )}
         {!isEditing && (
           <Button onClick={() => setIsEditing(true)}>
-            <CustomTooltip title="Edit" arrow>
+            <CustomTooltip title="Edit">
               <EditOutlinedIcon />
             </CustomTooltip>
           </Button>

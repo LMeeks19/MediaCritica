@@ -13,6 +13,9 @@ Background:
 	And I have the following reviews
 		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title      | Description      | Date       |
 		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Test 3       | 4      | Test Title | Test Description | 2025-01-01 |
+	And I have the following reports
+		| Id | ReviewId | ReporterId | Reason | Details      | ReportedAt |
+		| 1  | 1        | 2          | Spam   | Spam Comment | 2025-02-20 |
 
 Scenario: Get a review by id
 	When I call GetReview with id 1
@@ -27,7 +30,7 @@ Scenario: Get a review by id that doesn't exist
 	And The response should be "Review not found"
 
 Scenario: Get a user reviews
-	When I call GetUserReviews with the user id 3
+	When I call GetUserReviews
 	Then The status code should be 200
 
 Scenario: Get a media reviews
@@ -89,11 +92,48 @@ Scenario: Delete a review that doesn't exist
 	And The response should be "Review not found"
 
 Scenario: Get a users review status that is true
-	When I call GetUserReviewStatus with media id 1 and user id 3
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test3@email.com | Password789! | false      |
+	When I call GetUserReviewStatus with media id 1
 	Then The status code should be 200
 	And The response should be true
 
 Scenario: Get a users review status that is false
-	When I call GetUserReviewStatus with media id 1 and user id 2
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test2@email.com | Password456! | false      |
+	When I call GetUserReviewStatus with media id 1
 	Then The status code should be 200
 	And The response should be false
+
+Scenario: Report a review
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 1        | 1          | Hate   | Hate Comment |
+	Then The status code should be 200
+	And The response should be "Review Reported"
+	And The following report should be in the database
+		| Id | ReviewId | ReporterId | Reason | Details      | ReportedAt |
+		| 2  | 1        | 1          | Hate   | Hate Comment | 2025-02-27 |
+
+Scenario: Report a review that a user has already reported
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 1        | 2          | Spam   | Spam Comment |
+	Then The status code should be 409
+	And The response should be "Review Already Reported"
+
+Scenario: Report a review that doesn't exist
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 99       | 1          | Hate   | Hate Comment |
+	Then The status code should be 404
+	And The response should be "Review Not Found"
+
+Scenario: Report a review with an invalid user
+	When I call ReportReview with the following data
+		| ReviewId | ReporterId | Reason | Details      |
+		| 1        | 99         | Hate   | Hate Comment |
+	Then The status code should be 404
+	And The response should be "User Not Found"

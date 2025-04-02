@@ -9,12 +9,13 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, NotificationController notificationController) : ControllerBase
+    public class ReviewController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper, NotificationController notificationController) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
         private readonly NotificationController _notificationController = notificationController;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{reviewId}")]
         public async Task<IActionResult> GetReview(int reviewId)
@@ -23,7 +24,9 @@ namespace MediaCritica.Server.Controllers
                 .Include(r => r.Engagements)
                 .Include(r => r.Media)
                     .ThenInclude(m => (m as Episode)!.Season)
-                .SingleOrDefaultAsync(r => r.Id == reviewId);
+                .Include(r => r.Comments)
+                    .ThenInclude(c => c.Replies)
+                .SingleOrDefaultAsync(r => r.Id == reviewId && !r.IsDeleted);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -31,26 +34,34 @@ namespace MediaCritica.Server.Controllers
             return Ok(_mapper.ReviewMapper.MapReviewModel(review));
         }
 
-        [HttpGet("[action]/{reviewerId}/{offset}")]
-        public async Task<IActionResult> GetUserReviews(int reviewerId, int offset)
+        [HttpGet("[action]/{offset}")]
+        public async Task<IActionResult> GetUserReviews(int offset)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var reviews = await _databaseContext.Reviews
                    .Include(r => r.Engagements)
                    .Include(r => r.Media)
-                   .Where(r => r.UserId == reviewerId)
+                   .Include(r => r.Comments)
+                       .ThenInclude(c => c.Replies)
+                   .Where(r => r.UserId == userId && !r.IsDeleted)
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
                    .Select(r => _mapper.ReviewMapper.MapReviewModel(r))
                    .ToListAsync();
 
-            var breakdown = await GetUserReviewsBreakdown(reviewerId);
+            var breakdown = await GetUserReviewsBreakdown(userId);
             return Ok(new UserReviewsModelObject { Reviews = reviews, Breakdown = breakdown });
         }
 
-        private async Task<List<double>> GetUserReviewsBreakdown(int userId)
+        private async Task<List<double>> GetUserReviewsBreakdown(int? userId)
         {
-            var reviews = await _databaseContext.Reviews.Where(r => r.UserId == userId).ToListAsync();
+            if (userId == null)
+                return [];
+
+            var reviews = await _databaseContext.Reviews
+                .Where(r => r.UserId == userId && !r.IsDeleted)
+                .ToListAsync();
 
             var reviewBreakdown = Enumerable.Range(0, 11)
                 .Select(i => (double)reviews.Count(r => r.Rating == i * 0.5))
@@ -62,15 +73,20 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{mediaId}/{offset}/{limit}")]
         public async Task<IActionResult> GetMediaReviews(string mediaId, int offset, int limit)
         {
-            var reviews = await _databaseContext.Reviews
-                .Where(r => r.MediaId == mediaId)
+            var media = await _databaseContext.Media
+                .Include(m => m.Reviews)
+                .Where(m => m.Id == mediaId)
+                .SingleAsync();
+
+            var reviews = media.Reviews
+                .Where(r => !r.IsDeleted)
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
                 .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r))
-                .ToListAsync();
+                .ToList();
 
-            return Ok(new { Reviews = reviews, totalCount = reviews.Count });
+            return Ok(new { media.Title, Reviews = reviews, totalCount = reviews.Count });
         }
 
         [HttpPost("[action]")]
@@ -112,7 +128,8 @@ namespace MediaCritica.Server.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateReview([FromBody] UpdateReviewModel updateReviewModel)
         {
-            var review = await _databaseContext.Reviews.SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId);
+            var review = await _databaseContext.Reviews
+                .SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId && !r.IsDeleted);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -122,7 +139,6 @@ namespace MediaCritica.Server.Controllers
             review.Rating = updateReviewModel.Rating;
             review.Date = updateReviewModel.Date;
 
-            _databaseContext.Reviews.Update(review);
             await _databaseContext.SaveChangesAsync();
 
             await _notificationController.NotifyFollowers(new NewNotificationModel
@@ -138,7 +154,8 @@ namespace MediaCritica.Server.Controllers
         [HttpDelete("[action]/{reviewId}")]
         public async Task<IActionResult> DeleteReview(int reviewId)
         {
-            var review = await _databaseContext.Reviews.FindAsync(reviewId);
+            var review = await _databaseContext.Reviews
+                .SingleOrDefaultAsync(r => r.Id == reviewId && !r.IsDeleted);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -149,12 +166,48 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = "Review Deleted" });
         }
 
-        [HttpGet("[action]/{mediaId}/{userId}")]
-        public async Task<IActionResult> GetUserReviewStatus(string mediaId, int userId)
+        [HttpGet("[action]/{mediaId}")]
+        public async Task<IActionResult> GetUserReviewStatus(string mediaId)
         {
-            var isReviewed = await _databaseContext.Reviews.AnyAsync(b => b.MediaId == mediaId && b.UserId == userId);
+            var userId = _helper.AuthenticationHelper.GetUserId();
+            var isReviewed = await _databaseContext.Reviews
+                .AnyAsync(r => r.MediaId == mediaId && r.UserId == userId && !r.IsDeleted);
 
             return Ok(new { Value = isReviewed });
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ReportReview([FromBody] ReportModel reportModel)
+        {
+            if (_databaseContext.Reports.Any(r => r.ReporterId == reportModel.ReporterId && r.ReviewId == reportModel.ReviewId))
+                return Conflict(new { Message = "Review Already Reported" });
+
+            var review = await _databaseContext.Reviews
+                .Include(c => c.Reports)
+                .FirstOrDefaultAsync(c => c.Id == reportModel.ReviewId);
+            if (review == null)
+                return NotFound(new { Message = "Review Not Found" });
+
+            if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
+                return NotFound(new { Message = "User Not Found" });
+
+            var report = new Report
+            {
+                ReviewId = reportModel.ReviewId,
+                ReporterId = reportModel.ReporterId,
+                Reason = reportModel.Reason,
+                Details = reportModel.Details,
+                ReportedAt = _dateTimeProviderHelper.UtcNow,
+            };
+
+            await _databaseContext.Reports.AddAsync(report);
+
+            if (review.Reports.Count >= 10)
+                review.IsDeleted = true;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok(new { Message = "Review Reported" });
         }
     }
 }

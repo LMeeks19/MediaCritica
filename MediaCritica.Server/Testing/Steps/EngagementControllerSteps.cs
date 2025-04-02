@@ -12,23 +12,23 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class EngagementControllerSteps
     {
-        [When(@"I call GetUserEngagement with review id (\d+) and user id (\d+)")]
-        public async Task WhenICallGetUserEngagementWithReviewIdAndUserId(int reviewId, int userId)
+        [When(@"I call GetUserEngagement with review id (\d+)")]
+        public async Task WhenICallGetUserEngagementWithReviewId(int reviewId)
         {
-            GlobalSteps._response = await GlobalSteps._controller.EngagementController.GetUserEngagement(reviewId, userId);
+            GlobalSteps._response = await GlobalSteps._controller.EngagementController.GetUserEngagement(reviewId);
         }
 
-        [When(@"I call ToggleEngagement with review id (\d+), user id (\d+) and engagement type (-1|0|1)")]
-        public async Task WhenICallToggleEngagementWithReviewIdAndUserIdAndEngagementType(int reviewId, int userId, string engagementType)
+        [When(@"I call ToggleEngagement with review id (\d+) and engagement type (-1|0|1)")]
+        public async Task WhenICallToggleEngagementWithReviewIdAndEngagementType(int reviewId, string engagementType)
         {
-            GlobalSteps._response = await GlobalSteps._controller.EngagementController.ToggleEngagement(userId, reviewId, Enum.Parse<EngagementType>(engagementType));
+            GlobalSteps._response = await GlobalSteps._controller.EngagementController.ToggleEngagement(reviewId, Enum.Parse<EngagementType>(engagementType));
         }
 
-        [Then(@"The response should be a (like|dislike)")]
+        [Then(@"The response should be a (like|dislike|none)")]
         public void ThenTheResponseShouldBeALikeOrDislike(string type)
         {
-            Assert.IsTrue(Regex.IsMatch(type, @"^(like|dislike)$"));
-            var expectedEngagementType = type == "like" ? EngagementType.Like : EngagementType.Dislike;
+            Assert.IsTrue(Regex.IsMatch(type, @"^(like|dislike|none)$"));
+            var expectedEngagementType = type == "like" ? EngagementType.Like : type == "none" ? EngagementType.None : EngagementType.Dislike;
             Assert.IsNotNull(expectedEngagementType);
 
             var result = (OkObjectResult)GlobalSteps._response;

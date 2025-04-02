@@ -11,5 +11,6 @@
         NotificationController NotificationController { get; }
         ReviewController ReviewController { get; }
         UserController UserController { get; }
+        CommentController CommentController { get; }
     }
 }

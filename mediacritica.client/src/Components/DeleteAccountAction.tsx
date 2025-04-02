@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import { DeleteUser } from "../Server/Server";
@@ -11,7 +11,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { useState } from "react";
 
 function DeleteAccountAction() {
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const deleteAccountDialog = {
     title: "Delete Account?",
@@ -24,7 +24,7 @@ function DeleteAccountAction() {
   } as ConfirmationDialogModel;
 
   async function DeleteAccount() {
-    await DeleteUser(user.id);
+    await DeleteUser();
     setUser({} as UserModel);
   }
 
@@ -34,7 +34,7 @@ function DeleteAccountAction() {
       <div className="info-value" />
       <ButtonGroup className="info-action">
         <Button onClick={() => setIsDialogOpen(true)}>
-          <CustomTooltip title="Delete Account" arrow>
+          <CustomTooltip title="Delete Account">
             <DeleteIcon fontSize="small" />
           </CustomTooltip>
         </Button>

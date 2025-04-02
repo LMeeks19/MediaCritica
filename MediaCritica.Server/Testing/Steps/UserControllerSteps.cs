@@ -41,10 +41,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserByEmail(email);
         }
 
-        [When(@"I call DeleteUser with the Id (\d+)")]
-        public async Task WhenICallDeleteUserWithTheId(int userId)
+        [When(@"I call DeleteUser")]
+        public async Task WhenICallDeleteUser()
         {
-            GlobalSteps._response = await GlobalSteps._controller.UserController.DeleteUser(userId);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.DeleteUser();
         }
 
         [When(@"I call PostUser with the User")]
@@ -68,8 +68,8 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.UserController.UpdateUserPreference(preferenceModel);
         }
 
-        [When(@"I call GetViewUserSummary with the Id (\d+)")]
-        public async Task WhenICallGetViewSummaryWithTheId(int userId)
+        [When(@"I call GetViewUserSummary with the user id (\d+)")]
+        public async Task WhenICallGetViewSummary(int userId)
         {
             GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserSummary(userId);
         }

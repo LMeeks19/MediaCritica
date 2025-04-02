@@ -11,10 +11,10 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class NotificationControllerSteps
     {
-        [When(@"I call GetUserNotifications with userId (\d+)")]
-        public async Task WhenICallGetUserNotificationsWithUserId(int userId)
+        [When(@"I call GetUserNotifications")]
+        public async Task WhenICallGetUserNotifications()
         {
-            GlobalSteps._response = await GlobalSteps._controller.NotificationController.GetUserNotifications(userId, 0);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.GetUserNotifications(0);
         }
 
         [When(@"I call MarkAsRead with Id (\d+)")]
@@ -23,10 +23,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.NotificationController.MarkAsRead(notificationId);
         }
 
-        [When(@"I call MarkAllAsRead with UserId (\d+)")]
-        public async Task WhenICallMarkAllAsReadWithUserId(int userId)
+        [When(@"I call MarkAllAsRead")]
+        public async Task WhenICallMarkAllAsRead()
         {
-            GlobalSteps._response = await GlobalSteps._controller.NotificationController.MarkAllAsRead(userId);
+            GlobalSteps._response = await GlobalSteps._controller.NotificationController.MarkAllAsRead();
         }
 
         [When(@"I call UpdateBookmarkStatus with Id (\d+)")]

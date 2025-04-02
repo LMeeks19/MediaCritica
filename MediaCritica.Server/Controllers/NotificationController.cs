@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Hubs;
+﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Hubs;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,17 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(DatabaseContext databaseContext, IHubContext<NotificationHub> notificationHubContext, IHubs hubs) : ControllerBase
+    public class NotificationController(DatabaseContext databaseContext, IHelpers helper, IHubContext<NotificationHub> notificationHubContext, IHubs hubs) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly IHelpers _helper = helper;
         private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
         private readonly IHubs _hubs = hubs;
 
-        // Get notifications for a specific user
-        [HttpGet("[action]/{userId}/{offset}/{limit}")]
-        public async Task<IActionResult> GetUserNotifications(int userId, int offset, int limit = 25)
+        [HttpGet("[action]/{offset}/{limit}")]
+        public async Task<IActionResult> GetUserNotifications(int offset, int limit = 25)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var notifications = await _databaseContext.Notifications
                 .Where(n => n.RecipientId == userId)
                 .OrderByDescending(n => n.CreatedAt)
@@ -38,7 +40,6 @@ namespace MediaCritica.Server.Controllers
             return Ok(notifications);
         }
 
-        // Mark a single notification as read
         [HttpPut("[action]/{notificationId}")]
         public async Task<IActionResult> MarkAsRead(int notificationId)
         {
@@ -55,10 +56,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = $"Notification {notification.Id} marked as read" });
         }
 
-        // Mark all notifications as read for a user
-        [HttpPut("[action]/{userId}")]
-        public async Task<IActionResult> MarkAllAsRead(int userId)
+        [HttpPut("[action]")]
+        public async Task<IActionResult> MarkAllAsRead()
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var unreadNotifications = await _databaseContext.Notifications
                 .Where(n => n.RecipientId == userId && !n.IsRead)
                 .ToListAsync();
@@ -72,7 +73,6 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = "All notifications marked as read" });
         }
 
-        // update bookmark status of a notification
         [HttpPut("[action]/{notificationId}")]
         public async Task<IActionResult> UpdateBookmarkStatus(int notificationId)
         {
@@ -90,7 +90,6 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = $"Notification {notification.Id} bookmark status updated" });
         }
 
-        // delete a notification
         [HttpDelete("[action]/{notificationId}")]
         public async Task<IActionResult> Delete(int notificationId)
         {
@@ -128,8 +127,6 @@ namespace MediaCritica.Server.Controllers
 
             return Ok(notifications);
         }
-
-        // Notify followers about a new review
         public async Task<IActionResult> NotifyFollowers(NewNotificationModel newNotificationModel)
         {
             var response = (ObjectResult)await PostNotifications(newNotificationModel);

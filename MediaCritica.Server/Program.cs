@@ -3,6 +3,7 @@ using MediaCritica.Server.Controllers;
 using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Hubs;
 using MediaCritica.Server.Mappers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ builder.Services.AddScoped<MediaMapper>();
 builder.Services.AddScoped<RatingMapper>();
 builder.Services.AddScoped<ReviewMapper>();
 builder.Services.AddScoped<BacklogMapper>();
+builder.Services.AddScoped<CommentMapper>();
 
 // Register Helpers
 builder.Services.AddScoped<IHelpers, Helpers>();
@@ -51,6 +53,10 @@ builder.Services.AddScoped<AuthenticationHelper>();
 //Register Hubs
 builder.Services.AddScoped<IHubs, Hubs>();
 builder.Services.AddScoped<NotificationHub>();
+
+builder.Services.AddAuthentication().AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));
@@ -68,6 +74,7 @@ var app = builder.Build();
 app.UseCors();
 app.UseRouting();
 app.UseWebSockets();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {

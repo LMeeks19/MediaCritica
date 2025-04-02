@@ -39,12 +39,7 @@ namespace MediaCritica.Server.Mappers
                 Surname = user.Surname,
                 Email = user.Email,
                 Password = user.Password,
-                Preference = new PreferenceModel
-                {
-                    Id = user.Preference.Id,
-                    Theme = user.Preference.Theme,
-                    Palette = user.Preference.Palette,
-                },
+                Preference = user.Preference != null ? MapPreference(user.Preference) : null,
                 TotalReviews = user.Reviews.Count,
                 TotalBacklogs = user.Backlogs.Count,
                 TotalNotifications = user.Notifications.Count,
@@ -53,6 +48,17 @@ namespace MediaCritica.Server.Mappers
             };
 
             return userModel;
+        }
+
+        public PreferenceModel MapPreference(Preference preference)
+        {
+            var preferenceModel = new PreferenceModel()
+            {
+                Id = preference.Id,
+                Theme = preference.Theme,
+                Palette = preference.Palette,
+            };
+            return preferenceModel;
         }
 
         public UserSummaryModel MapUserSummaryModel(User user)

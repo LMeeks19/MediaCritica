@@ -17,14 +17,19 @@ function ConfirmationDialog(props: {
   data: ConfirmationDialogModel;
 }) {
   return (
-    <Dialog open={props.open} onClose={() => props.setOpen(false)}>
+    <Dialog
+      open={props.open}
+      onClose={() => props.setOpen(false)}
+      maxWidth="sm"
+      fullWidth
+    >
       <DialogTitle>{props.data.title}</DialogTitle>
       <DialogContent>{props.data.dialog}</DialogContent>
-      <Divider orientation="horizontal" />
+      <Divider />
       <DialogActions>
         <ButtonGroup>
           <Button onClick={() => props.setOpen(false)}>
-            <CustomTooltip title={props.data.cancel_text} arrow>
+            <CustomTooltip title={props.data.cancel_text}>
               {props.data.cancel_icon}
             </CustomTooltip>
           </Button>
@@ -34,7 +39,7 @@ function ConfirmationDialog(props: {
               props.setOpen(false);
             }}
           >
-            <CustomTooltip title={props.data.confirm_text} arrow>
+            <CustomTooltip title={props.data.confirm_text}>
               {props.data.confirm_icon}
             </CustomTooltip>
           </Button>

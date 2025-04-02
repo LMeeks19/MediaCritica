@@ -61,16 +61,7 @@ const MediaGrid: FC<{
               src={item.poster?.replace("300.jpg", "180.jpg")}
               alt={item.title}
             />
-            <CardActionArea
-              onClick={() =>
-                navigate(`/media/${item.id}`, {
-                  state: {
-                    mediaId: item.id,
-                    mediaType: item.type,
-                  },
-                })
-              }
-            >
+            <CardActionArea onClick={() => navigate(`/${item.type}/${item.id}`)}>
               <CardMedia component="div" />
               <CardHeader title={item.title} />
               <Divider />
@@ -151,17 +142,17 @@ export const BaseAccordion: FC<SectionProps> = ({
             }}
           >
             <ToggleButton value={MediaType.Movie}>
-              <CustomTooltip title="Movies" arrow>
+              <CustomTooltip title="Movies">
                 <MovieIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Series}>
-              <CustomTooltip title="Series" arrow>
+              <CustomTooltip title="Series">
                 <SeriesIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Game}>
-              <CustomTooltip title="Games" arrow>
+              <CustomTooltip title="Games">
                 <GameIcon />
               </CustomTooltip>
             </ToggleButton>
@@ -244,17 +235,17 @@ export const TabbedAccordion: FC<{
             }}
           >
             <ToggleButton value={MediaType.Movie}>
-              <CustomTooltip title="Movies" arrow>
+              <CustomTooltip title="Movies">
                 <MovieIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Series}>
-              <CustomTooltip title="Series" arrow>
+              <CustomTooltip title="Series">
                 <SeriesIcon />
               </CustomTooltip>
             </ToggleButton>
             <ToggleButton value={MediaType.Game}>
-              <CustomTooltip title="Games" arrow>
+              <CustomTooltip title="Games">
                 <GameIcon />
               </CustomTooltip>
             </ToggleButton>

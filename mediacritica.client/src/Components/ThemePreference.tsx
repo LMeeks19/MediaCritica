@@ -87,7 +87,7 @@ function ThemePreference() {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Cancel" arrow>
+            <CustomTooltip title="Cancel">
               <CancelIcon />
             </CustomTooltip>
           </Button>
@@ -99,14 +99,14 @@ function ThemePreference() {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Cancel" arrow>
+            <CustomTooltip title="Cancel">
               <SaveIcon />
             </CustomTooltip>
           </Button>
         )}
         {!isEditing && (
           <Button onClick={() => setIsEditing(true)}>
-            <CustomTooltip title="Cancel" arrow>
+            <CustomTooltip title="Cancel">
               <EditOutlinedIcon />
             </CustomTooltip>
           </Button>

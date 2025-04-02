@@ -1,0 +1,33 @@
+.comments-dialog {
+  padding: 1.5rem !important;
+  gap: 10px !important;
+
+  .icon {
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: var(--palette-colour);
+    }
+  }
+
+  .ql-toolbar,
+  .ql-container {
+    border-color: gray !important;
+  }
+
+  .ql-container {
+    font-size: 12.5px;
+    height: fit-content;
+
+    .ql-editor {
+      font-family: "Orbitron";
+      padding: 10px 15px;
+
+      &::before {
+        color: gray;
+        left: 15px;
+      }
+    }
+  }
+}

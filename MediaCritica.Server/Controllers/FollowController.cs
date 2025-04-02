@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,13 +8,15 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FollowController(DatabaseContext databaseContext) : ControllerBase
+    public class FollowController(DatabaseContext databaseContext, IHelpers helper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly IHelpers _helper = helper;
 
-        [HttpGet("[action]/{userId}/{offset}")]
-        public async Task<IActionResult> GetUserFollowers(int userId, int offset)
+        [HttpGet("[action]/{offset}")]
+        public async Task<IActionResult> GetUserFollowers(int offset)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
                 .Include(u => u.Followers)
                 .ThenInclude(f => f.Follower)
@@ -38,9 +41,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(followers);
         }
 
-        [HttpGet("[action]/{userId}/{offset}")]
-        public async Task<IActionResult> GetUserFollowing(int userId, int offset)
+        [HttpGet("[action]/{offset}")]
+        public async Task<IActionResult> GetUserFollowing(int offset)
         {
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
                 .Include(u => u.Following)
                 .ThenInclude(f => f.Followed)
@@ -65,9 +69,10 @@ namespace MediaCritica.Server.Controllers
             return Ok(following);
         }
 
-        [HttpGet("[action]/{followerId}/{followedId}")]
-        public async Task<IActionResult> GetUserFollowStatus(int followerId, int followedId)
+        [HttpGet("[action]/{followedId}")]
+        public async Task<IActionResult> GetUserFollowStatus(int followedId)
         {
+            var followerId = _helper.AuthenticationHelper.GetUserId();
             var userFollow = await _databaseContext.UserFollows
                 .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.FollowedId == followedId);
 

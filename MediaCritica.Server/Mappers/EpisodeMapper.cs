@@ -34,6 +34,7 @@ namespace MediaCritica.Server.Mappers
             episodeModel.Season = episode.SeasonNo.ToString();
             episodeModel.SeasonId = episode.SeasonId;
             episodeModel.SeriesTitle = episode.Season.Title;
+            episodeModel.SeriesId = episode.Season.SeriesId;
 
             return episodeModel;
         }

@@ -1,10 +1,10 @@
 import "./WriteReviewPage.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userState } from "../State/GlobalState";
 import { useRecoilState } from "recoil";
 import TopBar from "../Components/TopBar";
-import { Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Rating } from "@mui/material";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { SeriesModel } from "../Interfaces/SeriesModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
@@ -18,15 +18,21 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { MediaType } from "../Enums/MediaType";
 import ConfirmationDialog from "../Components/ConfirmationDialog";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { CustomTooltip } from "../Components/Tooltip";
+import { DeltaStatic } from "quill";
 
 function WriteReviewPage() {
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>(JSON.stringify(""));
   const [rating, setRating] = useState<number | null>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [characterCount, setCharacterCount] = useState<number>(0);
+  const quillRef = useRef<ReactQuill>(null);
 
   const media = location.state?.media as
     | MovieModel
@@ -69,9 +75,7 @@ function WriteReviewPage() {
 
     const reviewId = await PostReview(review);
     setUser({ ...user, totalReviews: user.totalReviews + 1 });
-    navigate(`/media/${media.id}/view-review/${reviewId}`, {
-      state: { reviewId: reviewId },
-    });
+    navigate(`/${media.type}/${media.id}/reviews/${reviewId}`);
     setIsLoading(false);
   }
 
@@ -85,6 +89,16 @@ function WriteReviewPage() {
     var episode = media as EpisodeModel;
     return `${episode.title} - S${episode.season}:E${episode.episode}`;
   }
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: ["", "center", "right", "justify"] }],
+      ["link"],
+    ],
+  };
 
   return (
     user.id !== undefined && (
@@ -102,25 +116,22 @@ function WriteReviewPage() {
                     <div className="sub-title">{getHeaderSubTitle()}</div>
                   )}
                 </div>
-                <ToggleButtonGroup>
-                  <ToggleButton
-                    value="reset"
-                    type="reset"
-                    className="btn"
-                    onClick={() => ResetFields()}
-                  >
-                    <RestartAltIcon />
-                  </ToggleButton>
-                  <ToggleButton
-                    value="post"
-                    className="btn"
+                <ButtonGroup>
+                  <Button type="reset" onClick={() => ResetFields()}>
+                    <CustomTooltip title="Reset">
+                      <RestartAltIcon />
+                    </CustomTooltip>
+                  </Button>
+                  <Button
                     form="review-form"
                     type="submit"
                     disabled={description === "" || title == ""}
                   >
-                    <PostAddIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                    <CustomTooltip title="Post">
+                      <PostAddIcon />
+                    </CustomTooltip>
+                  </Button>
+                </ButtonGroup>
               </div>
               <form
                 id="review-form"
@@ -148,14 +159,26 @@ function WriteReviewPage() {
                     onChange={(_event, value) => setRating(value)}
                   />
                 </div>
-                <textarea
-                  className="review-description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  name="description"
-                  placeholder="Write review..."
-                  required
-                />
+                <div className="flex flex-col w-full h-full overflow-hidden">
+                  <ReactQuill
+                    ref={quillRef}
+                    className="review-description"
+                    placeholder="Enter review..."
+                    value={JSON.parse(description) as DeltaStatic}
+                    onChange={(_v, _d, _s, editor) => {
+                      const textLength = editor.getLength() - 1;
+                      const quill = quillRef.current?.getEditor();
+                      if (textLength <= 2000) {
+                        setDescription(JSON.stringify(editor.getContents()));
+                        setCharacterCount(textLength);
+                      } else if (quill) {
+                        quill.deleteText(2000, textLength - 2000); // Remove extra characters
+                      }
+                    }}
+                    modules={modules}
+                  />
+                  <div className="character-count">{characterCount}/2000</div>
+                </div>
               </form>
             </div>
             {media.poster !== "N/A" ? (

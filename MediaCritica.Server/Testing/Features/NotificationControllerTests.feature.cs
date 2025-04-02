@@ -77,28 +77,28 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table92.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table92.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table92.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
@@ -106,9 +106,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password789!",
                         "2025-01-03"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table92, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table131, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "RecipientId",
                         "AuthorName",
@@ -116,7 +116,7 @@ namespace MediaCritica.Server.Testing.Features
                         "IsRead",
                         "IsBookmarked",
                         "CreatedAt"});
-            table93.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "1",
                         "1",
                         "Test 2",
@@ -124,7 +124,7 @@ namespace MediaCritica.Server.Testing.Features
                         "false",
                         "false",
                         "2024-04-01"});
-            table93.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "2",
                         "1",
                         "Test 2",
@@ -132,7 +132,7 @@ namespace MediaCritica.Server.Testing.Features
                         "true",
                         "true",
                         "2024-01-01"});
-            table93.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "3",
                         "1",
                         "Test 2",
@@ -140,7 +140,7 @@ namespace MediaCritica.Server.Testing.Features
                         "false",
                         "true",
                         "2024-03-01"});
-            table93.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "4",
                         "1",
                         "Test 2",
@@ -148,7 +148,7 @@ namespace MediaCritica.Server.Testing.Features
                         "true",
                         "false",
                         "2024-02-01"});
-            table93.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "5",
                         "2",
                         "Test 3",
@@ -157,7 +157,7 @@ namespace MediaCritica.Server.Testing.Features
                         "false",
                         "2024-05-01"});
 #line 9
- testRunner.And("I have the following notifications", ((string)(null)), table93, "And ");
+ testRunner.And("I have the following notifications", ((string)(null)), table132, "And ");
 #line hidden
         }
         
@@ -181,49 +181,60 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
+                TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table133.AddRow(new string[] {
+                            "test1@email.com",
+                            "Password123!",
+                            "false"});
 #line 18
- testRunner.When("I call GetUserNotifications with userId 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I am the following user", ((string)(null)), table133, "Given ");
 #line hidden
-#line 19
+#line 21
+ testRunner.When("I call GetUserNotifications", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 22
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "AuthorName",
                             "Message",
                             "IsRead",
                             "IsBookmarked",
                             "CreatedAt"});
-                table94.AddRow(new string[] {
+                table134.AddRow(new string[] {
                             "1",
                             "Test 2",
                             "Test Message 1",
                             "false",
                             "false",
                             "2024-04-01"});
-                table94.AddRow(new string[] {
+                table134.AddRow(new string[] {
                             "3",
                             "Test 2",
                             "Test Message 3",
                             "false",
                             "true",
                             "2024-03-01"});
-                table94.AddRow(new string[] {
+                table134.AddRow(new string[] {
                             "4",
                             "Test 2",
                             "Test Message 4",
                             "true",
                             "false",
                             "2024-02-01"});
-                table94.AddRow(new string[] {
+                table134.AddRow(new string[] {
                             "2",
                             "Test 2",
                             "Test Message 2",
                             "true",
                             "true",
                             "2024-01-01"});
-#line 20
- testRunner.And("The NotificationModels should be", ((string)(null)), table94, "And ");
+#line 23
+ testRunner.And("The NotificationModels should be", ((string)(null)), table134, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -236,7 +247,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Notifications but the user has none", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 27
+#line 30
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -249,13 +260,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 28
- testRunner.When("I call GetUserNotifications with userId 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 31
+ testRunner.When("I call GetUserNotifications", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 32
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 30
+#line 33
  testRunner.And("The NotificationModels should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -269,7 +280,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mark Notification as read that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 32
+#line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -282,13 +293,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 33
+#line 36
  testRunner.When("I call MarkAsRead with Id 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 37
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 35
+#line 38
  testRunner.And("The response should be \"Notification not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -302,7 +313,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mark Notification as read", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 37
+#line 40
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -315,16 +326,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 38
+#line 41
  testRunner.When("I call MarkAsRead with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 39
+#line 42
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 40
+#line 43
  testRunner.And("The response should be \"Notification 1 marked as read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 44
  testRunner.And("The Notification with Id 1 should be read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -338,7 +349,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mark all notifications as read but all already read", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 43
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -351,13 +362,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 44
- testRunner.When("I call MarkAllAsRead with UserId 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
+ testRunner.When("I call MarkAllAsRead", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 45
+#line 48
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 46
+#line 49
  testRunner.And("The response should be \"No unread notifications\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -371,7 +382,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mark all notifications as read", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 48
+#line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -384,16 +395,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 49
- testRunner.When("I call MarkAllAsRead with UserId 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table135.AddRow(new string[] {
+                            "test1@email.com",
+                            "Password123!",
+                            "false"});
+#line 52
+ testRunner.Given("I am the following user", ((string)(null)), table135, "Given ");
 #line hidden
-#line 50
+#line 55
+ testRunner.When("I call MarkAllAsRead", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 56
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 51
+#line 57
  testRunner.And("The response should be \"All notifications marked as read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 52
+#line 58
  testRunner.And("The Notifications for UserId 1 should all be read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -407,7 +429,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update bookmarked status of notification that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 54
+#line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -420,13 +442,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 55
+#line 61
  testRunner.When("I call UpdateBookmarkStatus with Id 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 56
+#line 62
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 57
+#line 63
  testRunner.And("The response should be \"Notification not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -440,42 +462,6 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update bookmarked status of notification to false", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 59
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 60
- testRunner.When("I call UpdateBookmarkStatus with Id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 61
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 62
- testRunner.And("The response should be \"Notification 2 bookmark status updated\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 63
- testRunner.And("The bookmark status of Notification 1 should be false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update bookmarked status of notification to true")]
-        public void UpdateBookmarkedStatusOfNotificationToTrue()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update bookmarked status of notification to true", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 65
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -490,28 +476,28 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 66
- testRunner.When("I call UpdateBookmarkStatus with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call UpdateBookmarkStatus with Id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 67
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 68
- testRunner.And("The response should be \"Notification 1 bookmark status updated\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The response should be \"Notification 2 bookmark status updated\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 69
- testRunner.And("The bookmark status of Notification 1 should be true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The bookmark status of Notification 1 should be false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Delete notificaiton that doesn\'t exist")]
-        public void DeleteNotificaitonThatDoesntExist()
+        [NUnit.Framework.DescriptionAttribute("Update bookmarked status of notification to true")]
+        public void UpdateBookmarkedStatusOfNotificationToTrue()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete notificaiton that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update bookmarked status of notification to true", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 71
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -526,12 +512,48 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 72
- testRunner.When("I call Delete with Id 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call UpdateBookmarkStatus with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 73
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 74
+ testRunner.And("The response should be \"Notification 1 bookmark status updated\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 75
+ testRunner.And("The bookmark status of Notification 1 should be true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Delete notificaiton that doesn\'t exist")]
+        public void DeleteNotificaitonThatDoesntExist()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete notificaiton that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 77
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 78
+ testRunner.When("I call Delete with Id 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 79
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 80
  testRunner.And("The response should be \"Notification not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -545,42 +567,6 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete notificaiton", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 76
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 77
- testRunner.When("I call Delete with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 78
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 79
- testRunner.And("The response should be \"Notification 1 deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 80
- testRunner.And("Notifications should no longer contain notification with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Post notifications with no followers")]
-        public void PostNotificationsWithNoFollowers()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post notifications with no followers", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 82
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -594,42 +580,78 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+#line 83
+ testRunner.When("I call Delete with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 84
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 85
+ testRunner.And("The response should be \"Notification 1 deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 86
+ testRunner.And("Notifications should no longer contain notification with Id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Post notifications with no followers")]
+        public void PostNotificationsWithNoFollowers()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post notifications with no followers", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 88
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table95.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "1",
                             "1",
                             "2",
                             "2025-01-01",
                             "true"});
-                table95.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "2025-01-02",
                             "false"});
-#line 83
- testRunner.Given("I have the following userFollows", ((string)(null)), table95, "Given ");
+#line 89
+ testRunner.Given("I have the following userFollows", ((string)(null)), table136, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthorId",
                             "AuthorName",
                             "Message"});
-                table96.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "Test Notification Message"});
-#line 87
- testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table96, "When ");
+#line 93
+ testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table137, "When ");
 #line hidden
-#line 90
+#line 96
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 91
+#line 97
  testRunner.And("The response should be \"No followers to send notifications to\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -643,7 +665,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post notifications", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 93
+#line 99
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -656,57 +678,57 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table138 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "FollowerId",
                             "FollowedId",
                             "FollowedOn",
                             "EnabledNotifications"});
-                table97.AddRow(new string[] {
+                table138.AddRow(new string[] {
                             "1",
                             "2",
                             "1",
                             "2025-01-01",
                             "true"});
-                table97.AddRow(new string[] {
+                table138.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "2025-01-02",
                             "true"});
-#line 94
- testRunner.Given("I have the following userFollows", ((string)(null)), table97, "Given ");
+#line 100
+ testRunner.Given("I have the following userFollows", ((string)(null)), table138, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table139 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthorId",
                             "AuthorName",
                             "Message"});
-                table98.AddRow(new string[] {
+                table139.AddRow(new string[] {
                             "1",
                             "Test 1",
                             "Test Notification Message"});
-#line 98
- testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table98, "When ");
+#line 104
+ testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table139, "When ");
 #line hidden
-#line 101
+#line 107
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table140 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "RecipientId",
                             "AuthorName",
                             "Message",
                             "IsRead",
                             "IsBookmarked"});
-                table99.AddRow(new string[] {
+                table140.AddRow(new string[] {
                             "6",
                             "2",
                             "Test 1",
                             "Test Notification Message",
                             "false",
                             "false"});
-#line 102
- testRunner.And("The following notifications should have been created", ((string)(null)), table99, "And ");
+#line 108
+ testRunner.And("The following notifications should have been created", ((string)(null)), table140, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

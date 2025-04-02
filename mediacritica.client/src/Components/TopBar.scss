@@ -18,6 +18,10 @@
     padding: 6px;
     transition: background-color 0.3s ease-in-out;
 
+    &.hidden {
+      display: none;
+    }
+
     .MuiSvgIcon-root {
       width: 30px;
       height: 30px;

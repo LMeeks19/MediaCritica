@@ -10,22 +10,22 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class FollowControllerSteps
     {
-        [When(@"I call GetUserFollowers with the UserId (\d+) and offset (\d+)")]
-        public async Task WhenICallGetUserFollowersWithTheUserId(int userId, int offset)
+        [When(@"I call GetUserFollowers with the offset (\d+)")]
+        public async Task WhenICallGetUserFollowersWithTheOffset(int offset)
         {
-            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowers(userId, offset);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowers(offset);
         }
 
-        [When(@"I call GetUserFollowing with the UserId (\d+) and offset (\d+)")]
-        public async Task WhenICallGetUserFollowingWithTheUserId(int userId, int offset)
+        [When(@"I call GetUserFollowing with the offset (\d+)")]
+        public async Task WhenICallGetUserFollowingWithTheOffset(int offset)
         {
-            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowing(userId, offset);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowing(offset);
         }
 
-        [When(@"I call GetUserFollowStatus for userId (\d+) on userId (\d+)")]
-        public async Task WhenICallGetUserFollowStatusForUserIdOnUserId(int followerId, int followedId)
+        [When(@"I call GetUserFollowStatus on userId (\d+)")]
+        public async Task WhenICallGetUserFollowStatusOnUserId(int followedId)
         {
-            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowStatus(followerId, followedId);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowStatus(followedId);
         }
 
         [When(@"I call FollowUser with these values")]

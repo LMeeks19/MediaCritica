@@ -1,5 +1,5 @@
 import "./ReviewsPage.scss";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { GetMediaReviews } from "../Server/Server";
@@ -11,16 +11,15 @@ import Loader from "../Components/Loader";
 import AddIcon from "@mui/icons-material/Add";
 
 function ReviewsPage() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [reviews, setReviews] = useState<ReviewSummaryModel[]>(
-    [] as ReviewSummaryModel[]
-  );
-  const [totalCount, setTotalCount] = useState<number>(0);
+  const [reviewsObject, setReviewsObject] = useState<{
+    title: string;
+    reviews: ReviewSummaryModel[];
+    totalCount: number;
+  }>({ title: "", reviews: [], totalCount: 0 });
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const mediaId = location.state.mediaId;
-  const mediaTitle = location.state.mediaTitle;
+  const { mediaId } = useParams();
 
   useEffect(() => {
     FetchMediaReviews();
@@ -28,9 +27,11 @@ function ReviewsPage() {
 
   async function FetchMediaReviews() {
     setIsLoading(true);
-    const reviewsData = await GetMediaReviews(mediaId, reviews.length);
-    setReviews([...reviews, ...reviewsData.reviews]);
-    setTotalCount(reviewsData.totalCount);
+    const reviewsData = await GetMediaReviews(
+      mediaId!,
+      reviewsObject.reviews.length
+    );
+    setReviewsObject(reviewsData);
     setIsLoading(false);
   }
 
@@ -42,18 +43,18 @@ function ReviewsPage() {
         <div className="reviews">
           <TopBar />
           <div className="header">
-            <h1>{mediaTitle} Reviews</h1>
+            <h1>{reviewsObject.title} Reviews</h1>
           </div>
           <div className="review-cards">
-            {reviews.map((review) => {
+            {reviewsObject.reviews.map((review) => {
               return (
                 <div
                   className="review-card"
                   key={review.id}
                   onClick={() =>
-                    navigate(`/media/${mediaId}/view-review/${review.id}`, {
-                      state: { reviewId: review.id },
-                    })
+                    navigate(
+                      `/${review.mediaType}/${mediaId}/reviews/${review.id}`
+                    )
                   }
                 >
                   <h3>{review.title}</h3>
@@ -68,13 +69,16 @@ function ReviewsPage() {
           </div>
           <div
             className={`flex justify-center items-center p-6 ${
-              reviews.length === totalCount && "hidden"
+              reviewsObject.reviews.length === reviewsObject.totalCount &&
+              "hidden"
             }`}
           >
-            <CustomTooltip title="Load more" arrow>
+            <CustomTooltip title="Load more">
               <span>
                 <Fab
-                  disabled={reviews.length === totalCount}
+                  disabled={
+                    reviewsObject.reviews.length === reviewsObject.totalCount
+                  }
                   onClick={() => FetchMediaReviews()}
                 >
                   <AddIcon />

@@ -12,6 +12,6 @@
         RatingMapper RatingMapper { get; }
         ReviewMapper ReviewMapper { get; }
         BacklogMapper BacklogMapper { get; }
-
+        CommentMapper CommentMapper { get; }
     }
 }

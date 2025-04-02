@@ -16,10 +16,10 @@ namespace MediaCritica.Server.Testing.Steps
     [Binding]
     public class MilestoneControllerSteps
     {
-        [When(@"I call GetUserMilestones with UserId (\d+)")]
-        public async Task WhenICallGetUserMilestonesWithId(int userId)
+        [When(@"I call GetUserMilestones")]
+        public async Task WhenICallGetUserMilestones()
         {
-            GlobalSteps._response = await GlobalSteps._controller.MilestoneController.GetUserMilestones(userId);
+            GlobalSteps._response = await GlobalSteps._controller.MilestoneController.GetUserMilestones();
         }
 
         [Then(@"The MilestoneCategoryModels should be")]

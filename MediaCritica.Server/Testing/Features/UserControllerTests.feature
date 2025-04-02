@@ -60,12 +60,7 @@ Scenario: Auto login a user
 Scenario: Logout a user
 	When I call Logout with token "1"
 	Then The status code should be 200
-	And The response should be "Token Deleted"
-
-Scenario: Logout a user with no token
-	When I call Logout with token "9"
-	Then The status code should be 404
-	And The response should be "Token Not Found"
+	And The response should be "User Logged Out"
 
 Scenario: Auto login a user with an invalid token
 	When I call AutoLogin with the token "9"
@@ -110,8 +105,11 @@ Scenario: Post a user with an email that doesn't already exists
 	Then The status code should be 200
 	And The response should be "Account Created"
 
-Scenario: Delete a user that exists
-	When I call DeleteUser with the Id 1
+Scenario: Delete a user
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call DeleteUser
 	Then The status code should be 200
 	And The response should be "User deleted"
 	When I call GetUser with the Email "test1@email.com"
@@ -119,7 +117,7 @@ Scenario: Delete a user that exists
 	And The response should be "User not found"
 
 Scenario: Delete a user that doesn't exist
-	When I call DeleteUser with the Id 9
+	When I call DeleteUser
 	Then The status code should be 404
 	And The response should be "User not found"
 
@@ -131,43 +129,58 @@ Scenario: Update a user that doesn't exist
 	And The response should be "User not found"
 
 Scenario: Update a user with an invalid type
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
 	When I call UpdateUser with the UpdateUserModel
-		| UserId | Value              | Type |
-		| 1      | NewEmail@email.com | 4    |
+		| Value              | Type |
+		| NewEmail@email.com | 4    |
 	Then The status code should be 400
 	And The response should be "Invalid update type"
 
 Scenario: Update a users forename
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
 	When I call UpdateUser with the UpdateUserModel
-		| UserId | Value       | Type |
-		| 1      | NewForename | 0    |
+		| Value       | Type |
+		| NewForename | 0    |
 	Then The status code should be 200
 	And The UserModel response should be
 		| Id | Forename    | Surname | Email           | Password     | PreferenceId | Theme  | Palette |
 		| 1  | NewForename | Banner  | test1@email.com | Password123! | 1            | System | #000000 |
 
 Scenario: Update a users surname
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
 	When I call UpdateUser with the UpdateUserModel
-		| UserId | Value      | Type |
-		| 1      | NewSurname | 1    |
+		| Value      | Type |
+		| NewSurname | 1    |
 	Then The status code should be 200
 	And The UserModel response should be
 		| Id | Forename | Surname    | Email           | Password     | PreferenceId | Theme  | Palette |
 		| 1  | Bruce    | NewSurname | test1@email.com | Password123! | 1            | System | #000000 |
 
 Scenario: Update a users email
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
 	When I call UpdateUser with the UpdateUserModel
-		| UserId | Value              | Type |
-		| 1      | NewEmail@email.com | 2    |
+		| Value              | Type |
+		| NewEmail@email.com | 2    |
 	Then The status code should be 200
 	And The UserModel response should be
 		| Id | Forename | Surname | Email              | Password     | PreferenceId | Theme  | Palette |
 		| 1  | Bruce    | Banner  | NewEmail@email.com | Password123! | 1            | System | #000000 |
 
 Scenario: Update a users password
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
 	When I call UpdateUser with the UpdateUserModel
-		| UserId | Value           | Type |
-		| 1      | NewPassword123! | 3    |
+		| Value           | Type |
+		| NewPassword123! | 3    |
 	Then The status code should be 200
 	And The UserModel response should be
 		| Id | Forename | Surname | Email           | Password        | PreferenceId | Theme  | Palette |
@@ -190,12 +203,12 @@ Scenario: Update a user preference that exists
 		| 1  | Light | #FFFFFF |
 
 Scenario: Get a user summary that doesn't exist
-	When I call GetViewUserSummary with the Id 9
+	When I call GetViewUserSummary with the user id 99
 	Then The status code should be 404
 	And The response should be "User not found"
 
-Scenario: Get a user summary that exists
-	When I call GetViewUserSummary with the Id 1
+Scenario: Get a user summary
+	When I call GetViewUserSummary with the user id 1
 	Then The status code should be 200
 	And The UserSummaryModel response should be
 		| Id | Name         | Joined     |

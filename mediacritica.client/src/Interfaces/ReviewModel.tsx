@@ -7,7 +7,7 @@ export interface ReviewModel {
   mediaTitle: string;
   mediaSeriesId: string;
   mediaSeriesTitle: string;
-  mediaEpisode: string
+  mediaEpisode: string;
   mediaType: MediaType;
   reviewerName: string;
   reviewerId: number;
@@ -17,4 +17,5 @@ export interface ReviewModel {
   date: Date;
   likes: number;
   dislikes: number;
+  totalComments: number;
 }

@@ -5,7 +5,7 @@ import {
   AccountEditModel,
   AccountFieldValue,
 } from "../Interfaces/AccountModels";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUser } from "../Server/Server";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
@@ -18,7 +18,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 function AccountDetail(props: AccountDetailsProps) {
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
 
   const [accountEditState, setAccountEditState] = useState<AccountEditModel>({
     isEditing: false,
@@ -31,7 +31,7 @@ function AccountDetail(props: AccountDetailsProps) {
   } as AccountFieldValue);
 
   function ResetAccountField() {
-    setFieldValue({ ...fieldValue, userId: user.id, value: "" });
+    setFieldValue({ ...fieldValue, value: "" });
     setAccountEditState({
       isEditing: false,
       fieldType: null,
@@ -90,7 +90,6 @@ function AccountDetail(props: AccountDetailsProps) {
             onChange={(e) =>
               setFieldValue({
                 ...fieldValue,
-                userId: user.id,
                 value: e.target.value,
               })
             }
@@ -108,7 +107,7 @@ function AccountDetail(props: AccountDetailsProps) {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Cancel" arrow>
+            <CustomTooltip title="Cancel">
               <CancelIcon />
             </CustomTooltip>
           </Button>
@@ -119,7 +118,7 @@ function AccountDetail(props: AccountDetailsProps) {
             type="submit"
             disabled={fieldValue.value.length === 0}
           >
-            <CustomTooltip title="Save" arrow>
+            <CustomTooltip title="Save">
               <SaveIcon />
             </CustomTooltip>
           </Button>
@@ -133,7 +132,7 @@ function AccountDetail(props: AccountDetailsProps) {
               })
             }
           >
-            <CustomTooltip title="Edit" arrow>
+            <CustomTooltip title="Edit">
               <EditOutlinedIcon />
             </CustomTooltip>
           </Button>

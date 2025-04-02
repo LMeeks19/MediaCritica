@@ -2,7 +2,9 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 
 export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip {...props} classes={{ popper: className }} arrow>
+    <span style={{ display: "flex", justifyContent: "center" }}>{props.children}</span>
+  </Tooltip>
 ))(() => ({
   [`& .${tooltipClasses.arrow}`]: {
     color: "light-dark(whitesmoke, #242424)",
@@ -15,6 +17,6 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
     padding: "0.5rem 0.75rem",
     letterSpacing: 0,
     fontFamily: "inherit",
-    borderRadius: "8px"
+    borderRadius: "8px",
   },
 }));

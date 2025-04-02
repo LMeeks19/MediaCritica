@@ -26,9 +26,8 @@ export async function LogoutUser(
   setUser: SetterOrUpdater<UserModel>
 ) {
   var token = getAuthToken();
-
+  await Logout(token);
   if (token != null) {
-    await Logout(token);
     deleteAuthToken();
   }
 

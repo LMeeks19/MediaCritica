@@ -13,7 +13,10 @@ Background:
 		| 3  | 3          | 1          | 2025-01-03 | false                |
 
 Scenario: Get followers for a user
-	When I call GetUserFollowers with the UserId 1 and offset 0
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserFollowers with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
 		| Id | UserId | Name   | FollowedOn |
@@ -21,31 +24,37 @@ Scenario: Get followers for a user
 		| 2  | 2      | Test 2 | 2025-01-02 |
 
 Scenario: Get followers for a user that doesn't exist
-	When I call GetUserFollowers with the UserId 4 and offset 0
+	When I call GetUserFollowers with the offset 0
 	Then The status code should be 404
 	And The response should be "User not found"
 
 Scenario: Get following for a user
-	When I call GetUserFollowing with the UserId 1 and offset 0
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserFollowing with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
 		| Id | UserId | Name   | FollowedOn |
 		| 1  | 2      | Test 2 | 2025-01-01 |
 
 Scenario: Get following for a user that doesn't exist
-	When I call GetUserFollowing with the UserId 4 and offset 0
+	When I call GetUserFollowing with the offset 0
 	Then The status code should be 404
 	And The response should be "User not found"
 
 Scenario: Get a users follow status for another user 
-	When I call GetUserFollowStatus for userId 1 on userId 2
+	Given I am the following user
+		| Email           | Password     | RememberMe |
+		| test1@email.com | Password123! | false      |
+	When I call GetUserFollowStatus on userId 2
 	Then The status code should be 200
 	And The UserFollowModel should be
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 1          | 2          | 2025-01-01 | true                 |
 
 Scenario: Get a users follow status for another user that doesn't exist
-	When I call GetUserFollowStatus for userId 1 on userId 3
+	When I call GetUserFollowStatus on userId 3
 	Then The status code should be 200
 	And The response should be "Follow relationship not found"
 

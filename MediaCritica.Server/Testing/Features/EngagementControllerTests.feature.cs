@@ -77,35 +77,35 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table21.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table21.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table21.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "3",
                         "Test",
                         "3",
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table21.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "4",
                         "Test",
                         "4",
@@ -113,9 +113,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table21, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table48, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
@@ -127,7 +127,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title",
                         "Description",
                         "Date"});
-            table22.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "1",
                         "1",
                         "Test Media Poster",
@@ -140,25 +140,25 @@ namespace MediaCritica.Server.Testing.Features
                         "Test Description",
                         "2025-01-01"});
 #line 10
- testRunner.And("I have the following reviews", ((string)(null)), table22, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table49, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "ReviewId",
                         "Type"});
-            table23.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "1",
                         "1",
                         "1",
                         "0"});
-            table23.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "2",
                         "2",
                         "1",
                         "1"});
 #line 13
- testRunner.And("I have the following engagements", ((string)(null)), table23, "And ");
+ testRunner.And("I have the following engagements", ((string)(null)), table50, "And ");
 #line hidden
         }
         
@@ -182,13 +182,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
+                TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table51.AddRow(new string[] {
+                            "test1@email.com",
+                            "Password123!",
+                            "false"});
 #line 19
- testRunner.When("I call GetUserEngagement with review id 1 and user id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I am the following user", ((string)(null)), table51, "Given ");
 #line hidden
-#line 20
+#line 22
+ testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 23
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 21
+#line 24
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -202,7 +213,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users engagement for a review that is a dislike", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 23
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -215,13 +226,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 24
- testRunner.When("I call GetUserEngagement with review id 1 and user id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table52.AddRow(new string[] {
+                            "test2@email.com",
+                            "Password456!",
+                            "false"});
+#line 27
+ testRunner.Given("I am the following user", ((string)(null)), table52, "Given ");
 #line hidden
-#line 25
+#line 30
+ testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 32
  testRunner.And("The response should be a dislike", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -235,7 +257,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users engagement that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 28
+#line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -248,14 +270,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 29
- testRunner.When("I call GetUserEngagement with review id 1 and user id 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table53.AddRow(new string[] {
+                            "test3@email.com",
+                            "Password789!",
+                            "false"});
+#line 35
+ testRunner.Given("I am the following user", ((string)(null)), table53, "Given ");
 #line hidden
-#line 30
+#line 38
+ testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 31
- testRunner.And("The response should be false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+ testRunner.And("The response should be a none", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -268,7 +301,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users engagement but the user doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 33
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -281,13 +314,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 34
- testRunner.When("I call GetUserEngagement with review id 1 and user id 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 43
+ testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 35
+#line 44
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 36
+#line 45
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -301,7 +334,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users engagement but the review doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 38
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -314,13 +347,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 39
- testRunner.When("I call GetUserEngagement with review id 2 and user id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table54.AddRow(new string[] {
+                            "test1@email.com",
+                            "Password123!",
+                            "false"});
+#line 48
+ testRunner.Given("I am the following user", ((string)(null)), table54, "Given ");
 #line hidden
-#line 40
+#line 51
+ testRunner.When("I call GetUserEngagement with review id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 52
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 41
+#line 53
  testRunner.And("The response should be \"Review not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -334,7 +378,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toggle an engagement on a review that didn\'t previously exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 43
+#line 55
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -347,27 +391,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 44
- testRunner.When("I call ToggleEngagement with review id 1, user id 4 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table55.AddRow(new string[] {
+                            "test4@email.com",
+                            "Password012!",
+                            "false"});
+#line 56
+ testRunner.Given("I am the following user", ((string)(null)), table55, "Given ");
 #line hidden
-#line 45
+#line 59
+ testRunner.When("I call ToggleEngagement with review id 1 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 60
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 46
+#line 61
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table24.AddRow(new string[] {
+                table56.AddRow(new string[] {
                             "3",
                             "4",
                             "1",
                             "0"});
-#line 47
- testRunner.And("The engagement should have been created", ((string)(null)), table24, "And ");
+#line 62
+ testRunner.And("The engagement should have been created", ((string)(null)), table56, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -380,7 +435,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toggle an engagement on a review for a user to like", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 51
+#line 66
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -393,27 +448,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 52
- testRunner.When("I call ToggleEngagement with review id 1, user id 2 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table57.AddRow(new string[] {
+                            "test2@email.com",
+                            "Password456!",
+                            "false"});
+#line 67
+ testRunner.Given("I am the following user", ((string)(null)), table57, "Given ");
 #line hidden
-#line 53
+#line 70
+ testRunner.When("I call ToggleEngagement with review id 1 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 71
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 54
+#line 72
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table25.AddRow(new string[] {
+                table58.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "0"});
-#line 55
- testRunner.And("The engagement should have been updated", ((string)(null)), table25, "And ");
+#line 73
+ testRunner.And("The engagement should have been updated", ((string)(null)), table58, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -426,7 +492,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toggle an engagement on a review for a user to dislike", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 59
+#line 77
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -439,27 +505,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 60
- testRunner.When("I call ToggleEngagement with review id 1, user id 1 and engagement type 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table59.AddRow(new string[] {
+                            "test1@email.com",
+                            "Password123!",
+                            "false"});
+#line 78
+ testRunner.Given("I am the following user", ((string)(null)), table59, "Given ");
 #line hidden
-#line 61
+#line 81
+ testRunner.When("I call ToggleEngagement with review id 1 and engagement type 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 82
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 62
+#line 83
  testRunner.And("The response should be a dislike", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table26.AddRow(new string[] {
+                table60.AddRow(new string[] {
                             "1",
                             "1",
                             "1",
                             "1"});
-#line 63
- testRunner.And("The engagement should have been updated", ((string)(null)), table26, "And ");
+#line 84
+ testRunner.And("The engagement should have been updated", ((string)(null)), table60, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -472,7 +549,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toggle an engagement on a review for a user to none", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 67
+#line 88
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -485,22 +562,33 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 68
- testRunner.When("I call ToggleEngagement with review id 1, user id 2 and engagement type -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Email",
+                            "Password",
+                            "RememberMe"});
+                table61.AddRow(new string[] {
+                            "test1@email.com",
+                            "Password123!",
+                            "false"});
+#line 89
+ testRunner.Given("I am the following user", ((string)(null)), table61, "Given ");
 #line hidden
-#line 69
+#line 92
+ testRunner.When("I call ToggleEngagement with review id 1 and engagement type -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 93
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 70
- testRunner.And("The response should be \"Engagement deleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
+ testRunner.And("The response should be a none", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-#line 71
- testRunner.And("The engagement should have been deleted", ((string)(null)), table27, "And ");
+#line 95
+ testRunner.And("The engagement should have been deleted", ((string)(null)), table62, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -513,7 +601,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toggle an engagement for a user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 74
+#line 98
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -526,13 +614,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 75
- testRunner.When("I call ToggleEngagement with review id 1, user id 5 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 99
+ testRunner.When("I call ToggleEngagement with review id 1 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 100
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 77
+#line 101
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -546,7 +634,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toggle an engagement for a user on a review that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 79
+#line 103
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -559,13 +647,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 80
- testRunner.When("I call ToggleEngagement with review id 2, user id 2 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 104
+ testRunner.When("I call ToggleEngagement with review id 2 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 105
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 82
+#line 106
  testRunner.And("The response should be \"Review not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
