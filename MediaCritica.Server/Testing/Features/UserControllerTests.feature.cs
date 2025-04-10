@@ -77,7 +77,7 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Username",
                         "Forename",
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Email",
                         "Password",
                         "Joined"});
-            table160.AddRow(new string[] {
+            table162.AddRow(new string[] {
                         "1",
                         "B_Banner",
                         "Bruce",
@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table160.AddRow(new string[] {
+            table162.AddRow(new string[] {
                         "2",
                         "T_Stark",
                         "Tony",
@@ -101,7 +101,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test2@email.com",
                         "Password123!",
                         "2025-01-02"});
-            table160.AddRow(new string[] {
+            table162.AddRow(new string[] {
                         "3",
                         "T_Odinson",
                         "Thor",
@@ -109,7 +109,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test3@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table160.AddRow(new string[] {
+            table162.AddRow(new string[] {
                         "4",
                         "C_Barton",
                         "Clint",
@@ -118,53 +118,53 @@ namespace MediaCritica.Server.Testing.Features
                         "Password123!",
                         "2025-01-02"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table160, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table162, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "Theme",
                         "Palette"});
-            table161.AddRow(new string[] {
+            table163.AddRow(new string[] {
                         "1",
                         "1",
                         "System",
                         "#000000"});
-            table161.AddRow(new string[] {
+            table163.AddRow(new string[] {
                         "2",
                         "2",
                         "Light",
                         "#FFFFFF"});
-            table161.AddRow(new string[] {
+            table163.AddRow(new string[] {
                         "3",
                         "3",
                         "System",
                         "#000000"});
-            table161.AddRow(new string[] {
+            table163.AddRow(new string[] {
                         "4",
                         "4",
                         "Dark",
                         "#FFFFFF"});
 #line 10
- testRunner.And("I have the following preferences", ((string)(null)), table161, "And ");
+ testRunner.And("I have the following preferences", ((string)(null)), table163, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "Token",
                         "Expiration"});
-            table162.AddRow(new string[] {
+            table164.AddRow(new string[] {
                         "1",
                         "3",
                         "1",
                         "2025-03-15"});
-            table162.AddRow(new string[] {
+            table164.AddRow(new string[] {
                         "2",
                         "4",
                         "2",
                         "2025-01-01"});
 #line 16
- testRunner.And("I have the following auth tokens", ((string)(null)), table162, "And ");
+ testRunner.And("I have the following auth tokens", ((string)(null)), table164, "And ");
 #line hidden
         }
         
@@ -188,21 +188,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table163.AddRow(new string[] {
+                table165.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 22
- testRunner.When("I call Login with the following details", ((string)(null)), table163, "When ");
+ testRunner.When("I call Login with the following details", ((string)(null)), table165, "When ");
 #line hidden
 #line 25
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthTokenId",
                             "AuthUserId",
                             "Expiration",
@@ -211,7 +211,7 @@ this.FeatureBackground();
                             "Surname",
                             "Email",
                             "Password"});
-                table164.AddRow(new string[] {
+                table166.AddRow(new string[] {
                             "",
                             "",
                             "",
@@ -221,7 +221,7 @@ this.FeatureBackground();
                             "test1@email.com",
                             "Password123!"});
 #line 26
- testRunner.And("The UserAuthModel response should be", ((string)(null)), table164, "And ");
+ testRunner.And("The UserAuthModel response should be", ((string)(null)), table166, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -247,21 +247,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table167 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table165.AddRow(new string[] {
+                table167.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "true"});
 #line 31
- testRunner.When("I call Login with the following details", ((string)(null)), table165, "When ");
+ testRunner.When("I call Login with the following details", ((string)(null)), table167, "When ");
 #line hidden
 #line 34
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table168 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthTokenId",
                             "AuthUserId",
                             "Expiration",
@@ -270,7 +270,7 @@ this.FeatureBackground();
                             "Surname",
                             "Email",
                             "Password"});
-                table166.AddRow(new string[] {
+                table168.AddRow(new string[] {
                             "3",
                             "1",
                             "2025-03-29",
@@ -280,7 +280,7 @@ this.FeatureBackground();
                             "test1@email.com",
                             "Password123!"});
 #line 35
- testRunner.And("The UserAuthModel response should be", ((string)(null)), table166, "And ");
+ testRunner.And("The UserAuthModel response should be", ((string)(null)), table168, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -306,16 +306,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table167 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table169 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table167.AddRow(new string[] {
+                table169.AddRow(new string[] {
                             "S_Rogers",
                             "Password123!",
                             "false"});
 #line 40
- testRunner.When("I call Login with the following details", ((string)(null)), table167, "When ");
+ testRunner.When("I call Login with the following details", ((string)(null)), table169, "When ");
 #line hidden
 #line 43
  testRunner.Then("The status code should be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -347,16 +347,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table168 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table170 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table168.AddRow(new string[] {
+                table170.AddRow(new string[] {
                             "B_Banner",
                             "Password456!",
                             "false"});
 #line 47
- testRunner.When("I call Login with the following details", ((string)(null)), table168, "When ");
+ testRunner.When("I call Login with the following details", ((string)(null)), table170, "When ");
 #line hidden
 #line 50
  testRunner.Then("The status code should be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -394,7 +394,7 @@ this.FeatureBackground();
 #line 55
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table169 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table171 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthTokenId",
                             "AuthUserId",
                             "Token",
@@ -404,7 +404,7 @@ this.FeatureBackground();
                             "Surname",
                             "Email",
                             "Password"});
-                table169.AddRow(new string[] {
+                table171.AddRow(new string[] {
                             "1",
                             "3",
                             "1",
@@ -415,7 +415,7 @@ this.FeatureBackground();
                             "test3@email.com",
                             "Password123!"});
 #line 56
- testRunner.And("The UserAuthModel response should be", ((string)(null)), table169, "And ");
+ testRunner.And("The UserAuthModel response should be", ((string)(null)), table171, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -541,23 +541,23 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 76
- testRunner.When("I call GetUsersBySearch with search term \"Tony\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call GetUsersBySearch with search term \"T_Stark\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 77
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table170 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table172 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "FullName",
                             "Joined"});
-                table170.AddRow(new string[] {
+                table172.AddRow(new string[] {
                             "2",
                             "T_Stark",
                             "Tony Stark",
                             "Thursday, January 2, 2025"});
 #line 78
- testRunner.And("The UserSearchModels should be", ((string)(null)), table170, "And ");
+ testRunner.And("The UserSearchModels should be", ((string)(null)), table172, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -589,7 +589,7 @@ this.FeatureBackground();
 #line 84
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table171 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table173 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Forename",
@@ -599,7 +599,7 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table171.AddRow(new string[] {
+                table173.AddRow(new string[] {
                             "1",
                             "B_Banner",
                             "Bruce",
@@ -610,7 +610,7 @@ this.FeatureBackground();
                             "System",
                             "#000000"});
 #line 85
- testRunner.And("The UserModel response should be", ((string)(null)), table171, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table173, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -669,20 +669,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table172 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table174 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Forename",
                             "Surname",
                             "Email",
                             "Password"});
-                table172.AddRow(new string[] {
+                table174.AddRow(new string[] {
                             "B_Banner",
                             "Test",
                             "9",
                             "test9@email.com",
                             "Password456!"});
 #line 95
- testRunner.When("I call PostUser with the User", ((string)(null)), table172, "When ");
+ testRunner.When("I call PostUser with the User", ((string)(null)), table174, "When ");
 #line hidden
 #line 98
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -714,20 +714,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table173 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table175 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Forename",
                             "Surname",
                             "Email",
                             "Password"});
-                table173.AddRow(new string[] {
+                table175.AddRow(new string[] {
                             "S_Rogers",
                             "Steve",
                             "Rogers",
                             "test5@email.com",
                             "Password456!"});
 #line 102
- testRunner.When("I call PostUser with the User", ((string)(null)), table173, "When ");
+ testRunner.When("I call PostUser with the User", ((string)(null)), table175, "When ");
 #line hidden
 #line 105
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -759,20 +759,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table174 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table176 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Forename",
                             "Surname",
                             "Email",
                             "Password"});
-                table174.AddRow(new string[] {
+                table176.AddRow(new string[] {
                             "S_Rogers",
                             "Test",
                             "9",
                             "test2@email.com",
                             "Password456!"});
 #line 109
- testRunner.When("I call PostUser with the User", ((string)(null)), table174, "When ");
+ testRunner.When("I call PostUser with the User", ((string)(null)), table176, "When ");
 #line hidden
 #line 112
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -804,20 +804,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table175 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table177 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Forename",
                             "Surname",
                             "Email",
                             "Password"});
-                table175.AddRow(new string[] {
+                table177.AddRow(new string[] {
                             "S_Rogers",
                             "Steve",
                             "Rogers",
                             "test5@email.com",
                             "Password456!"});
 #line 116
- testRunner.When("I call PostUser with the User", ((string)(null)), table175, "When ");
+ testRunner.When("I call PostUser with the User", ((string)(null)), table177, "When ");
 #line hidden
 #line 119
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -849,16 +849,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table176 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table178 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table176.AddRow(new string[] {
+                table178.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 123
- testRunner.Given("I am the following user", ((string)(null)), table176, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table178, "Given ");
 #line hidden
 #line 126
  testRunner.When("I call DeleteUser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -935,16 +935,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table177 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table179 = new TechTalk.SpecFlow.Table(new string[] {
                             "UserId",
                             "Value",
                             "Type"});
-                table177.AddRow(new string[] {
+                table179.AddRow(new string[] {
                             "9",
                             "NewEmail@email.com",
                             "2"});
 #line 139
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table177, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table179, "When ");
 #line hidden
 #line 142
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -976,25 +976,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table178 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table180 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table178.AddRow(new string[] {
+                table180.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 146
- testRunner.Given("I am the following user", ((string)(null)), table178, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table180, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table179 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table181 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table179.AddRow(new string[] {
+                table181.AddRow(new string[] {
                             "NewEmail@email.com",
                             "5"});
 #line 149
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table179, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table181, "When ");
 #line hidden
 #line 152
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1026,30 +1026,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table180 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table182 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table180.AddRow(new string[] {
+                table182.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 156
- testRunner.Given("I am the following user", ((string)(null)), table180, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table182, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table181 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table183 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table181.AddRow(new string[] {
+                table183.AddRow(new string[] {
                             "New_B_Banner",
                             "0"});
 #line 159
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table181, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table183, "When ");
 #line hidden
 #line 162
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table182 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table184 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Forename",
@@ -1059,7 +1059,7 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table182.AddRow(new string[] {
+                table184.AddRow(new string[] {
                             "1",
                             "New_B_Banner",
                             "Bruce",
@@ -1070,7 +1070,7 @@ this.FeatureBackground();
                             "System",
                             "#000000"});
 #line 163
- testRunner.And("The UserModel response should be", ((string)(null)), table182, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table184, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1096,25 +1096,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table183 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table185 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table183.AddRow(new string[] {
+                table185.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 168
- testRunner.Given("I am the following user", ((string)(null)), table183, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table185, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table184 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table186 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table184.AddRow(new string[] {
+                table186.AddRow(new string[] {
                             "T_Stark",
                             "0"});
 #line 171
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table184, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table186, "When ");
 #line hidden
 #line 174
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1146,30 +1146,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table185 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table187 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table185.AddRow(new string[] {
+                table187.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 178
- testRunner.Given("I am the following user", ((string)(null)), table185, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table187, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table186 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table188 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table186.AddRow(new string[] {
+                table188.AddRow(new string[] {
                             "NewForename",
                             "1"});
 #line 181
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table186, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table188, "When ");
 #line hidden
 #line 184
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table187 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table189 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Forename",
@@ -1179,7 +1179,7 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table187.AddRow(new string[] {
+                table189.AddRow(new string[] {
                             "1",
                             "B_Banner",
                             "NewForename",
@@ -1190,7 +1190,7 @@ this.FeatureBackground();
                             "System",
                             "#000000"});
 #line 185
- testRunner.And("The UserModel response should be", ((string)(null)), table187, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table189, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1216,30 +1216,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table188 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table190 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table188.AddRow(new string[] {
+                table190.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 190
- testRunner.Given("I am the following user", ((string)(null)), table188, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table190, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table189 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table191 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table189.AddRow(new string[] {
+                table191.AddRow(new string[] {
                             "NewSurname",
                             "2"});
 #line 193
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table189, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table191, "When ");
 #line hidden
 #line 196
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table190 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table192 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Forename",
@@ -1249,7 +1249,7 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table190.AddRow(new string[] {
+                table192.AddRow(new string[] {
                             "1",
                             "B_Banner",
                             "Bruce",
@@ -1260,7 +1260,7 @@ this.FeatureBackground();
                             "System",
                             "#000000"});
 #line 197
- testRunner.And("The UserModel response should be", ((string)(null)), table190, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table192, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1286,30 +1286,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table191 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table193 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table191.AddRow(new string[] {
+                table193.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 202
- testRunner.Given("I am the following user", ((string)(null)), table191, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table193, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table192 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table194 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table192.AddRow(new string[] {
+                table194.AddRow(new string[] {
                             "NewEmail@email.com",
                             "3"});
 #line 205
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table192, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table194, "When ");
 #line hidden
 #line 208
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table193 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table195 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Forename",
@@ -1319,7 +1319,7 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table193.AddRow(new string[] {
+                table195.AddRow(new string[] {
                             "1",
                             "B_Banner",
                             "Bruce",
@@ -1330,7 +1330,7 @@ this.FeatureBackground();
                             "System",
                             "#000000"});
 #line 209
- testRunner.And("The UserModel response should be", ((string)(null)), table193, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table195, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1356,25 +1356,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table194 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table196 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table194.AddRow(new string[] {
+                table196.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 214
- testRunner.Given("I am the following user", ((string)(null)), table194, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table196, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table195 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table197 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table195.AddRow(new string[] {
+                table197.AddRow(new string[] {
                             "test2@email.com",
                             "3"});
 #line 217
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table195, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table197, "When ");
 #line hidden
 #line 220
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1406,30 +1406,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table196 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table198 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table196.AddRow(new string[] {
+                table198.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 224
- testRunner.Given("I am the following user", ((string)(null)), table196, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table198, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table197 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table199 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table197.AddRow(new string[] {
+                table199.AddRow(new string[] {
                             "NewPassword123!",
                             "4"});
 #line 227
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table197, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table199, "When ");
 #line hidden
 #line 230
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table198 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table200 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Forename",
@@ -1439,7 +1439,7 @@ this.FeatureBackground();
                             "PreferenceId",
                             "Theme",
                             "Palette"});
-                table198.AddRow(new string[] {
+                table200.AddRow(new string[] {
                             "1",
                             "B_Banner",
                             "Bruce",
@@ -1450,7 +1450,7 @@ this.FeatureBackground();
                             "System",
                             "#000000"});
 #line 231
- testRunner.And("The UserModel response should be", ((string)(null)), table198, "And ");
+ testRunner.And("The UserModel response should be", ((string)(null)), table200, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1476,25 +1476,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table199 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table201 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table199.AddRow(new string[] {
+                table201.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 236
- testRunner.Given("I am the following user", ((string)(null)), table199, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table201, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table200 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table202 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table200.AddRow(new string[] {
+                table202.AddRow(new string[] {
                             "Password123!",
                             "4"});
 #line 239
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table200, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table202, "When ");
 #line hidden
 #line 242
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1526,25 +1526,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table201 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table203 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table201.AddRow(new string[] {
+                table203.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 246
- testRunner.Given("I am the following user", ((string)(null)), table201, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table203, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table202 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table204 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table202.AddRow(new string[] {
+                table204.AddRow(new string[] {
                             "Pa123!",
                             "4"});
 #line 249
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table202, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table204, "When ");
 #line hidden
 #line 252
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1576,25 +1576,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table203 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table205 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table203.AddRow(new string[] {
+                table205.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 256
- testRunner.Given("I am the following user", ((string)(null)), table203, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table205, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table204 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table206 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table204.AddRow(new string[] {
+                table206.AddRow(new string[] {
                             "7NewPassword123!",
                             "4"});
 #line 259
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table204, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table206, "When ");
 #line hidden
 #line 262
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1626,25 +1626,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table205 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table207 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table205.AddRow(new string[] {
+                table207.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 266
- testRunner.Given("I am the following user", ((string)(null)), table205, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table207, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table206 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table208 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table206.AddRow(new string[] {
+                table208.AddRow(new string[] {
                             "NewPassword!",
                             "4"});
 #line 269
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table206, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table208, "When ");
 #line hidden
 #line 272
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1676,25 +1676,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table207 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table209 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table207.AddRow(new string[] {
+                table209.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 276
- testRunner.Given("I am the following user", ((string)(null)), table207, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table209, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table208 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table210 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table208.AddRow(new string[] {
+                table210.AddRow(new string[] {
                             "newpassword123!",
                             "4"});
 #line 279
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table208, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table210, "When ");
 #line hidden
 #line 282
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1726,25 +1726,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table209 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table211 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table209.AddRow(new string[] {
+                table211.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 286
- testRunner.Given("I am the following user", ((string)(null)), table209, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table211, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table210 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table212 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table210.AddRow(new string[] {
+                table212.AddRow(new string[] {
                             "NEWPASSWORD123!",
                             "4"});
 #line 289
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table210, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table212, "When ");
 #line hidden
 #line 292
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1776,25 +1776,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table211 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table213 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table211.AddRow(new string[] {
+                table213.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 296
- testRunner.Given("I am the following user", ((string)(null)), table211, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table213, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table212 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table214 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table212.AddRow(new string[] {
+                table214.AddRow(new string[] {
                             "NewPassword123",
                             "4"});
 #line 299
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table212, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table214, "When ");
 #line hidden
 #line 302
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1826,25 +1826,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table213 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table215 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table213.AddRow(new string[] {
+                table215.AddRow(new string[] {
                             "B_Banner",
                             "Password123!",
                             "false"});
 #line 306
- testRunner.Given("I am the following user", ((string)(null)), table213, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table215, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table214 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table216 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Type"});
-                table214.AddRow(new string[] {
+                table216.AddRow(new string[] {
                             "NewPass word123!",
                             "4"});
 #line 309
- testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table214, "When ");
+ testRunner.When("I call UpdateUser with the UpdateUserModel", ((string)(null)), table216, "When ");
 #line hidden
 #line 312
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1876,16 +1876,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table215 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table217 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Theme",
                             "Palette"});
-                table215.AddRow(new string[] {
+                table217.AddRow(new string[] {
                             "9",
                             "Light",
                             "#FFFFFF"});
 #line 316
- testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table215, "When ");
+ testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table217, "When ");
 #line hidden
 #line 319
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1917,30 +1917,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table216 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table218 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Theme",
                             "Palette"});
-                table216.AddRow(new string[] {
+                table218.AddRow(new string[] {
                             "1",
                             "Light",
                             "#FFFFFF"});
 #line 323
- testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table216, "When ");
+ testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table218, "When ");
 #line hidden
 #line 326
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table217 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table219 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Theme",
                             "Palette"});
-                table217.AddRow(new string[] {
+                table219.AddRow(new string[] {
                             "1",
                             "Light",
                             "#FFFFFF"});
 #line 327
- testRunner.And("The PreferenceModel response should be", ((string)(null)), table217, "And ");
+ testRunner.And("The PreferenceModel response should be", ((string)(null)), table219, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -2005,18 +2005,18 @@ this.FeatureBackground();
 #line 338
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table218 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table220 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Name",
                             "Joined"});
-                table218.AddRow(new string[] {
+                table220.AddRow(new string[] {
                             "1",
                             "B_Banner",
                             "Bruce Banner",
                             "2025-01-01"});
 #line 339
- testRunner.And("The UserSummaryModel response should be", ((string)(null)), table218, "And ");
+ testRunner.And("The UserSummaryModel response should be", ((string)(null)), table220, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

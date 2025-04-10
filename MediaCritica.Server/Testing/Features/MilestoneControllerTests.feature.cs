@@ -77,7 +77,7 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Username",
                         "Forename",
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Email",
                         "Password",
                         "Joined"});
-            table128.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "1",
                         "Username1",
                         "Test",
@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table128.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "2",
                         "Username2",
                         "Test",
@@ -102,7 +102,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Password456!",
                         "2025-01-02"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table128, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table130, "Given ");
 #line hidden
         }
         
@@ -126,16 +126,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table129.AddRow(new string[] {
+                table131.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
 #line 9
- testRunner.Given("I am the following user", ((string)(null)), table129, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table131, "Given ");
 #line hidden
 #line 12
  testRunner.When("I call GetUserMilestones", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -143,29 +143,29 @@ this.FeatureBackground();
 #line 13
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
                             "Category",
                             "Milestones"});
-                table130.AddRow(new string[] {
+                table132.AddRow(new string[] {
                             "Reviewed Media",
                             "5"});
-                table130.AddRow(new string[] {
+                table132.AddRow(new string[] {
                             "Backlogged Media",
                             "2"});
-                table130.AddRow(new string[] {
+                table132.AddRow(new string[] {
                             "Review Engagement",
                             "3"});
-                table130.AddRow(new string[] {
+                table132.AddRow(new string[] {
                             "Interaction Variety",
                             "6"});
-                table130.AddRow(new string[] {
+                table132.AddRow(new string[] {
                             "Consecutive Activity",
                             "3"});
-                table130.AddRow(new string[] {
+                table132.AddRow(new string[] {
                             "Social Connectivity",
                             "2"});
 #line 14
- testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table130, "And ");
+ testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table132, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

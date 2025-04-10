@@ -9,7 +9,7 @@ export interface ReviewModel {
   mediaSeriesTitle: string;
   mediaEpisode: string;
   mediaType: MediaType;
-  reviewerName: string;
+  reviewerUsername: string;
   reviewerId: number;
   title: string;
   rating: number;

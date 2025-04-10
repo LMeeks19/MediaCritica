@@ -82,13 +82,14 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostBacklog([FromBody] BacklogModel backlogModel)
         {
-            if (!await _databaseContext.Users.AnyAsync(u => u.Id == backlogModel.UserId))
+            var userId = _helper.AuthenticationHelper.GetUserId();
+            if (!await _databaseContext.Users.AnyAsync(u => u.Id == userId))
                 return NotFound(new { Message = "User not found" });
 
             if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
                 return NotFound(new { Message = "Media not found" });
 
-            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel);
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();

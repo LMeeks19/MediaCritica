@@ -590,7 +590,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -599,7 +598,6 @@ this.FeatureBackground();
                             "AddedDate"});
                 table9.AddRow(new string[] {
                             "9",
-                            "1",
                             "2",
                             "series",
                             "Media Poster 2",
@@ -607,7 +605,6 @@ this.FeatureBackground();
                             "0",
                             "2025-02-08"});
                 table9.AddRow(new string[] {
-                            "1",
                             "1",
                             "1",
                             "movie",
@@ -620,7 +617,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -629,7 +625,6 @@ this.FeatureBackground();
                             "AddedDate"});
                 table10.AddRow(new string[] {
                             "5",
-                            "1",
                             "5",
                             "series",
                             "Media Poster 5",
@@ -641,7 +636,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -650,7 +644,6 @@ this.FeatureBackground();
                             "AddedDate"});
                 table11.AddRow(new string[] {
                             "13",
-                            "1",
                             "6",
                             "movie",
                             "Media Poster 6",
@@ -720,7 +713,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -732,7 +724,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -744,7 +735,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -797,7 +787,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -806,7 +795,6 @@ this.FeatureBackground();
                             "AddedDate"});
                 table18.AddRow(new string[] {
                             "9",
-                            "1",
                             "2",
                             "series",
                             "Media Poster 2",
@@ -814,7 +802,6 @@ this.FeatureBackground();
                             "0",
                             "2025-02-08"});
                 table18.AddRow(new string[] {
-                            "1",
                             "1",
                             "1",
                             "movie",
@@ -868,7 +855,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -877,7 +863,6 @@ this.FeatureBackground();
                             "AddedDate"});
                 table20.AddRow(new string[] {
                             "5",
-                            "1",
                             "5",
                             "series",
                             "Media Poster 5",
@@ -930,7 +915,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -939,7 +923,6 @@ this.FeatureBackground();
                             "AddedDate"});
                 table22.AddRow(new string[] {
                             "13",
-                            "1",
                             "6",
                             "movie",
                             "Media Poster 6",
@@ -974,30 +957,39 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Username",
+                            "Password",
+                            "RememberMe"});
+                table23.AddRow(new string[] {
+                            "Username1",
+                            "Password123!",
+                            "false"});
+#line 111
+ testRunner.Given("I am the following user", ((string)(null)), table23, "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
-                table23.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "16",
-                            "1",
                             "7",
                             "game",
                             "Media Poster 7",
                             "Media Title 7",
                             "0",
                             "2025-02-13"});
-#line 111
- testRunner.When("I call PostBacklog with the backlog model", ((string)(null)), table23, "When ");
-#line hidden
 #line 114
+ testRunner.When("I call PostBacklog with the backlog model", ((string)(null)), table24, "When ");
+#line hidden
+#line 117
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 115
+#line 118
  testRunner.And("The response should be \"Media Title 7 added to backlog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1011,58 +1003,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a backlog but the user doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 117
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "UserId",
-                            "MediaId",
-                            "MediaType",
-                            "MediaPoster",
-                            "MediaTitle",
-                            "Category",
-                            "AddedDate"});
-                table24.AddRow(new string[] {
-                            "16",
-                            "5",
-                            "7",
-                            "game",
-                            "Media Poster 7",
-                            "Media Title 7",
-                            "0",
-                            "2025-02-13"});
-#line 118
- testRunner.When("I call PostBacklog with the backlog model", ((string)(null)), table24, "When ");
-#line hidden
-#line 121
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 122
- testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Post a backlog but the media doesn\'t exist")]
-        public void PostABacklogButTheMediaDoesntExist()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a backlog but the media doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 124
+#line 120
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1077,7 +1018,6 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
                             "MediaId",
                             "MediaType",
                             "MediaPoster",
@@ -1086,34 +1026,33 @@ this.FeatureBackground();
                             "AddedDate"});
                 table25.AddRow(new string[] {
                             "16",
-                            "1",
-                            "8",
+                            "7",
                             "game",
-                            "Media Poster 8",
-                            "Media Title 8",
+                            "Media Poster 7",
+                            "Media Title 7",
                             "0",
                             "2025-02-13"});
-#line 125
+#line 121
  testRunner.When("I call PostBacklog with the backlog model", ((string)(null)), table25, "When ");
 #line hidden
-#line 128
+#line 124
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 129
- testRunner.And("The response should be \"Media not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+ testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Delete a backlog")]
-        public void DeleteABacklog()
+        [NUnit.Framework.DescriptionAttribute("Post a backlog but the media doesn\'t exist")]
+        public void PostABacklogButTheMediaDoesntExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a backlog", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 131
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a backlog but the media doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 127
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1131,209 +1070,49 @@ this.FeatureBackground();
                             "Password",
                             "RememberMe"});
                 table26.AddRow(new string[] {
-                            "Username3",
-                            "Password789!",
+                            "Username1",
+                            "Password123!",
                             "false"});
-#line 132
+#line 128
  testRunner.Given("I am the following user", ((string)(null)), table26, "Given ");
 #line hidden
-#line 135
- testRunner.When("I call DeleteBacklog with the media id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 136
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 137
- testRunner.And("The response should be \"Media Title 1 removed from backlog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Delete a backlog that doesn\'t exist")]
-        public void DeleteABacklogThatDoesntExist()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a backlog that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 139
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
                 TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Username",
-                            "Password",
-                            "RememberMe"});
+                            "Id",
+                            "MediaId",
+                            "MediaType",
+                            "MediaPoster",
+                            "MediaTitle",
+                            "Category",
+                            "AddedDate"});
                 table27.AddRow(new string[] {
-                            "Username4",
-                            "Password012!",
-                            "false"});
-#line 140
- testRunner.Given("I am the following user", ((string)(null)), table27, "Given ");
+                            "16",
+                            "8",
+                            "game",
+                            "Media Poster 8",
+                            "Media Title 8",
+                            "0",
+                            "2025-02-13"});
+#line 131
+ testRunner.When("I call PostBacklog with the backlog model", ((string)(null)), table27, "When ");
 #line hidden
-#line 143
- testRunner.When("I call DeleteBacklog with the media id 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 144
+#line 134
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 145
- testRunner.And("The response should be \"Backlog not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 135
+ testRunner.And("The response should be \"Media not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a backlog to state Backlog")]
-        public void UpdateABacklogToStateBacklog()
+        [NUnit.Framework.DescriptionAttribute("Delete a backlog")]
+        public void DeleteABacklog()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog to state Backlog", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 147
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 148
- testRunner.When("I call UpdateBacklogState with the id 2 and new state Backlog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 149
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 150
- testRunner.And("The response should be \"Backlog 2 updated to Backlog state\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a backlog to state InProgress")]
-        public void UpdateABacklogToStateInProgress()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog to state InProgress", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 152
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 153
- testRunner.When("I call UpdateBacklogState with the id 1 and new state InProgress", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 154
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 155
- testRunner.And("The response should be \"Backlog 1 updated to InProgress state\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a backlog to state Finished")]
-        public void UpdateABacklogToStateFinished()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog to state Finished", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 157
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 158
- testRunner.When("I call UpdateBacklogState with the id 1 and new state Finished", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 159
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 160
- testRunner.And("The response should be \"Backlog 1 updated to Finished state\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a backlog that doesn\'t exist")]
-        public void UpdateABacklogThatDoesntExist()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 162
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 163
- testRunner.When("I call UpdateBacklogState with the id 16 and new state Finished", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 164
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 165
- testRunner.And("The response should be \"Backlog not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Get a users backlog status that is true")]
-        public void GetAUsersBacklogStatusThatIsTrue()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users backlog status that is true", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 167
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a backlog", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 137
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1351,33 +1130,33 @@ this.FeatureBackground();
                             "Password",
                             "RememberMe"});
                 table28.AddRow(new string[] {
-                            "Username1",
-                            "Password123!",
+                            "Username3",
+                            "Password789!",
                             "false"});
-#line 168
+#line 138
  testRunner.Given("I am the following user", ((string)(null)), table28, "Given ");
 #line hidden
-#line 171
- testRunner.When("I call GetUserBacklogStatus with the media id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 141
+ testRunner.When("I call DeleteBacklog with the media id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 172
+#line 142
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 173
- testRunner.And("The response should be true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
+ testRunner.And("The response should be \"Media Title 1 removed from backlog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Get a users backlog status that is false")]
-        public void GetAUsersBacklogStatusThatIsFalse()
+        [NUnit.Framework.DescriptionAttribute("Delete a backlog that doesn\'t exist")]
+        public void DeleteABacklogThatDoesntExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users backlog status that is false", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 175
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a backlog that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 145
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1395,19 +1174,239 @@ this.FeatureBackground();
                             "Password",
                             "RememberMe"});
                 table29.AddRow(new string[] {
+                            "Username4",
+                            "Password012!",
+                            "false"});
+#line 146
+ testRunner.Given("I am the following user", ((string)(null)), table29, "Given ");
+#line hidden
+#line 149
+ testRunner.When("I call DeleteBacklog with the media id 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 150
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 151
+ testRunner.And("The response should be \"Backlog not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Update a backlog to state Backlog")]
+        public void UpdateABacklogToStateBacklog()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog to state Backlog", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 153
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 154
+ testRunner.When("I call UpdateBacklogState with the id 2 and new state Backlog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 155
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 156
+ testRunner.And("The response should be \"Backlog 2 updated to Backlog state\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Update a backlog to state InProgress")]
+        public void UpdateABacklogToStateInProgress()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog to state InProgress", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 158
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 159
+ testRunner.When("I call UpdateBacklogState with the id 1 and new state InProgress", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 160
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 161
+ testRunner.And("The response should be \"Backlog 1 updated to InProgress state\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Update a backlog to state Finished")]
+        public void UpdateABacklogToStateFinished()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog to state Finished", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 163
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 164
+ testRunner.When("I call UpdateBacklogState with the id 1 and new state Finished", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 165
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 166
+ testRunner.And("The response should be \"Backlog 1 updated to Finished state\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Update a backlog that doesn\'t exist")]
+        public void UpdateABacklogThatDoesntExist()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a backlog that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 168
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 169
+ testRunner.When("I call UpdateBacklogState with the id 16 and new state Finished", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 170
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 171
+ testRunner.And("The response should be \"Backlog not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get a users backlog status that is true")]
+        public void GetAUsersBacklogStatusThatIsTrue()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users backlog status that is true", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 173
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Username",
+                            "Password",
+                            "RememberMe"});
+                table30.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
-#line 176
- testRunner.Given("I am the following user", ((string)(null)), table29, "Given ");
+#line 174
+ testRunner.Given("I am the following user", ((string)(null)), table30, "Given ");
 #line hidden
-#line 179
- testRunner.When("I call GetUserBacklogStatus with the media id 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 177
+ testRunner.When("I call GetUserBacklogStatus with the media id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 180
+#line 178
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 179
+ testRunner.And("The response should be true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get a users backlog status that is false")]
+        public void GetAUsersBacklogStatusThatIsFalse()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a users backlog status that is false", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 181
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Username",
+                            "Password",
+                            "RememberMe"});
+                table31.AddRow(new string[] {
+                            "Username1",
+                            "Password123!",
+                            "false"});
+#line 182
+ testRunner.Given("I am the following user", ((string)(null)), table31, "Given ");
+#line hidden
+#line 185
+ testRunner.When("I call GetUserBacklogStatus with the media id 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 186
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 187
  testRunner.And("The response should be false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

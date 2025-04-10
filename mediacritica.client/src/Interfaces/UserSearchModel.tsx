@@ -1,4 +1,4 @@
 export interface UserSearchModel {
-    fullName: string,
+    username: string,
     joined: Date
 }

@@ -50,15 +50,15 @@ Scenario: Get a users backlog
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 2       | 2                 | 1          | 1                    | 1        | 1                  |
 	And The Backlogged backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 9  | 1      | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
-		| 1  | 1      | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
+		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
 	And The InProgress backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 5  | 1      | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
 	And The Finished backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 13 | 1      | 6       | movie    | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 13 | 6       | movie    | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
 
 Scenario: Get a users backlog that doesn't exist
 	Given I am the following user
@@ -70,11 +70,11 @@ Scenario: Get a users backlog that doesn't exist
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 0       | 0                 | 0          | 0                    | 0        | 0                  |
 	And The Backlogged backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
 	And The InProgress backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
 	And The Finished backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
 
 Scenario: Get a users backlog by Backlogged type
 	Given I am the following user
@@ -83,9 +83,9 @@ Scenario: Get a users backlog by Backlogged type
 	When I call GetBackloggedBacklog
 	Then The status code should be 200
 	And The Backlogged backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 9  | 1      | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
-		| 1  | 1      | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
+		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
 
 Scenario: Get a users backlog by InProgress type
 	Given I am the following user
@@ -94,8 +94,8 @@ Scenario: Get a users backlog by InProgress type
 	When I call GetInProgressBacklog
 	Then The status code should be 200
 	And The InProgress backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 5  | 1      | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
 
 Scenario: Get a users backlog by Finished type
 	Given I am the following user
@@ -104,27 +104,33 @@ Scenario: Get a users backlog by Finished type
 	When I call GetFinishedBacklog
 	Then The status code should be 200
 	And The Finished backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 13 | 1      | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
 
 Scenario: Post a backlog
+	Given I am the following user
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call PostBacklog with the backlog model
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 1      | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 16 | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
 	Then The status code should be 200
 	And The response should be "Media Title 7 added to backlog"
 
 Scenario: Post a backlog but the user doesn't exist
 	When I call PostBacklog with the backlog model
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 5      | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 16 | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
 	Then The status code should be 404
 	And The response should be "User not found"
 
 Scenario: Post a backlog but the media doesn't exist
+	Given I am the following user
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call PostBacklog with the backlog model
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 1      | 8       | game      | Media Poster 8 | Media Title 8 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 16 | 8       | game      | Media Poster 8 | Media Title 8 | 0        | 2025-02-13 |
 	Then The status code should be 404
 	And The response should be "Media not found"
 	

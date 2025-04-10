@@ -105,7 +105,6 @@ namespace MediaCritica.Server.Mappers
             {
                 Id = user.Id,
                 Username = user.Username,
-                FullName = user.FullName,
                 Joined = user.Joined.ToLongDateString(),
             };
 

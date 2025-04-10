@@ -77,7 +77,7 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Username",
                         "Forename",
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Email",
                         "Password",
                         "Joined"});
-            table48.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "1",
                         "Username1",
                         "Test",
@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table48.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "2",
                         "Username2",
                         "Test",
@@ -101,7 +101,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table48.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "3",
                         "Username3",
                         "Test",
@@ -109,7 +109,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table48.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "4",
                         "Username4",
                         "Test",
@@ -118,52 +118,52 @@ namespace MediaCritica.Server.Testing.Features
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table48, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table50, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
                         "MediaTitle",
                         "MediaType",
                         "UserId",
-                        "ReviewerName",
+                        "ReviewerUsername",
                         "Rating",
                         "Title",
                         "Description",
                         "Date"});
-            table49.AddRow(new string[] {
+            table51.AddRow(new string[] {
                         "1",
                         "1",
                         "Test Media Poster",
                         "Test Media Title",
                         "movie",
                         "3",
-                        "Test 3",
+                        "Username3",
                         "4",
                         "Test Title",
                         "Test Description",
                         "2025-01-01"});
 #line 10
- testRunner.And("I have the following reviews", ((string)(null)), table49, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table51, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "ReviewId",
                         "Type"});
-            table50.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "1",
                         "1",
                         "1",
                         "0"});
-            table50.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "2",
                         "2",
                         "1",
                         "1"});
 #line 13
- testRunner.And("I have the following engagements", ((string)(null)), table50, "And ");
+ testRunner.And("I have the following engagements", ((string)(null)), table52, "And ");
 #line hidden
         }
         
@@ -187,16 +187,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table51.AddRow(new string[] {
+                table53.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
 #line 19
- testRunner.Given("I am the following user", ((string)(null)), table51, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table53, "Given ");
 #line hidden
 #line 22
  testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -231,16 +231,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table52.AddRow(new string[] {
+                table54.AddRow(new string[] {
                             "Username2",
                             "Password456!",
                             "false"});
 #line 27
- testRunner.Given("I am the following user", ((string)(null)), table52, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table54, "Given ");
 #line hidden
 #line 30
  testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -275,16 +275,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table53.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Username3",
                             "Password789!",
                             "false"});
 #line 35
- testRunner.Given("I am the following user", ((string)(null)), table53, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table55, "Given ");
 #line hidden
 #line 38
  testRunner.When("I call GetUserEngagement with review id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -352,16 +352,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table54.AddRow(new string[] {
+                table56.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
 #line 48
- testRunner.Given("I am the following user", ((string)(null)), table54, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table56, "Given ");
 #line hidden
 #line 51
  testRunner.When("I call GetUserEngagement with review id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -396,16 +396,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table55.AddRow(new string[] {
+                table57.AddRow(new string[] {
                             "Username4",
                             "Password012!",
                             "false"});
 #line 56
- testRunner.Given("I am the following user", ((string)(null)), table55, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table57, "Given ");
 #line hidden
 #line 59
  testRunner.When("I call ToggleEngagement with review id 1 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -416,18 +416,18 @@ this.FeatureBackground();
 #line 61
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table56.AddRow(new string[] {
+                table58.AddRow(new string[] {
                             "3",
                             "4",
                             "1",
                             "0"});
 #line 62
- testRunner.And("The engagement should have been created", ((string)(null)), table56, "And ");
+ testRunner.And("The engagement should have been created", ((string)(null)), table58, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -453,16 +453,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table57.AddRow(new string[] {
+                table59.AddRow(new string[] {
                             "Username2",
                             "Password456!",
                             "false"});
 #line 67
- testRunner.Given("I am the following user", ((string)(null)), table57, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table59, "Given ");
 #line hidden
 #line 70
  testRunner.When("I call ToggleEngagement with review id 1 and engagement type 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -473,18 +473,18 @@ this.FeatureBackground();
 #line 72
  testRunner.And("The response should be a like", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table58.AddRow(new string[] {
+                table60.AddRow(new string[] {
                             "2",
                             "2",
                             "1",
                             "0"});
 #line 73
- testRunner.And("The engagement should have been updated", ((string)(null)), table58, "And ");
+ testRunner.And("The engagement should have been updated", ((string)(null)), table60, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -510,16 +510,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table59.AddRow(new string[] {
+                table61.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
 #line 78
- testRunner.Given("I am the following user", ((string)(null)), table59, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table61, "Given ");
 #line hidden
 #line 81
  testRunner.When("I call ToggleEngagement with review id 1 and engagement type 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -530,18 +530,18 @@ this.FeatureBackground();
 #line 83
  testRunner.And("The response should be a dislike", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
-                table60.AddRow(new string[] {
+                table62.AddRow(new string[] {
                             "1",
                             "1",
                             "1",
                             "1"});
 #line 84
- testRunner.And("The engagement should have been updated", ((string)(null)), table60, "And ");
+ testRunner.And("The engagement should have been updated", ((string)(null)), table62, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -567,16 +567,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table61.AddRow(new string[] {
+                table63.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
 #line 89
- testRunner.Given("I am the following user", ((string)(null)), table61, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table63, "Given ");
 #line hidden
 #line 92
  testRunner.When("I call ToggleEngagement with review id 1 and engagement type -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -587,13 +587,13 @@ this.FeatureBackground();
 #line 94
  testRunner.And("The response should be a none", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "UserId",
                             "ReviewId",
                             "Type"});
 #line 95
- testRunner.And("The engagement should have been deleted", ((string)(null)), table62, "And ");
+ testRunner.And("The engagement should have been deleted", ((string)(null)), table64, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

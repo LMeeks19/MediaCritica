@@ -8,8 +8,8 @@ Background:
 		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
 		| 4  | Username4 | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
 	And I have the following reviews
-		| Id | MediaId | MediaPoster       | MediaTitle       | MediaType | UserId | ReviewerName | Rating | Title      | Description      | Date       |
-		| 1  | 1       | Test Media Poster | Test Media Title | movie     | 3      | Test 3       | 4      | Test Title | Test Description | 2025-01-01 |
+		| Id | MediaId | MediaPoster       | MediaTitle       | MediaType | UserId | ReviewerUsername | Rating | Title      | Description      | Date       |
+		| 1  | 1       | Test Media Poster | Test Media Title | movie     | 3      | Username3        | 4      | Test Title | Test Description | 2025-01-01 |
 	And I have the following engagements
 		| Id | UserId | ReviewId | Type |
 		| 1  | 1      | 1        | 0    |

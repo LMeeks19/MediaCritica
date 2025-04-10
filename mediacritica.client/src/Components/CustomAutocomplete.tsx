@@ -159,7 +159,7 @@ function CustomAutoComplete() {
                 flexDirection: "column",
               }}
             >
-              <div className="text-xl">{result.fullName}</div>
+              <div className="text-xl">{result.username}</div>
               <div className="text-sm">Joined: {result.joined}</div>
             </Box>
           </Box>
@@ -180,14 +180,14 @@ function CustomAutoComplete() {
         selectedSearchTab === 0 ? mediaSearchResults : usersSearchResults
       }
       getOptionLabel={(result) =>
-        selectedSearchTab === 0 ? result.title : result.fullName
+        selectedSearchTab === 0 ? result.title : result.username
       }
       onInputChange={(_e, v) => setSearchTerm(v)}
       onChange={(_e, result) => {
         if (selectedSearchTab === 0 && result?.imdbID) {
           navigate(`/${result.type}/${result.imdbID}`);
         } else if (selectedSearchTab === 1 && result?.id) {
-          navigate(`/view-user/${result.id}`);
+          navigate(`/view-user/${result.username}`);
         }
       }}
       renderOption={getRenderOption}

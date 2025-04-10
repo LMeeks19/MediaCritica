@@ -73,7 +73,7 @@ Scenario: Auto login a user but the token has expired
 	And The response should be "Authentication Expired"
 
 Scenario: Get users by search
-	When I call GetUsersBySearch with search term "Tony"
+	When I call GetUsersBySearch with search term "T_Stark"
 	Then The status code should be 200
 	And The UserSearchModels should be
 		| Id | Username | FullName   | Joined                    |

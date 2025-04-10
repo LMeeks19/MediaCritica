@@ -103,7 +103,7 @@ namespace MediaCritica.Server.Controllers
         {
             var userQuery = _databaseContext.Users
                 .AsEnumerable()
-                .Where(u => u.FullName.StartsWith(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .Where(u => u.Username.StartsWith(searchTerm, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             var users = userQuery

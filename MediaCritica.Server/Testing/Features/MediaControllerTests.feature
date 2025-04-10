@@ -27,11 +27,11 @@ Background:
 		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | EpisodeNo | SeasonNo | SeasonId |
 		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2024-01-19 | 120 min | Media Title 4 | episode | Writer 1 | 2022 | 6          | 1500      | 1         | 1        | 1        |
 	And I have the following reviews
-		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title        | Description        | Date       |
-		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Test 3       | 1      | Test Title 1 | Test Description 1 | 2025-02-04 |
-		| 2  | 1       | Media Poster 1 | Media Title 1 | movie     | 2      | Test 3       | 2      | Test Title 2 | Test Description 2 | 2025-02-06 |
-		| 3  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Test 3       | 2      | Test Title 3 | Test Description 3 | 2024-02-08 |
-		| 4  | 5       | Media Poster 5 | Media Title 5 | series    | 4      | Test 4       | 5      | Test Title 4 | Test Description 4 | 2025-02-26 |
+		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerUsername | Rating | Title        | Description        | Date       |
+		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Username3        | 1      | Test Title 1 | Test Description 1 | 2025-02-04 |
+		| 2  | 1       | Media Poster 1 | Media Title 1 | movie     | 2      | Username3        | 2      | Test Title 2 | Test Description 2 | 2025-02-06 |
+		| 3  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Username3        | 2      | Test Title 3 | Test Description 3 | 2024-02-08 |
+		| 4  | 5       | Media Poster 5 | Media Title 5 | series    | 4      | Username4        | 5      | Test Title 4 | Test Description 4 | 2025-02-26 |
 
 Scenario: Get media by external search
 	When I call GetMediaByExternalSearch with search term "Media Title 1"

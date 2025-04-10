@@ -11,8 +11,8 @@ Background:
 		| Id | Actors           | Awards  | Countries | Directors              | Genres            | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
 		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama     | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | movie   | Writer 1 | 2020 | 8.5        | 1500      | $300,000,000 |     |         |            |
 	And I have the following reviews
-		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title      | Description      | Date       |
-		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Test 3       | 4      | Test Title | Test Description | 2025-01-01 |
+		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerUsername | Rating | Title      | Description      | Date       |
+		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Username3        | 4      | Test Title | Test Description | 2025-01-01 |
 	And I have the following comments
 		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted |
 		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27  | false     |

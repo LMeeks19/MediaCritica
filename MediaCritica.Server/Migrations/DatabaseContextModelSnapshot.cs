@@ -265,7 +265,7 @@ namespace MediaCritica.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorUsername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -425,7 +425,7 @@ namespace MediaCritica.Server.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("ReviewerName")
+                    b.Property<string>("ReviewerUsername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

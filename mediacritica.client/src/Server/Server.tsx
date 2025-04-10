@@ -135,8 +135,12 @@ export async function DeleteUser(): Promise<RequestValue> {
   return response;
 }
 
-export async function GetUserSummary(userId: number): Promise<UserSummaryModel> {
-  const response = await MakeRequest<UserSummaryModel>(`/User/GetUserSummary/${userId}`);
+export async function GetUserSummary(
+  username: string
+): Promise<UserSummaryModel> {
+  const response = await MakeRequest<UserSummaryModel>(
+    `/User/GetUserSummary/${username}`
+  );
   return response;
 }
 
@@ -393,7 +397,7 @@ export async function GetBacklog(): Promise<BacklogObjectModel> {
 }
 
 export async function GetUserMediaBackloggedStatus(
-  mediaId: string,
+  mediaId: string
 ): Promise<RequestValue> {
   const response = await MakeRequest<RequestValue>(
     `/Backlog/GetUserBacklogStatus/${mediaId}`
@@ -493,11 +497,10 @@ export async function GetUserMilestones(): Promise<UserMilestoneModelObject[]> {
 
 // Engagement API Calls
 export async function GetCurrentUserReviewEngagement(
-  reviewId: number,
-  userId: number
+  reviewId: number
 ): Promise<number> {
   const response = await MakeRequest<number>(
-    `/Engagement/GetUserEngagement/${reviewId}/${userId ?? -1}`
+    `/Engagement/GetUserEngagement/${reviewId}`
   );
   return response;
 }
@@ -513,10 +516,10 @@ export async function ToggleReviewEngagement(
 }
 
 export async function GetUserFollow(
-  followedId: number
+  followedUsername: string
 ): Promise<UserFollowModel> {
   const response = await MakeRequest<UserFollowModel>(
-    `/Follow/GetUserFollowStatus/${followedId}`
+    `/Follow/GetUserFollowStatus/${followedUsername}`
   );
   return response;
 }

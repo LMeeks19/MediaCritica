@@ -172,10 +172,8 @@ function AccountPage() {
     stage: keyof BacklogObjectModel,
     offset: number
   ): Promise<BacklogModel[]> {
-    if (stage === "inProgress")
-      return await GetInProgressBacklog(offset, 10);
-    else if (stage === "finished")
-      return await GetFinishedBacklog(offset, 10);
+    if (stage === "inProgress") return await GetInProgressBacklog(offset, 10);
+    else if (stage === "finished") return await GetFinishedBacklog(offset, 10);
     return await GetBackloggedBacklog(offset, 10);
   }
 
@@ -479,6 +477,18 @@ function AccountPage() {
               <Fragment>
                 <div className="account-details">
                   <AccountDetail
+                    accountFieldName="Username"
+                    accountFieldType={AccountFieldType.Username}
+                    accountFieldValue={user.username}
+                    inputType="text"
+                  />
+                  <AccountDetail
+                    accountFieldName="Email"
+                    accountFieldType={AccountFieldType.Email}
+                    accountFieldValue={user.email}
+                    inputType="text"
+                  />
+                  <AccountDetail
                     accountFieldName="Forename"
                     accountFieldType={AccountFieldType.Forename}
                     accountFieldValue={user.forename}
@@ -490,12 +500,7 @@ function AccountPage() {
                     accountFieldValue={user.surname}
                     inputType="text"
                   />
-                  <AccountDetail
-                    accountFieldName="Email"
-                    accountFieldType={AccountFieldType.Email}
-                    accountFieldValue={user.email}
-                    inputType="text"
-                  />
+
                   <AccountDetail
                     accountFieldName="Password"
                     accountFieldType={AccountFieldType.Password}
@@ -555,7 +560,7 @@ function AccountPage() {
                             className="follower"
                             key={follower.userId}
                             onClick={() =>
-                              navigate(`/view-user/${follower.userId}`)
+                              navigate(`/view-user/${follower.username}`)
                             }
                           >
                             <Avatar
@@ -609,7 +614,7 @@ function AccountPage() {
                             className="follower"
                             key={follower.userId}
                             onClick={() =>
-                              navigate(`/view-user/${follower.userId}`)
+                              navigate(`/view-user/${follower.username}`)
                             }
                           >
                             <Avatar
@@ -702,7 +707,7 @@ function AccountPage() {
                               <CardActionArea
                                 onClick={() =>
                                   navigate(
-                                    `/${review.mediaType}/${review.mediaId}/reviews/${review.id}}`
+                                    `/${review.mediaType}/${review.mediaId}/reviews/${review.id}`
                                   )
                                 }
                               >

@@ -71,10 +71,9 @@ function ViewReviewPage() {
       const reviewData = await GetReview(Number(reviewId!));
       setReview(reviewData);
 
-      if (user.id !== undefined) {
+      if (user.id !== undefined && user.id !== reviewData.reviewerId) {
         var engagementStatus = await GetCurrentUserReviewEngagement(
-          Number(reviewId!),
-          user.id
+          Number(reviewId!)
         );
         setEngagement(engagementStatus);
       }
@@ -89,10 +88,7 @@ function ViewReviewPage() {
   }, []);
 
   async function ToggleUserEngagement(value: number | null) {
-    const newUserEngagement = await ToggleReviewEngagement(
-      review.id,
-      value
-    );
+    const newUserEngagement = await ToggleReviewEngagement(review.id, value);
 
     if (engagement === -1 && newUserEngagement === 0)
       setReview({ ...review, likes: (review.likes += 1) });
@@ -234,10 +230,10 @@ function ViewReviewPage() {
                   <span
                     className="reviewer"
                     onClick={() =>
-                      navigate(`/view-user/${review.reviewerName}`)
+                      navigate(`/view-user/${review.reviewerUsername}`)
                     }
                   >
-                    {review.reviewerName}
+                    {review.reviewerUsername}
                   </span>
                 </div>
               </div>

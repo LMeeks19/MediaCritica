@@ -19,7 +19,7 @@ namespace MediaCritica.Server.Mappers
                 MediaType = reviewModel.MediaType,
                 Rating = reviewModel.Rating,
                 UserId = reviewModel.ReviewerId,
-                ReviewerName = reviewModel.ReviewerName,
+                ReviewerUsername = reviewModel.ReviewerUsername,
                 Title = reviewModel.Title,
             };
         }
@@ -40,7 +40,7 @@ namespace MediaCritica.Server.Mappers
                 MediaEpisode = review.Media.Type == MediaType.Episode ? $"S{(review.Media as Episode)!.EpisodeNo}:E{(review.Media as Episode)!.SeasonNo}" : null,
                 Rating = review.Rating,
                 ReviewerId = review.UserId,
-                ReviewerName = review.ReviewerName,
+                ReviewerUsername = review.ReviewerUsername,
                 Title = review.Title,
                 Likes = review.Engagements.Count(a => a.Type == EngagementType.Like),
                 Dislikes = review.Engagements.Count(a => a.Type == EngagementType.Dislike),
@@ -55,7 +55,7 @@ namespace MediaCritica.Server.Mappers
                 Id = review.Id,
                 Date = review.Date,
                 Rating = review.Rating,
-                ReviewerName = review.ReviewerName,
+                ReviewerUsername = review.ReviewerUsername,
                 MediaType = review.MediaType,
                 Title = review.Title,
             };

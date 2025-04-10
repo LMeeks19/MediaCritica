@@ -209,7 +209,6 @@ namespace MediaCritica.Server.Testing.Steps
 
                 Assert.AreEqual(expectedUserSearchModel.Id, actualUserSearchModel.Id);
                 Assert.AreEqual(expectedUserSearchModel.Username, actualUserSearchModel.Username);
-                Assert.AreEqual(expectedUserSearchModel.FullName, actualUserSearchModel.FullName);
                 Assert.AreEqual(expectedUserSearchModel.Joined, actualUserSearchModel.Joined);
             }
         }

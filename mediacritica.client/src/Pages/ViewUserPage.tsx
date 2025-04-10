@@ -51,28 +51,20 @@ function ViewUserPage() {
     {} as UserSummaryModel
   );
   const navigate = useNavigate();
-  const { userId } = useParams();
+  const { username } = useParams();
 
   useEffect(() => {
     async function FetchUserSummary() {
       try {
-        Number(userId!);
       } catch {
         navigate("/");
       }
       setIsLoading(true);
-      const userSummaryData = await GetUserSummary(
-        Number(userId!)
-      );
+      const userSummaryData = await GetUserSummary(username!);
       setUserSummary(userSummaryData);
       var userFollowStatus = null;
-      if (
-        user.id !== undefined &&
-        user.id !== Number(userId!)
-      )
-        userFollowStatus = await GetUserFollow(
-          Number(userId!)
-        );
+      if (user.id !== undefined && user.username !== username)
+        userFollowStatus = await GetUserFollow(username!);
       setUserFollow(userFollowStatus);
       setIsLoading(false);
     }
@@ -123,7 +115,8 @@ function ViewUserPage() {
           <TopBar />
           <div className="header">
             <div className="flex flex-col gap-1">
-              <h1>{userSummary.name}</h1>
+              <h1>{userSummary.username}</h1>
+              <span>{userSummary.name}</span>
               <span>Joined: {format(userSummary.joined, "do MMMM yyyy")}</span>
             </div>
             <div className="actions">
@@ -309,7 +302,7 @@ function ViewUserPage() {
                           <CardActionArea
                             onClick={() =>
                               navigate(
-                                `/${item.mediaType}/${item.mediaId}/reviews/${item.id}}`
+                                `/${item.mediaType}/${item.mediaId}/reviews/${item.id}`
                               )
                             }
                           >
