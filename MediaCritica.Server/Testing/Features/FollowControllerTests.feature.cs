@@ -79,6 +79,7 @@ namespace MediaCritica.Server.Testing.Features
 #line hidden
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
@@ -86,6 +87,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Joined"});
             table63.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
@@ -93,6 +95,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-01"});
             table63.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
@@ -100,6 +103,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-02"});
             table63.AddRow(new string[] {
                         "3",
+                        "Username3",
                         "Test",
                         "3",
                         "test3@email.com",
@@ -158,11 +162,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table65.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 16
@@ -250,11 +254,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table67.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 32
@@ -337,18 +341,18 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table69.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 47
  testRunner.Given("I am the following user", ((string)(null)), table69, "Given ");
 #line hidden
 #line 50
- testRunner.When("I call GetUserFollowStatus on userId 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call GetUserFollowStatus on username Username2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 51
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -393,10 +397,10 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 57
- testRunner.When("I call GetUserFollowStatus on userId 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call GetUserFollowStatus on username Username3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 58
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 59
  testRunner.And("The response should be \"Follow relationship not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

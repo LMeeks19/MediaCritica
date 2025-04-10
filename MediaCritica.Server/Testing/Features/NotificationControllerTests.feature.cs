@@ -79,6 +79,7 @@ namespace MediaCritica.Server.Testing.Features
 #line hidden
             TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
@@ -86,6 +87,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Joined"});
             table131.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
@@ -93,6 +95,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-01"});
             table131.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
@@ -100,6 +103,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-02"});
             table131.AddRow(new string[] {
                         "3",
+                        "Username3",
                         "Test",
                         "3",
                         "test3@email.com",
@@ -182,11 +186,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table133.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 18
@@ -396,11 +400,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table135.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 52

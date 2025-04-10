@@ -2,6 +2,7 @@
 {
     public enum UpdateUserEnum
     {
+        Username,
         Forename,
         Surname,
         Email,

@@ -79,6 +79,7 @@ namespace MediaCritica.Server.Testing.Features
 #line hidden
             TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
@@ -86,6 +87,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Joined"});
             table141.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
@@ -93,6 +95,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-01"});
             table141.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
@@ -100,6 +103,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-02"});
             table141.AddRow(new string[] {
                         "3",
+                        "Username3",
                         "Test",
                         "3",
                         "test3@email.com",
@@ -107,6 +111,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-03"});
             table141.AddRow(new string[] {
                         "4",
+                        "Username4",
                         "Test",
                         "4",
                         "test4@email.com",
@@ -827,11 +832,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table153.AddRow(new string[] {
-                            "test3@email.com",
+                            "Username3",
                             "Password789!",
                             "false"});
 #line 95

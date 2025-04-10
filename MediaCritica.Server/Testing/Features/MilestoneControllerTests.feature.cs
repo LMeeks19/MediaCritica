@@ -79,6 +79,7 @@ namespace MediaCritica.Server.Testing.Features
 #line hidden
             TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
@@ -86,6 +87,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Joined"});
             table128.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
@@ -93,6 +95,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-01"});
             table128.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
@@ -110,7 +113,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUserMilestones of user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 9
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -124,20 +127,20 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table129.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
-#line 10
+#line 9
  testRunner.Given("I am the following user", ((string)(null)), table129, "Given ");
 #line hidden
-#line 13
+#line 12
  testRunner.When("I call GetUserMilestones", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
+#line 13
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
@@ -161,7 +164,7 @@ this.FeatureBackground();
                 table130.AddRow(new string[] {
                             "Social Connectivity",
                             "2"});
-#line 15
+#line 14
  testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table130, "And ");
 #line hidden
             }
@@ -175,7 +178,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUserMilestones of user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 24
+#line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -188,13 +191,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 25
+#line 24
  testRunner.When("I call GetUserMilestones", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 26
+#line 25
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 27
+#line 26
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

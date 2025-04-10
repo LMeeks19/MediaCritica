@@ -6,7 +6,6 @@ namespace MediaCritica.Server
     public class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-
         public DbSet<AuthToken> AuthTokens { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Comment> Comments { get; set; }

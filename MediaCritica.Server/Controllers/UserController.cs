@@ -80,8 +80,8 @@ namespace MediaCritica.Server.Controllers
             return Ok(new { Message = "User Logged Out" });
         }
 
-        [HttpGet("[action]/{email}")]
-        public async Task<IActionResult> GetUserByEmail(string email)
+        [HttpGet("[action]/{username}")]
+        public async Task<IActionResult> GetUserByUsername(string username)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Preference)
@@ -90,7 +90,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(u => u.Followers)
                 .Include(u => u.Following)
                 .Include(u => u.Notifications)
-                .SingleOrDefaultAsync(u => u.Email == email);
+                .SingleOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
                 return NotFound(new { Message = "User not found" });
@@ -121,9 +121,14 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> PostUser([FromBody] CreateUserModel userModel)
         {
-            var userExists = await _databaseContext.Users.AnyAsync(u => u.Email == userModel.Email);
+            var usernameExists = await _databaseContext.Users.AnyAsync(u => u.Username == userModel.Username);
 
-            if (userExists)
+            if (usernameExists)
+                return Conflict(new { Message = "Username already in use" });
+
+            var emailExists = await _databaseContext.Users.AnyAsync(u => u.Email == userModel.Email);
+
+            if (emailExists)
                 return Conflict(new { Message = "Email already in use" });
 
             var user = _mapper.UserMapper.MapUser(userModel);
@@ -161,6 +166,11 @@ namespace MediaCritica.Server.Controllers
 
             switch (updateUserModel.Type)
             {
+                case UpdateUserEnum.Username:
+                    if (await _databaseContext.Users.AnyAsync(u => u.Username == updateUserModel.Value))
+                        return Conflict(new { Message = "Username already in use" });
+                    user.Username = updateUserModel.Value;
+                    break;
                 case UpdateUserEnum.Forename:
                     user.Forename = updateUserModel.Value;
                     break;
@@ -168,9 +178,14 @@ namespace MediaCritica.Server.Controllers
                     user.Surname = updateUserModel.Value;
                     break;
                 case UpdateUserEnum.Email:
+                    if (await _databaseContext.Users.AnyAsync(u => u.Email == updateUserModel.Value))
+                        return Conflict(new { Message = "Email already in use" });
                     user.Email = updateUserModel.Value;
                     break;
                 case UpdateUserEnum.Password:
+                    var response = _helpers.AuthenticationHelper.IsValidPassword(updateUserModel.Value, user.Password);
+                    if (!response.IsValid)
+                        return BadRequest(new { response.Message });
                     user.Password = updateUserModel.Value;
                     break;
                 default:
@@ -179,8 +194,9 @@ namespace MediaCritica.Server.Controllers
 
             await _databaseContext.SaveChangesAsync();
 
-            return await GetUserByEmail(user.Email);
+            return await GetUserByUsername(user.Username);
         }
+
 
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateUserPreference([FromBody] PreferenceModel preferenceModel)
@@ -198,8 +214,8 @@ namespace MediaCritica.Server.Controllers
             return Ok(preferenceModel);
         }
 
-        [HttpGet("[action]/{userId}")]
-        public async Task<IActionResult> GetUserSummary(int userId)
+        [HttpGet("[action]/{username}")]
+        public async Task<IActionResult> GetUserSummary(string username)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Backlogs)
@@ -213,7 +229,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(u => u.Engagements)
                 .Include(u => u.Followers)
                 .Include(u => u.Following)
-                .SingleOrDefaultAsync(u => u.Id == userId);
+                .SingleOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
                 return NotFound(new { Message = "User not found" });

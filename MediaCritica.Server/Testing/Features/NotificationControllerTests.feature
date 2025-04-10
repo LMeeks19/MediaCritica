@@ -2,10 +2,10 @@ Feature: NotificationControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
 	And I have the following notifications
 		| Id | RecipientId | AuthorName | Message        | IsRead | IsBookmarked | CreatedAt  |
 		| 1  | 1           | Test 2     | Test Message 1 | false  | false        | 2024-04-01 |
@@ -16,8 +16,8 @@ Background:
 
 Scenario: Get Notifications
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserNotifications 
 	Then The status code should be 200
 	And The NotificationModels should be
@@ -50,8 +50,8 @@ Scenario: Mark all notifications as read but all already read
 
 Scenario: Mark all notifications as read
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call MarkAllAsRead
 	Then The status code should be 200
 	And The response should be "All notifications marked as read"

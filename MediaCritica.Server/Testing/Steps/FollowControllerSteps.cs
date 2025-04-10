@@ -22,10 +22,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowing(offset);
         }
 
-        [When(@"I call GetUserFollowStatus on userId (\d+)")]
-        public async Task WhenICallGetUserFollowStatusOnUserId(int followedId)
+        [When(@"I call GetUserFollowStatus on username (.*)")]
+        public async Task WhenICallGetUserFollowStatusOnUsername(string username)
         {
-            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowStatus(followedId);
+            GlobalSteps._response = await GlobalSteps._controller.FollowController.GetUserFollowStatus(username);
         }
 
         [When(@"I call FollowUser with these values")]

@@ -79,6 +79,7 @@ namespace MediaCritica.Server.Testing.Features
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
@@ -86,6 +87,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Joined"});
             table48.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
@@ -93,6 +95,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-01"});
             table48.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
@@ -100,6 +103,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-02"});
             table48.AddRow(new string[] {
                         "3",
+                        "Username3",
                         "Test",
                         "3",
                         "test3@email.com",
@@ -107,6 +111,7 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-01-03"});
             table48.AddRow(new string[] {
                         "4",
+                        "Username4",
                         "Test",
                         "4",
                         "test4@email.com",
@@ -183,11 +188,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table51.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 19
@@ -227,11 +232,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table52.AddRow(new string[] {
-                            "test2@email.com",
+                            "Username2",
                             "Password456!",
                             "false"});
 #line 27
@@ -271,11 +276,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table53.AddRow(new string[] {
-                            "test3@email.com",
+                            "Username3",
                             "Password789!",
                             "false"});
 #line 35
@@ -348,11 +353,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table54.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 48
@@ -392,11 +397,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table55.AddRow(new string[] {
-                            "test4@email.com",
+                            "Username4",
                             "Password012!",
                             "false"});
 #line 56
@@ -449,11 +454,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table57.AddRow(new string[] {
-                            "test2@email.com",
+                            "Username2",
                             "Password456!",
                             "false"});
 #line 67
@@ -506,11 +511,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table59.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 78
@@ -563,11 +568,11 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Email",
+                            "Username",
                             "Password",
                             "RememberMe"});
                 table61.AddRow(new string[] {
-                            "test1@email.com",
+                            "Username1",
                             "Password123!",
                             "false"});
 #line 89

@@ -69,15 +69,16 @@ namespace MediaCritica.Server.Controllers
             return Ok(following);
         }
 
-        [HttpGet("[action]/{followedId}")]
-        public async Task<IActionResult> GetUserFollowStatus(int followedId)
+        [HttpGet("[action]/{followedUsername}")]
+        public async Task<IActionResult> GetUserFollowStatus(string followedUsername)
         {
             var followerId = _helper.AuthenticationHelper.GetUserId();
             var userFollow = await _databaseContext.UserFollows
-                .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.FollowedId == followedId);
+                .Include(f => f.Followed)
+                .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.Followed.Username == followedUsername);
 
             if (userFollow == null)
-                return Ok(new { Message = "Follow relationship not found" });
+                return NotFound(new { Message = "Follow relationship not found" });
 
             return Ok(new UserFollowModel
             {
