@@ -25,7 +25,6 @@ function AccountDetail(props: AccountDetailsProps) {
     fieldType: props.accountFieldType,
   } as AccountEditModel);
   const [fieldValue, setFieldValue] = useState<AccountFieldValue>({
-    userId: -1,
     value: "",
     type: props.accountFieldType,
   } as AccountFieldValue);
@@ -40,7 +39,7 @@ function AccountDetail(props: AccountDetailsProps) {
 
   async function UpdateAccountField() {
     const userData = await UpdateUser(fieldValue);
-    setUser(userData);
+    if (userData.id !== undefined) setUser(userData);
     ResetAccountField();
   }
 

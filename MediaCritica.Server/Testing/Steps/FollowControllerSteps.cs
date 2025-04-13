@@ -66,7 +66,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.IsNotNull(actualUserFollowSummaryModel);
 
                 Assert.AreEqual(expectedUserFollowSummaryModel.Id, actualUserFollowSummaryModel.Id);
-                Assert.AreEqual(expectedUserFollowSummaryModel.UserId, actualUserFollowSummaryModel.UserId);
+                Assert.AreEqual(expectedUserFollowSummaryModel.Username, actualUserFollowSummaryModel.Username);
                 Assert.AreEqual(expectedUserFollowSummaryModel.Name, actualUserFollowSummaryModel.Name);
                 Assert.AreEqual(expectedUserFollowSummaryModel.FollowedOn, actualUserFollowSummaryModel.FollowedOn);
             }

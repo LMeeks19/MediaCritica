@@ -84,7 +84,6 @@ namespace MediaCritica.Server.Testing.Steps
                 Forename = row["Forename"],
                 Surname = row["Surname"],
                 Email = row["Email"],
-                Password = row["Password"],
             };
 
             AuthToken? authToken = null;
@@ -120,7 +119,6 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(expectedAuthModel.User.Forename, actualUserAuthModel.User.Forename);
             Assert.AreEqual(expectedAuthModel.User.Surname, actualUserAuthModel.User.Surname);
             Assert.AreEqual(expectedAuthModel.User.Email, actualUserAuthModel.User.Email);
-            Assert.AreEqual(expectedAuthModel.User.Password, actualUserAuthModel.User.Password);
         }
 
         [Then(@"The UserModel response should be")]
@@ -140,7 +138,6 @@ namespace MediaCritica.Server.Testing.Steps
                 Forename = row["Forename"],
                 Surname = row["Surname"],
                 Email = row["Email"],
-                Password = row["Password"],
                 Preference = new PreferenceModel
                 {
                     Id = int.Parse(row["PreferenceId"]),
@@ -154,7 +151,6 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(actualUser.Forename, expectedUser.Forename);
             Assert.AreEqual(actualUser.Surname, expectedUser.Surname);
             Assert.AreEqual(actualUser.Email, expectedUser.Email);
-            Assert.AreEqual(actualUser.Password, expectedUser.Password);
             Assert.AreEqual(actualUser.Preference.Id, expectedUser.Preference.Id);
             Assert.AreEqual(actualUser.Preference.Theme, expectedUser.Preference.Theme);
             Assert.AreEqual(actualUser.Preference.Palette, expectedUser.Preference.Palette);

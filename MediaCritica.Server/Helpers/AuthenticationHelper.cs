@@ -20,16 +20,16 @@ namespace MediaCritica.Server.Helpers
         {
             var user = await GetUser(userLoginModel.Username);
 
-            if (user == null || userLoginModel.Password != user.Password)
+            if (user == null || !VerifyPassword(userLoginModel.Password, user.Password))
                 return null;
 
             return user;
         }
 
-        public PasswordValidationResultModel IsValidPassword(string newPassword, string oldPassword)
+        public PasswordValidationResultModel IsValidPassword(string newPassword, string? oldPassword = null)
         {
-            if (newPassword == oldPassword)
-                return new PasswordValidationResultModel { IsValid = false, Message = "Password must be the same as the existing password" };
+            if (oldPassword != null && VerifyPassword(newPassword, oldPassword))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must not be the same as the existing password" };
             else if (newPassword.Length < 8)
                 return new PasswordValidationResultModel { IsValid = false, Message = "Password must be at least 8 characters long" };
             else if (!Regex.IsMatch(newPassword, @"^[a-zA-Z].*"))
@@ -46,6 +46,15 @@ namespace MediaCritica.Server.Helpers
                 return new PasswordValidationResultModel { IsValid = false, Message = "Password must not contain spaces" };
 
             return new PasswordValidationResultModel { IsValid = true };
+        }
+
+        public string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
         public async Task<User?> GetUser(string? username = null, int? id = null)

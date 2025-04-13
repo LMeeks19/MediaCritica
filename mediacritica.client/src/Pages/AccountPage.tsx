@@ -558,7 +558,7 @@ function AccountPage() {
                         return (
                           <div
                             className="follower"
-                            key={follower.userId}
+                            key={follower.username}
                             onClick={() =>
                               navigate(`/view-user/${follower.username}`)
                             }
@@ -612,7 +612,7 @@ function AccountPage() {
                         return (
                           <div
                             className="follower"
-                            key={follower.userId}
+                            key={follower.username}
                             onClick={() =>
                               navigate(`/view-user/${follower.username}`)
                             }

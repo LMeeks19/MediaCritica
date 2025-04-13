@@ -38,15 +38,17 @@ namespace MediaCritica.Server.Testing
         [Given(@"I have the following users")]
         public async Task GivenIHaveTheFollowingUsers(Table table)
         {
-            var users = table.CreateSet(row =>
+            var users = table.Rows.Select(row =>
             {
+                var password = BCrypt.Net.BCrypt.HashPassword(row["Password"]);
                 return new User
                 {
                     Id = int.Parse(row["Id"]),
+                    Username = row["Username"],
                     Forename = row["Forename"],
                     Surname = row["Surname"],
                     Email = row["Email"],
-                    Password = row["Password"],
+                    Password = password,
                     Joined = DateOnly.Parse(row["Joined"])
                 };
             }).ToList();

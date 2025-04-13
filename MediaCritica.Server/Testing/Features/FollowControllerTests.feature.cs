@@ -180,17 +180,17 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
+                            "Username",
                             "Name",
                             "FollowedOn"});
                 table68.AddRow(new string[] {
                             "3",
-                            "3",
+                            "Username3",
                             "Test 3",
                             "2025-01-03"});
                 table68.AddRow(new string[] {
                             "2",
-                            "2",
+                            "Username2",
                             "Test 2",
                             "2025-01-02"});
 #line 21
@@ -272,12 +272,12 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
-                            "UserId",
+                            "Username",
                             "Name",
                             "FollowedOn"});
                 table70.AddRow(new string[] {
                             "1",
-                            "2",
+                            "Username2",
                             "Test 2",
                             "2025-01-01"});
 #line 37

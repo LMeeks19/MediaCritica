@@ -131,6 +131,11 @@ namespace MediaCritica.Server.Controllers
             if (emailExists)
                 return Conflict(new { Message = "Email already in use" });
 
+            var response = _helpers.AuthenticationHelper.IsValidPassword(userModel.Password);
+            if (!response.IsValid)
+                return BadRequest(new { response.Message });
+
+            userModel.Password = _helpers.AuthenticationHelper.HashPassword(userModel.Password);
             var user = _mapper.UserMapper.MapUser(userModel);
 
             await _databaseContext.Users.AddAsync(user);
@@ -186,7 +191,7 @@ namespace MediaCritica.Server.Controllers
                     var response = _helpers.AuthenticationHelper.IsValidPassword(updateUserModel.Value, user.Password);
                     if (!response.IsValid)
                         return BadRequest(new { response.Message });
-                    user.Password = updateUserModel.Value;
+                    user.Password = _helpers.AuthenticationHelper.HashPassword(updateUserModel.Value);
                     break;
                 default:
                     return BadRequest(new { Message = "Invalid update type" });

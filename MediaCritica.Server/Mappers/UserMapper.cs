@@ -40,7 +40,6 @@ namespace MediaCritica.Server.Mappers
                 Forename = user.Forename,
                 Surname = user.Surname,
                 Email = user.Email,
-                Password = user.Password,
                 Preference = user.Preference != null ? MapPreference(user.Preference) : null,
                 TotalReviews = user.Reviews.Count,
                 TotalBacklogs = user.Backlogs.Count,

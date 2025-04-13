@@ -110,15 +110,13 @@ button:disabled {
 @media screen and (max-width: 1000px) {
   .header,
   .sub-header {
-    justify-content: center !important;
-
     span {
       text-align: center;
     }
 
     .actions {
       width: 100% !important;
-      justify-content: center !important;
+      justify-content: end !important;
     }
   }
 }
@@ -243,7 +241,7 @@ button:disabled {
 
 .MuiInput-underline::before,
 .MuiInput-underline::after {
-  border-bottom: 1px solid var(--light-dark) !important;
+  border: none !important;
 }
 
 .MuiListItemIcon-root {

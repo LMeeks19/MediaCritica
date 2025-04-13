@@ -595,7 +595,6 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password",
                             "PreferenceId",
                             "Theme",
                             "Palette"});
@@ -605,7 +604,6 @@ this.FeatureBackground();
                             "Bruce",
                             "Banner",
                             "test1@email.com",
-                            "Password123!",
                             "1",
                             "System",
                             "#000000"});
@@ -1055,7 +1053,6 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password",
                             "PreferenceId",
                             "Theme",
                             "Palette"});
@@ -1065,7 +1062,6 @@ this.FeatureBackground();
                             "Bruce",
                             "Banner",
                             "test1@email.com",
-                            "Password123!",
                             "1",
                             "System",
                             "#000000"});
@@ -1175,7 +1171,6 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password",
                             "PreferenceId",
                             "Theme",
                             "Palette"});
@@ -1185,7 +1180,6 @@ this.FeatureBackground();
                             "NewForename",
                             "Banner",
                             "test1@email.com",
-                            "Password123!",
                             "1",
                             "System",
                             "#000000"});
@@ -1245,7 +1239,6 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password",
                             "PreferenceId",
                             "Theme",
                             "Palette"});
@@ -1255,7 +1248,6 @@ this.FeatureBackground();
                             "Bruce",
                             "NewSurname",
                             "test1@email.com",
-                            "Password123!",
                             "1",
                             "System",
                             "#000000"});
@@ -1315,7 +1307,6 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password",
                             "PreferenceId",
                             "Theme",
                             "Palette"});
@@ -1325,7 +1316,6 @@ this.FeatureBackground();
                             "Bruce",
                             "Banner",
                             "NewEmail@email.com",
-                            "Password123!",
                             "1",
                             "System",
                             "#000000"});
@@ -1435,7 +1425,6 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password",
                             "PreferenceId",
                             "Theme",
                             "Palette"});
@@ -1445,7 +1434,6 @@ this.FeatureBackground();
                             "Bruce",
                             "Banner",
                             "test1@email.com",
-                            "NewPassword123!",
                             "1",
                             "System",
                             "#000000"});

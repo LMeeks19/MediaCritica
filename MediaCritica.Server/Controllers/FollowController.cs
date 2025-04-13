@@ -32,8 +32,8 @@ namespace MediaCritica.Server.Controllers
                 .Select(f => new UserFollowSummaryModel
                 {
                     Id = f.Id,
-                    UserId = f.Follower.Id,
-                    Name = $"{f.Follower.Forename} {f.Follower.Surname}",
+                    Username = f.Follower.Username,
+                    Name = f.Follower.FullName,
                     FollowedOn = f.FollowedOn,
                 })
                 .ToList();
@@ -60,8 +60,8 @@ namespace MediaCritica.Server.Controllers
                 .Select(f => new UserFollowSummaryModel
                 {
                     Id = f.Id,
-                    UserId = f.Followed.Id,
-                    Name = $"{f.Followed.Forename} {f.Followed.Surname}",
+                    Username = f.Followed.Username,
+                    Name = f.Followed.FullName,
                     FollowedOn = f.FollowedOn,
                 })
                 .ToList();

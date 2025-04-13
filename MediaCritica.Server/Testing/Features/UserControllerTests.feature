@@ -83,8 +83,8 @@ Scenario: Get a user by username that exists
 	When I call GetUser with the username "B_Banner"
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname | Email           | Password     | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | Password123! | 1            | System | #000000 |
+		| Id | Username | Forename | Surname | Email           | PreferenceId | Theme  | Palette |
+		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 |
 
 Scenario: Get a user by username that doesn't exist
 	When I call GetUser with the username "S_Rogers"
@@ -161,8 +161,8 @@ Scenario: Update a users username
 		| New_B_Banner | 0    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username     | Forename | Surname | Email           | Password     | PreferenceId | Theme  | Palette |
-		| 1  | New_B_Banner | Bruce    | Banner  | test1@email.com | Password123! | 1            | System | #000000 |
+		| Id | Username     | Forename | Surname | Email           | PreferenceId | Theme  | Palette |
+		| 1  | New_B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 |
 
 Scenario: Update a users username that already exists
 	Given I am the following user
@@ -183,8 +183,8 @@ Scenario: Update a users forename
 		| NewForename | 1    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename    | Surname | Email           | Password     | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | NewForename | Banner  | test1@email.com | Password123! | 1            | System | #000000 |
+		| Id | Username | Forename    | Surname | Email           | PreferenceId | Theme  | Palette |
+		| 1  | B_Banner | NewForename | Banner  | test1@email.com | 1            | System | #000000 |
 
 Scenario: Update a users surname
 	Given I am the following user
@@ -195,8 +195,8 @@ Scenario: Update a users surname
 		| NewSurname | 2    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname    | Email           | Password     | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | NewSurname | test1@email.com | Password123! | 1            | System | #000000 |
+		| Id | Username | Forename | Surname    | Email           | PreferenceId | Theme  | Palette |
+		| 1  | B_Banner | Bruce    | NewSurname | test1@email.com | 1            | System | #000000 |
 
 Scenario: Update a users email
 	Given I am the following user
@@ -207,8 +207,8 @@ Scenario: Update a users email
 		| NewEmail@email.com | 3    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname | Email              | Password     | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | Banner  | NewEmail@email.com | Password123! | 1            | System | #000000 |
+		| Id | Username | Forename | Surname | Email              | PreferenceId | Theme  | Palette |
+		| 1  | B_Banner | Bruce    | Banner  | NewEmail@email.com | 1            | System | #000000 |
 
 Scenario: Update a users email that already exists
 	Given I am the following user
@@ -229,8 +229,8 @@ Scenario: Update a users password
 		| NewPassword123! | 4    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname | Email           | Password        | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | NewPassword123! | 1            | System | #000000 |
+		| Id | Username | Forename | Surname | Email           | PreferenceId | Theme  | Palette |
+		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 |
 
 Scenario: Update a users password that matches old password
 	Given I am the following user
@@ -240,7 +240,7 @@ Scenario: Update a users password that matches old password
 		| Value        | Type |
 		| Password123! | 4    |
 	Then The status code should be 400
-	And The response should be "Password must be the same as the existing password"
+	And The response should be "Password must not be the same as the existing password"
 
 Scenario: Update a users password that is less than 8 charcaters long
 	Given I am the following user

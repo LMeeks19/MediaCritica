@@ -4,7 +4,6 @@ export interface UserModel {
     forename: string;
     surname: string;
     email: string;
-    password: string;
     preference: PreferenceModel;
     totalReviews: number;
     totalBacklogs: number

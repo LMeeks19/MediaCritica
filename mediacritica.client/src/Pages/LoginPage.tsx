@@ -21,6 +21,7 @@ import { setThemePalette } from "../Helpers/ThemePaletteHelper";
 function LoginPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [user, setUser] = useRecoilState(userState);
+  const [username, setUsername] = useState<string>("");
   const [forename, setForename] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -36,7 +37,7 @@ function LoginPage() {
   async function LoginUser(event: FormEvent) {
     event.preventDefault();
     var userObject = await Login({
-      email: email,
+      username: username,
       password: password,
       rememberMe: rememberMe,
     } as UserLoginModel);
@@ -53,6 +54,7 @@ function LoginPage() {
     event.preventDefault();
     if (password === confirmPassowrd) {
       await PostUser({
+        username: username,
         forename: forename,
         surname: surname,
         email: email,
@@ -63,6 +65,7 @@ function LoginPage() {
   }
 
   const handleTabChange = (tabIndex: number) => {
+    setUsername("");
     setForename("");
     setSurname("");
     setEmail("");
@@ -90,12 +93,12 @@ function LoginPage() {
             <form className="login-form" onSubmit={(e) => LoginUser(e)}>
               <div className="title">LOGIN</div>
               <TextField
-                type="email"
-                name="email"
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
+                type="text"
+                name="username"
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
                 required
               />
               <TextField
@@ -108,6 +111,7 @@ function LoginPage() {
                 required
               />
               <FormControlLabel
+                label="Remember Me"
                 sx={{ gap: "0.5rem", marginRight: "auto" }}
                 control={
                   <Checkbox
@@ -117,7 +121,6 @@ function LoginPage() {
                     disabled={!navigator.cookieEnabled}
                   />
                 }
-                label="Remember Me"
               />
               <Button type="submit">Login</Button>
             </form>
@@ -125,6 +128,16 @@ function LoginPage() {
           <div className="content" tabIndex={1} hidden={activeTab !== 1}>
             <form className="create-form" onSubmit={(e) => CreateAccount(e)}>
               <div className="title">CREATE ACCOUNT</div>
+              <TextField
+                type="text"
+                className="username"
+                name="username"
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
+                required
+              />
               <TextField
                 type="text"
                 className="forename"
