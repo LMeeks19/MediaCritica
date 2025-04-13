@@ -4,7 +4,7 @@ export interface CommentModel {
   reviewId: number;
   content?: string;
   commenterId?: number;
-  commenterName?: string;
+  commenterUsername?: string;
   commentedAt?: string;
   replies: CommentModel[];
   totalReplies: number;

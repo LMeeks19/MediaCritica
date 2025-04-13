@@ -69,9 +69,9 @@ namespace MediaCritica.Server.Testing
             return hubs.Object;
         }
 
-        private static HttpContext SetupHttpContext()
+        private static IHttpContextAccessor SetupHttpContext()
         {
-            var mockHttpContext = new Mock<HttpContext>();
+            var mockHttpContext = new Mock<IHttpContextAccessor>();
 
             var mockServiceProvider = new Mock<IServiceProvider>();
             var mockAuthenticationService = new Mock<IAuthenticationService>();
@@ -80,8 +80,9 @@ namespace MediaCritica.Server.Testing
                 .Setup(sp => sp.GetService(typeof(IAuthenticationService)))
                 .Returns(mockAuthenticationService.Object);
 
-            mockHttpContext.Setup(ctx => ctx.RequestServices).Returns(mockServiceProvider.Object);
-            mockHttpContext.SetupProperty(ctx => ctx.User);
+            mockHttpContext.Setup(ctx => ctx.HttpContext).Returns(new DefaultHttpContext());
+            mockHttpContext.Setup(ctx => ctx.HttpContext!.RequestServices).Returns(mockServiceProvider.Object);
+            mockHttpContext.SetupProperty(ctx => ctx.HttpContext!.User);
 
             return mockHttpContext.Object;
         }

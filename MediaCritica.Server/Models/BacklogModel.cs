@@ -5,7 +5,6 @@ namespace MediaCritica.Server.Models
     public class BacklogModel
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
         public string MediaId { get; set; }
         public string MediaType { get; set; }
         public string MediaPoster { get; set; }

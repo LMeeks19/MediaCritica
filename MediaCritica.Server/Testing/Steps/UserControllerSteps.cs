@@ -35,10 +35,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = GlobalSteps._controller.UserController.GetUsersBySearch(searchTerm);
         }
 
-        [When(@"I call GetUser with the Email ""(.*)""")]
-        public async Task WhenICallGetUserWithTheEmail(string email)
+        [When(@"I call GetUser with the username ""(.*)""")]
+        public async Task WhenICallGetUserWithTheEmail(string username)
         {
-            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserByEmail(email);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserByUsername(username);
         }
 
         [When(@"I call DeleteUser")]
@@ -68,10 +68,10 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.UserController.UpdateUserPreference(preferenceModel);
         }
 
-        [When(@"I call GetViewUserSummary with the user id (\d+)")]
-        public async Task WhenICallGetViewSummary(int userId)
+        [When(@"I call GetViewUserSummary with the username (.*)")]
+        public async Task WhenICallGetViewSummary(string username)
         {
-            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserSummary(userId);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUserSummary(username);
         }
 
         [Then(@"The UserAuthModel response should be")]
@@ -84,7 +84,6 @@ namespace MediaCritica.Server.Testing.Steps
                 Forename = row["Forename"],
                 Surname = row["Surname"],
                 Email = row["Email"],
-                Password = row["Password"],
             };
 
             AuthToken? authToken = null;
@@ -120,7 +119,6 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(expectedAuthModel.User.Forename, actualUserAuthModel.User.Forename);
             Assert.AreEqual(expectedAuthModel.User.Surname, actualUserAuthModel.User.Surname);
             Assert.AreEqual(expectedAuthModel.User.Email, actualUserAuthModel.User.Email);
-            Assert.AreEqual(expectedAuthModel.User.Password, actualUserAuthModel.User.Password);
         }
 
         [Then(@"The UserModel response should be")]
@@ -136,10 +134,10 @@ namespace MediaCritica.Server.Testing.Steps
             var actualUser = new UserModel
             {
                 Id = int.Parse(row["Id"]),
+                Username = row["Username"],
                 Forename = row["Forename"],
                 Surname = row["Surname"],
                 Email = row["Email"],
-                Password = row["Password"],
                 Preference = new PreferenceModel
                 {
                     Id = int.Parse(row["PreferenceId"]),
@@ -149,10 +147,10 @@ namespace MediaCritica.Server.Testing.Steps
             };
 
             Assert.AreEqual(actualUser.Id, expectedUser.Id);
+            Assert.AreEqual(actualUser.Username, expectedUser.Username);
             Assert.AreEqual(actualUser.Forename, expectedUser.Forename);
             Assert.AreEqual(actualUser.Surname, expectedUser.Surname);
             Assert.AreEqual(actualUser.Email, expectedUser.Email);
-            Assert.AreEqual(actualUser.Password, expectedUser.Password);
             Assert.AreEqual(actualUser.Preference.Id, expectedUser.Preference.Id);
             Assert.AreEqual(actualUser.Preference.Theme, expectedUser.Preference.Theme);
             Assert.AreEqual(actualUser.Preference.Palette, expectedUser.Preference.Palette);
@@ -185,7 +183,7 @@ namespace MediaCritica.Server.Testing.Steps
             actualUserSummary.Joined = DateOnly.Parse(table.Rows[0]["Joined"]);
 
             Assert.AreEqual(actualUserSummary.Id, expectedUserSummary.Id);
-            Assert.AreEqual(actualUserSummary.Name, expectedUserSummary.Name);
+            Assert.AreEqual(actualUserSummary.Username, expectedUserSummary.Username);
             Assert.AreEqual(actualUserSummary.Joined, expectedUserSummary.Joined);
         }
 
@@ -205,7 +203,7 @@ namespace MediaCritica.Server.Testing.Steps
                 var actualUserSearchModel = actualUserSummaryModels[i];
 
                 Assert.AreEqual(expectedUserSearchModel.Id, actualUserSearchModel.Id);
-                Assert.AreEqual(expectedUserSearchModel.FullName, actualUserSearchModel.FullName);
+                Assert.AreEqual(expectedUserSearchModel.Username, actualUserSearchModel.Username);
                 Assert.AreEqual(expectedUserSearchModel.Joined, actualUserSearchModel.Joined);
             }
         }

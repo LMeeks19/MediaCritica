@@ -6,7 +6,6 @@ namespace MediaCritica.Server
     public class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-
         public DbSet<AuthToken> AuthTokens { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -45,6 +44,12 @@ namespace MediaCritica.Server
                 .WithMany(u => u.Followers)
                 .HasForeignKey(uf => uf.FollowedId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Author)
+                .WithMany(u => u.Notifications)
+                .HasForeignKey(n => n.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Notification>()
                 .HasIndex(n => n.RecipientId);

@@ -10,7 +10,7 @@
         public string? MediaSeriesTitle { get; set; }
         public string? MediaEpisode { get; set; }
         public string MediaType { get; set; }
-        public string ReviewerName { get; set; }
+        public string ReviewerUsername { get; set; }
         public int ReviewerId { get; set; }
         public string Title { get; set; }
         public double Rating { get; set; }

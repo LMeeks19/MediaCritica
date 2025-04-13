@@ -14,6 +14,7 @@ namespace MediaCritica.Server.Mappers
         {
             var user = new User
             {
+                Username = userModel.Username,
                 Forename = userModel.Forename,
                 Surname = userModel.Surname,
                 Email = userModel.Email,
@@ -35,10 +36,10 @@ namespace MediaCritica.Server.Mappers
             var userModel = new UserModel()
             {
                 Id = user.Id,
+                Username = user.Username,
                 Forename = user.Forename,
                 Surname = user.Surname,
                 Email = user.Email,
-                Password = user.Password,
                 Preference = user.Preference != null ? MapPreference(user.Preference) : null,
                 TotalReviews = user.Reviews.Count,
                 TotalBacklogs = user.Backlogs.Count,
@@ -66,7 +67,7 @@ namespace MediaCritica.Server.Mappers
             var viewUserSummaryModel = new UserSummaryModel()
             {
                 Id = user.Id,
-                Name = $"{user.Forename} {user.Surname}",
+                Username = user.Username,
                 Joined = user.Joined,
                 Reviews = user.Reviews
                      .OrderByDescending(r => r.Date)
@@ -101,7 +102,7 @@ namespace MediaCritica.Server.Mappers
             var userSearchModel = new UserSearchModel()
             {
                 Id = user.Id,
-                FullName = user.FullName,
+                Username = user.Username,
                 Joined = user.Joined.ToLongDateString(),
             };
 

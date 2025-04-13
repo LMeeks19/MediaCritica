@@ -5,17 +5,17 @@ namespace MediaCritica.Server.Mappers
 {
     public class BacklogMapper
     {
-        public Backlog MapBacklog(BacklogModel backlogModel)
+        public Backlog MapBacklog(BacklogModel backlogModel, int userId)
         {
             return new Backlog()
             {
+                UserId = userId,
                 AddedDate = backlogModel.AddedDate,
                 Category = backlogModel.Category,
                 MediaId = backlogModel.MediaId,
                 MediaPoster = backlogModel.MediaPoster,
                 MediaTitle = backlogModel.MediaTitle,
                 MediaType = backlogModel.MediaType,
-                UserId = backlogModel.UserId,
             };
         }
 
@@ -30,7 +30,6 @@ namespace MediaCritica.Server.Mappers
                 MediaPoster = backlog.MediaPoster,
                 MediaTitle = backlog.MediaTitle,
                 MediaType = backlog.MediaType,
-                UserId = backlog.UserId,
             };
         }
 

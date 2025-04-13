@@ -82,7 +82,7 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(expectedReviewModel.Likes, actualReviewModel!.Likes);
             Assert.AreEqual(expectedReviewModel.Dislikes, actualReviewModel!.Dislikes);
             Assert.AreEqual(expectedReviewModel.ReviewerId, actualReviewModel!.ReviewerId);
-            Assert.AreEqual(expectedReviewModel.ReviewerName, actualReviewModel!.ReviewerName);
+            Assert.AreEqual(expectedReviewModel.ReviewerUsername, actualReviewModel!.ReviewerUsername);
             Assert.AreEqual(expectedReviewModel.MediaId, actualReviewModel!.MediaId);
             Assert.AreEqual(expectedReviewModel.MediaTitle, actualReviewModel!.MediaTitle);
             Assert.AreEqual(expectedReviewModel.MediaType, actualReviewModel!.MediaType);

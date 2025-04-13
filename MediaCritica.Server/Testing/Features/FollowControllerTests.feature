@@ -2,10 +2,10 @@ Feature: FollowControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| Id | Username  |Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 |Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 |Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Username3 |Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
 	Given I have the following userFollows
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 1          | 2          | 2025-01-01 | true                 |
@@ -14,14 +14,14 @@ Background:
 
 Scenario: Get followers for a user
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserFollowers with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
-		| Id | UserId | Name   | FollowedOn |
-		| 3  | 3      | Test 3 | 2025-01-03 |
-		| 2  | 2      | Test 2 | 2025-01-02 |
+		| Id | Username  | Name   | FollowedOn |
+		| 3  | Username3 | Test 3 | 2025-01-03 |
+		| 2  | Username2 | Test 2 | 2025-01-02 |
 
 Scenario: Get followers for a user that doesn't exist
 	When I call GetUserFollowers with the offset 0
@@ -30,13 +30,13 @@ Scenario: Get followers for a user that doesn't exist
 
 Scenario: Get following for a user
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserFollowing with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
-		| Id | UserId | Name   | FollowedOn |
-		| 1  | 2      | Test 2 | 2025-01-01 |
+		| Id | Username  | Name   | FollowedOn |
+		| 1  | Username2 | Test 2 | 2025-01-01 |
 
 Scenario: Get following for a user that doesn't exist
 	When I call GetUserFollowing with the offset 0
@@ -45,17 +45,17 @@ Scenario: Get following for a user that doesn't exist
 
 Scenario: Get a users follow status for another user 
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
-	When I call GetUserFollowStatus on userId 2
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
+	When I call GetUserFollowStatus on username Username2
 	Then The status code should be 200
 	And The UserFollowModel should be
 		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
 		| 1  | 1          | 2          | 2025-01-01 | true                 |
 
 Scenario: Get a users follow status for another user that doesn't exist
-	When I call GetUserFollowStatus on userId 3
-	Then The status code should be 200
+	When I call GetUserFollowStatus on username Username3
+	Then The status code should be 404
 	And The response should be "Follow relationship not found"
 
 Scenario: Follow a user

@@ -2,11 +2,11 @@ Feature: BacklogControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
-		| 4  | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| 4  | Username4 | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
 	And I have the following movies
 		| Id | Actors           | Awards  | Countries | Directors              | Genres          | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type  | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
 		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama   | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | movie | Writer 1 | 2020 | 8.5        | 1500      | $300,000,000 |     |         |            |
@@ -42,104 +42,110 @@ Background:
 
 Scenario: Get a users backlog
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetBacklog
 	Then The status code should be 200
 	And The BacklokObjectModel should be 
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 2       | 2                 | 1          | 1                    | 1        | 1                  |
 	And The Backlogged backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 9  | 1      | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
-		| 1  | 1      | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
+		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
 	And The InProgress backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 5  | 1      | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
 	And The Finished backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 13 | 1      | 6       | movie    | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 13 | 6       | movie    | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
 
 Scenario: Get a users backlog that doesn't exist
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password789! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password789! | false      |
 	When I call GetBacklog
 	Then The status code should be 200
 	And The BacklokObjectModel should be 
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 0       | 0                 | 0          | 0                    | 0        | 0                  |
 	And The Backlogged backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
 	And The InProgress backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
 	And The Finished backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
 
 Scenario: Get a users backlog by Backlogged type
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetBackloggedBacklog
 	Then The status code should be 200
 	And The Backlogged backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 9  | 1      | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
-		| 1  | 1      | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 |
+		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 |
 
 Scenario: Get a users backlog by InProgress type
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetInProgressBacklog
 	Then The status code should be 200
 	And The InProgress backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 5  | 1      | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 |
 
 Scenario: Get a users backlog by Finished type
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetFinishedBacklog
 	Then The status code should be 200
 	And The Finished backlogs should be
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 13 | 1      | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 |
 
 Scenario: Post a backlog
+	Given I am the following user
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call PostBacklog with the backlog model
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 1      | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 16 | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
 	Then The status code should be 200
 	And The response should be "Media Title 7 added to backlog"
 
 Scenario: Post a backlog but the user doesn't exist
 	When I call PostBacklog with the backlog model
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 5      | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 16 | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
 	Then The status code should be 404
 	And The response should be "User not found"
 
 Scenario: Post a backlog but the media doesn't exist
+	Given I am the following user
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call PostBacklog with the backlog model
-		| Id | UserId | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 1      | 8       | game      | Media Poster 8 | Media Title 8 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| 16 | 8       | game      | Media Poster 8 | Media Title 8 | 0        | 2025-02-13 |
 	Then The status code should be 404
 	And The response should be "Media not found"
 	
 Scenario: Delete a backlog
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test3@email.com | Password789! | false      |
+		| Username  | Password     | RememberMe |
+		| Username3 | Password789! | false      |
 	When I call DeleteBacklog with the media id 1
 	Then The status code should be 200
 	And The response should be "Media Title 1 removed from backlog"
 
 Scenario: Delete a backlog that doesn't exist
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test4@email.com | Password012! | false      |
+		| Username  | Password     | RememberMe |
+		| Username4 | Password012! | false      |
 	When I call DeleteBacklog with the media id 7
 	Then The status code should be 404
 	And The response should be "Backlog not found"
@@ -166,16 +172,16 @@ Scenario: Update a backlog that doesn't exist
 
 Scenario: Get a users backlog status that is true
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserBacklogStatus with the media id 1
 	Then The status code should be 200
 	And The response should be true
 
 Scenario: Get a users backlog status that is false
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserBacklogStatus with the media id 4
 	Then The status code should be 200
 	And The response should be false

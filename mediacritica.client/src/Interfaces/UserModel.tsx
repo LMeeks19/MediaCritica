@@ -1,9 +1,9 @@
 export interface UserModel {
     id: number;
+    username: string
     forename: string;
     surname: string;
     email: string;
-    password: string;
     preference: PreferenceModel;
     totalReviews: number;
     totalBacklogs: number

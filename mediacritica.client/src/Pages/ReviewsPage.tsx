@@ -61,7 +61,7 @@ function ReviewsPage() {
                   <div className="flex justify-evenly gap-2 flex-wrap">
                     <Rating value={review.rating} precision={0.5} readOnly />
                     <p>{formatDistanceToNowStrict(review.date)} ago </p>
-                    <p>{review.reviewerName}</p>
+                    <p>{review.reviewerUsername}</p>
                   </div>
                 </div>
               );

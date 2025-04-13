@@ -2,11 +2,11 @@ Feature: LeaderboardControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
-		| 4  | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| 4  | Username4 | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
 	And I have the following movies
 		| Id | Actors           | Awards  | Countries | Directors              | Genres          | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type  | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
 		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama   | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | movie | Writer 1 | 2020 | 8.5        | 1500      | $300,000,000 |     |         |            |
@@ -23,35 +23,35 @@ Background:
 		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | EpisodeNo | SeasonNo | SeasonId |
 		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2020-02-03 | 120 min | Media Title 4 | episode | Writer 1 | 2020 | 8.5        | 1500      | 1         | 1        | 1        |
 	And I have the following reviews
-		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title    | Description    | Date       |
-		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Test 1       | 4      | Title 1  | Description 1  | 2025-02-03 |
-		| 2  | 2       | Media Poster 2 | Media Title 2 | series    | 1      | Test 1       | 2      | Title 2  | Description 2  | 2025-02-27 |
-		| 3  | 3       | Media Poster 3 | Media Title 3 | game      | 1      | Test 1       | 1      | Title 3  | Description 3  | 2025-01-01 |
-		| 4  | 4       | Media Poster 4 | Media Title 4 | episode   | 1      | Test 1       | 4.5    | Title 4  | Description 4  | 2025-01-04 |
-		| 5  | 5       | Media Poster 5 | Media Title 5 | series    | 2      | Test 2       | 1.5    | Title 5  | Description 5  | 2025-01-04 |
-		| 6  | 6       | Media Poster 6 | Media Title 6 | movie     | 2      | Test 2       | 2      | Title 6  | Description 6  | 2024-01-04 |
-		| 7  | 7       | Media Poster 7 | Media Title 7 | game      | 3      | Test 3       | 2.5    | Title 7  | Description 7  | 2025-01-05 |
-		| 8  | 1       | Media Poster 1 | Media Title 1 | movie     | 2      | Test 2       | 3.5    | Title 8  | Description 8  | 2025-01-15 |
-		| 9  | 2       | Media Poster 2 | Media Title 2 | series    | 3      | Test 3       | 4      | Title 9  | Description 9  | 2025-02-10 |
-		| 10 | 3       | Media Poster 3 | Media Title 3 | game      | 4      | Test 4       | 2      | Title 10 | Description 10 | 2025-01-25 |
-		| 11 | 4       | Media Poster 4 | Media Title 4 | episode   | 1      | Test 1       | 3      | Title 11 | Description 11 | 2025-02-20 |
-		| 12 | 5       | Media Poster 5 | Media Title 5 | series    | 2      | Test 2       | 1      | Title 12 | Description 12 | 2024-12-15 |
-		| 13 | 6       | Media Poster 6 | Media Title 6 | movie     | 3      | Test 3       | 4.5    | Title 13 | Description 13 | 2025-02-03 |
-		| 14 | 7       | Media Poster 7 | Media Title 7 | game      | 4      | Test 4       | 5      | Title 14 | Description 14 | 2025-01-28 |
-		| 15 | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Test 1       | 3      | Title 15 | Description 15 | 2025-02-15 |
-		| 16 | 2       | Media Poster 2 | Media Title 2 | series    | 4      | Test 4       | 2.5    | Title 16 | Description 16 | 2025-01-18 |
-		| 17 | 3       | Media Poster 3 | Media Title 3 | game      | 1      | Test 1       | 4      | Title 17 | Description 17 | 2025-01-07 |
-		| 18 | 4       | Media Poster 4 | Media Title 4 | episode   | 3      | Test 3       | 1.5    | Title 18 | Description 18 | 2025-02-22 |
-		| 19 | 5       | Media Poster 5 | Media Title 5 | series    | 4      | Test 4       | 3.5    | Title 19 | Description 19 | 2025-02-08 |
-		| 20 | 6       | Media Poster 6 | Media Title 6 | movie     | 2      | Test 2       | 2      | Title 20 | Description 20 | 2025-01-10 |
-		| 21 | 7       | Media Poster 7 | Media Title 7 | game      | 1      | Test 1       | 1      | Title 21 | Description 21 | 2025-01-02 |
-		| 22 | 1       | Media Poster 1 | Media Title 1 | movie     | 4      | Test 4       | 4.5    | Title 22 | Description 22 | 2025-02-14 |
-		| 23 | 2       | Media Poster 2 | Media Title 2 | series    | 2      | Test 2       | 3      | Title 23 | Description 23 | 2025-01-20 |
-		| 24 | 3       | Media Poster 3 | Media Title 3 | game      | 3      | Test 3       | 5      | Title 24 | Description 24 | 2025-02-05 |
-		| 25 | 4       | Media Poster 4 | Media Title 4 | episode   | 1      | Test 1       | 2      | Title 25 | Description 25 | 2025-02-18 |
-		| 26 | 5       | Media Poster 5 | Media Title 5 | series    | 3      | Test 3       | 4      | Title 26 | Description 26 | 2024-11-12 |
-		| 27 | 6       | Media Poster 6 | Media Title 6 | movie     | 4      | Test 4       | 3.5    | Title 27 | Description 27 | 2025-02-06 |
-		| 28 | 7       | Media Poster 7 | Media Title 7 | game      | 2      | Test 2       | 2.5    | Title 28 | Description 28 | 2025-01-19 |
+		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerUsername | Rating | Title    | Description    | Date       |
+		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Username1        | 4      | Title 1  | Description 1  | 2025-02-03 |
+		| 2  | 2       | Media Poster 2 | Media Title 2 | series    | 1      | Username1        | 2      | Title 2  | Description 2  | 2025-02-27 |
+		| 3  | 3       | Media Poster 3 | Media Title 3 | game      | 1      | Username1        | 1      | Title 3  | Description 3  | 2025-01-01 |
+		| 4  | 4       | Media Poster 4 | Media Title 4 | episode   | 1      | Username1        | 4.5    | Title 4  | Description 4  | 2025-01-04 |
+		| 5  | 5       | Media Poster 5 | Media Title 5 | series    | 2      | Username2        | 1.5    | Title 5  | Description 5  | 2025-01-04 |
+		| 6  | 6       | Media Poster 6 | Media Title 6 | movie     | 2      | Username2        | 2      | Title 6  | Description 6  | 2024-01-04 |
+		| 7  | 7       | Media Poster 7 | Media Title 7 | game      | 3      | Username3        | 2.5    | Title 7  | Description 7  | 2025-01-05 |
+		| 8  | 1       | Media Poster 1 | Media Title 1 | movie     | 2      | Username2        | 3.5    | Title 8  | Description 8  | 2025-01-15 |
+		| 9  | 2       | Media Poster 2 | Media Title 2 | series    | 3      | Username3        | 4      | Title 9  | Description 9  | 2025-02-10 |
+		| 10 | 3       | Media Poster 3 | Media Title 3 | game      | 4      | Username4        | 2      | Title 10 | Description 10 | 2025-01-25 |
+		| 11 | 4       | Media Poster 4 | Media Title 4 | episode   | 1      | Username1        | 3      | Title 11 | Description 11 | 2025-02-20 |
+		| 12 | 5       | Media Poster 5 | Media Title 5 | series    | 2      | Username2        | 1      | Title 12 | Description 12 | 2024-12-15 |
+		| 13 | 6       | Media Poster 6 | Media Title 6 | movie     | 3      | Username3        | 4.5    | Title 13 | Description 13 | 2025-02-03 |
+		| 14 | 7       | Media Poster 7 | Media Title 7 | game      | 4      | Username4        | 5      | Title 14 | Description 14 | 2025-01-28 |
+		| 15 | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Username1        | 3      | Title 15 | Description 15 | 2025-02-15 |
+		| 16 | 2       | Media Poster 2 | Media Title 2 | series    | 4      | Username4        | 2.5    | Title 16 | Description 16 | 2025-01-18 |
+		| 17 | 3       | Media Poster 3 | Media Title 3 | game      | 1      | Username1        | 4      | Title 17 | Description 17 | 2025-01-07 |
+		| 18 | 4       | Media Poster 4 | Media Title 4 | episode   | 3      | Username3        | 1.5    | Title 18 | Description 18 | 2025-02-22 |
+		| 19 | 5       | Media Poster 5 | Media Title 5 | series    | 4      | Username4        | 3.5    | Title 19 | Description 19 | 2025-02-08 |
+		| 20 | 6       | Media Poster 6 | Media Title 6 | movie     | 2      | Username2        | 2      | Title 20 | Description 20 | 2025-01-10 |
+		| 21 | 7       | Media Poster 7 | Media Title 7 | game      | 1      | Username1        | 1      | Title 21 | Description 21 | 2025-01-02 |
+		| 22 | 1       | Media Poster 1 | Media Title 1 | movie     | 4      | Username4        | 4.5    | Title 22 | Description 22 | 2025-02-14 |
+		| 23 | 2       | Media Poster 2 | Media Title 2 | series    | 2      | Username2        | 3      | Title 23 | Description 23 | 2025-01-20 |
+		| 24 | 3       | Media Poster 3 | Media Title 3 | game      | 3      | Username3        | 5      | Title 24 | Description 24 | 2025-02-05 |
+		| 25 | 4       | Media Poster 4 | Media Title 4 | episode   | 1      | Username1        | 2      | Title 25 | Description 25 | 2025-02-18 |
+		| 26 | 5       | Media Poster 5 | Media Title 5 | series    | 3      | Username3        | 4      | Title 26 | Description 26 | 2024-11-12 |
+		| 27 | 6       | Media Poster 6 | Media Title 6 | movie     | 4      | Username4        | 3.5    | Title 27 | Description 27 | 2025-02-06 |
+		| 28 | 7       | Media Poster 7 | Media Title 7 | game      | 2      | Username2        | 2.5    | Title 28 | Description 28 | 2025-01-19 |
 	And I have the following backlogs
 		| Id | UserId | MediaId | MediaType | Category | MediaPoster    | MediaTitle    | AddedDate  |
 		| 1  | 1      | 1       | movie     | 0        | Media Poster 1 | Media Title 1 | 2025-02-01 |
@@ -74,37 +74,37 @@ Scenario: Get user rankings for week
 	When I call GetUserRankings for week 
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 1       | week      |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 1       | week      |
 
 Scenario: Get user rankings for month
 	When I call GetUserRankings for month
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 5       | month     |
-		| 2    | Test 3 | 4       | month     |
-		| 3    | Test 4 | 3       | month     |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 5       | month     |
+		| 2    | Username3 | 4       | month     |
+		| 3    | Username4 | 3       | month     |
 
 Scenario: Get user rankings for year
 	When I call GetUserRankings for year
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 9       | year      |
-		| 2    | Test 4 | 6       | year      |
-		| 3    | Test 2 | 5       | year      |
-		| 4    | Test 3 | 5       | year      |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 9       | year      |
+		| 2    | Username4 | 6       | year      |
+		| 3    | Username2 | 5       | year      |
+		| 4    | Username3 | 5       | year      |
 
 Scenario: Get user rankings for all time
 	When I call GetUserRankings for all-time
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 9       | all-time  |
-		| 2    | Test 2 | 7       | all-time  |
-		| 3    | Test 3 | 6       | all-time  |
-		| 4    | Test 4 | 6       | all-time  |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 9       | all-time  |
+		| 2    | Username2 | 7       | all-time  |
+		| 3    | Username3 | 6       | all-time  |
+		| 4    | Username4 | 6       | all-time  |
 
 Scenario: Get media trends for week
 	When I call GetMediaTrends for week

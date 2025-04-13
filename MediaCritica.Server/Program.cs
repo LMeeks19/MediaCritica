@@ -21,6 +21,9 @@ builder.Configuration.AddInMemoryCollection(new Dictionary<string, string> { { "
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddMvc().AddControllersAsServices();
+builder.Services.AddAuthentication().AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
 // Register Controllers
 builder.Services.AddScoped<IControllers, Controllers>();
@@ -53,10 +56,6 @@ builder.Services.AddScoped<AuthenticationHelper>();
 //Register Hubs
 builder.Services.AddScoped<IHubs, Hubs>();
 builder.Services.AddScoped<NotificationHub>();
-
-builder.Services.AddAuthentication().AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
-builder.Services.AddAuthorization();
-builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer("Server=localhost;Database=MediaCriticaDB;Trusted_Connection=True;TrustServerCertificate=True;"));

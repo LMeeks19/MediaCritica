@@ -77,45 +77,50 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table90.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table90.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table90.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "3",
+                        "Username3",
                         "Test",
                         "3",
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table90.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "4",
+                        "Username4",
                         "Test",
                         "4",
                         "test4@email.com",
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table90, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table92, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -139,7 +144,7 @@ namespace MediaCritica.Server.Testing.Features
                         "DVD",
                         "Website",
                         "Production"});
-            table91.AddRow(new string[] {
+            table93.AddRow(new string[] {
                         "1",
                         "Actor 1, Actor 2",
                         "Award 1",
@@ -163,7 +168,7 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         "",
                         ""});
-            table91.AddRow(new string[] {
+            table93.AddRow(new string[] {
                         "6",
                         "Actor 1, Actor 9",
                         "Award 1",
@@ -188,9 +193,9 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         ""});
 #line 10
- testRunner.And("I have the following movies", ((string)(null)), table91, "And ");
+ testRunner.And("I have the following movies", ((string)(null)), table93, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -211,7 +216,7 @@ namespace MediaCritica.Server.Testing.Features
                         "ImdbRating",
                         "ImdbVotes",
                         "TotalSeasons"});
-            table92.AddRow(new string[] {
+            table94.AddRow(new string[] {
                         "2",
                         "Actor 1, Actor 4",
                         "Award 1",
@@ -232,7 +237,7 @@ namespace MediaCritica.Server.Testing.Features
                         "9",
                         "1500",
                         "1"});
-            table92.AddRow(new string[] {
+            table94.AddRow(new string[] {
                         "5",
                         "Actor 1, Actor 8",
                         "Award 1",
@@ -254,27 +259,27 @@ namespace MediaCritica.Server.Testing.Features
                         "1500",
                         "1"});
 #line 14
- testRunner.And("I have the following series", ((string)(null)), table92, "And ");
+ testRunner.And("I have the following series", ((string)(null)), table94, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "SeriesId",
                         "SeasonNo",
                         "Title"});
-            table93.AddRow(new string[] {
+            table95.AddRow(new string[] {
                         "1",
                         "2",
                         "1",
                         "Media Title 2"});
-            table93.AddRow(new string[] {
+            table95.AddRow(new string[] {
                         "2",
                         "5",
                         "1",
                         "Media Title 5"});
 #line 18
- testRunner.And("I have the following seasons", ((string)(null)), table93, "And ");
+ testRunner.And("I have the following seasons", ((string)(null)), table95, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -298,7 +303,7 @@ namespace MediaCritica.Server.Testing.Features
                         "DVD",
                         "Website",
                         "Production"});
-            table94.AddRow(new string[] {
+            table96.AddRow(new string[] {
                         "3",
                         "Actor 1, Actor 5",
                         "Award 1",
@@ -322,7 +327,7 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         "",
                         ""});
-            table94.AddRow(new string[] {
+            table96.AddRow(new string[] {
                         "7",
                         "Actor 1, Actor 3",
                         "Award 1",
@@ -347,9 +352,9 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         ""});
 #line 22
- testRunner.And("I have the following games", ((string)(null)), table94, "And ");
+ testRunner.And("I have the following games", ((string)(null)), table96, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -372,7 +377,7 @@ namespace MediaCritica.Server.Testing.Features
                         "EpisodeNo",
                         "SeasonNo",
                         "SeasonId"});
-            table95.AddRow(new string[] {
+            table97.AddRow(new string[] {
                         "4",
                         "Actor 1, Actor 6",
                         "Award 1",
@@ -396,70 +401,70 @@ namespace MediaCritica.Server.Testing.Features
                         "1",
                         "1"});
 #line 26
- testRunner.And("I have the following episodes", ((string)(null)), table95, "And ");
+ testRunner.And("I have the following episodes", ((string)(null)), table97, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
                         "MediaTitle",
                         "MediaType",
                         "UserId",
-                        "ReviewerName",
+                        "ReviewerUsername",
                         "Rating",
                         "Title",
                         "Description",
                         "Date"});
-            table96.AddRow(new string[] {
+            table98.AddRow(new string[] {
                         "1",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
                         "movie",
                         "1",
-                        "Test 3",
+                        "Username3",
                         "1",
                         "Test Title 1",
                         "Test Description 1",
                         "2025-02-04"});
-            table96.AddRow(new string[] {
+            table98.AddRow(new string[] {
                         "2",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
                         "movie",
                         "2",
-                        "Test 3",
+                        "Username3",
                         "2",
                         "Test Title 2",
                         "Test Description 2",
                         "2025-02-06"});
-            table96.AddRow(new string[] {
+            table98.AddRow(new string[] {
                         "3",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
                         "movie",
                         "3",
-                        "Test 3",
+                        "Username3",
                         "2",
                         "Test Title 3",
                         "Test Description 3",
                         "2024-02-08"});
-            table96.AddRow(new string[] {
+            table98.AddRow(new string[] {
                         "4",
                         "5",
                         "Media Poster 5",
                         "Media Title 5",
                         "series",
                         "4",
-                        "Test 4",
+                        "Username4",
                         "5",
                         "Test Title 4",
                         "Test Description 4",
                         "2025-02-26"});
 #line 29
- testRunner.And("I have the following reviews", ((string)(null)), table96, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table98, "And ");
 #line hidden
         }
         
@@ -489,31 +494,31 @@ this.FeatureBackground();
 #line 38
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
                             "Response",
                             "Search",
                             "TotalResults"});
-                table97.AddRow(new string[] {
+                table99.AddRow(new string[] {
                             "True",
                             "1",
                             "1"});
 #line 39
- testRunner.And("The MediaSearchResultResponse should be", ((string)(null)), table97, "And ");
+ testRunner.And("The MediaSearchResultResponse should be", ((string)(null)), table99, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
                             "Poster",
                             "Title",
                             "Type",
                             "Year",
                             "imdbID"});
-                table98.AddRow(new string[] {
+                table100.AddRow(new string[] {
                             "Media Poster 1",
                             "Media Title 1",
                             "movie",
                             "2025",
                             "1"});
 #line 42
- testRunner.And("The MediaSearchModels should be", ((string)(null)), table98, "And ");
+ testRunner.And("The MediaSearchModels should be", ((string)(null)), table100, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -578,7 +583,7 @@ this.FeatureBackground();
 #line 53
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -586,7 +591,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table99.AddRow(new string[] {
+                table101.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -595,7 +600,7 @@ this.FeatureBackground();
                             "2025-02-03",
                             "7.2"});
 #line 54
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table99, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table101, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -627,16 +632,16 @@ this.FeatureBackground();
 #line 60
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table100.AddRow(new string[] {
+                table102.AddRow(new string[] {
                             "6",
                             "6"});
 #line 61
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table100, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table102, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -644,7 +649,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table101.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -652,7 +657,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-                table101.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "2",
                             "Media Title 2",
                             "series",
@@ -660,7 +665,7 @@ this.FeatureBackground();
                             "Action, Adventur",
                             "2024-11-09",
                             "9"});
-                table101.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "3",
                             "Media Title 3",
                             "game",
@@ -668,7 +673,7 @@ this.FeatureBackground();
                             "Comedy, Drama",
                             "2024-06-21",
                             "8.5"});
-                table101.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "5",
                             "Media Title 5",
                             "series",
@@ -676,7 +681,7 @@ this.FeatureBackground();
                             "Drama, Romance",
                             "2025-01-01",
                             "2"});
-                table101.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "6",
                             "Media Title 6",
                             "movie",
@@ -684,7 +689,7 @@ this.FeatureBackground();
                             "Fantasy, Action",
                             "2022-04-10",
                             "5"});
-                table101.AddRow(new string[] {
+                table103.AddRow(new string[] {
                             "7",
                             "Media Title 7",
                             "game",
@@ -693,7 +698,7 @@ this.FeatureBackground();
                             "2026-10-16",
                             "3"});
 #line 64
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table101, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table103, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -725,16 +730,16 @@ this.FeatureBackground();
 #line 75
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table102.AddRow(new string[] {
+                table104.AddRow(new string[] {
                             "2",
                             "2"});
 #line 76
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table102, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table104, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -742,7 +747,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table103.AddRow(new string[] {
+                table105.AddRow(new string[] {
                             "2",
                             "Media Title 2",
                             "series",
@@ -750,7 +755,7 @@ this.FeatureBackground();
                             "Action, Adventur",
                             "2024-11-09",
                             "9"});
-                table103.AddRow(new string[] {
+                table105.AddRow(new string[] {
                             "3",
                             "Media Title 3",
                             "game",
@@ -759,7 +764,7 @@ this.FeatureBackground();
                             "2024-06-21",
                             "8.5"});
 #line 79
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table103, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table105, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -791,16 +796,16 @@ this.FeatureBackground();
 #line 86
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table104.AddRow(new string[] {
+                table106.AddRow(new string[] {
                             "2",
                             "2"});
 #line 87
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table104, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table106, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -808,7 +813,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table105.AddRow(new string[] {
+                table107.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -816,7 +821,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-                table105.AddRow(new string[] {
+                table107.AddRow(new string[] {
                             "5",
                             "Media Title 5",
                             "series",
@@ -825,7 +830,7 @@ this.FeatureBackground();
                             "2025-01-01",
                             "2"});
 #line 90
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table105, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table107, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -857,16 +862,16 @@ this.FeatureBackground();
 #line 97
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table106.AddRow(new string[] {
+                table108.AddRow(new string[] {
                             "5",
                             "5"});
 #line 98
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table106, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table108, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -874,7 +879,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table107.AddRow(new string[] {
+                table109.AddRow(new string[] {
                             "2",
                             "Media Title 2",
                             "series",
@@ -882,7 +887,7 @@ this.FeatureBackground();
                             "Action, Adventur",
                             "2024-11-09",
                             "9"});
-                table107.AddRow(new string[] {
+                table109.AddRow(new string[] {
                             "3",
                             "Media Title 3",
                             "game",
@@ -890,7 +895,7 @@ this.FeatureBackground();
                             "Comedy, Drama",
                             "2024-06-21",
                             "8.5"});
-                table107.AddRow(new string[] {
+                table109.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -898,7 +903,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-                table107.AddRow(new string[] {
+                table109.AddRow(new string[] {
                             "6",
                             "Media Title 6",
                             "movie",
@@ -906,7 +911,7 @@ this.FeatureBackground();
                             "Fantasy, Action",
                             "2022-04-10",
                             "5"});
-                table107.AddRow(new string[] {
+                table109.AddRow(new string[] {
                             "5",
                             "Media Title 5",
                             "series",
@@ -915,7 +920,7 @@ this.FeatureBackground();
                             "2025-01-01",
                             "2"});
 #line 101
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table107, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table109, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -947,16 +952,16 @@ this.FeatureBackground();
 #line 111
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table108.AddRow(new string[] {
+                table110.AddRow(new string[] {
                             "1",
                             "1"});
 #line 112
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table108, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table110, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -964,7 +969,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table109.AddRow(new string[] {
+                table111.AddRow(new string[] {
                             "7",
                             "Media Title 7",
                             "game",
@@ -973,7 +978,7 @@ this.FeatureBackground();
                             "2026-10-16",
                             "3"});
 #line 115
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table109, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table111, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1005,16 +1010,16 @@ this.FeatureBackground();
 #line 121
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table110.AddRow(new string[] {
+                table112.AddRow(new string[] {
                             "5",
                             "5"});
 #line 122
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table110, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table112, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -1022,7 +1027,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table111.AddRow(new string[] {
+                table113.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -1030,7 +1035,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-                table111.AddRow(new string[] {
+                table113.AddRow(new string[] {
                             "5",
                             "Media Title 5",
                             "series",
@@ -1038,7 +1043,7 @@ this.FeatureBackground();
                             "Drama, Romance",
                             "2025-01-01",
                             "2"});
-                table111.AddRow(new string[] {
+                table113.AddRow(new string[] {
                             "2",
                             "Media Title 2",
                             "series",
@@ -1046,7 +1051,7 @@ this.FeatureBackground();
                             "Action, Adventur",
                             "2024-11-09",
                             "9"});
-                table111.AddRow(new string[] {
+                table113.AddRow(new string[] {
                             "3",
                             "Media Title 3",
                             "game",
@@ -1054,7 +1059,7 @@ this.FeatureBackground();
                             "Comedy, Drama",
                             "2024-06-21",
                             "8.5"});
-                table111.AddRow(new string[] {
+                table113.AddRow(new string[] {
                             "6",
                             "Media Title 6",
                             "movie",
@@ -1063,7 +1068,7 @@ this.FeatureBackground();
                             "2022-04-10",
                             "5"});
 #line 125
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table111, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table113, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1095,16 +1100,16 @@ this.FeatureBackground();
 #line 135
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table112.AddRow(new string[] {
+                table114.AddRow(new string[] {
                             "1",
                             "1"});
 #line 136
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table112, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table114, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -1112,7 +1117,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table113.AddRow(new string[] {
+                table115.AddRow(new string[] {
                             "6",
                             "Media Title 6",
                             "movie",
@@ -1121,7 +1126,7 @@ this.FeatureBackground();
                             "2022-04-10",
                             "5"});
 #line 139
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table113, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table115, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1153,16 +1158,16 @@ this.FeatureBackground();
 #line 145
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table114.AddRow(new string[] {
+                table116.AddRow(new string[] {
                             "2",
                             "2"});
 #line 146
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table114, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table116, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -1170,7 +1175,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table115.AddRow(new string[] {
+                table117.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -1178,7 +1183,7 @@ this.FeatureBackground();
                             "Action, Drama",
                             "2025-02-03",
                             "7.2"});
-                table115.AddRow(new string[] {
+                table117.AddRow(new string[] {
                             "5",
                             "Media Title 5",
                             "series",
@@ -1187,7 +1192,7 @@ this.FeatureBackground();
                             "2025-01-01",
                             "2"});
 #line 149
-  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table115, "And ");
+  testRunner.And("The MediaSummaryModels should be", ((string)(null)), table117, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1219,16 +1224,16 @@ this.FeatureBackground();
 #line 156
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
                             "TotalMediaCount",
                             "MediaSummaryModels"});
-                table116.AddRow(new string[] {
+                table118.AddRow(new string[] {
                             "2",
                             "2"});
 #line 157
- testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table116, "And ");
+ testRunner.And("The MediaSummaryModelResponse should be", ((string)(null)), table118, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Title",
                             "Type",
@@ -1236,7 +1241,7 @@ this.FeatureBackground();
                             "Genre",
                             "Released",
                             "ImdbRating"});
-                table117.AddRow(new string[] {
+                table119.AddRow(new string[] {
                             "5",
                             "Media Title 5",
                             "series",
@@ -1244,7 +1249,7 @@ this.FeatureBackground();
                             "Drama, Romance",
                             "2025-01-01",
                             "2"});
-                table117.AddRow(new string[] {
+                table119.AddRow(new string[] {
                             "1",
                             "Media Title 1",
                             "movie",
@@ -1253,7 +1258,7 @@ this.FeatureBackground();
                             "2025-02-03",
                             "7.2"});
 #line 160
- testRunner.And("The MediaSummaryModels should be", ((string)(null)), table117, "And ");
+ testRunner.And("The MediaSummaryModels should be", ((string)(null)), table119, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1285,7 +1290,7 @@ this.FeatureBackground();
 #line 167
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1309,7 +1314,7 @@ this.FeatureBackground();
                             "DVD",
                             "Website",
                             "Production"});
-                table118.AddRow(new string[] {
+                table120.AddRow(new string[] {
                             "1",
                             "Actor 1, Actor 2",
                             "Award 1",
@@ -1334,7 +1339,7 @@ this.FeatureBackground();
                             "",
                             ""});
 #line 168
- testRunner.And("The MovieModel should be", ((string)(null)), table118, "And ");
+ testRunner.And("The MovieModel should be", ((string)(null)), table120, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1366,7 +1371,7 @@ this.FeatureBackground();
 #line 174
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1387,7 +1392,7 @@ this.FeatureBackground();
                             "ImdbRating",
                             "ImdbVotes",
                             "TotalSeasons"});
-                table119.AddRow(new string[] {
+                table121.AddRow(new string[] {
                             "2",
                             "Actor 1, Actor 4",
                             "Award 1",
@@ -1409,7 +1414,7 @@ this.FeatureBackground();
                             "1500",
                             "1"});
 #line 175
- testRunner.And("The SeriesModel should be", ((string)(null)), table119, "And ");
+ testRunner.And("The SeriesModel should be", ((string)(null)), table121, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1441,14 +1446,14 @@ this.FeatureBackground();
 #line 181
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
                             "Season",
                             "Title"});
-                table120.AddRow(new string[] {
+                table122.AddRow(new string[] {
                             "1",
                             "Media Title 2"});
 #line 182
- testRunner.And("The SeasonModel should be", ((string)(null)), table120, "And ");
+ testRunner.And("The SeasonModel should be", ((string)(null)), table122, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1480,7 +1485,7 @@ this.FeatureBackground();
 #line 188
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1504,7 +1509,7 @@ this.FeatureBackground();
                             "DVD",
                             "Website",
                             "Production"});
-                table121.AddRow(new string[] {
+                table123.AddRow(new string[] {
                             "3",
                             "Actor 1, Actor 5",
                             "Award 1",
@@ -1529,7 +1534,7 @@ this.FeatureBackground();
                             "",
                             ""});
 #line 189
- testRunner.And("The GameModel should be", ((string)(null)), table121, "And ");
+ testRunner.And("The GameModel should be", ((string)(null)), table123, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1561,7 +1566,7 @@ this.FeatureBackground();
 #line 195
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1585,7 +1590,7 @@ this.FeatureBackground();
                             "Season",
                             "SeasonId",
                             "SeriesTitle"});
-                table122.AddRow(new string[] {
+                table124.AddRow(new string[] {
                             "4",
                             "Actor 1, Actor 6",
                             "Award 1",
@@ -1610,7 +1615,7 @@ this.FeatureBackground();
                             "1",
                             "Media Title 2"});
 #line 196
- testRunner.And("The EpisodeModel should be", ((string)(null)), table122, "And ");
+ testRunner.And("The EpisodeModel should be", ((string)(null)), table124, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1642,7 +1647,7 @@ this.FeatureBackground();
 #line 202
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1666,7 +1671,7 @@ this.FeatureBackground();
                             "DVD",
                             "Website",
                             "Production"});
-                table123.AddRow(new string[] {
+                table125.AddRow(new string[] {
                             "10",
                             "Actor 1, Actor 2",
                             "Award 1",
@@ -1691,7 +1696,7 @@ this.FeatureBackground();
                             "",
                             ""});
 #line 203
- testRunner.And("The MovieModel should be", ((string)(null)), table123, "And ");
+ testRunner.And("The MovieModel should be", ((string)(null)), table125, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1723,7 +1728,7 @@ this.FeatureBackground();
 #line 209
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1744,7 +1749,7 @@ this.FeatureBackground();
                             "ImdbRating",
                             "ImdbVotes",
                             "TotalSeasons"});
-                table124.AddRow(new string[] {
+                table126.AddRow(new string[] {
                             "11",
                             "Actor 1, Actor 4",
                             "Award 1",
@@ -1766,7 +1771,7 @@ this.FeatureBackground();
                             "1500",
                             "1"});
 #line 210
- testRunner.And("The SeriesModel should be", ((string)(null)), table124, "And ");
+ testRunner.And("The SeriesModel should be", ((string)(null)), table126, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1798,14 +1803,14 @@ this.FeatureBackground();
 #line 216
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
                             "Season",
                             "Title"});
-                table125.AddRow(new string[] {
+                table127.AddRow(new string[] {
                             "1",
                             "Media Title 11"});
 #line 217
- testRunner.And("The SeasonModel should be", ((string)(null)), table125, "And ");
+ testRunner.And("The SeasonModel should be", ((string)(null)), table127, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1837,7 +1842,7 @@ this.FeatureBackground();
 #line 223
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1861,7 +1866,7 @@ this.FeatureBackground();
                             "DVD",
                             "Website",
                             "Production"});
-                table126.AddRow(new string[] {
+                table128.AddRow(new string[] {
                             "12",
                             "Actor 1, Actor 5",
                             "Award 1",
@@ -1886,7 +1891,7 @@ this.FeatureBackground();
                             "",
                             ""});
 #line 224
- testRunner.And("The GameModel should be", ((string)(null)), table126, "And ");
+ testRunner.And("The GameModel should be", ((string)(null)), table128, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1918,7 +1923,7 @@ this.FeatureBackground();
 #line 230
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Actors",
                             "Awards",
@@ -1942,7 +1947,7 @@ this.FeatureBackground();
                             "Season",
                             "SeasonId",
                             "SeriesTitle"});
-                table127.AddRow(new string[] {
+                table129.AddRow(new string[] {
                             "13",
                             "Actor 1, Actor 6",
                             "Award 1",
@@ -1967,7 +1972,7 @@ this.FeatureBackground();
                             "1",
                             "Media Title 2"});
 #line 231
- testRunner.And("The EpisodeModel should be", ((string)(null)), table127, "And ");
+ testRunner.And("The EpisodeModel should be", ((string)(null)), table129, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

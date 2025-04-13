@@ -26,6 +26,6 @@ export const router = createBrowserRouter([
     element: <ViewReviewPage />,
   },
   { path: "/account", element: <AccountPage /> },
-  { path: "/view-user/:userId", element: <ViewUserPage /> },
+  { path: "/view-user/:username", element: <ViewUserPage /> },
   { path: "*", element: <NotFoundPage /> },
 ]);

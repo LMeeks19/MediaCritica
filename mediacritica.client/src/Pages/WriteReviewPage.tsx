@@ -66,7 +66,7 @@ function WriteReviewPage() {
       mediaSeriesTitle: (media as EpisodeModel).seriesTitle,
       mediaType: media.type,
       reviewerId: user.id,
-      reviewerName: `${user.forename} ${user.surname}`,
+      reviewerUsername: user.username,
       title: title,
       rating: rating,
       description: description,

@@ -101,10 +101,6 @@ namespace MediaCritica.Server.Migrations
                     b.Property<int?>("CommenterId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CommenterName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -265,9 +261,8 @@ namespace MediaCritica.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -286,6 +281,8 @@ namespace MediaCritica.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CreatedAt");
 
@@ -425,10 +422,6 @@ namespace MediaCritica.Server.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("ReviewerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -495,6 +488,10 @@ namespace MediaCritica.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -658,11 +655,19 @@ namespace MediaCritica.Server.Migrations
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Notification", b =>
                 {
-                    b.HasOne("MediaCritica.Server.Objects.User", "Recipient")
+                    b.HasOne("MediaCritica.Server.Objects.User", "Author")
                         .WithMany("Notifications")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MediaCritica.Server.Objects.User", "Recipient")
+                        .WithMany()
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Recipient");
                 });
@@ -716,13 +721,15 @@ namespace MediaCritica.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MediaCritica.Server.Objects.User", null)
+                    b.HasOne("MediaCritica.Server.Objects.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Media");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Season", b =>

@@ -292,7 +292,7 @@ function MediaPage() {
                           </div>
                           <div className="details">
                             <h3>{review.title}</h3>
-                            <p>{review.reviewerName}</p>
+                            <p>{review.reviewerUsername}</p>
                             <p>{formatDistanceToNowStrict(review.date)} ago</p>
                           </div>
                         </div>

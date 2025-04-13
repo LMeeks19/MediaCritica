@@ -1,5 +1,5 @@
 export interface UserLoginModel {
-    email: string,
+    username: string,
     password: string,
     rememberMe: boolean
 }

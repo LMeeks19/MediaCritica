@@ -64,7 +64,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.IsNotNull(expectedNotification);
 
                 Assert.AreEqual(expectedNotification.Id, actualNotification.Id);
-                Assert.AreEqual(expectedNotification.AuthorName, actualNotification.AuthorName);
+                Assert.AreEqual(expectedNotification.AuthorUsername, actualNotification.AuthorUsername);
                 Assert.AreEqual(expectedNotification.Message, actualNotification.Message);
                 Assert.AreEqual(expectedNotification.CreatedAt, actualNotification.CreatedAt);
                 Assert.AreEqual(expectedNotification.IsRead, actualNotification.IsRead);
@@ -131,7 +131,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.IsNotNull(actualNotification);
                 Assert.AreEqual(expectedNotification.Id, actualNotification.Id);
                 Assert.AreEqual(expectedNotification.RecipientId, actualNotification.RecipientId);
-                Assert.AreEqual(expectedNotification.AuthorName, actualNotification.AuthorName);
+                Assert.AreEqual(expectedNotification.AuthorId, actualNotification.AuthorId);
                 Assert.AreEqual(expectedNotification.Message, actualNotification.Message);
                 Assert.AreEqual(expectedNotification.IsRead, actualNotification.IsRead);
                 Assert.AreEqual(expectedNotification.IsBookmarked, actualNotification.IsBookmarked);

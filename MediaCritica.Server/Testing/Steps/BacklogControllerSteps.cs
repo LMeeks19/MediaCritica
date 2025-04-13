@@ -99,7 +99,6 @@ namespace MediaCritica.Server.Testing.Steps
                 var actualBacklogModel = actualBacklogModels[i];
 
                 Assert.AreEqual(expectedBacklogModel.Id, actualBacklogModel.Id);
-                Assert.AreEqual(expectedBacklogModel.UserId, actualBacklogModel.UserId);
                 Assert.AreEqual(expectedBacklogModel.MediaId, actualBacklogModel.MediaId);
                 Assert.AreEqual(expectedBacklogModel.MediaType, actualBacklogModel.MediaType);
                 Assert.AreEqual(expectedBacklogModel.MediaPoster, actualBacklogModel.MediaPoster);

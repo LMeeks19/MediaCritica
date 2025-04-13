@@ -388,7 +388,7 @@ namespace MediaCritica.Server.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("ReviewerName")
+                    b.Property<string>("ReviewerUsername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

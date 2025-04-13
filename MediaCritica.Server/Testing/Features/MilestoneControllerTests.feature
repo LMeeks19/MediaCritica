@@ -2,14 +2,13 @@ Feature: MilestoneControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
 Scenario: GetUserMilestones of user
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserMilestones
 	Then The status code should be 200
 	And The MilestoneCategoryModels should be

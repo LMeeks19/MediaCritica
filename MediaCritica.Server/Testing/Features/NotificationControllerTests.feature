@@ -2,30 +2,30 @@ Feature: NotificationControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
 	And I have the following notifications
-		| Id | RecipientId | AuthorName | Message        | IsRead | IsBookmarked | CreatedAt  |
-		| 1  | 1           | Test 2     | Test Message 1 | false  | false        | 2024-04-01 |
-		| 2  | 1           | Test 2     | Test Message 2 | true   | true         | 2024-01-01 |
-		| 3  | 1           | Test 2     | Test Message 3 | false  | true         | 2024-03-01 |
-		| 4  | 1           | Test 2     | Test Message 4 | true   | false        | 2024-02-01 |
-		| 5  | 2           | Test 3     | Test Message 5 | true   | false        | 2024-05-01 |
+		| Id | RecipientId | AuthorId | Message        | IsRead | IsBookmarked | CreatedAt  |
+		| 1  | 1           | 2        | Test Message 1 | false  | false        | 2024-04-01 |
+		| 2  | 1           | 2        | Test Message 2 | true   | true         | 2024-01-01 |
+		| 3  | 1           | 2        | Test Message 3 | false  | true         | 2024-03-01 |
+		| 4  | 1           | 2        | Test Message 4 | true   | false        | 2024-02-01 |
+		| 5  | 2           | 3        | Test Message 5 | true   | false        | 2024-05-01 |
 
 Scenario: Get Notifications
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call GetUserNotifications 
 	Then The status code should be 200
 	And The NotificationModels should be
-		| Id | AuthorName | Message        | IsRead | IsBookmarked | CreatedAt  |
-		| 1  | Test 2     | Test Message 1 | false  | false        | 2024-04-01 |
-		| 3  | Test 2     | Test Message 3 | false  | true         | 2024-03-01 |
-		| 4  | Test 2     | Test Message 4 | true   | false        | 2024-02-01 |
-		| 2  | Test 2     | Test Message 2 | true   | true         | 2024-01-01 |
+		| Id | AuthorUsername | Message        | IsRead | IsBookmarked | CreatedAt  |
+		| 1  | Username2      | Test Message 1 | false  | false        | 2024-04-01 |
+		| 3  | Username2      | Test Message 3 | false  | true         | 2024-03-01 |
+		| 4  | Username2      | Test Message 4 | true   | false        | 2024-02-01 |
+		| 2  | Username2      | Test Message 2 | true   | true         | 2024-01-01 |
 
 Scenario: Get Notifications but the user has none
 	When I call GetUserNotifications 
@@ -50,8 +50,8 @@ Scenario: Mark all notifications as read but all already read
 
 Scenario: Mark all notifications as read
 	Given I am the following user
-		| Email           | Password     | RememberMe |
-		| test1@email.com | Password123! | false      |
+		| Username  | Password     | RememberMe |
+		| Username1 | Password123! | false      |
 	When I call MarkAllAsRead
 	Then The status code should be 200
 	And The response should be "All notifications marked as read"
@@ -91,7 +91,7 @@ Scenario: Post notifications with no followers
 		| 1  | 1          | 2          | 2025-01-01 | true                 |
 		| 2  | 2          | 1          | 2025-01-02 | false                |
 	When I call PostNotifications with the NewNotificationModel
-		| AuthorId | AuthorName | Message                   |
+		| AuthorId | AuthorUsername | Message                   |
 		| 1        | Test 1     | Test Notification Message |
 	Then The status code should be 404
 	And The response should be "No followers to send notifications to"
@@ -102,10 +102,10 @@ Scenario: Post notifications
 		| 1  | 2          | 1          | 2025-01-01 | true                 |
 		| 2  | 2          | 1          | 2025-01-02 | true                 |
 	When I call PostNotifications with the NewNotificationModel
-		| AuthorId | AuthorName | Message                   |
-		| 1        | Test 1     | Test Notification Message |
+		| AuthorId | Message                   |
+		| 1        | Test Notification Message |
 	Then The status code should be 200
 	And The following notifications should have been created
-		| Id | RecipientId | AuthorName | Message                   | IsRead | IsBookmarked |
-		| 6  | 2           | Test 1     | Test Notification Message | false  | false        |	
+		| Id | RecipientId | AuthorId | Message                   | IsRead | IsBookmarked |
+		| 6  | 2           | 1        | Test Notification Message | false  | false        |
 	

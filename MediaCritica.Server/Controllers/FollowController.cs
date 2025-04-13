@@ -32,8 +32,8 @@ namespace MediaCritica.Server.Controllers
                 .Select(f => new UserFollowSummaryModel
                 {
                     Id = f.Id,
-                    UserId = f.Follower.Id,
-                    Name = $"{f.Follower.Forename} {f.Follower.Surname}",
+                    Username = f.Follower.Username,
+                    Name = f.Follower.FullName,
                     FollowedOn = f.FollowedOn,
                 })
                 .ToList();
@@ -60,8 +60,8 @@ namespace MediaCritica.Server.Controllers
                 .Select(f => new UserFollowSummaryModel
                 {
                     Id = f.Id,
-                    UserId = f.Followed.Id,
-                    Name = $"{f.Followed.Forename} {f.Followed.Surname}",
+                    Username = f.Followed.Username,
+                    Name = f.Followed.FullName,
                     FollowedOn = f.FollowedOn,
                 })
                 .ToList();
@@ -69,15 +69,16 @@ namespace MediaCritica.Server.Controllers
             return Ok(following);
         }
 
-        [HttpGet("[action]/{followedId}")]
-        public async Task<IActionResult> GetUserFollowStatus(int followedId)
+        [HttpGet("[action]/{followedUsername}")]
+        public async Task<IActionResult> GetUserFollowStatus(string followedUsername)
         {
             var followerId = _helper.AuthenticationHelper.GetUserId();
             var userFollow = await _databaseContext.UserFollows
-                .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.FollowedId == followedId);
+                .Include(f => f.Followed)
+                .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.Followed.Username == followedUsername);
 
             if (userFollow == null)
-                return Ok(new { Message = "Follow relationship not found" });
+                return NotFound(new { Message = "Follow relationship not found" });
 
             return Ok(new UserFollowModel
             {

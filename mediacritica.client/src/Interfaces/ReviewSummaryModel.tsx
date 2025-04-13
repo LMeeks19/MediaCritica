@@ -1,6 +1,6 @@
 export interface ReviewSummaryModel {
   id: number;
-  reviewerName: string;
+  reviewerUsername: string;
   mediaType: string;
   title: string;
   rating: number;

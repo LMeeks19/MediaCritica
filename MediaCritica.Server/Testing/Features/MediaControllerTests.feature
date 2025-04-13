@@ -2,11 +2,11 @@ Feature: MediaControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
-		| 3  | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
-		| 4  | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
+		| 1  | Username1 | Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
+		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
+		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+		| 4  | Username4 | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
 	And I have the following movies
 		| Id | Actors           | Awards  | Countries | Directors              | Genres          | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type  | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
 		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama   | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2025-02-03 | 120 min | Media Title 1 | movie | Writer 1 | 2025 | 7.2        | 1500      | $300,000,000 |     |         |            |
@@ -27,11 +27,11 @@ Background:
 		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | EpisodeNo | SeasonNo | SeasonId |
 		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2024-01-19 | 120 min | Media Title 4 | episode | Writer 1 | 2022 | 6          | 1500      | 1         | 1        | 1        |
 	And I have the following reviews
-		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerName | Rating | Title        | Description        | Date       |
-		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Test 3       | 1      | Test Title 1 | Test Description 1 | 2025-02-04 |
-		| 2  | 1       | Media Poster 1 | Media Title 1 | movie     | 2      | Test 3       | 2      | Test Title 2 | Test Description 2 | 2025-02-06 |
-		| 3  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Test 3       | 2      | Test Title 3 | Test Description 3 | 2024-02-08 |
-		| 4  | 5       | Media Poster 5 | Media Title 5 | series    | 4      | Test 4       | 5      | Test Title 4 | Test Description 4 | 2025-02-26 |
+		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerUsername | Rating | Title        | Description        | Date       |
+		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 1      | Username3        | 1      | Test Title 1 | Test Description 1 | 2025-02-04 |
+		| 2  | 1       | Media Poster 1 | Media Title 1 | movie     | 2      | Username3        | 2      | Test Title 2 | Test Description 2 | 2025-02-06 |
+		| 3  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Username3        | 2      | Test Title 3 | Test Description 3 | 2024-02-08 |
+		| 4  | 5       | Media Poster 5 | Media Title 5 | series    | 4      | Username4        | 5      | Test Title 4 | Test Description 4 | 2025-02-26 |
 
 Scenario: Get media by external search
 	When I call GetMediaByExternalSearch with search term "Media Title 1"

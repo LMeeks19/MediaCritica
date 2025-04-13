@@ -38,15 +38,17 @@ namespace MediaCritica.Server.Testing
         [Given(@"I have the following users")]
         public async Task GivenIHaveTheFollowingUsers(Table table)
         {
-            var users = table.CreateSet(row =>
+            var users = table.Rows.Select(row =>
             {
+                var password = BCrypt.Net.BCrypt.EnhancedHashPassword(row["Password"]);
                 return new User
                 {
                     Id = int.Parse(row["Id"]),
+                    Username = row["Username"],
                     Forename = row["Forename"],
                     Surname = row["Surname"],
                     Email = row["Email"],
-                    Password = row["Password"],
+                    Password = password,
                     Joined = DateOnly.Parse(row["Joined"])
                 };
             }).ToList();
@@ -173,7 +175,6 @@ namespace MediaCritica.Server.Testing
                 ParentId = row["ParentId"] == "<null>" ? null : int.Parse(row["ParentId"]),
                 Content = row["Content"],
                 CommenterId = int.Parse(row["CommenterId"]),
-                CommenterName = row["CommenterName"],
                 CommentedAt = DateTime.Parse(row["CommentedAt"]),
                 IsDeleted = bool.Parse(row["IsDeleted"]),
             }).ToList();

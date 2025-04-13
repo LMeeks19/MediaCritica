@@ -12,18 +12,41 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241230171433_Update-Review-Table")]
-    partial class UpdateReviewTable
+    [Migration("20250410163955_Add-Username-Field-To-User-Table")]
+    partial class AddUsernameFieldToUserTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.AuthToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuthTokens");
+                });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Backlog", b =>
                 {
@@ -41,7 +64,7 @@ namespace MediaCritica.Server.Migrations
 
                     b.Property<string>("MediaId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MediaPoster")
                         .IsRequired()
@@ -60,9 +83,79 @@ namespace MediaCritica.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MediaId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Backlogs");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CommentedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CommenterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommenterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommenterId");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Engagement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Engagements");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
@@ -111,7 +204,7 @@ namespace MediaCritica.Server.Migrations
                     b.Property<string>("Rated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Released")
+                    b.Property<DateTime?>("Released")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Runtime")
@@ -138,6 +231,70 @@ namespace MediaCritica.Server.Migrations
                     b.HasDiscriminator().HasValue("Media");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Milestone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("EarnedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EarnedLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MilestoneType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Milestones");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBookmarked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("RecipientId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Preference", b =>
@@ -194,6 +351,43 @@ namespace MediaCritica.Server.Migrations
                     b.ToTable("Ratings");
                 });
 
+            modelBuilder.Entity("MediaCritica.Server.Objects.Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Reason")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReportedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReporterId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("ReporterId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("Reports");
+                });
+
             modelBuilder.Entity("MediaCritica.Server.Objects.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -209,12 +403,18 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MediaId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MediaPoster")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MediaSeriesTitle")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MediaTitle")
@@ -290,6 +490,9 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateOnly>("Joined")
+                        .HasColumnType("date");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -298,9 +501,42 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.UserFollow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("EnabledNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("FollowedId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FollowedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FollowerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowedId");
+
+                    b.HasIndex("FollowerId");
+
+                    b.ToTable("UserFollows");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Episode", b =>
@@ -309,9 +545,6 @@ namespace MediaCritica.Server.Migrations
 
                     b.Property<int>("EpisodeNo")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsFullyPopulated")
-                        .HasColumnType("bit");
 
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
@@ -366,6 +599,12 @@ namespace MediaCritica.Server.Migrations
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Backlog", b =>
                 {
+                    b.HasOne("MediaCritica.Server.Objects.Media", null)
+                        .WithMany("Backlogs")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MediaCritica.Server.Objects.User", "User")
                         .WithMany("Backlogs")
                         .HasForeignKey("UserId")
@@ -373,6 +612,66 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Comment", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.User", "Commenter")
+                        .WithMany()
+                        .HasForeignKey("CommenterId");
+
+                    b.HasOne("MediaCritica.Server.Objects.Comment", "Parent")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("MediaCritica.Server.Objects.Review", "Review")
+                        .WithMany("Comments")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Commenter");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Engagement", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.Review", null)
+                        .WithMany("Engagements")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaCritica.Server.Objects.User", null)
+                        .WithMany("Engagements")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Milestone", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.User", "User")
+                        .WithMany("Milestones")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Notification", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.User", "Recipient")
+                        .WithMany("Notifications")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipient");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Preference", b =>
@@ -393,9 +692,32 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MediaCritica.Server.Objects.Report", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.Comment", "Comment")
+                        .WithMany("Reports")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("MediaCritica.Server.Objects.User", "Reporter")
+                        .WithMany()
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaCritica.Server.Objects.Review", "Review")
+                        .WithMany("Reports")
+                        .HasForeignKey("ReviewId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Reporter");
+
+                    b.Navigation("Review");
+                });
+
             modelBuilder.Entity("MediaCritica.Server.Objects.Review", b =>
                 {
-                    b.HasOne("MediaCritica.Server.Objects.Media", null)
+                    b.HasOne("MediaCritica.Server.Objects.Media", "Media")
                         .WithMany("Reviews")
                         .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -406,31 +728,74 @@ namespace MediaCritica.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Season", b =>
                 {
-                    b.HasOne("MediaCritica.Server.Objects.Series", null)
+                    b.HasOne("MediaCritica.Server.Objects.Series", "Series")
                         .WithMany("Seasons")
                         .HasForeignKey("SeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Series");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.UserFollow", b =>
+                {
+                    b.HasOne("MediaCritica.Server.Objects.User", "Followed")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MediaCritica.Server.Objects.User", "Follower")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Followed");
+
+                    b.Navigation("Follower");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Episode", b =>
                 {
-                    b.HasOne("MediaCritica.Server.Objects.Season", null)
+                    b.HasOne("MediaCritica.Server.Objects.Season", "Season")
                         .WithMany("Episodes")
                         .HasForeignKey("SeasonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Season");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Comment", b =>
+                {
+                    b.Navigation("Replies");
+
+                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Media", b =>
                 {
+                    b.Navigation("Backlogs");
+
                     b.Navigation("Ratings");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("MediaCritica.Server.Objects.Review", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Engagements");
+
+                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("MediaCritica.Server.Objects.Season", b =>
@@ -441,6 +806,16 @@ namespace MediaCritica.Server.Migrations
             modelBuilder.Entity("MediaCritica.Server.Objects.User", b =>
                 {
                     b.Navigation("Backlogs");
+
+                    b.Navigation("Engagements");
+
+                    b.Navigation("Followers");
+
+                    b.Navigation("Following");
+
+                    b.Navigation("Milestones");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("Preference")
                         .IsRequired();

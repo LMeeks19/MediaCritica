@@ -23,6 +23,7 @@ namespace MediaCritica.Server.Controllers
 
             var comments = await _databaseContext.Comments
                 .Include(c => c.Reports)
+                .Include(c => c.Commenter)
                 .Where(c => c.ReviewId == reviewId)
                 .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
@@ -54,6 +55,7 @@ namespace MediaCritica.Server.Controllers
         {
             var comments = await _databaseContext.Comments
                 .Include(c => c.Reports)
+                .Include(c => c.Commenter)
                 .Where(c => c.ParentId == commentId)
                 .OrderByDescending(c => c.CommentedAt)
                 .Skip(offset)
@@ -100,6 +102,7 @@ namespace MediaCritica.Server.Controllers
             var comment = await _databaseContext.Comments
                 .Include(c => c.Reports)
                 .Include(c => c.Replies)
+                .Include(c => c.Commenter)
                 .SingleAsync(c => c.Id == commentId);
 
             return _mapper.CommentMapper.MapCommentModel(comment, GetReplies(comment.Id, comment.Replies), comment.Replies.Count);

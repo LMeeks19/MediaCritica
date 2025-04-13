@@ -47,7 +47,6 @@ function MediaActions(props: {
 
   async function AddToBacklog() {
     const backlog = {
-      userId: user.id,
       mediaId: props.media.id,
       mediaType: props.media.type,
       mediaPoster: props.media.poster,

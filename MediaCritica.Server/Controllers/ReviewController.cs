@@ -21,6 +21,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
+                .Include(r => r.User)
                 .Include(r => r.Engagements)
                 .Include(r => r.Media)
                     .ThenInclude(m => (m as Episode)!.Season)
@@ -39,6 +40,7 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var reviews = await _databaseContext.Reviews
+                   .Include(r => r.User)
                    .Include(r => r.Engagements)
                    .Include(r => r.Media)
                    .Include(r => r.Comments)
@@ -75,6 +77,7 @@ namespace MediaCritica.Server.Controllers
         {
             var media = await _databaseContext.Media
                 .Include(m => m.Reviews)
+                    .ThenInclude(r => r.User)
                 .Where(m => m.Id == mediaId)
                 .SingleAsync();
 
@@ -114,8 +117,7 @@ namespace MediaCritica.Server.Controllers
             await _notificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
-                AuthorName = review.ReviewerName,
-                Message = $"Review created for {review.MediaTitle}"
+                Message = $"Review created for {review.MediaTitle} {review.User.Username}"
             });
 
             review.Media = _databaseContext.Media.Single(m => m.Id == review.MediaId);
@@ -144,8 +146,7 @@ namespace MediaCritica.Server.Controllers
             await _notificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
-                AuthorName = review.ReviewerName,
-                Message = $"{review.MediaTitle} review updated"
+                Message = $"{review.User.Username} updated their {review.MediaTitle} review"
             });
 
             return await GetReview(review.Id);

@@ -59,7 +59,7 @@ export function Comment({
         ...curComment,
         content: undefined,
         commenterId: undefined,
-        commenterName: undefined,
+        commenterUsername: undefined,
         commentedAt: undefined,
         isDeleted: true,
       })
@@ -120,7 +120,7 @@ export function Comment({
         <AccountIcon fontSize="small" />{" "}
         {curComment.isDeleted
           ? "deleted"
-          : `${curComment.commenterName} - ${formatDistanceToNowStrict(
+          : `${curComment.commenterUsername} - ${formatDistanceToNowStrict(
               curComment.commentedAt!
             )} ago`}
         {!curComment.isDeleted && (

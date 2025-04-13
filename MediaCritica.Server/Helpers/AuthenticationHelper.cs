@@ -5,27 +5,59 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, HttpContext httpContext, bool isTestEnvironment = false) : ControllerBase
+    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, IHttpContextAccessor httpContextAccessor, bool isTestEnvironment = false) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly HttpContext _httpContext = httpContext;
+        private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
         private readonly bool _isTestEnvironment = isTestEnvironment;
 
         public async Task<User?> AuthenticateUser(UserLoginModel userLoginModel)
         {
-            var user = await GetUser(userLoginModel.Email);
+            var user = await GetUser(userLoginModel.Username);
 
-            if (user == null || userLoginModel.Password != user.Password)
+            if (user == null || !VerifyPassword(userLoginModel.Password, user.Password))
                 return null;
 
             return user;
         }
 
-        public async Task<User?> GetUser(string? email = null, int? id = null)
+        public PasswordValidationResultModel IsValidPassword(string newPassword, string? oldPassword = null)
+        {
+            if (oldPassword != null && VerifyPassword(newPassword, oldPassword))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must not be the same as the existing password" };
+            else if (newPassword.Length < 8)
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must be at least 8 characters long" };
+            else if (!Regex.IsMatch(newPassword, @"^[a-zA-Z].*"))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must start with a letter" };
+            else if (!newPassword.Any(char.IsDigit))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must contain at least one digit" };
+            else if (!newPassword.Any(char.IsUpper))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must contain at least one uppercase letter" };
+            else if (!newPassword.Any(char.IsLower))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must contain at least one lowercase letter" };
+            else if (!Regex.IsMatch(newPassword, @".*[!""#$%&'()*+,\-./:;<=>?@\[\]^_`{|}~].*"))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must contain at least one symbol" };
+            else if (newPassword.Contains(' '))
+                return new PasswordValidationResultModel { IsValid = false, Message = "Password must not contain spaces" };
+
+            return new PasswordValidationResultModel { IsValid = true };
+        }
+
+        public string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+        }
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
+        }
+
+        public async Task<User?> GetUser(string? username = null, int? id = null)
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Preference)
@@ -34,7 +66,7 @@ namespace MediaCritica.Server.Helpers
                 .Include(u => u.Followers)
                 .Include(u => u.Following)
                 .Include(u => u.Notifications)
-                .SingleOrDefaultAsync(u => u.Email == email || u.Id == id);
+                .SingleOrDefaultAsync(u => u.Username == username || u.Id == id);
 
             return user;
         }

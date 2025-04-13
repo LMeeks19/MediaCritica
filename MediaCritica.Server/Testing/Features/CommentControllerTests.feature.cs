@@ -77,45 +77,50 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
+                        "Username",
                         "Forename",
                         "Surname",
                         "Email",
                         "Password",
                         "Joined"});
-            table30.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "1",
+                        "Username1",
                         "Test",
                         "1",
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table30.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "2",
+                        "Username2",
                         "Test",
                         "2",
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table30.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "3",
+                        "Username3",
                         "Test",
                         "3",
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table30.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "4",
+                        "Username4",
                         "Test",
                         "4",
                         "test4@email.com",
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table30, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table32, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -139,7 +144,7 @@ namespace MediaCritica.Server.Testing.Features
                         "DVD",
                         "Website",
                         "Production"});
-            table31.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "1",
                         "Actor 1, Actor 2",
                         "Award 1",
@@ -164,36 +169,36 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         ""});
 #line 10
- testRunner.And("I have the following movies", ((string)(null)), table31, "And ");
+ testRunner.And("I have the following movies", ((string)(null)), table33, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
                         "MediaTitle",
                         "MediaType",
                         "UserId",
-                        "ReviewerName",
+                        "ReviewerUsername",
                         "Rating",
                         "Title",
                         "Description",
                         "Date"});
-            table32.AddRow(new string[] {
+            table34.AddRow(new string[] {
                         "1",
                         "1",
                         "Media Poster 1",
                         "Media Title 1",
                         "movie",
                         "3",
-                        "Test 3",
+                        "Username3",
                         "4",
                         "Test Title",
                         "Test Description",
                         "2025-01-01"});
 #line 13
- testRunner.And("I have the following reviews", ((string)(null)), table32, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table34, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "ReviewId",
                         "ParentId",
@@ -202,7 +207,7 @@ namespace MediaCritica.Server.Testing.Features
                         "CommenterName",
                         "CommentedAt",
                         "IsDeleted"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "1",
                         "1",
                         "<null>",
@@ -211,7 +216,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 1",
                         "2025-01-27",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "2",
                         "1",
                         "1",
@@ -220,7 +225,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 2",
                         "2025-01-28",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "3",
                         "1",
                         "<null>",
@@ -229,7 +234,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 1",
                         "2025-01-29",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "4",
                         "1",
                         "3",
@@ -238,7 +243,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 4",
                         "2025-01-29",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "5",
                         "1",
                         "3",
@@ -247,7 +252,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 1",
                         "2025-01-30",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "6",
                         "1",
                         "3",
@@ -256,7 +261,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 1",
                         "2025-01-30",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "7",
                         "1",
                         "5",
@@ -265,7 +270,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Test 2",
                         "2025-01-31",
                         "false"});
-            table33.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "8",
                         "1",
                         "5",
@@ -275,16 +280,16 @@ namespace MediaCritica.Server.Testing.Features
                         "2025-02-01",
                         "true"});
 #line 16
- testRunner.And("I have the following comments", ((string)(null)), table33, "And ");
+ testRunner.And("I have the following comments", ((string)(null)), table35, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "CommentId",
                         "ReporterId",
                         "Reason",
                         "Details",
                         "ReportedAt"});
-            table34.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "1",
                         "1",
                         "2",
@@ -292,7 +297,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Spam Comment",
                         "2025-02-20"});
 #line 26
- testRunner.And("I have the following reports", ((string)(null)), table34, "And ");
+ testRunner.And("I have the following reports", ((string)(null)), table36, "And ");
 #line hidden
         }
         
@@ -322,7 +327,7 @@ this.FeatureBackground();
 #line 32
     testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "ReviewId",
                             "ParentId",
@@ -332,7 +337,7 @@ this.FeatureBackground();
                             "CommentedAt",
                             "IsDeleted",
                             "TotalReplies"});
-                table35.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "3",
                             "1",
                             "<null>",
@@ -342,7 +347,7 @@ this.FeatureBackground();
                             "2025-01-29",
                             "false",
                             "3"});
-                table35.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "5",
                             "1",
                             "3",
@@ -352,7 +357,7 @@ this.FeatureBackground();
                             "2025-01-30",
                             "false",
                             "1"});
-                table35.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "7",
                             "1",
                             "5",
@@ -362,7 +367,7 @@ this.FeatureBackground();
                             "2025-01-31",
                             "false",
                             "0"});
-                table35.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "6",
                             "1",
                             "3",
@@ -372,7 +377,7 @@ this.FeatureBackground();
                             "2025-01-30",
                             "false",
                             "0"});
-                table35.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "1",
                             "1",
                             "<null>",
@@ -382,7 +387,7 @@ this.FeatureBackground();
                             "2025-01-27",
                             "false",
                             "1"});
-                table35.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "2",
                             "1",
                             "1",
@@ -393,7 +398,7 @@ this.FeatureBackground();
                             "false",
                             "0"});
 #line 33
-    testRunner.And("The returned comments structure should match the expected hierarchy:", ((string)(null)), table35, "And ");
+    testRunner.And("The returned comments structure should match the expected hierarchy:", ((string)(null)), table37, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -458,28 +463,28 @@ this.FeatureBackground();
 #line 49
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "ReviewId",
                             "ParentId",
                             "Content",
                             "CommenterId",
-                            "CommenterName",
+                            "CommenterUsername",
                             "CommentedAt",
                             "IsDeleted",
                             "TotalReplies"});
-                table36.AddRow(new string[] {
+                table38.AddRow(new string[] {
                             "4",
                             "1",
                             "3",
                             "Comment 4",
                             "4",
-                            "Test 4",
+                            "Username4",
                             "2025-01-29",
                             "false",
                             "0"});
 #line 50
- testRunner.And("The CommentModels should be", ((string)(null)), table36, "And ");
+ testRunner.And("The CommentModels should be", ((string)(null)), table38, "And ");
 #line hidden
 #line 53
  testRunner.And("The children should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -574,46 +579,46 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                             "ReviewId",
                             "ParentId",
                             "Content",
                             "CommenterId",
                             "CommenterName"});
-                table37.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "1",
                             "1",
                             "New Comment",
                             "1",
                             "Test 1"});
 #line 66
- testRunner.When("I call PostComment with the following data", ((string)(null)), table37, "When ");
+ testRunner.When("I call PostComment with the following data", ((string)(null)), table39, "When ");
 #line hidden
 #line 69
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "ReviewId",
                             "ParentId",
                             "Content",
                             "CommenterId",
-                            "CommenterName",
+                            "CommenterUsername",
                             "CommentedAt",
                             "IsDeleted",
                             "TotalReplies"});
-                table38.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "9",
                             "1",
                             "1",
                             "New Comment",
                             "1",
-                            "Test 1",
+                            "Username1",
                             "2025-02-27",
                             "false",
                             "0"});
 #line 70
- testRunner.And("The CommentModel should be", ((string)(null)), table38, "And ");
+ testRunner.And("The CommentModel should be", ((string)(null)), table40, "And ");
 #line hidden
 #line 73
  testRunner.And("The children should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -642,20 +647,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
                             "ReviewId",
                             "ParentId",
                             "Content",
                             "CommenterId",
                             "CommenterName"});
-                table39.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "1",
                             "99",
                             "New Comment",
                             "1",
                             "Test 1"});
 #line 76
- testRunner.When("I call PostComment with the following data", ((string)(null)), table39, "When ");
+ testRunner.When("I call PostComment with the following data", ((string)(null)), table41, "When ");
 #line hidden
 #line 79
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -687,20 +692,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                             "ReviewId",
                             "ParentId",
                             "Content",
                             "CommenterId",
                             "CommenterName"});
-                table40.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "1",
                             "8",
                             "New Comment",
                             "1",
                             "Test 1"});
 #line 83
- testRunner.When("I call PostComment with the following data", ((string)(null)), table40, "When ");
+ testRunner.When("I call PostComment with the following data", ((string)(null)), table42, "When ");
 #line hidden
 #line 86
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -732,14 +737,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Content"});
-                table41.AddRow(new string[] {
+                table43.AddRow(new string[] {
                             "1",
                             "Updated Comment"});
 #line 90
- testRunner.When("I call UpdateComment with the following data", ((string)(null)), table41, "When ");
+ testRunner.When("I call UpdateComment with the following data", ((string)(null)), table43, "When ");
 #line hidden
 #line 93
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -771,14 +776,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Content"});
-                table42.AddRow(new string[] {
+                table44.AddRow(new string[] {
                             "99",
                             "Updated Comment"});
 #line 97
- testRunner.When("I call UpdateComment with the following data", ((string)(null)), table42, "When ");
+ testRunner.When("I call UpdateComment with the following data", ((string)(null)), table44, "When ");
 #line hidden
 #line 100
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -810,18 +815,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details"});
-                table43.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "1",
                             "1",
                             "Spam",
                             "Spam Comment"});
 #line 104
- testRunner.When("I call ReportComment with the following data", ((string)(null)), table43, "When ");
+ testRunner.When("I call ReportComment with the following data", ((string)(null)), table45, "When ");
 #line hidden
 #line 107
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -829,14 +834,14 @@ this.FeatureBackground();
 #line 108
  testRunner.And("The response should be \"Comment Reported\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details",
                             "ReportedAt"});
-                table44.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "2",
                             "1",
                             "1",
@@ -844,7 +849,7 @@ this.FeatureBackground();
                             "Spam Comment",
                             "2025-02-27"});
 #line 109
- testRunner.And("The following report should be in the database", ((string)(null)), table44, "And ");
+ testRunner.And("The following report should be in the database", ((string)(null)), table46, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -870,18 +875,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details"});
-                table45.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "1",
                             "2",
                             "Spam",
                             "Spam Comment"});
 #line 114
- testRunner.When("I call ReportComment with the following data", ((string)(null)), table45, "When ");
+ testRunner.When("I call ReportComment with the following data", ((string)(null)), table47, "When ");
 #line hidden
 #line 117
  testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -913,18 +918,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details"});
-                table46.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "99",
                             "1",
                             "Spam",
                             "Spam Comment"});
 #line 121
- testRunner.When("I call ReportComment with the following data", ((string)(null)), table46, "When ");
+ testRunner.When("I call ReportComment with the following data", ((string)(null)), table48, "When ");
 #line hidden
 #line 124
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -956,18 +961,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details"});
-                table47.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "1",
                             "99",
                             "Spam",
                             "Spam Comment"});
 #line 128
- testRunner.When("I call ReportComment with the following data", ((string)(null)), table47, "When ");
+ testRunner.When("I call ReportComment with the following data", ((string)(null)), table49, "When ");
 #line hidden
 #line 131
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
