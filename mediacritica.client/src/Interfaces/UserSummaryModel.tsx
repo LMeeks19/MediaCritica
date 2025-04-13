@@ -4,7 +4,6 @@ import { UserMilestoneModel } from "./UserMilestoneModel";
 export interface UserSummaryModel {
   id: number;
   username: string;
-  name: string;
   joined: Date;
   reviews: ReviewModel[]; // Array of reviews mapped to a specific model
   milestones: UserMilestoneModel[];

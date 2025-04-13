@@ -68,7 +68,6 @@ namespace MediaCritica.Server.Mappers
             {
                 Id = user.Id,
                 Username = user.Username,
-                Name = $"{user.Forename} {user.Surname}",
                 Joined = user.Joined,
                 Reviews = user.Reviews
                      .OrderByDescending(r => r.Date)

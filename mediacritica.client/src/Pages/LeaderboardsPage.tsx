@@ -140,7 +140,7 @@ function LeaderboardsPage() {
                         return (
                           <tr key={ranking.rank}>
                             <td>{ranking.rank}</td>
-                            <td>{ranking.name}</td>
+                            <td>{ranking.username}</td>
                             <td>{ranking.reviews}</td>
                           </tr>
                         );

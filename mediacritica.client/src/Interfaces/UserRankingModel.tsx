@@ -1,6 +1,6 @@
 export interface UserRankingModel {
   rank: number;
-  name: string;
+  username: string;
   reviews: number;
   timeframe: string
 }

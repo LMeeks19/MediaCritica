@@ -12,12 +12,13 @@
         public string MediaType { get; set; }
 
         public int UserId { get; set; }
-        public string ReviewerUsername { get; set; }
         public double Rating { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public bool IsDeleted { get; set; }
+
+        public virtual User User { get; set; }
         public virtual List<Engagement> Engagements { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Report> Reports { get; set; }

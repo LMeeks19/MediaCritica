@@ -483,12 +483,6 @@ function AccountPage() {
                     inputType="text"
                   />
                   <AccountDetail
-                    accountFieldName="Email"
-                    accountFieldType={AccountFieldType.Email}
-                    accountFieldValue={user.email}
-                    inputType="text"
-                  />
-                  <AccountDetail
                     accountFieldName="Forename"
                     accountFieldType={AccountFieldType.Forename}
                     accountFieldValue={user.forename}
@@ -500,7 +494,12 @@ function AccountPage() {
                     accountFieldValue={user.surname}
                     inputType="text"
                   />
-
+                  <AccountDetail
+                    accountFieldName="Email"
+                    accountFieldType={AccountFieldType.Email}
+                    accountFieldValue={user.email}
+                    inputType="text"
+                  />
                   <AccountDetail
                     accountFieldName="Password"
                     accountFieldType={AccountFieldType.Password}

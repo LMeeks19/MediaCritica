@@ -40,7 +40,7 @@ namespace MediaCritica.Server.Testing.Steps
                 var actualUserRankingModel = actualUserRankingModels[i];
 
                 Assert.AreEqual(expectedUserRankingModel.Rank, actualUserRankingModel.Rank);
-                Assert.AreEqual(expectedUserRankingModel.Name, actualUserRankingModel.Name);
+                Assert.AreEqual(expectedUserRankingModel.Username, actualUserRankingModel.Username);
                 Assert.AreEqual(expectedUserRankingModel.Reviews, actualUserRankingModel.Reviews);
                 Assert.AreEqual(expectedUserRankingModel.Timeframe, actualUserRankingModel.Timeframe);
             }

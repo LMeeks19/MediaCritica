@@ -32,7 +32,7 @@ namespace MediaCritica.Server.Controllers
                     .ThenBy(user => user.Forename)
                 .Select(user => new UserRankingModel
                 {
-                    Name = $"{user.Forename} {user.Surname}",
+                    Username = user.Username,
                     Reviews = user.Reviews.Count(r => r.Date >= startDate && r.Date <= endDate),
                     Timeframe = timeframe
                 })

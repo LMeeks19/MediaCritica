@@ -116,7 +116,6 @@ function ViewUserPage() {
           <div className="header">
             <div className="flex flex-col gap-1">
               <h1>{userSummary.username}</h1>
-              <span>{userSummary.name}</span>
               <span>Joined: {format(userSummary.joined, "do MMMM yyyy")}</span>
             </div>
             <div className="actions">

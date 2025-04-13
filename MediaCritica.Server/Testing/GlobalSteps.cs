@@ -40,7 +40,7 @@ namespace MediaCritica.Server.Testing
         {
             var users = table.Rows.Select(row =>
             {
-                var password = BCrypt.Net.BCrypt.HashPassword(row["Password"]);
+                var password = BCrypt.Net.BCrypt.EnhancedHashPassword(row["Password"]);
                 return new User
                 {
                     Id = int.Parse(row["Id"]),

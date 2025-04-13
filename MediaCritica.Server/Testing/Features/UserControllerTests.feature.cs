@@ -1488,7 +1488,7 @@ this.FeatureBackground();
  testRunner.Then("The status code should be 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 243
- testRunner.And("The response should be \"Password must be the same as the existing password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The response should be \"Password must not be the same as the existing password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1996,12 +1996,10 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table220 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
-                            "Name",
                             "Joined"});
                 table220.AddRow(new string[] {
                             "1",
                             "B_Banner",
-                            "Bruce Banner",
                             "2025-01-01"});
 #line 339
  testRunner.And("The UserSummaryModel response should be", ((string)(null)), table220, "And ");

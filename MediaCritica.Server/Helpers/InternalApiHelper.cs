@@ -12,6 +12,7 @@ namespace MediaCritica.Server.Helpers
             var movie = await _databaseContext.Movies
                 .Include(movie => movie.Ratings)
                 .Include(movie => movie.Reviews)
+                    .ThenInclude(review => review.User)
                 .SingleOrDefaultAsync(movie => movie.Id == movieId);
 
             return movie;
@@ -22,6 +23,7 @@ namespace MediaCritica.Server.Helpers
             var game = await _databaseContext.Games
                 .Include(game => game.Ratings)
                 .Include(game => game.Reviews)
+                    .ThenInclude(review => review.User)
                 .SingleOrDefaultAsync(game => game.Id == gameId);
 
             return game;
@@ -31,6 +33,7 @@ namespace MediaCritica.Server.Helpers
         {
             var series = await _databaseContext.Series
                 .Include(episdoe => episdoe.Reviews)
+                    .ThenInclude(series => series.User)
                 .Include(series => series.Ratings)
                 .Include(series => series.Seasons)
                     .ThenInclude(season => season.Episodes)
@@ -53,6 +56,7 @@ namespace MediaCritica.Server.Helpers
             var episode = await _databaseContext.Episodes
                 .Include(episode => episode.Ratings)
                 .Include(episdoe => episdoe.Reviews)
+                    .ThenInclude(review => review.User)
                 .Include(episode => episode.Season)
                     .ThenInclude(season => season.Series)
                 .AsNoTracking()

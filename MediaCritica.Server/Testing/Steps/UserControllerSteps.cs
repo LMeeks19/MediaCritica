@@ -184,7 +184,6 @@ namespace MediaCritica.Server.Testing.Steps
 
             Assert.AreEqual(actualUserSummary.Id, expectedUserSummary.Id);
             Assert.AreEqual(actualUserSummary.Username, expectedUserSummary.Username);
-            Assert.AreEqual(actualUserSummary.Name, expectedUserSummary.Name);
             Assert.AreEqual(actualUserSummary.Joined, expectedUserSummary.Joined);
         }
 

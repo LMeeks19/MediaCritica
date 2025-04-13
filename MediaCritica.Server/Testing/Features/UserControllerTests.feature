@@ -337,8 +337,8 @@ Scenario: Get a user summary
 	When I call GetViewUserSummary with the username B_Banner
 	Then The status code should be 200
 	And The UserSummaryModel response should be
-		| Id | Username | Name         | Joined     |
-		| 1  | B_Banner | Bruce Banner | 2025-01-01 |
+		| Id | Username | Joined     |
+		| 1  | B_Banner | 2025-01-01 |
 
 
 

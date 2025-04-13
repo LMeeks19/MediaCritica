@@ -74,37 +74,37 @@ Scenario: Get user rankings for week
 	When I call GetUserRankings for week 
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 1       | week      |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 1       | week      |
 
 Scenario: Get user rankings for month
 	When I call GetUserRankings for month
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 5       | month     |
-		| 2    | Test 3 | 4       | month     |
-		| 3    | Test 4 | 3       | month     |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 5       | month     |
+		| 2    | Username3 | 4       | month     |
+		| 3    | Username4 | 3       | month     |
 
 Scenario: Get user rankings for year
 	When I call GetUserRankings for year
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 9       | year      |
-		| 2    | Test 4 | 6       | year      |
-		| 3    | Test 2 | 5       | year      |
-		| 4    | Test 3 | 5       | year      |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 9       | year      |
+		| 2    | Username4 | 6       | year      |
+		| 3    | Username2 | 5       | year      |
+		| 4    | Username3 | 5       | year      |
 
 Scenario: Get user rankings for all time
 	When I call GetUserRankings for all-time
 	Then The status code should be 200
 	And The UserRankingModels reposne should be
-		| Rank | Name   | Reviews | Timeframe |
-		| 1    | Test 1 | 9       | all-time  |
-		| 2    | Test 2 | 7       | all-time  |
-		| 3    | Test 3 | 6       | all-time  |
-		| 4    | Test 4 | 6       | all-time  |
+		| Rank | Username  | Reviews | Timeframe |
+		| 1    | Username1 | 9       | all-time  |
+		| 2    | Username2 | 7       | all-time  |
+		| 3    | Username3 | 6       | all-time  |
+		| 4    | Username4 | 6       | all-time  |
 
 Scenario: Get media trends for week
 	When I call GetMediaTrends for week
