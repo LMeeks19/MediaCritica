@@ -24,6 +24,8 @@ function ThemePreference() {
       id: user.preference.id,
       theme: theme,
       palette: user.preference?.palette,
+      locale: user.preference?.locale,
+      timezone: user.preference?.timezone,
     } as PreferenceModel);
 
     setUser({ ...user, preference: preference });

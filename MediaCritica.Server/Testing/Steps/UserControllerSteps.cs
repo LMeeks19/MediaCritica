@@ -142,7 +142,9 @@ namespace MediaCritica.Server.Testing.Steps
                 {
                     Id = int.Parse(row["PreferenceId"]),
                     Theme = row["Theme"],
-                    Palette = row["Palette"]
+                    Palette = row["Palette"],
+                    Locale = row["Locale"],
+                    Timezone = row["Timezone"],
                 },
             };
 

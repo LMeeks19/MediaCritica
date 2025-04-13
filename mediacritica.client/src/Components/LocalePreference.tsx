@@ -3,29 +3,28 @@ import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
-import { Circle } from "@uiw/react-color";
+import { Select, Button, ButtonGroup } from "@mui/material";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Button, ButtonGroup } from "@mui/material";
 import { CustomTooltip } from "./Tooltip";
+import { setThemePalette } from "../Helpers/ThemePaletteHelper";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { setThemePalette } from "../Helpers/ThemePaletteHelper";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
-function PalettePreference() {
+function LocalePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [user, setUser] = useRecoilState(userState);
 
-  const [palette, setPalette] = useState<string>(user.preference?.palette);
+  const [locale, setLocale] = useState<string>(user.preference?.locale);
 
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
       id: user.preference.id,
       theme: user.preference?.theme,
-      palette: palette,
-      locale: user.preference?.locale,
+      palette: user.preference?.palette,
+      locale: locale,
       timezone: user.preference?.timezone,
     } as PreferenceModel);
 
@@ -34,8 +33,8 @@ function PalettePreference() {
     setIsEditing(false);
   }
 
-  function ResetPalette() {
-    setPalette(user.preference.palette);
+  function ResetLocale() {
+    setLocale(user.preference.locale);
     setIsEditing(false);
   }
 
@@ -50,7 +49,7 @@ function PalettePreference() {
     cancel_icon: <EditOutlinedIcon />,
     confirm_text: "Discard",
     confirm_icon: <DeleteIcon />,
-    confirm_action: () => ResetPalette(),
+    confirm_action: () => ResetLocale(),
   } as ConfirmationDialogModel;
 
   var saveDetailDialog = {
@@ -63,35 +62,23 @@ function PalettePreference() {
     confirm_action: () => ChangePreference(),
   } as ConfirmationDialogModel;
 
+
   return (
     <div className="info-item">
-      <span className="info-label">Palette</span>
+      <span className="info-label">Locale</span>
       {isEditing ? (
         <div className="info-value">
-          <Circle
-            style={{
-              backgroundColor: "transparent",
-              width: "100%",
-              padding: 0,
-              margin: 0,
-            }}
-            color={palette}
-            colors={[
-              "#971212",
-              "#E27300",
-              "#FCC400",
-              "#808900",
-              "#225353",
-              "#16A5A5",
-              "#0062B1",
-              "#653294",
-              "#FA28FF",
-            ]}
-            onChange={(colour) => setPalette(colour.hex)}
-          />
+          <Select
+            variant="standard"
+            value={locale}
+            onChange={(e) => setLocale(e.target.value)}
+            fullWidth
+          >
+            // TODO: Add locale codes to the list
+          </Select>
         </div>
       ) : (
-        <div className="info-value">{user.preference?.palette}</div>
+        <div className="info-value">{user.preference?.locale}</div>
       )}
       <ButtonGroup className="info-action">
         {isEditing && (
@@ -113,14 +100,14 @@ function PalettePreference() {
               setIsDialogOpen(true);
             }}
           >
-            <CustomTooltip title="Save">
+            <CustomTooltip title="Cancel">
               <SaveIcon />
             </CustomTooltip>
           </Button>
         )}
         {!isEditing && (
           <Button onClick={() => setIsEditing(true)}>
-            <CustomTooltip title="Edit">
+            <CustomTooltip title="Cancel">
               <EditOutlinedIcon />
             </CustomTooltip>
           </Button>
@@ -135,4 +122,4 @@ function PalettePreference() {
   );
 }
 
-export default PalettePreference;
+export default LocalePreference;

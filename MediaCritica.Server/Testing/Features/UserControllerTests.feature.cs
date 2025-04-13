@@ -124,27 +124,37 @@ namespace MediaCritica.Server.Testing.Features
                         "Id",
                         "UserId",
                         "Theme",
-                        "Palette"});
+                        "Palette",
+                        "Locale",
+                        "Timezone"});
             table163.AddRow(new string[] {
                         "1",
                         "1",
                         "System",
-                        "#000000"});
+                        "#000000",
+                        "en-GB",
+                        "Europe/London"});
             table163.AddRow(new string[] {
                         "2",
                         "2",
                         "Light",
-                        "#FFFFFF"});
+                        "#FFFFFF",
+                        "en-US",
+                        "America/New_York"});
             table163.AddRow(new string[] {
                         "3",
                         "3",
                         "System",
-                        "#000000"});
+                        "#000000",
+                        "en-GB",
+                        "Europe/Paris"});
             table163.AddRow(new string[] {
                         "4",
                         "4",
                         "Dark",
-                        "#FFFFFF"});
+                        "#FFFFFF",
+                        "en-US",
+                        "Asia/Tokyo"});
 #line 10
  testRunner.And("I have the following preferences", ((string)(null)), table163, "And ");
 #line hidden
@@ -597,7 +607,9 @@ this.FeatureBackground();
                             "Email",
                             "PreferenceId",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table173.AddRow(new string[] {
                             "1",
                             "B_Banner",
@@ -606,7 +618,9 @@ this.FeatureBackground();
                             "test1@email.com",
                             "1",
                             "System",
-                            "#000000"});
+                            "#000000",
+                            "en-GB",
+                            "Europe/London"});
 #line 85
  testRunner.And("The UserModel response should be", ((string)(null)), table173, "And ");
 #line hidden
@@ -1055,7 +1069,9 @@ this.FeatureBackground();
                             "Email",
                             "PreferenceId",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table184.AddRow(new string[] {
                             "1",
                             "New_B_Banner",
@@ -1064,7 +1080,9 @@ this.FeatureBackground();
                             "test1@email.com",
                             "1",
                             "System",
-                            "#000000"});
+                            "#000000",
+                            "en-GB",
+                            "Europe/London"});
 #line 163
  testRunner.And("The UserModel response should be", ((string)(null)), table184, "And ");
 #line hidden
@@ -1173,7 +1191,9 @@ this.FeatureBackground();
                             "Email",
                             "PreferenceId",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table189.AddRow(new string[] {
                             "1",
                             "B_Banner",
@@ -1182,7 +1202,9 @@ this.FeatureBackground();
                             "test1@email.com",
                             "1",
                             "System",
-                            "#000000"});
+                            "#000000",
+                            "en-GB",
+                            "Europe/London"});
 #line 185
  testRunner.And("The UserModel response should be", ((string)(null)), table189, "And ");
 #line hidden
@@ -1241,7 +1263,9 @@ this.FeatureBackground();
                             "Email",
                             "PreferenceId",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table192.AddRow(new string[] {
                             "1",
                             "B_Banner",
@@ -1250,7 +1274,9 @@ this.FeatureBackground();
                             "test1@email.com",
                             "1",
                             "System",
-                            "#000000"});
+                            "#000000",
+                            "en-GB",
+                            "Europe/London"});
 #line 197
  testRunner.And("The UserModel response should be", ((string)(null)), table192, "And ");
 #line hidden
@@ -1309,7 +1335,9 @@ this.FeatureBackground();
                             "Email",
                             "PreferenceId",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table195.AddRow(new string[] {
                             "1",
                             "B_Banner",
@@ -1318,7 +1346,9 @@ this.FeatureBackground();
                             "NewEmail@email.com",
                             "1",
                             "System",
-                            "#000000"});
+                            "#000000",
+                            "en-GB",
+                            "Europe/London"});
 #line 209
  testRunner.And("The UserModel response should be", ((string)(null)), table195, "And ");
 #line hidden
@@ -1427,7 +1457,9 @@ this.FeatureBackground();
                             "Email",
                             "PreferenceId",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table200.AddRow(new string[] {
                             "1",
                             "B_Banner",
@@ -1436,7 +1468,9 @@ this.FeatureBackground();
                             "test1@email.com",
                             "1",
                             "System",
-                            "#000000"});
+                            "#000000",
+                            "en-GB",
+                            "Europe/London"});
 #line 231
  testRunner.And("The UserModel response should be", ((string)(null)), table200, "And ");
 #line hidden
@@ -1867,11 +1901,15 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table217 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table217.AddRow(new string[] {
                             "9",
                             "Light",
-                            "#FFFFFF"});
+                            "#FFFFFF",
+                            "en-US",
+                            "UTC"});
 #line 316
  testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table217, "When ");
 #line hidden
@@ -1908,11 +1946,15 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table218 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table218.AddRow(new string[] {
                             "1",
                             "Light",
-                            "#FFFFFF"});
+                            "#FFFFFF",
+                            "en-US",
+                            "UTC"});
 #line 323
  testRunner.When("I call UpdateUserPreference with the PreferenceModel", ((string)(null)), table218, "When ");
 #line hidden
@@ -1922,11 +1964,15 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table219 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Theme",
-                            "Palette"});
+                            "Palette",
+                            "Locale",
+                            "Timezone"});
                 table219.AddRow(new string[] {
                             "1",
                             "Light",
-                            "#FFFFFF"});
+                            "#FFFFFF",
+                            "en-US",
+                            "UTC"});
 #line 327
  testRunner.And("The PreferenceModel response should be", ((string)(null)), table219, "And ");
 #line hidden

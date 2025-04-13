@@ -67,6 +67,8 @@ import GameIcon from "@mui/icons-material/SportsEsportsOutlined";
 import MovieIcon from "@mui/icons-material/MovieOutlined";
 import SeriesIcon from "@mui/icons-material/LiveTvOutlined";
 import EpisodeIcon from "@mui/icons-material/SubscriptionsOutlined";
+import LocalePreference from "../Components/LocalePreference";
+import TimezonePreference from "../Components/TimezonePreference";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -513,6 +515,8 @@ function AccountPage() {
                 <div className="account-details">
                   <ThemePreference />
                   <PalettePreference />
+                  <LocalePreference />
+                  <TimezonePreference />
                 </div>
                 <div className="sub-header dark-shade">
                   <h2>Actions</h2>

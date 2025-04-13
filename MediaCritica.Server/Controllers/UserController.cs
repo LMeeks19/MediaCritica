@@ -213,6 +213,8 @@ namespace MediaCritica.Server.Controllers
 
             preference.Theme = preferenceModel.Theme;
             preference.Palette = preferenceModel.Palette;
+            preference.Locale = preferenceModel.Locale;
+            preference.Timezone = preferenceModel.Timezone;
 
             await _databaseContext.SaveChangesAsync();
 

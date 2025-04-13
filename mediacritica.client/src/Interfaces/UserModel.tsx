@@ -16,4 +16,6 @@ export interface PreferenceModel {
     id: number
     theme: string;
     palette: string;
+    locale: string;
+    timezone: string;
 }

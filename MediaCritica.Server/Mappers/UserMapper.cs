@@ -23,7 +23,9 @@ namespace MediaCritica.Server.Mappers
                 Preference = new Preference()
                 {
                     Theme = "System",
-                    Palette = "#971212"
+                    Palette = "#971212",
+                    Locale = "en-GB",
+                    Timezone = "UTC",
                 },
                 Milestones = _helper.MilestoneCalculatorHelper.CreateMilestones()
             };
@@ -58,6 +60,8 @@ namespace MediaCritica.Server.Mappers
                 Id = preference.Id,
                 Theme = preference.Theme,
                 Palette = preference.Palette,
+                Locale = preference.Locale,
+                Timezone = preference.Timezone,
             };
             return preferenceModel;
         }
