@@ -46,6 +46,12 @@ namespace MediaCritica.Server
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Author)
+                .WithMany(u => u.Notifications)
+                .HasForeignKey(n => n.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Notification>()
                 .HasIndex(n => n.RecipientId);
 
             modelBuilder.Entity<Notification>()

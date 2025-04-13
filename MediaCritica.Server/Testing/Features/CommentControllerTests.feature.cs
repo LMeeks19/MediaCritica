@@ -469,7 +469,7 @@ this.FeatureBackground();
                             "ParentId",
                             "Content",
                             "CommenterId",
-                            "CommenterName",
+                            "CommenterUsername",
                             "CommentedAt",
                             "IsDeleted",
                             "TotalReplies"});
@@ -479,7 +479,7 @@ this.FeatureBackground();
                             "3",
                             "Comment 4",
                             "4",
-                            "Test 4",
+                            "Username4",
                             "2025-01-29",
                             "false",
                             "0"});
@@ -603,7 +603,7 @@ this.FeatureBackground();
                             "ParentId",
                             "Content",
                             "CommenterId",
-                            "CommenterName",
+                            "CommenterUsername",
                             "CommentedAt",
                             "IsDeleted",
                             "TotalReplies"});
@@ -613,7 +613,7 @@ this.FeatureBackground();
                             "1",
                             "New Comment",
                             "1",
-                            "Test 1",
+                            "Username1",
                             "2025-02-27",
                             "false",
                             "0"});

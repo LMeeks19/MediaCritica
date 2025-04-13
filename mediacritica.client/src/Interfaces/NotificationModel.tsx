@@ -1,6 +1,6 @@
 export interface NotificationModel {
     id: number;
-    authorName: string;
+    authorUsername: string;
     message: string;
     isRead: boolean;
     isBookmarked: boolean;

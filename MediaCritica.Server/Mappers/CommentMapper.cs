@@ -15,7 +15,6 @@ namespace MediaCritica.Server.Mappers
                 ParentId = commentModel.ParentId,
                 Content = commentModel.Content!,
                 CommenterId = commentModel.CommenterId,
-                CommenterName = commentModel.CommenterName!,
                 CommentedAt = dateTimeProviderHelper.UtcNow,
                 IsDeleted = false
             };
@@ -30,7 +29,7 @@ namespace MediaCritica.Server.Mappers
                 ReviewId = comment.ReviewId,
                 Content = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Content,
                 CommenterId = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommenterId,
-                CommenterName = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommenterName,
+                CommenterUsername = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Commenter.Username,
                 CommentedAt = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommentedAt,
                 IsDeleted = comment.IsDeleted,
                 Replies = replies,

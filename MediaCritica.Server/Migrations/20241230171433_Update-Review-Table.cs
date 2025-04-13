@@ -25,7 +25,7 @@ namespace MediaCritica.Server.Migrations
                 newName: "IX_Reviews_UserId");
 
             migrationBuilder.AddColumn<string>(
-                name: "ReviewerUsername",
+                name: "ReviewerName",
                 table: "Reviews",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -48,7 +48,7 @@ namespace MediaCritica.Server.Migrations
                 table: "Reviews");
 
             migrationBuilder.DropColumn(
-                name: "ReviewerUsername",
+                name: "ReviewerName",
                 table: "Reviews");
 
             migrationBuilder.RenameColumn(

@@ -61,7 +61,7 @@ class NotificationHub {
     if (this.connection) {
       this.connection.on(
         "ReceiveNotification",
-        async (data: { authorName: string; message: string }) => {
+        async (message: string) => {
           if (location.pathname.endsWith("/notifications")) {
             const notificationsData = await GetUserNotifications(0, limit);
             setNotifications(notificationsData);
@@ -72,7 +72,7 @@ class NotificationHub {
               totalNotifications: prev.totalNotifications + 1,
             }));
             Snackbar.Info(
-              `Notification Received: ${data.message} by ${data.authorName}`
+              `Notification Received: ${message}`
             );
           }
         }

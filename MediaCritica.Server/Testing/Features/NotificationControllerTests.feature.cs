@@ -115,7 +115,7 @@ namespace MediaCritica.Server.Testing.Features
             TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "RecipientId",
-                        "AuthorUsername",
+                        "AuthorId",
                         "Message",
                         "IsRead",
                         "IsBookmarked",
@@ -123,7 +123,7 @@ namespace MediaCritica.Server.Testing.Features
             table134.AddRow(new string[] {
                         "1",
                         "1",
-                        "Test 2",
+                        "2",
                         "Test Message 1",
                         "false",
                         "false",
@@ -131,7 +131,7 @@ namespace MediaCritica.Server.Testing.Features
             table134.AddRow(new string[] {
                         "2",
                         "1",
-                        "Test 2",
+                        "2",
                         "Test Message 2",
                         "true",
                         "true",
@@ -139,7 +139,7 @@ namespace MediaCritica.Server.Testing.Features
             table134.AddRow(new string[] {
                         "3",
                         "1",
-                        "Test 2",
+                        "2",
                         "Test Message 3",
                         "false",
                         "true",
@@ -147,7 +147,7 @@ namespace MediaCritica.Server.Testing.Features
             table134.AddRow(new string[] {
                         "4",
                         "1",
-                        "Test 2",
+                        "2",
                         "Test Message 4",
                         "true",
                         "false",
@@ -155,7 +155,7 @@ namespace MediaCritica.Server.Testing.Features
             table134.AddRow(new string[] {
                         "5",
                         "2",
-                        "Test 3",
+                        "3",
                         "Test Message 5",
                         "true",
                         "false",
@@ -211,28 +211,28 @@ this.FeatureBackground();
                             "CreatedAt"});
                 table136.AddRow(new string[] {
                             "1",
-                            "Test 2",
+                            "Username2",
                             "Test Message 1",
                             "false",
                             "false",
                             "2024-04-01"});
                 table136.AddRow(new string[] {
                             "3",
-                            "Test 2",
+                            "Username2",
                             "Test Message 3",
                             "false",
                             "true",
                             "2024-03-01"});
                 table136.AddRow(new string[] {
                             "4",
-                            "Test 2",
+                            "Username2",
                             "Test Message 4",
                             "true",
                             "false",
                             "2024-02-01"});
                 table136.AddRow(new string[] {
                             "2",
-                            "Test 2",
+                            "Username2",
                             "Test Message 2",
                             "true",
                             "true",
@@ -705,11 +705,9 @@ this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
                             "AuthorId",
-                            "AuthorUsername",
                             "Message"});
                 table141.AddRow(new string[] {
                             "1",
-                            "Test 1",
                             "Test Notification Message"});
 #line 104
  testRunner.When("I call PostNotifications with the NewNotificationModel", ((string)(null)), table141, "When ");
@@ -720,14 +718,14 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table142 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "RecipientId",
-                            "AuthorUsername",
+                            "AuthorId",
                             "Message",
                             "IsRead",
                             "IsBookmarked"});
                 table142.AddRow(new string[] {
                             "6",
                             "2",
-                            "Test 1",
+                            "1",
                             "Test Notification Message",
                             "false",
                             "false"});

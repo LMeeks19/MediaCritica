@@ -131,7 +131,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.IsNotNull(actualNotification);
                 Assert.AreEqual(expectedNotification.Id, actualNotification.Id);
                 Assert.AreEqual(expectedNotification.RecipientId, actualNotification.RecipientId);
-                Assert.AreEqual(expectedNotification.AuthorUsername, actualNotification.AuthorUsername);
+                Assert.AreEqual(expectedNotification.AuthorId, actualNotification.AuthorId);
                 Assert.AreEqual(expectedNotification.Message, actualNotification.Message);
                 Assert.AreEqual(expectedNotification.IsRead, actualNotification.IsRead);
                 Assert.AreEqual(expectedNotification.IsBookmarked, actualNotification.IsBookmarked);

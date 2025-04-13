@@ -223,7 +223,7 @@ function NotificationsPage() {
                         {`${CapitaliseFirstLetter(
                           formatDistanceToNowStrict(notification.createdAt)
                         )}
-                        ago | ${notification.authorName}`}
+                        ago | ${notification.authorUsername}`}
                       </div>
                     </div>
                     <div className="actions">

@@ -117,8 +117,7 @@ namespace MediaCritica.Server.Controllers
             await _notificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
-                AuthorUsername = review.User.Username,
-                Message = $"Review created for {review.MediaTitle}"
+                Message = $"Review created for {review.MediaTitle} {review.User.Username}"
             });
 
             review.Media = _databaseContext.Media.Single(m => m.Id == review.MediaId);
@@ -147,8 +146,7 @@ namespace MediaCritica.Server.Controllers
             await _notificationController.NotifyFollowers(new NewNotificationModel
             {
                 AuthorId = review.UserId,
-                AuthorUsername = review.User.Username,
-                Message = $"{review.MediaTitle} review updated"
+                Message = $"{review.User.Username} updated their {review.MediaTitle} review"
             });
 
             return await GetReview(review.Id);

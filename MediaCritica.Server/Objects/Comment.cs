@@ -7,7 +7,6 @@
         public int? ParentId { get; set; }
         public string Content { get; set; }
         public int? CommenterId { get; set; }
-        public string CommenterName { get; set; }
         public DateTime CommentedAt { get; set; }
         public bool IsDeleted { get; set; }
 

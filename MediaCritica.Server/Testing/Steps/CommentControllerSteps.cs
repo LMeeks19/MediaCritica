@@ -59,7 +59,7 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(expectedCommentModel.ReviewId, actualCommentModel.ReviewId);
             Assert.AreEqual(expectedCommentModel.Content, actualCommentModel.Content);
             Assert.AreEqual(expectedCommentModel.CommenterId, actualCommentModel.CommenterId);
-            Assert.AreEqual(expectedCommentModel.CommenterName, actualCommentModel.CommenterName);
+            Assert.AreEqual(expectedCommentModel.CommenterUsername, actualCommentModel.CommenterUsername);
             Assert.AreEqual(expectedCommentModel.CommentedAt, actualCommentModel.CommentedAt);
             Assert.AreEqual(expectedCommentModel.IsDeleted, actualCommentModel.IsDeleted);
             Assert.AreEqual(expectedCommentModel.TotalReplies, actualCommentModel.TotalReplies);
@@ -84,7 +84,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedCommentModel.ReviewId, actualCommentModel.ReviewId);
                 Assert.AreEqual(expectedCommentModel.Content, actualCommentModel.Content);
                 Assert.AreEqual(expectedCommentModel.CommenterId, actualCommentModel.CommenterId);
-                Assert.AreEqual(expectedCommentModel.CommenterName, actualCommentModel.CommenterName);
+                Assert.AreEqual(expectedCommentModel.CommenterUsername, actualCommentModel.CommenterUsername);
                 Assert.AreEqual(expectedCommentModel.CommentedAt, actualCommentModel.CommentedAt);
                 Assert.AreEqual(expectedCommentModel.IsDeleted, actualCommentModel.IsDeleted);
                 Assert.AreEqual(expectedCommentModel.TotalReplies, actualCommentModel.TotalReplies);
@@ -128,7 +128,7 @@ namespace MediaCritica.Server.Testing.Steps
                 ParentId = row["ParentId"] == "<null>" ? null : int.Parse(row["ParentId"]),
                 Content = row["Content"],
                 CommenterId = int.Parse(row["CommenterId"]),
-                CommenterName = row["CommenterName"],
+                CommenterUsername = row["CommenterName"],
                 CommentedAt = DateTime.Parse(row["CommentedAt"]),
                 IsDeleted = bool.Parse(row["IsDeleted"]),
                 Replies = [],

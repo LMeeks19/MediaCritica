@@ -7,7 +7,7 @@
         public int ReviewId { get; set; }
         public string? Content { get; set; }
         public int? CommenterId { get; set; }
-        public string? CommenterName { get; set; }
+        public string? CommenterUsername { get; set; }
         public DateTime? CommentedAt { get; set; }
         public List<CommentModel> Replies { get; set; } = [];
         public int TotalReplies { get; set; }

@@ -175,7 +175,6 @@ namespace MediaCritica.Server.Testing
                 ParentId = row["ParentId"] == "<null>" ? null : int.Parse(row["ParentId"]),
                 Content = row["Content"],
                 CommenterId = int.Parse(row["CommenterId"]),
-                CommenterName = row["CommenterName"],
                 CommentedAt = DateTime.Parse(row["CommentedAt"]),
                 IsDeleted = bool.Parse(row["IsDeleted"]),
             }).ToList();

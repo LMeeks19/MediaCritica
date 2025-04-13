@@ -48,8 +48,8 @@ Scenario: Get comments remaining children
 	When I call GetCommentsRemainingChildren with the comment id 3 and offset 2
 	Then The status code should be 200
 	And The CommentModels should be
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
-		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29  | false     | 0            |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterUsername | CommentedAt | IsDeleted | TotalReplies |
+		| 4  | 1        | 3        | Comment 4 | 4           | Username4         | 2025-01-29  | false     | 0            |
 	And The children should be empty
 
 Scenario: Delete a comment
@@ -68,8 +68,8 @@ Scenario: Post a comment
 		| 1        | 1        | New Comment | 1           | Test 1        |
 	Then The status code should be 200
 	And The CommentModel should be
-		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
-		| 9  | 1        | 1        | New Comment | 1           | Test 1        | 2025-02-27  | false     | 0            |
+		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterUsername | CommentedAt | IsDeleted | TotalReplies |
+		| 9  | 1        | 1        | New Comment | 1           | Username1         | 2025-02-27  | false     | 0            |
 	And The children should be empty
 
 Scenario: Post a comment but the parent doesn't exist
