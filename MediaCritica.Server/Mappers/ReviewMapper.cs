@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
@@ -6,11 +7,11 @@ namespace MediaCritica.Server.Mappers
 {
     public class ReviewMapper
     {
-        public Review MapReview(ReviewModel reviewModel)
+        public Review MapReview(ReviewModel reviewModel, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new Review()
             {
-                Date = reviewModel.Date,
+                Date = dateTimeProviderHelper.UtcNow,
                 Description = reviewModel.Description,
                 MediaId = reviewModel.MediaId,
                 MediaPoster = reviewModel.MediaPoster,

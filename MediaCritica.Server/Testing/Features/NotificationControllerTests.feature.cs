@@ -721,14 +721,16 @@ this.FeatureBackground();
                             "AuthorId",
                             "Message",
                             "IsRead",
-                            "IsBookmarked"});
+                            "IsBookmarked",
+                            "CreatedAt"});
                 table142.AddRow(new string[] {
                             "6",
                             "2",
                             "1",
                             "Test Notification Message",
                             "false",
-                            "false"});
+                            "false",
+                            "2025-02-27"});
 #line 108
  testRunner.And("The following notifications should have been created", ((string)(null)), table142, "And ");
 #line hidden

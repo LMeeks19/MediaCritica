@@ -4,9 +4,10 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class MilestoneCalculatorHelper(DatabaseContext databaseContext)
+    public class MilestoneCalculatorHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper)
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         public List<Milestone> CreateMilestones()
         {
@@ -108,8 +109,8 @@ namespace MediaCritica.Server.Helpers
                 await UpdateMilestone(user, MilestoneType.SingleDirectorReviewed, directors.Count == 0 ? 0 : directors.Max(g => g.Count));
                 await UpdateMilestone(user, MilestoneType.DirectorVariety, uniqueDirectorsReviewed);
 
-                await UpdateMilestone(user, MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month));
-                await UpdateMilestone(user, MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year));
+                await UpdateMilestone(user, MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == _dateTimeProviderHelper.UtcNow.Month));
+                await UpdateMilestone(user, MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == _dateTimeProviderHelper.UtcNow.Year));
                 await UpdateMilestone(user, MilestoneType.ConsecutiveActivity, consecutiveDaysActive);
             }
         }
@@ -146,7 +147,7 @@ namespace MediaCritica.Server.Helpers
                     UserId = user.Id,
                     MilestoneType = type,
                     EarnedLevel = earnedLevel,
-                    EarnedDate = earnedLevel != MilestoneLevel.None ? DateTime.UtcNow : null,
+                    EarnedDate = earnedLevel != MilestoneLevel.None ? _dateTimeProviderHelper.UtcNow : null,
                 };
 
                 await _databaseContext.Milestones.AddAsync(milestone);
@@ -155,7 +156,7 @@ namespace MediaCritica.Server.Helpers
             {
                 // Update existing milestone
                 milestone.EarnedLevel = earnedLevel > milestone.EarnedLevel ? earnedLevel : milestone.EarnedLevel;
-                milestone.EarnedDate = earnedLevel != MilestoneLevel.None ? DateTime.Now : milestone.EarnedDate;
+                milestone.EarnedDate = earnedLevel != MilestoneLevel.None ? _dateTimeProviderHelper.UtcNow : milestone.EarnedDate;
             }
 
             _databaseContext.SaveChanges();
@@ -233,8 +234,8 @@ namespace MediaCritica.Server.Helpers
                 (MilestoneType.Followers, user.Followers.Count),
                 (MilestoneType.Following, user.Following.Count),
 
-                (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month)),
-                (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year)),
+                (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == _dateTimeProviderHelper.UtcNow.Month)),
+                (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == _dateTimeProviderHelper.UtcNow.Year)),
                 (MilestoneType.ConsecutiveActivity, consecutiveDaysActive)
             };
 

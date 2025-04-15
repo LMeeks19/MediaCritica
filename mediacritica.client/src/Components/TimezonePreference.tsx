@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
-import { Select, Button, ButtonGroup } from "@mui/material";
+import { Autocomplete, Button, ButtonGroup, TextField } from "@mui/material";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -12,12 +12,13 @@ import { setThemePalette } from "../Helpers/ThemePaletteHelper";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import ConfirmationDialog from "./ConfirmationDialog";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import moment from "moment-timezone";
 
 function TimezonePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [user, setUser] = useRecoilState(userState);
 
-  const [timezone, setTimezone] = useState<string>(user.preference?.timezone);
+  const [timezone, setTimezone] = useState<string>();
 
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
@@ -26,7 +27,6 @@ function TimezonePreference() {
       palette: user.preference?.palette,
       locale: user.preference?.locale,
       timezone: timezone,
-
     } as PreferenceModel);
 
     setUser({ ...user, preference: preference });
@@ -63,19 +63,21 @@ function TimezonePreference() {
     confirm_action: () => ChangePreference(),
   } as ConfirmationDialogModel;
 
+  const timezones = moment.tz.names();
+
   return (
     <div className="info-item">
       <span className="info-label">Timezone</span>
       {isEditing ? (
         <div className="info-value">
-          <Select
-            variant="standard"
+          <Autocomplete
             value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
+            options={timezones}
+            getOptionLabel={(option) => option}
+            onChange={(_e, v) => setTimezone(v as string)}
+            renderInput={(params) => <TextField {...params} placeholder="Enter new timezone" />}
             fullWidth
-          >
-            // TODO: Add timezone options here
-          </Select>
+          />
         </div>
       ) : (
         <div className="info-value">{user.preference?.timezone}</div>

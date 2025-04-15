@@ -8,10 +8,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FollowController(DatabaseContext databaseContext, IHelpers helper) : ControllerBase
+    public class FollowController(DatabaseContext databaseContext, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHelpers _helper = helper;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetUserFollowers(int offset)
@@ -85,7 +86,7 @@ namespace MediaCritica.Server.Controllers
                 Id = userFollow.Id,
                 FollowerId = userFollow.FollowerId,
                 FollowedId = userFollow.FollowedId,
-                FollowedOn = userFollow.FollowedOn,
+                FollowedOn = _dateTimeProviderHelper.UtcNow,
                 EnabledNotifications = userFollow.EnabledNotifications,
             });
         }
@@ -104,7 +105,7 @@ namespace MediaCritica.Server.Controllers
             {
                 FollowerId = userFollowModel.FollowerId,
                 FollowedId = userFollowModel.FollowedId,
-                FollowedOn = userFollowModel.FollowedOn,
+                FollowedOn = _dateTimeProviderHelper.UtcNow,
                 EnabledNotifications = userFollowModel.EnabledNotifications,
             };
 

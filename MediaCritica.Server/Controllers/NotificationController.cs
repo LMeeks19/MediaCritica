@@ -10,12 +10,13 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(DatabaseContext databaseContext, IHelpers helper, IHubContext<NotificationHub> notificationHubContext, IHubs hubs) : ControllerBase
+    public class NotificationController(DatabaseContext databaseContext, IHelpers helper, IHubContext<NotificationHub> notificationHubContext, IHubs hubs, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHelpers _helper = helper;
         private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
         private readonly IHubs _hubs = hubs;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{offset}/{limit}")]
         public async Task<IActionResult> GetUserNotifications(int offset, int limit = 25)
@@ -115,7 +116,7 @@ namespace MediaCritica.Server.Controllers
                     RecipientId = f.FollowerId,
                     AuthorId = newNotificationModel.AuthorId,
                     Message = newNotificationModel.Message,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = _dateTimeProviderHelper.UtcNow,
                     IsRead = false
                 })
                 .ToListAsync();

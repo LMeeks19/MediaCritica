@@ -109,7 +109,7 @@ namespace MediaCritica.Server.Controllers
             if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
                 return Conflict(new { Message = "User has already reviewed this media" });
 
-            var review = _mapper.ReviewMapper.MapReview(reviewModel);
+            var review = _mapper.ReviewMapper.MapReview(reviewModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();

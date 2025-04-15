@@ -106,6 +106,6 @@ Scenario: Post notifications
 		| 1        | Test Notification Message |
 	Then The status code should be 200
 	And The following notifications should have been created
-		| Id | RecipientId | AuthorId | Message                   | IsRead | IsBookmarked |
-		| 6  | 2           | 1        | Test Notification Message | false  | false        |
+		| Id | RecipientId | AuthorId | Message                   | IsRead | IsBookmarked | CreatedAt  |
+		| 6  | 2           | 1        | Test Notification Message | false  | false        | 2025-02-27 |
 	

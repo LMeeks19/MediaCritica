@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
 import { UpdateUserPreference } from "../Server/Server";
 import { PreferenceModel } from "../Interfaces/UserModel";
-import { Select, Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Autocomplete, TextField } from "@mui/material";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -12,12 +12,13 @@ import { setThemePalette } from "../Helpers/ThemePaletteHelper";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import ConfirmationDialog from "./ConfirmationDialog";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import * as LocaleCodes from "locale-codes";
 
 function LocalePreference() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [user, setUser] = useRecoilState(userState);
 
-  const [locale, setLocale] = useState<string>(user.preference?.locale);
+  const [locale, setLocale] = useState<string>();
 
   async function ChangePreference() {
     const preference = await UpdateUserPreference({
@@ -62,23 +63,32 @@ function LocalePreference() {
     confirm_action: () => ChangePreference(),
   } as ConfirmationDialogModel;
 
+  const locales = LocaleCodes.all.map((locale) => locale);
 
   return (
     <div className="info-item">
       <span className="info-label">Locale</span>
       {isEditing ? (
         <div className="info-value">
-          <Select
-            variant="standard"
-            value={locale}
-            onChange={(e) => setLocale(e.target.value)}
+          <Autocomplete
+            options={locales}
+            getOptionLabel={(option) =>
+              `${option.name} ${
+                option.location !== null && "({option.location})"
+              }`
+            }
+            onChange={(_e, v) => setLocale(v?.tag as string)}
+            renderInput={(params) => (
+              <TextField {...params} placeholder="Enter new locale" />
+            )}
             fullWidth
-          >
-            // TODO: Add locale codes to the list
-          </Select>
+          />
         </div>
       ) : (
-        <div className="info-value">{user.preference?.locale}</div>
+        <div className="info-value">
+          {LocaleCodes.getByTag(user.preference.locale).name} (
+          {LocaleCodes.getByTag(user.preference.locale).location})
+        </div>
       )}
       <ButtonGroup className="info-action">
         {isEditing && (

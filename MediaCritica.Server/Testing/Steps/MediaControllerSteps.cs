@@ -185,7 +185,6 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.IsNotNull(actualMediaSummaryResultResponse);
             var actualMediaSummaryModels = actualMediaSummaryResultResponse.MediaSummaryModels;
 
-
             Assert.AreEqual(expectedMediaSummaryModels.Count, actualMediaSummaryModels.Count);
 
             for (var i = 0; i < expectedMediaSummaryModels.Count; i++)
@@ -197,6 +196,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedMediaSummaryModel.Title, actualMediaSummaryModel.Title);
                 Assert.AreEqual(expectedMediaSummaryModel.Poster, actualMediaSummaryModel.Poster);
                 Assert.AreEqual(expectedMediaSummaryModel.Type, actualMediaSummaryModel.Type);
+                Assert.AreEqual(expectedMediaSummaryModel.Genre, actualMediaSummaryModel.Genre);
                 Assert.AreEqual(expectedMediaSummaryModel.Released, actualMediaSummaryModel.Released);
                 Assert.AreEqual(expectedMediaSummaryModel.ImdbRating, actualMediaSummaryModel.ImdbRating);
             }

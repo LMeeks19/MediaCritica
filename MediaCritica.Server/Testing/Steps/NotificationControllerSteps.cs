@@ -135,7 +135,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedNotification.Message, actualNotification.Message);
                 Assert.AreEqual(expectedNotification.IsRead, actualNotification.IsRead);
                 Assert.AreEqual(expectedNotification.IsBookmarked, actualNotification.IsBookmarked);
-                Assert.AreEqual(DateTime.Now.Date, actualNotification.CreatedAt.Date);
+                Assert.AreEqual(expectedNotification.CreatedAt, actualNotification.CreatedAt);
             }
         }
     }

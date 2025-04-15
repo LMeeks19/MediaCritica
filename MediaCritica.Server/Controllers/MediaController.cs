@@ -9,11 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MediaController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper) : ControllerBase
+    public class MediaController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{searchTerm}/{page}")]
         public async Task<IActionResult> GetMediaByExternalSearch(string searchTerm, int page)
@@ -69,7 +70,7 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetBestOfPrevYear(int offset)
         {
-            var lastYear = DateTime.Now.Year - 1;
+            var lastYear = _dateTimeProviderHelper.UtcNow.Year - 1;
 
             var query = _databaseContext.Media
                 .Where(m => m.Type != MediaType.Episode && m.Released != null && ((DateTime)m.Released!).Year == lastYear)
@@ -92,10 +93,10 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetBestOfCurYear(int offset)
         {
-            var currentYear = DateTime.Now.Year;
+            var currentYear = _dateTimeProviderHelper.UtcNow.Year;
 
             var query = _databaseContext.Media
-                .Where(m => m.Type != MediaType.Episode && m.Released != null && ((DateTime)m.Released!).Year == currentYear && m.Released < DateTime.Now)
+                .Where(m => m.Type != MediaType.Episode && m.Released != null && ((DateTime)m.Released!).Year == currentYear && m.Released < _dateTimeProviderHelper.UtcNow)
                 .OrderByDescending(m => m.ImdbRating)
                 .ThenBy(m => m.Title);
 
@@ -116,7 +117,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetBestOfAllTime(int offset)
         {
             var query = _databaseContext.Media
-                .Where(m => m.Type != MediaType.Episode && m.Released < DateTime.Now)
+                .Where(m => m.Type != MediaType.Episode && m.Released < _dateTimeProviderHelper.UtcNow)
                 .OrderByDescending(m => m.ImdbRating)
                 .ThenBy(m => m.Title);
 
@@ -137,7 +138,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetUpcoming(int offset)
         {
             var query = _databaseContext.Media
-                .Where(m => m.Type != MediaType.Episode && m.Released > DateTime.Now)
+                .Where(m => m.Type != MediaType.Episode && m.Released > _dateTimeProviderHelper.UtcNow)
                 .OrderBy(m => m.Released)
                 .ThenBy(m => m.Title);
 
@@ -158,7 +159,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetLatest(int offset)
         {
             var mediaQuery = _databaseContext.Media
-                .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now)
+                .Where(media => media.Type != MediaType.Episode && media.Released <= _dateTimeProviderHelper.UtcNow)
                 .OrderByDescending(media => media.Released)
                 .ThenBy(media => media.Title);
 
@@ -178,7 +179,7 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetSeasonalPicks(int offset)
         {
-            var currentMonth = DateTime.Now.Month;
+            var currentMonth = _dateTimeProviderHelper.UtcNow.Month;
             var (currentSeasonStartMonth, currentSeasonEndMonth) = _helper.DateRangeCalculatorHelper.GetSeasonMonths(currentMonth);
 
             var isWinter = currentSeasonStartMonth == 12 && currentSeasonEndMonth == 2;
@@ -188,7 +189,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(media => (isWinter ?
                     ((DateTime)media.Released!).Month >= currentSeasonStartMonth || ((DateTime)media.Released!).Month <= currentSeasonEndMonth :
                     ((DateTime)media.Released!).Month >= currentSeasonStartMonth && ((DateTime)media.Released!).Month <= currentSeasonEndMonth) &&
-                    media.Released <= DateTime.Now)
+                    media.Released <= _dateTimeProviderHelper.UtcNow)
                 .OrderByDescending(media => media.ImdbRating)
                 .ThenBy(media => media.Title);
 
@@ -210,7 +211,7 @@ namespace MediaCritica.Server.Controllers
         {
             var mediaQuery = _databaseContext.Media
                 .Include(media => media.Reviews)
-                .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now && media.Reviews.Any())
+                .Where(media => media.Type != MediaType.Episode && media.Released <= _dateTimeProviderHelper.UtcNow && media.Reviews.Any())
                 .OrderByDescending(media => media.Reviews.Count)
                 .ThenBy(media => media.Title);
 
@@ -231,7 +232,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetRecentlyReviewed(int offset)
         {
             var mediaQuery = _databaseContext.Media
-                .Where(media => media.Type != MediaType.Episode && media.Released <= DateTime.Now && media.Reviews.Any())
+                .Where(media => media.Type != MediaType.Episode && media.Released <= _dateTimeProviderHelper.UtcNow && media.Reviews.Any())
                 .OrderByDescending(media => media.Reviews.OrderByDescending(review => review.Date).First().Date)
                 .ThenBy(media => media.Title);
 

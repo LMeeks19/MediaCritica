@@ -15,7 +15,7 @@ namespace MediaCritica.Server.Migrations
                 table: "Users",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: DateTime.Now);
+                defaultValue: DateTime.UtcNow);
         }
 
         /// <inheritdoc />

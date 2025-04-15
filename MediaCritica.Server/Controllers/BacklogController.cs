@@ -9,11 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BacklogController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper) : ControllerBase
+    public class BacklogController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
+        private readonly IDateTimeProviderHelper dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBacklog()
@@ -89,7 +90,7 @@ namespace MediaCritica.Server.Controllers
             if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
                 return NotFound(new { Message = "Media not found" });
 
-            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!);
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!, dateTimeProviderHelper);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();
