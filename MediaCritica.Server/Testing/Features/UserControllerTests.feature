@@ -2,15 +2,15 @@ Feature: UserControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | B_Banner  | Bruce    | Banner  | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | T_Stark   | Tony     | Stark   | test2@email.com | Password123! | 2025-01-02 |
-		| 3  | T_Odinson | Thor     | Odinson | test3@email.com | Password123! | 2025-01-01 |
-		| 4  | C_Barton  | Clint    | Barton  | tes42@email.com | Password123! | 2025-01-02 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined              |
+		| 1  | B_Banner  | Bruce    | Banner  | test1@email.com | Password123! | 2025-01-01 13:21:55 |
+		| 2  | T_Stark   | Tony     | Stark   | test2@email.com | Password123! | 2025-01-02 20:01:00 |
+		| 3  | T_Odinson | Thor     | Odinson | test3@email.com | Password123! | 2025-01-01 01:50:44 |
+		| 4  | C_Barton  | Clint    | Barton  | tes42@email.com | Password123! | 2025-01-02 09:33:16 |
 	And I have the following preferences
 		| Id | UserId | Theme  | Palette | Locale | Timezone         |
-		| 1  | 1      | System | #000000 | en-GB  | Europe/London    |
-		| 2  | 2      | Light  | #FFFFFF | en-US  | America/New_York |
+		| 1  | 1      | System | #000000 | en-US  | America/New_York |
+		| 2  | 2      | Light  | #FFFFFF | en-GB  | Europe/London    |
 		| 3  | 3      | System | #000000 | en-GB  | Europe/Paris     |
 		| 4  | 4      | Dark   | #FFFFFF | en-US  | Asia/Tokyo       |
 	And I have the following auth tokens
@@ -33,8 +33,8 @@ Scenario: Login a user and remember them
 		| B_Banner | Password123! | true       |
 	Then The status code should be 200
 	And The UserAuthModel response should be 
-		| AuthTokenId | AuthUserId | Expiration | UserId | Forename | Surname | Email           | Password     |
-		| 3           | 1          | 2025-03-29 | 1      | Bruce    | Banner  | test1@email.com | Password123! |
+		| AuthTokenId | AuthUserId | Expiration          | UserId | Forename | Surname | Email           | Password     |
+		| 3           | 1          | 2025-03-29 16:30:00 | 1      | Bruce    | Banner  | test1@email.com | Password123! |
 
 Scenario: Login a user that doesn't exist 
 	When I call Login with the following details
@@ -54,8 +54,8 @@ Scenario: Auto login a user
 	When I call AutoLogin with the token "1"
 	Then The status code should be 200
 	And The UserAuthModel response should be
-		| AuthTokenId | AuthUserId | Token | Expiration | UserId | Forename | Surname | Email           | Password     |
-		| 1           | 3          | 1     | 2025-03-29 | 3      | Thor     | Odinson | test3@email.com | Password123! |
+		| AuthTokenId | AuthUserId | Token | Expiration          | UserId | Forename | Surname | Email           | Password     |
+		| 1           | 3          | 1     | 2025-03-29 16:30:00 | 3      | Thor     | Odinson | test3@email.com | Password123! |
 
 Scenario: Logout a user
 	When I call Logout with token "1"
@@ -76,8 +76,8 @@ Scenario: Get users by search
 	When I call GetUsersBySearch with search term "T_Stark"
 	Then The status code should be 200
 	And The UserSearchModels should be
-		| Id | Username | FullName   | Joined                    |
-		| 2  | T_Stark  | Tony Stark | Thursday, January 2, 2025 |
+		| Id | Username | FullName   | Joined              |
+		| 2  | T_Stark  | Tony Stark | 2025-01-02 20:01:00 |
 
 Scenario: Get a user by username that exists
 	When I call GetUser with the username "B_Banner"
@@ -337,8 +337,8 @@ Scenario: Get a user summary
 	When I call GetViewUserSummary with the username B_Banner
 	Then The status code should be 200
 	And The UserSummaryModel response should be
-		| Id | Username | Joined     |
-		| 1  | B_Banner | 2025-01-01 |
+		| Id | Username | Joined              |
+		| 1  | B_Banner | 2025-01-01 08:21:55 |
 
 
 

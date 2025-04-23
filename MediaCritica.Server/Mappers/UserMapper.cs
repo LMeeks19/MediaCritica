@@ -10,7 +10,7 @@ namespace MediaCritica.Server.Mappers
         private readonly IHelpers _helper = helper;
         private readonly ReviewMapper _reviewMapper = reviewMapper;
 
-        public User MapUser(CreateUserModel userModel)
+        public User MapUser(CreateUserModel userModel, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var user = new User
             {
@@ -19,7 +19,7 @@ namespace MediaCritica.Server.Mappers
                 Surname = userModel.Surname,
                 Email = userModel.Email,
                 Password = userModel.Password,
-                Joined = DateOnly.MaxValue,
+                Joined = dateTimeProviderHelper.UtcNow,
                 Preference = new Preference()
                 {
                     Theme = "System",
@@ -66,18 +66,18 @@ namespace MediaCritica.Server.Mappers
             return preferenceModel;
         }
 
-        public UserSummaryModel MapUserSummaryModel(User user)
+        public UserSummaryModel MapUserSummaryModel(User user, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var viewUserSummaryModel = new UserSummaryModel()
             {
                 Id = user.Id,
                 Username = user.Username,
-                Joined = user.Joined,
+                Joined = dateTimeProviderHelper.GetLocalDateTime(user.Joined, user.Preference.Timezone),
                 Reviews = user.Reviews
                      .OrderByDescending(r => r.Date)
                      .ThenByDescending(r => r.Rating)
                      .Take(8)
-                     .Select(_reviewMapper.MapReviewModel)
+                     .Select(r => _reviewMapper.MapReviewModel(r, user.Preference.Timezone, dateTimeProviderHelper))
                      .ToList(),
                 Milestones = _helper.MilestoneCalculatorHelper
                      .GetUserMilestones(user)
@@ -101,13 +101,13 @@ namespace MediaCritica.Server.Mappers
             return viewUserSummaryModel;
         }
 
-        public UserSearchModel MapUserSearchModel(User user)
+        public UserSearchModel MapUserSearchModel(User user, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var userSearchModel = new UserSearchModel()
             {
                 Id = user.Id,
                 Username = user.Username,
-                Joined = user.Joined.ToLongDateString(),
+                Joined = dateTimeProviderHelper.GetLocalDateTime(user.Joined, user.Preference.Timezone),
             };
 
             return userSearchModel;

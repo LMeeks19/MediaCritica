@@ -24,12 +24,12 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReviewModel MapReviewModel(Review review)
+        public ReviewModel MapReviewModel(Review review, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReviewModel()
             {
                 Id = review.Id,
-                Date = review.Date,
+                Date = dateTimeProviderHelper.GetLocalDateTime(review.Date, timezone),
                 Description = review.Description,
                 MediaType = review.MediaType,
                 MediaId = review.MediaId,
@@ -48,12 +48,12 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReviewSummaryModel MapReviewSummaryModel(Review review)
+        public ReviewSummaryModel MapReviewSummaryModel(Review review, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReviewSummaryModel()
             {
                 Id = review.Id,
-                Date = review.Date,
+                Date = dateTimeProviderHelper.GetLocalDateTime(review.Date, timezone),
                 Rating = review.Rating,
                 ReviewerUsername = review.User.Username,
                 MediaType = review.MediaType,

@@ -64,5 +64,14 @@ namespace MediaCritica.Server.Helpers
 
             return episode;
         }
+
+        public async Task<string> GetUserTimezone(int? userId)
+        {
+            var user = await _databaseContext.Users
+                .Include(user => user.Preference)
+                .SingleOrDefaultAsync(user => user.Id == userId);
+
+            return user?.Preference?.Timezone ?? "UTC";
+        }
     }
 }

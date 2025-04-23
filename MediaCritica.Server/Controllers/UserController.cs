@@ -9,11 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext, IMappers mapper, IHelpers helpers) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, IMappers mapper, IHelpers helpers, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helpers = helpers;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
@@ -109,7 +110,7 @@ namespace MediaCritica.Server.Controllers
             var users = userQuery
                 .Take(20)
                 .Select(u => _mapper.UserMapper
-                .MapUserSearchModel(u))
+                .MapUserSearchModel(u, _dateTimeProviderHelper))
                 .ToList();
 
             if (users.Count == 0)
@@ -136,7 +137,7 @@ namespace MediaCritica.Server.Controllers
                 return BadRequest(new { response.Message });
 
             userModel.Password = _helpers.AuthenticationHelper.HashPassword(userModel.Password);
-            var user = _mapper.UserMapper.MapUser(userModel);
+            var user = _mapper.UserMapper.MapUser(userModel, _dateTimeProviderHelper);
 
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
@@ -225,6 +226,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> GetUserSummary(string username)
         {
             var user = await _databaseContext.Users
+                .Include(u => u.Preference)
                 .Include(u => u.Backlogs)
                 .Include(u => u.Reviews)
                     .ThenInclude(r => r.Engagements)
@@ -241,7 +243,7 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
-            return Ok(_mapper.UserMapper.MapUserSummaryModel(user));
+            return Ok(_mapper.UserMapper.MapUserSummaryModel(user, _dateTimeProviderHelper));
         }
     }
 }

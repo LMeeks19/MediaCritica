@@ -16,6 +16,7 @@ namespace MediaCritica.Server.Controllers
         private readonly IHelpers _helper = helper;
         private readonly NotificationController _notificationController = notificationController;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
+        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]/{reviewId}")]
         public async Task<IActionResult> GetReview(int reviewId)
@@ -32,7 +33,7 @@ namespace MediaCritica.Server.Controllers
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
 
-            return Ok(_mapper.ReviewMapper.MapReviewModel(review));
+            return Ok(_mapper.ReviewMapper.MapReviewModel(review, _timezone, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{offset}")]
@@ -49,7 +50,7 @@ namespace MediaCritica.Server.Controllers
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
-                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r))
+                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r, _timezone, _dateTimeProviderHelper))
                    .ToListAsync();
 
             var breakdown = await GetUserReviewsBreakdown(userId);
@@ -86,7 +87,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
-                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r))
+                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r, _timezone, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(new { media.Title, Reviews = reviews, totalCount = reviews.Count });
@@ -192,14 +193,7 @@ namespace MediaCritica.Server.Controllers
             if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
                 return NotFound(new { Message = "User Not Found" });
 
-            var report = new Report
-            {
-                ReviewId = reportModel.ReviewId,
-                ReporterId = reportModel.ReporterId,
-                Reason = reportModel.Reason,
-                Details = reportModel.Details,
-                ReportedAt = _dateTimeProviderHelper.UtcNow,
-            };
+            var report = _mapper.ReportMapper.MapReport(reportModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reports.AddAsync(report);
 

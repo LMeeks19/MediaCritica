@@ -7,6 +7,12 @@ Background:
 		| 2  | Username2 | Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
 		| 3  | Username3 | Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
 		| 4  | Username4 | Test     | 4       | test4@email.com | Password012! | 2025-01-04 |
+	And I have the following preferences
+		| Id | UserId | Theme  | Palette | Locale | Timezone         |
+		| 1  | 1      | System | #000000 | en-US  | America/New_York |
+		| 2  | 2      | Light  | #FFFFFF | en-GB  | Europe/London    |
+		| 3  | 3      | System | #000000 | en-GB  | Europe/Paris     |
+		| 4  | 4      | Dark   | #FFFFFF | en-US  | Asia/Tokyo       |
 	And I have the following movies
 		| Id | Actors           | Awards  | Countries | Directors              | Genres            | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
 		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama     | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | movie   | Writer 1 | 2020 | 8.5        | 1500      | $300,000,000 |     |         |            |
@@ -14,15 +20,15 @@ Background:
 		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerUsername | Rating | Title      | Description      | Date       |
 		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Username3        | 4      | Test Title | Test Description | 2025-01-01 |
 	And I have the following comments
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted |
-		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27  | false     |
-		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28  | false     |
-		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29  | false     |
-		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29  | false     |
-		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30  | false     |
-		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | false     |
-		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | false     |
-		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-02-01  | true      |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt         | IsDeleted |
+		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27 14:05:45 | false     |
+		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28 15:02:02 | false     |
+		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29 14:12:39 | false     |
+		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29 17:36:05 | false     |
+		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30 01:54:56 | false     |
+		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30 03:40:37 | false     |
+		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31 03:37:54 | false     |
+		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-02-01 12:48:36 | true      |
 	And I have the following reports
 		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt |
 		| 1  | 1         | 2          | Spam   | Spam Comment | 2025-02-20 |
@@ -31,13 +37,13 @@ Scenario: Get review comments
     When I call GetReviewComments with the review id 1
     Then The status code should be 200
     And The returned comments structure should match the expected hierarchy:
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
-		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29  | false     | 3            |
-		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30  | false     | 1            |
-		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | false     | 0            |
-		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | false     | 0            |
-		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27  | false     | 1            |
-		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28  | false     | 0            |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt         | IsDeleted | TotalReplies |
+		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29          | false     | 3            |
+		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30          | false     | 0            |
+		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30          | false     | 1            |
+		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31          | false     | 0            |
+		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27          | false     | 1            |
+		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28          | false     | 0            |
 
 Scenario: Get review comments for a review that doesn't exist
 	When I call GetReviewComments with the review id 99
@@ -48,8 +54,8 @@ Scenario: Get comments remaining children
 	When I call GetCommentsRemainingChildren with the comment id 3 and offset 2
 	Then The status code should be 200
 	And The CommentModels should be
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterUsername | CommentedAt | IsDeleted | TotalReplies |
-		| 4  | 1        | 3        | Comment 4 | 4           | Username4         | 2025-01-29  | false     | 0            |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterUsername | CommentedAt         | IsDeleted | TotalReplies |
+		| 4  | 1        | 3        | Comment 4 | 4           | Username4         | 2025-01-30 02:36:05 | false     | 0            |
 	And The children should be empty
 
 Scenario: Delete a comment
@@ -68,8 +74,8 @@ Scenario: Post a comment
 		| 1        | 1        | New Comment | 1           | Test 1        |
 	Then The status code should be 200
 	And The CommentModel should be
-		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterUsername | CommentedAt | IsDeleted | TotalReplies |
-		| 9  | 1        | 1        | New Comment | 1           | Username1         | 2025-02-27  | false     | 0            |
+		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterUsername | CommentedAt         | IsDeleted | TotalReplies |
+		| 9  | 1        | 1        | New Comment | 1           | Username1         | 2025-02-27 11:30:00 | false     | 0            |
 	And The children should be empty
 
 Scenario: Post a comment but the parent doesn't exist
@@ -107,8 +113,8 @@ Scenario: Report a comment
 	Then The status code should be 200
 	And The response should be "Comment Reported"
 	And The following report should be in the database
-		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt |
-		| 2  | 1         | 1          | Spam   | Spam Comment | 2025-02-27 |
+		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt          |
+		| 2  | 1         | 1          | Spam   | Spam Comment | 2025-02-27 16:30:00 |
 
 Scenario: Report a comment that a user has already reported
 	When I call ReportComment with the following data

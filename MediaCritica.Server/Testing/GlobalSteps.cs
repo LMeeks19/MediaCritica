@@ -49,7 +49,7 @@ namespace MediaCritica.Server.Testing
                     Surname = row["Surname"],
                     Email = row["Email"],
                     Password = password,
-                    Joined = DateOnly.Parse(row["Joined"])
+                    Joined = DateTime.Parse(row["Joined"]),
                 };
             }).ToList();
 

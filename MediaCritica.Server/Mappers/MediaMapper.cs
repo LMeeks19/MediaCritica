@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.Media_Models;
 using MediaCritica.Server.Objects;
 
@@ -38,7 +39,7 @@ namespace MediaCritica.Server.Mappers
             return media;
         }
 
-        public MediaModel MapMediaModel(Media media)
+        public MediaModel MapMediaModel(Media media, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var mediaModel = new MediaModel()
             {
@@ -65,7 +66,7 @@ namespace MediaCritica.Server.Mappers
                 Reviews = media.Reviews
                     .OrderByDescending(review => review.Date)
                     .Take(10)
-                    .Select(_reviewMapper.MapReviewSummaryModel)
+                    .Select(r => _reviewMapper.MapReviewSummaryModel(r, timezone, dateTimeProviderHelper))
                     .ToList(),
             };
 

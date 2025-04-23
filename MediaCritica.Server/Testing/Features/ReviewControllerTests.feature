@@ -114,8 +114,8 @@ Scenario: Report a review
 	Then The status code should be 200
 	And The response should be "Review Reported"
 	And The following report should be in the database
-		| Id | ReviewId | ReporterId | Reason | Details      | ReportedAt |
-		| 2  | 1        | 1          | Hate   | Hate Comment | 2025-02-27 |
+		| Id | ReviewId | ReporterId | Reason | Details      | ReportedAt          |
+		| 2  | 1        | 1          | Hate   | Hate Comment | 2025-02-27 16:30:00 |
 
 Scenario: Report a review that a user has already reported
 	When I call ReportReview with the following data

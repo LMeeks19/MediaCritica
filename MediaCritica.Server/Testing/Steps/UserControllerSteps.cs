@@ -182,7 +182,6 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.IsNotNull(expectedUserSummary);
 
             var actualUserSummary = table.Rows[0].CreateInstance<UserSummaryModel>();
-            actualUserSummary.Joined = DateOnly.Parse(table.Rows[0]["Joined"]);
 
             Assert.AreEqual(actualUserSummary.Id, expectedUserSummary.Id);
             Assert.AreEqual(actualUserSummary.Username, expectedUserSummary.Username);

@@ -24,6 +24,7 @@ namespace MediaCritica.Server.Controllers
             var comments = await _databaseContext.Comments
                 .Include(c => c.Reports)
                 .Include(c => c.Commenter)
+                    .ThenInclude(c => c.Preference)
                 .Where(c => c.ReviewId == reviewId)
                 .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
@@ -31,7 +32,7 @@ namespace MediaCritica.Server.Controllers
 
             var rootComments = comments
                 .Where(c => c.ParentId == null)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, _dateTimeProviderHelper, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
                 .ToList();
 
             return Ok(rootComments);
@@ -44,7 +45,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Take(2)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, _dateTimeProviderHelper, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
                 .ToList();
 
             return children;
@@ -56,10 +57,10 @@ namespace MediaCritica.Server.Controllers
             var comments = await _databaseContext.Comments
                 .Include(c => c.Reports)
                 .Include(c => c.Commenter)
-                .Where(c => c.ParentId == commentId)
+                    .ThenInclude(c => c.Preference).Where(c => c.ParentId == commentId)
                 .OrderByDescending(c => c.CommentedAt)
                 .Skip(offset)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, GetReplies(c.Id, c.Replies), c.Replies.Count))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, _dateTimeProviderHelper, GetReplies(c.Id, c.Replies), c.Replies.Count))
                 .ToListAsync();
 
             return Ok(comments);
@@ -103,9 +104,10 @@ namespace MediaCritica.Server.Controllers
                 .Include(c => c.Reports)
                 .Include(c => c.Replies)
                 .Include(c => c.Commenter)
+                    .ThenInclude(c => c.Preference)
                 .SingleAsync(c => c.Id == commentId);
 
-            return _mapper.CommentMapper.MapCommentModel(comment, GetReplies(comment.Id, comment.Replies), comment.Replies.Count);
+            return _mapper.CommentMapper.MapCommentModel(comment, _dateTimeProviderHelper, GetReplies(comment.Id, comment.Replies), comment.Replies.Count);
         }
 
         [HttpPut("[action]")]
@@ -140,14 +142,7 @@ namespace MediaCritica.Server.Controllers
             if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
                 return NotFound(new { Message = "User Not Found" });
 
-            var report = new Report
-            {
-                CommentId = reportModel.CommentId,
-                ReporterId = reportModel.ReporterId,
-                Reason = reportModel.Reason,
-                Details = reportModel.Details,
-                ReportedAt = _dateTimeProviderHelper.UtcNow,
-            };
+            var report = _mapper.ReportMapper.MapReport(reportModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reports.AddAsync(report);
 

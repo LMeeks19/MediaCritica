@@ -13,5 +13,9 @@
         ReviewMapper ReviewMapper { get; }
         BacklogMapper BacklogMapper { get; }
         CommentMapper CommentMapper { get; }
+        ReportMapper ReportMapper { get; }
+        NotificationMapper NotificationMapper { get; }
+        FollowMapper FollowMapper { get; }
+        MilestoneMapper MilestoneMapper { get; }
     }
 }

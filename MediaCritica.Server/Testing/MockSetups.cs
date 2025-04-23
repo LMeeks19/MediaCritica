@@ -25,6 +25,10 @@ namespace MediaCritica.Server.Testing
             mapper.Setup(m => m.SeasonMapper).Returns(new SeasonMapper(mapper.Object.EpisodeMapper));
             mapper.Setup(m => m.SeriesMapper).Returns(new SeriesMapper(mapper.Object.MediaMapper, mapper.Object.SeasonMapper));
             mapper.Setup(m => m.CommentMapper).Returns(new CommentMapper());
+            mapper.Setup(m => m.ReportMapper).Returns(new ReportMapper());
+            mapper.Setup(m => m.NotificationMapper).Returns(new NotificationMapper());
+            mapper.Setup(m => m.FollowMapper).Returns(new FollowMapper());
+            mapper.Setup(m => m.MilestoneMapper).Returns(new MilestoneMapper());
 
             return mapper.Object;
         }
@@ -38,7 +42,7 @@ namespace MediaCritica.Server.Testing
             helper.Setup(h => h.DateRangeCalculatorHelper).Returns(new DateRangeCalculatorHelper(dateTimeProviderHelper));
             helper.Setup(h => h.ExternalApiHelper).Returns(new ExternalApiHelper(configuration, true));
             helper.Setup(h => h.InternalApiHelper).Returns(new InternalApiHelper(dbContext));
-            helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext, dateTimeProviderHelper));
+            helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext, dateTimeProviderHelper, new MilestoneMapper()));
             helper.Setup(h => h.AuthenticationHelper).Returns(new AuthenticationHelper(dbContext, dateTimeProviderHelper, httpContext, true));
 
             return helper.Object;
@@ -47,7 +51,11 @@ namespace MediaCritica.Server.Testing
         private static IDateTimeProviderHelper SetupDateTimeProviderHelper()
         {
             var dateTimeProviderHelper = new Mock<IDateTimeProviderHelper>();
-            dateTimeProviderHelper.Setup(provider => provider.UtcNow).Returns(new DateTime(2025, 2, 27));
+            dateTimeProviderHelper.Setup(provider => provider.UtcNow).Returns(DateTime.Parse("2025-02-27T16:30:00"));
+            dateTimeProviderHelper
+                .Setup(provider => provider.GetLocalDateTime(It.IsAny<DateTime>(), It.IsAny<string>()))
+                .Returns((DateTime utcDateTime, string timezoneId) =>
+                    new DateTimeProviderHelper().GetLocalDateTime(utcDateTime, timezoneId));
             return dateTimeProviderHelper.Object;
         }
 
@@ -100,13 +108,13 @@ namespace MediaCritica.Server.Testing
 
             controller.Setup(c => c.BacklogController).Returns(new BacklogController(dbContext, mapper, helper, dateTimeProviderHelper));
             controller.Setup(c => c.EngagementController).Returns(new EngagementController(dbContext, helper));
-            controller.Setup(c => c.FollowController).Returns(new FollowController(dbContext, helper, dateTimeProviderHelper));
+            controller.Setup(c => c.FollowController).Returns(new FollowController(dbContext, helper, mapper, dateTimeProviderHelper));
             controller.Setup(c => c.LeaderboardController).Returns(new LeaderboardController(dbContext, helper));
             controller.Setup(c => c.MediaController).Returns(new MediaController(dbContext, mapper, helper, dateTimeProviderHelper));
             controller.Setup(c => c.MilestoneController).Returns(new MilestoneController(dbContext, helper));
-            controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, helper, hubContext, hub, dateTimeProviderHelper));
+            controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, helper, mapper, hubContext, hub, dateTimeProviderHelper));
             controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, dateTimeProviderHelper, controller.Object.NotificationController));
-            controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper, helper));
+            controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper, helper, dateTimeProviderHelper));
             controller.Setup(c => c.CommentController).Returns(new CommentController(dbContext, mapper, dateTimeProviderHelper));
 
             return controller.Object;

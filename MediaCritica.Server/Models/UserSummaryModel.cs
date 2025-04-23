@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public DateOnly Joined { get; set; }
+        public DateTime Joined { get; set; }
         public double ReviewsWritten { get; set; }
         public double MediaBacklogged { get; set; }
         public double Followers { get; set; }

@@ -14,7 +14,8 @@ namespace MediaCritica.Server.Controllers
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
-        private readonly IDateTimeProviderHelper dateTimeProviderHelper = dateTimeProviderHelper;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
+        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBacklog()
@@ -41,10 +42,12 @@ namespace MediaCritica.Server.Controllers
                 return [];
 
             var backlog = await _databaseContext.Backlogs
-                .Where(media => media.UserId == userId && media.Category == category)
+                .Include(b => b.User)
+                    .ThenInclude(u => u.Preference)
+                .Where(b => b.UserId == userId && b.Category == category)
                 .OrderByDescending(media => media.AddedDate)
-                .ThenBy(media => media.MediaTitle)
-                .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
+                .ThenBy(b => b.MediaTitle)
+                .Select(backlog => _mapper.BacklogMapper.MapBacklogModel(backlog, _timezone, _dateTimeProviderHelper))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();
@@ -90,7 +93,7 @@ namespace MediaCritica.Server.Controllers
             if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
                 return NotFound(new { Message = "Media not found" });
 
-            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!, dateTimeProviderHelper);
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!, _dateTimeProviderHelper);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();

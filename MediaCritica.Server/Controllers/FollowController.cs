@@ -1,6 +1,6 @@
 ﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
-using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +8,11 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FollowController(DatabaseContext databaseContext, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
+    public class FollowController(DatabaseContext databaseContext, IHelpers helper, IMappers mapper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHelpers _helper = helper;
+        private readonly IMappers _mapper = mapper;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{offset}")]
@@ -19,8 +20,9 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
+                .Include(u => u.Preference)
                 .Include(u => u.Followers)
-                .ThenInclude(f => f.Follower)
+                    .ThenInclude(f => f.Follower)
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
@@ -30,13 +32,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(f => f.FollowedOn)
                 .Skip(offset)
                 .Take(25)
-                .Select(f => new UserFollowSummaryModel
-                {
-                    Id = f.Id,
-                    Username = f.Follower.Username,
-                    Name = f.Follower.FullName,
-                    FollowedOn = f.FollowedOn,
-                })
+                .Select(f => _mapper.FollowMapper.MapFollowerSummaryModel(f, user.Preference.Timezone, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(followers);
@@ -47,8 +43,9 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
+                .Include(u => u.Preference)
                 .Include(u => u.Following)
-                .ThenInclude(f => f.Followed)
+                    .ThenInclude(f => f.Followed)
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
@@ -58,13 +55,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(f => f.FollowedOn)
                 .Skip(offset)
                 .Take(25)
-                .Select(f => new UserFollowSummaryModel
-                {
-                    Id = f.Id,
-                    Username = f.Followed.Username,
-                    Name = f.Followed.FullName,
-                    FollowedOn = f.FollowedOn,
-                })
+                .Select(f => _mapper.FollowMapper.MapFollowedSummaryModel(f, user.Preference.Timezone, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(following);
@@ -76,19 +67,14 @@ namespace MediaCritica.Server.Controllers
             var followerId = _helper.AuthenticationHelper.GetUserId();
             var userFollow = await _databaseContext.UserFollows
                 .Include(f => f.Followed)
+                .Include(f => f.Follower)
+                    .ThenInclude(f => f.Preference)
                 .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.Followed.Username == followedUsername);
 
             if (userFollow == null)
                 return NotFound(new { Message = "Follow relationship not found" });
 
-            return Ok(new UserFollowModel
-            {
-                Id = userFollow.Id,
-                FollowerId = userFollow.FollowerId,
-                FollowedId = userFollow.FollowedId,
-                FollowedOn = _dateTimeProviderHelper.UtcNow,
-                EnabledNotifications = userFollow.EnabledNotifications,
-            });
+            return Ok(_mapper.FollowMapper.MapFollowModel(userFollow, _dateTimeProviderHelper));
         }
 
         [HttpPost("[action]")]
@@ -101,13 +87,7 @@ namespace MediaCritica.Server.Controllers
             if (await _databaseContext.UserFollows.AnyAsync(f => f.FollowerId == userFollowModel.FollowerId && f.FollowedId == userFollowModel.FollowedId))
                 return Conflict(new { Message = "User is already following" });
 
-            var newFollow = new UserFollow
-            {
-                FollowerId = userFollowModel.FollowerId,
-                FollowedId = userFollowModel.FollowedId,
-                FollowedOn = _dateTimeProviderHelper.UtcNow,
-                EnabledNotifications = userFollowModel.EnabledNotifications,
-            };
+            var newFollow = _mapper.FollowMapper.MapFollow(userFollowModel, _dateTimeProviderHelper);
 
             await _databaseContext.UserFollows.AddAsync(newFollow);
             await _databaseContext.SaveChangesAsync();

@@ -15,6 +15,7 @@ namespace MediaCritica.Server.Controllers
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
+        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]/{searchTerm}/{page}")]
         public async Task<IActionResult> GetMediaByExternalSearch(string searchTerm, int page)
@@ -255,7 +256,7 @@ namespace MediaCritica.Server.Controllers
             var movie = await _helper.InternalApiHelper.GetMovieMedia(movieId);
 
             if (movie != null)
-                return Ok(_mapper.MovieMapper.MapMovieModel(movie));
+                return Ok(_mapper.MovieMapper.MapMovieModel(movie, _timezone, _dateTimeProviderHelper));
 
             var movieModel = await _helper.ExternalApiHelper.GetMovieMedia(movieId);
 
@@ -267,7 +268,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Media.AddAsync(movie);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(_mapper.MovieMapper.MapMovieModel(movie));
+            return Ok(_mapper.MovieMapper.MapMovieModel(movie, _timezone, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{seriesId}")]
@@ -276,7 +277,7 @@ namespace MediaCritica.Server.Controllers
             var series = await _helper.InternalApiHelper.GetSeriesMedia(seriesId);
 
             if (series != null)
-                return Ok(_mapper.SeriesMapper.MapSeriesModel(series));
+                return Ok(_mapper.SeriesMapper.MapSeriesModel(series, _timezone, _dateTimeProviderHelper));
 
             var seriesModel = await _helper.ExternalApiHelper.GetSeriesMedia(seriesId);
 
@@ -290,7 +291,7 @@ namespace MediaCritica.Server.Controllers
 
             await GetSeason(seriesId);
 
-            return Ok(_mapper.SeriesMapper.MapSeriesModel(series));
+            return Ok(_mapper.SeriesMapper.MapSeriesModel(series, _timezone, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{seriesId}/{seasonNo}")]
@@ -328,7 +329,7 @@ namespace MediaCritica.Server.Controllers
             var game = await _helper.InternalApiHelper.GetGameMedia(gameId);
 
             if (game != null)
-                return Ok(_mapper.GameMapper.MapGameModel(game));
+                return Ok(_mapper.GameMapper.MapGameModel(game, _timezone, _dateTimeProviderHelper));
 
             var gameModel = await _helper.ExternalApiHelper.GetGameMedia(gameId);
 
@@ -340,7 +341,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Media.AddAsync(game);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(_mapper.GameMapper.MapGameModel(game));
+            return Ok(_mapper.GameMapper.MapGameModel(game, _timezone, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{episodeId}")]
@@ -349,7 +350,7 @@ namespace MediaCritica.Server.Controllers
             var episode = await _helper.InternalApiHelper.GetEpisodeMedia(episodeId);
 
             if (episode != null && seasonId == -1)
-                return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
+                return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, _timezone, _dateTimeProviderHelper));
 
             var episodeModel = await _helper.ExternalApiHelper.GetEpisodeMedia(episodeId);
             if (seasonId != -1 && episodeModel != null)
@@ -363,7 +364,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Media.AddAsync(episode);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode));
+            return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, _timezone, _dateTimeProviderHelper));
         }
     }
 }

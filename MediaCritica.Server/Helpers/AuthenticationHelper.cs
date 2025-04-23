@@ -13,7 +13,7 @@ namespace MediaCritica.Server.Helpers
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
         private readonly bool _isTestEnvironment = isTestEnvironment;
 
         public async Task<User?> AuthenticateUser(UserLoginModel userLoginModel)
@@ -78,23 +78,23 @@ namespace MediaCritica.Server.Helpers
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             if (_isTestEnvironment)
-                _httpContext.User = claimsPrincipal;
+                _httpContextAccessor.HttpContext.User = claimsPrincipal;
             else
-                await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
         }
 
         public int? GetUserId()
         {
-            try { return int.Parse(_httpContext.User.Identity.Name); }
+            try { return int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name); }
             catch { return null; }
         }
 
         public async Task UnSetUserId()
         {
             if (_isTestEnvironment)
-                _httpContext.User = null;
+                _httpContextAccessor.HttpContext.User = null;
             else
-                await _httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public async Task<AuthToken> GenerateAuthToken(int userId)

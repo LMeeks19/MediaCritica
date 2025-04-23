@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
@@ -24,12 +25,12 @@ namespace MediaCritica.Server.Mappers
             return game;
         }
 
-        public GameModel MapGameModel(Game game)
+        public GameModel MapGameModel(Game game, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, GameModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(game);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(game, timezone, dateTimeProviderHelper);
             GameModel gameModel = mapper.Map<GameModel>(mediaModel);
 
             gameModel.BoxOffice = game.BoxOffice;

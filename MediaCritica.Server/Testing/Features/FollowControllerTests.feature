@@ -6,11 +6,16 @@ Background:
 		| 1  | Username1 |Test     | 1       | test1@email.com | Password123! | 2025-01-01 |
 		| 2  | Username2 |Test     | 2       | test2@email.com | Password456! | 2025-01-02 |
 		| 3  | Username3 |Test     | 3       | test3@email.com | Password789! | 2025-01-03 |
+	And I have the following preferences
+		| Id | UserId | Theme  | Palette | Locale | Timezone         |
+		| 1  | 1      | System | #000000 | en-US  | America/New_York |
+		| 2  | 2      | Light  | #FFFFFF | en-GB  | Europe/London    |
+		| 3  | 3      | System | #000000 | en-GB  | Europe/Paris     |
 	Given I have the following userFollows
-		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
-		| 1  | 1          | 2          | 2025-01-01 | true                 |
-		| 2  | 2          | 1          | 2025-01-02 | false                |
-		| 3  | 3          | 1          | 2025-01-03 | false                |
+		| Id | FollowerId | FollowedId | FollowedOn          | EnabledNotifications |
+		| 1  | 1          | 2          | 2025-01-01 10:10:50 | true                 |
+		| 2  | 2          | 1          | 2025-01-02 18:02:43 | false                |
+		| 3  | 3          | 1          | 2025-01-03 14:06:22 | false                |
 
 Scenario: Get followers for a user
 	Given I am the following user
@@ -19,9 +24,9 @@ Scenario: Get followers for a user
 	When I call GetUserFollowers with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
-		| Id | Username  | Name   | FollowedOn |
-		| 3  | Username3 | Test 3 | 2025-01-03 |
-		| 2  | Username2 | Test 2 | 2025-01-02 |
+		| Id | Username  | Name   | FollowedOn          |
+		| 3  | Username3 | Test 3 | 2025-01-03 09:06:22 |
+		| 2  | Username2 | Test 2 | 2025-01-02 13:02:43 |
 
 Scenario: Get followers for a user that doesn't exist
 	When I call GetUserFollowers with the offset 0
@@ -35,8 +40,8 @@ Scenario: Get following for a user
 	When I call GetUserFollowing with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
-		| Id | Username  | Name   | FollowedOn |
-		| 1  | Username2 | Test 2 | 2025-01-01 |
+		| Id | Username  | Name   | FollowedOn          |
+		| 1  | Username2 | Test 2 | 2025-01-01 05:10:50 |
 
 Scenario: Get following for a user that doesn't exist
 	When I call GetUserFollowing with the offset 0
@@ -50,8 +55,8 @@ Scenario: Get a users follow status for another user
 	When I call GetUserFollowStatus on username Username2
 	Then The status code should be 200
 	And The UserFollowModel should be
-		| Id | FollowerId | FollowedId | FollowedOn | EnabledNotifications |
-		| 1  | 1          | 2          | 2025-01-01 | true                 |
+		| Id | FollowerId | FollowedId | FollowedOn          | EnabledNotifications |
+		| 1  | 1          | 2          | 2025-01-01 05:10:50 | true                 |
 
 Scenario: Get a users follow status for another user that doesn't exist
 	When I call GetUserFollowStatus on username Username3
