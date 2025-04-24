@@ -1,5 +1,5 @@
 import "./Comments.scss";
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceStrict } from "date-fns";
 import ReplyIcon from "@mui/icons-material/MapsUgcOutlined";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -18,11 +18,13 @@ import {
   PostComment,
   UpdateComment,
 } from "../Server/Server";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
 import { CommentModel } from "../Interfaces/CommentModel";
 import ReportDialog from "./ReportDialog";
+import { toZonedTime } from "date-fns-tz";
+import { useNavigate } from "react-router-dom";
 
 export function Comment({
   comment,
@@ -32,6 +34,7 @@ export function Comment({
   reviewId: number;
 }) {
   const user = useRecoilValue(userState);
+  const navigate = useNavigate();
   const [curComment, setCurComment] = useState<CommentModel>(comment);
   const [isReporting, setIsReporting] = useState<boolean>(false);
   const [isReplying, setIsReplying] = useState<boolean>(false);
@@ -92,11 +95,7 @@ export function Comment({
     await UpdateComment({
       id: curComment.id,
       content: editedComment!,
-    })
-      .then(() =>
-        setCurComment({ ...curComment, commentedAt: new Date().toUTCString() })
-      )
-      .then(() => setIsEditing(false));
+    }).then(() => setIsEditing(false));
   }
 
   function resetEdit() {
@@ -118,11 +117,26 @@ export function Comment({
     <div className={`comment ${user.id === curComment.commenterId && "mine"}`}>
       <div className="details">
         <AccountIcon fontSize="small" />{" "}
-        {curComment.isDeleted
-          ? "deleted"
-          : `${curComment.commenterUsername} - ${formatDistanceToNowStrict(
-              curComment.commentedAt!
-            )} ago`}
+        {curComment.isDeleted ? (
+          "deleted"
+        ) : (
+          <Fragment>
+            <div
+              className="hover:underline hover:cursor-pointer"
+              onClick={() =>
+                navigate(`/view-user/${curComment.commenterUsername}`)
+              }
+            >
+              {curComment.commenterUsername}
+            </div>{" "}
+            -{" "}
+            {formatDistanceStrict(
+              curComment.commentedAt!,
+              toZonedTime(new Date(), user.preference.timezone),
+              { addSuffix: true }
+            )}
+          </Fragment>
+        )}
         {!curComment.isDeleted && (
           <div className="flex gap-2 ml-auto">
             {user.id === curComment.commenterId && !isEditing && (

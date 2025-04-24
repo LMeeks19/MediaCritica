@@ -19,7 +19,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceStrict } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
@@ -42,6 +42,7 @@ import CommentsDialog from "../Components/CommentsDialog";
 import { ShareDialog } from "../Components/ShareDialog";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import ReportDialog from "../Components/ReportDialog";
+import { toZonedTime } from "date-fns-tz";
 
 function ViewReviewPage() {
   const [review, setReview] = useState<ReviewModel>({} as ReviewModel);
@@ -224,9 +225,13 @@ function ViewReviewPage() {
                 </div>
                 <div className="review-date">
                   {CapitaliseFirstLetter(
-                    formatDistanceToNowStrict(review.date)
+                    formatDistanceStrict(
+                      review.date!,
+                      toZonedTime(new Date(), user.preference.timezone),
+                      { addSuffix: true }
+                    )
                   )}{" "}
-                  ago |{" "}
+                  |{" "}
                   <span
                     className="reviewer"
                     onClick={() =>

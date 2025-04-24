@@ -7,7 +7,7 @@ import {
 } from "../Helpers/StringHelper";
 import TopBar from "../Components/TopBar";
 import { Button, ButtonGroup, MenuItem, Rating, Select } from "@mui/material";
-import { format, formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceStrict } from "date-fns";
 import { GetMedia, GetSeason } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
@@ -22,6 +22,9 @@ import StarIcon from "@mui/icons-material/Star";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
+import { toZonedTime } from "date-fns-tz";
+import { useRecoilValue } from "recoil";
+import { userState } from "../State/GlobalState";
 
 function MediaPage() {
   const [media, setMedia] = useState<
@@ -30,6 +33,7 @@ function MediaPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
   const navigate = useNavigate();
+  const user = useRecoilValue(userState);
 
   const { type, mediaId } = useParams();
 
@@ -293,7 +297,16 @@ function MediaPage() {
                           <div className="details">
                             <h3>{review.title}</h3>
                             <p>{review.reviewerUsername}</p>
-                            <p>{formatDistanceToNowStrict(review.date)} ago</p>
+                            <p>
+                              {formatDistanceStrict(
+                                review.date!,
+                                toZonedTime(
+                                  new Date(),
+                                  user.preference.timezone
+                                ),
+                                { addSuffix: true }
+                              )}
+                            </p>
                           </div>
                         </div>
                       );

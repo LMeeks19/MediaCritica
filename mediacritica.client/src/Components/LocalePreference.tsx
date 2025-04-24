@@ -74,7 +74,7 @@ function LocalePreference() {
             options={locales}
             getOptionLabel={(option) =>
               `${option.name} ${
-                option.location !== null && "({option.location})"
+                option.location !== null ? `(${option.location})` : ""
               }`
             }
             onChange={(_e, v) => setLocale(v?.tag as string)}

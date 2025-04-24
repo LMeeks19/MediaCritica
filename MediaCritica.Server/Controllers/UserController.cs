@@ -103,14 +103,15 @@ namespace MediaCritica.Server.Controllers
         public IActionResult GetUsersBySearch(string searchTerm)
         {
             var userQuery = _databaseContext.Users
+                .Include(u => u.Preference)
                 .AsEnumerable()
                 .Where(u => u.Username.StartsWith(searchTerm, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             var users = userQuery
                 .Take(20)
-                .Select(u => _mapper.UserMapper
-                .MapUserSearchModel(u, _dateTimeProviderHelper))
+                .Select(u => _mapper.UserMapper.MapUserSearchModel(u, _dateTimeProviderHelper))
+                .OrderByDescending(u => u.Username)
                 .ToList();
 
             if (users.Count == 0)

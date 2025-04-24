@@ -19,6 +19,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomTooltip } from "./Tooltip";
 import "./CustomAutocomplete.scss";
+import { format } from "date-fns";
 
 function CustomAutoComplete() {
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ function CustomAutoComplete() {
               }}
             >
               <div className="text-xl">{result.username}</div>
-              <div className="text-sm">Joined: {result.joined}</div>
+              <div className="text-sm">Joined: {format(result.joined, "do MMMM yyyy")}</div>
             </Box>
           </Box>
         )}

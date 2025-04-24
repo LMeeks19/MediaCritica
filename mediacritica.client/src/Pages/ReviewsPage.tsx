@@ -3,12 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { GetMediaReviews } from "../Server/Server";
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceStrict } from "date-fns";
 import { Fab, Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { CustomTooltip } from "../Components/Tooltip";
 import Loader from "../Components/Loader";
 import AddIcon from "@mui/icons-material/Add";
+import { toZonedTime } from "date-fns-tz";
+import { useRecoilValue } from "recoil";
+import { userState } from "../State/GlobalState";
 
 function ReviewsPage() {
   const navigate = useNavigate();
@@ -18,6 +21,7 @@ function ReviewsPage() {
     totalCount: number;
   }>({ title: "", reviews: [], totalCount: 0 });
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const user = useRecoilValue(userState);
 
   const { mediaId } = useParams();
 
@@ -60,7 +64,13 @@ function ReviewsPage() {
                   <h3>{review.title}</h3>
                   <div className="flex justify-evenly gap-2 flex-wrap">
                     <Rating value={review.rating} precision={0.5} readOnly />
-                    <p>{formatDistanceToNowStrict(review.date)} ago </p>
+                    <p>
+                      {formatDistanceStrict(
+                        review.date!,
+                        toZonedTime(new Date(), user.preference.timezone),
+                        { addSuffix: true }
+                      )}
+                    </p>
                     <p>{review.reviewerUsername}</p>
                   </div>
                 </div>
