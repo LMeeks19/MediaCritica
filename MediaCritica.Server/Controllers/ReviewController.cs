@@ -16,7 +16,6 @@ namespace MediaCritica.Server.Controllers
         private readonly IHelpers _helper = helper;
         private readonly NotificationController _notificationController = notificationController;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]/{reviewId}")]
         public async Task<IActionResult> GetReview(int reviewId)
@@ -33,13 +32,17 @@ namespace MediaCritica.Server.Controllers
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
 
-            return Ok(_mapper.ReviewMapper.MapReviewModel(review, _timezone, _dateTimeProviderHelper));
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
+            return Ok(_mapper.ReviewMapper.MapReviewModel(review, preference, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetUserReviews(int offset)
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
             var reviews = await _databaseContext.Reviews
                    .Include(r => r.User)
                    .Include(r => r.Engagements)
@@ -50,7 +53,7 @@ namespace MediaCritica.Server.Controllers
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
-                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r, _timezone, _dateTimeProviderHelper))
+                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r, preference, _dateTimeProviderHelper))
                    .ToListAsync();
 
             var breakdown = await GetUserReviewsBreakdown(userId);
@@ -76,6 +79,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{mediaId}/{offset}/{limit}")]
         public async Task<IActionResult> GetMediaReviews(string mediaId, int offset, int limit)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var media = await _databaseContext.Media
                 .Include(m => m.Reviews)
                     .ThenInclude(r => r.User)
@@ -87,7 +92,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
-                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r, _timezone, _dateTimeProviderHelper))
+                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r, preference, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(new { media.Title, Reviews = reviews, totalCount = reviews.Count });
@@ -140,7 +145,7 @@ namespace MediaCritica.Server.Controllers
             review.Title = updateReviewModel.Title;
             review.Description = updateReviewModel.Description;
             review.Rating = updateReviewModel.Rating;
-            review.Date = updateReviewModel.Date;
+            review.Date = _dateTimeProviderHelper.UtcNow;
 
             await _databaseContext.SaveChangesAsync();
 

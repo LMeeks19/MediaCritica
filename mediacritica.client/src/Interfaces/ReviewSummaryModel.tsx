@@ -4,5 +4,5 @@ export interface ReviewSummaryModel {
   mediaType: string;
   title: string;
   rating: number;
-  date: Date;
+  date: string;
 }

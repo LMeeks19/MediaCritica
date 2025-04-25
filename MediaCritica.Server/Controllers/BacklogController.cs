@@ -15,7 +15,6 @@ namespace MediaCritica.Server.Controllers
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBacklog()
@@ -38,16 +37,16 @@ namespace MediaCritica.Server.Controllers
 
         private async Task<List<BacklogModel>> GetBacklogByCategory(int? userId, BacklogCategoryType category, int offset, int limit)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
             if (userId == null)
                 return [];
 
             var backlog = await _databaseContext.Backlogs
-                .Include(b => b.User)
-                    .ThenInclude(u => u.Preference)
                 .Where(b => b.UserId == userId && b.Category == category)
                 .OrderByDescending(media => media.AddedDate)
                 .ThenBy(b => b.MediaTitle)
-                .Select(backlog => _mapper.BacklogMapper.MapBacklogModel(backlog, _timezone, _dateTimeProviderHelper))
+                .Select(backlog => _mapper.BacklogMapper.MapBacklogModel(backlog, preference, _dateTimeProviderHelper))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();

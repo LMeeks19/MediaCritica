@@ -19,19 +19,21 @@ namespace MediaCritica.Server.Controllers
         private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
         private readonly IHubs _hubs = hubs;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]/{offset}/{limit}")]
         public async Task<IActionResult> GetUserNotifications(int offset, int limit = 25)
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
+
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
             var notifications = await _databaseContext.Notifications
                 .Include(n => n.Author)
                 .Where(n => n.RecipientId == userId)
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(offset)
                 .Take(limit)
-                .Select(notification => _mapper.NotificationMapper.MapNotificationModel(notification, _timezone, _dateTimeProviderHelper))
+                .Select(notification => _mapper.NotificationMapper.MapNotificationModel(notification, preference, _dateTimeProviderHelper))
                 .ToListAsync();
 
             return Ok(notifications);

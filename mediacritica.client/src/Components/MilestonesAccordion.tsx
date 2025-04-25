@@ -2,7 +2,6 @@ import "./MilestonesAccordion.scss";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers/icons";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
-import { format } from "date-fns";
 import { UserMilestoneLevel } from "../Enums/UserMilestoneLevel";
 import { UserMilestoneType } from "../Enums/UserMilestoneType";
 import GameIcon from "@mui/icons-material/SportsEsportsOutlined";
@@ -93,7 +92,11 @@ const MilestonesAccordion = (props: UserMilestoneModelObject) => {
   }
 
   return (
-    <Accordion className="accordion" disableGutters defaultExpanded={props?.milestones?.length > 0}>
+    <Accordion
+      className="accordion"
+      disableGutters
+      defaultExpanded={props?.milestones?.length > 0}
+    >
       <AccordionSummary
         className={`sub-header ${props.isPalette ? "palette" : "dark-shade"}`}
         expandIcon={<ArrowDropDownIcon />}
@@ -117,11 +120,7 @@ const MilestonesAccordion = (props: UserMilestoneModelObject) => {
                   <h3>{milestone.title}</h3>
                   <p>{milestone.description}</p>
                   {milestone.earnedDate && (
-                    <p>
-                      Earned:{" "}
-                      {milestone.earnedDate &&
-                        format(milestone.earnedDate, "do MMMM yyyy")}
-                    </p>
+                    <p>Earned: {milestone.earnedDate}</p>
                   )}
                   {milestone.progress && (
                     <div className="progress">

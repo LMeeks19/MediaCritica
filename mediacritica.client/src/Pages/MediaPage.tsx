@@ -7,7 +7,6 @@ import {
 } from "../Helpers/StringHelper";
 import TopBar from "../Components/TopBar";
 import { Button, ButtonGroup, MenuItem, Rating, Select } from "@mui/material";
-import { format, formatDistanceStrict } from "date-fns";
 import { GetMedia, GetSeason } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
@@ -22,9 +21,6 @@ import StarIcon from "@mui/icons-material/Star";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
-import { toZonedTime } from "date-fns-tz";
-import { useRecoilValue } from "recoil";
-import { userState } from "../State/GlobalState";
 
 function MediaPage() {
   const [media, setMedia] = useState<
@@ -33,7 +29,6 @@ function MediaPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
   const navigate = useNavigate();
-  const user = useRecoilValue(userState);
 
   const { type, mediaId } = useParams();
 
@@ -126,12 +121,7 @@ function MediaPage() {
                   <div className="episode-number">{episode.episode}</div>
                   <div className="episode-info">
                     <h3>{episode.title}</h3>
-                    <p>
-                      Released:{" "}
-                      {episode.released !== "N/A"
-                        ? format(new Date(episode.released), "do MMM yyyy")
-                        : episode.released}
-                    </p>
+                    <p>Released: {episode.released}</p>
                     <p className="rating">
                       Rating: <StarIcon className="star-icon" />{" "}
                       {episode.imdbRating === "" ? "N/A" : episode.imdbRating}
@@ -297,16 +287,7 @@ function MediaPage() {
                           <div className="details">
                             <h3>{review.title}</h3>
                             <p>{review.reviewerUsername}</p>
-                            <p>
-                              {formatDistanceStrict(
-                                review.date!,
-                                toZonedTime(
-                                  new Date(),
-                                  user.preference.timezone
-                                ),
-                                { addSuffix: true }
-                              )}
-                            </p>
+                            <p>{review.date}</p>
                           </div>
                         </div>
                       );

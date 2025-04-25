@@ -14,7 +14,7 @@ export interface ReviewModel {
   title: string;
   rating: number;
   description: string;
-  date: Date;
+  date: string;
   likes: number;
   dislikes: number;
   totalComments: number;

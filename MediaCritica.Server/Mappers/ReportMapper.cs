@@ -19,7 +19,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReportModel MapReportModeL(Report report, IDateTimeProviderHelper dateTimeProviderHelper)
+        public ReportModel MapReportModeL(Report report, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReportModel()
             {
@@ -29,7 +29,7 @@ namespace MediaCritica.Server.Mappers
                 ReporterId = report.ReporterId,
                 Reason = report.Reason,
                 Details = report.Details,
-                ReportedAt = dateTimeProviderHelper.GetLocalDateTime(report.ReportedAt, report.Reporter.Preference.Timezone)
+                ReportedAt = dateTimeProviderHelper.GetLocalDate(report.ReportedAt, preference)
             };
         }
     }

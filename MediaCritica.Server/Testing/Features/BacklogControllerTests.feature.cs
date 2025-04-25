@@ -641,7 +641,7 @@ this.FeatureBackground();
                             "Media Poster 2",
                             "Media Title 2",
                             "0",
-                            "2025-02-08 01:15:55"});
+                            "Friday, February 7, 2025"});
                 table10.AddRow(new string[] {
                             "1",
                             "1",
@@ -649,7 +649,7 @@ this.FeatureBackground();
                             "Media Poster 1",
                             "Media Title 1",
                             "0",
-                            "2025-02-01 23:13:41"});
+                            "Saturday, February 1, 2025"});
 #line 58
  testRunner.And("The Backlogged backlogs should be", ((string)(null)), table10, "And ");
 #line hidden
@@ -668,7 +668,7 @@ this.FeatureBackground();
                             "Media Poster 5",
                             "Media Title 5",
                             "1",
-                            "2025-02-04 20:29:16"});
+                            "Tuesday, February 4, 2025"});
 #line 62
  testRunner.And("The InProgress backlogs should be", ((string)(null)), table11, "And ");
 #line hidden
@@ -687,7 +687,7 @@ this.FeatureBackground();
                             "Media Poster 6",
                             "Media Title 6",
                             "2",
-                            "2024-02-12 15:16:15"});
+                            "Monday, February 12, 2024"});
 #line 65
  testRunner.And("The Finished backlogs should be", ((string)(null)), table12, "And ");
 #line hidden
@@ -838,7 +838,7 @@ this.FeatureBackground();
                             "Media Poster 2",
                             "Media Title 2",
                             "0",
-                            "2025-02-08 01:15:55"});
+                            "Friday, February 7, 2025"});
                 table19.AddRow(new string[] {
                             "1",
                             "1",
@@ -846,7 +846,7 @@ this.FeatureBackground();
                             "Media Poster 1",
                             "Media Title 1",
                             "0",
-                            "2025-02-01 23:13:41"});
+                            "Saturday, February 1, 2025"});
 #line 91
  testRunner.And("The Backlogged backlogs should be", ((string)(null)), table19, "And ");
 #line hidden
@@ -906,7 +906,7 @@ this.FeatureBackground();
                             "Media Poster 5",
                             "Media Title 5",
                             "1",
-                            "2025-02-04 20:29:16"});
+                            "Tuesday, February 4, 2025"});
 #line 102
  testRunner.And("The InProgress backlogs should be", ((string)(null)), table21, "And ");
 #line hidden
@@ -966,7 +966,7 @@ this.FeatureBackground();
                             "Media Poster 6",
                             "Media Title 6",
                             "2",
-                            "2024-02-12 15:16:15"});
+                            "Monday, February 12, 2024"});
 #line 112
  testRunner.And("The Finished backlogs should be", ((string)(null)), table23, "And ");
 #line hidden

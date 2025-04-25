@@ -52,8 +52,8 @@ Scenario: Get explore media by search
 	When I call GetExploreMediaBySearch with search term "Media Title 1"
 	Then The status code should be 200
 	And The MediaSummaryModels should be
-		| Id | Title         | Type    | Poster         | Genre            | Released   | ImdbRating |
-		| 1  | Media Title 1 | movie   | Media Poster 1 | Action, Drama    | 2025-02-03 | 7.2        |
+		| Id | Title         | Type  | Poster         | Genre         | Released         | ImdbRating |
+		| 1  | Media Title 1 | movie | Media Poster 1 | Action, Drama | 03 February 2025 | 7.2        |
 
 Scenario: Get explore media 
 	When I call GetExploreMedia
@@ -62,13 +62,13 @@ Scenario: Get explore media
 		| TotalMediaCount | MediaSummaryModels |
 		| 6               | 6                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre             | Released   | ImdbRating |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama     | 2025-02-03 | 7.2        |
-		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 2024-11-09 | 9          |
-		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 2024-06-21 | 8.5        |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance    | 2025-01-01 | 2          |
-		| 6  | Media Title 6 | movie  | Media Poster 6 | Fantasy, Action   | 2022-04-10 | 5          |
-		| 7  | Media Title 7 | game   | Media Poster 7 | Horror, Thriller  | 2026-10-16 | 3          |
+		| Id | Title         | Type   | Poster         | Genre             | Released         | ImdbRating |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama     | 03 February 2025 | 7.2        |
+		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 09 November 2024 | 9          |
+		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 21 June 2024     | 8.5        |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance    | 01 January 2025  | 2          |
+		| 6  | Media Title 6 | movie  | Media Poster 6 | Fantasy, Action   | 10 April 2022    | 5          |
+		| 7  | Media Title 7 | game   | Media Poster 7 | Horror, Thriller  | 16 October 2026  | 3          |
 
 Scenario: Get best of previous year
 	When I call GetBestOfPrevYear
@@ -77,9 +77,9 @@ Scenario: Get best of previous year
 		| TotalMediaCount | MediaSummaryModels |
 		| 2               | 2                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre             | Released   | ImdbRating |
-		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 2024-11-09 | 9          |
-		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 2024-06-21 | 8.5        |
+		| Id | Title         | Type   | Poster         | Genre             | Released         | ImdbRating |
+		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 09 November 2024 | 9          |
+		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 21 June 2024     | 8.5        |
 
 Scenario: Get best of current year
 	When I call GetBestOfCurYear
@@ -88,9 +88,9 @@ Scenario: Get best of current year
 		| TotalMediaCount | MediaSummaryModels |
 		| 2               | 2                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
+		| Id | Title         | Type   | Poster         | Genre          | Released         | ImdbRating |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 03 February 2025 | 7.2        |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 01 January 2025  | 2          |
 
 Scenario: Get best of all time
 	When I call GetBestOfAllTime
@@ -99,12 +99,12 @@ Scenario: Get best of all time
 		| TotalMediaCount | MediaSummaryModels |
 		| 5               | 5                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre             | Released   | ImdbRating |
-		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 2024-11-09 | 9          |
-		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 2024-06-21 | 8.5        |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama     | 2025-02-03 | 7.2        |
-		| 6  | Media Title 6 | movie  | Media Poster 6 | Fantasy, Action   | 2022-04-10 | 5          |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance    | 2025-01-01 | 2          |
+		| Id | Title         | Type   | Poster         | Genre             | Released         | ImdbRating |
+		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 09 November 2024 | 9          |
+		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 21 June 2024     | 8.5        |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama     | 03 February 2025 | 7.2        |
+		| 6  | Media Title 6 | movie  | Media Poster 6 | Fantasy, Action   | 10 April 2022    | 5          |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance    | 01 January 2025  | 2          |
 
 Scenario: Get upcomng
 	When I call GetUpcoming
@@ -113,8 +113,8 @@ Scenario: Get upcomng
 		| TotalMediaCount | MediaSummaryModels |
 		| 1               | 1                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type | Poster         | Genre            | Released   | ImdbRating |
-		| 7  | Media Title 7 | game | Media Poster 7 | Horror, Thriller | 2026-10-16 | 3          |
+		| Id | Title         | Type | Poster         | Genre            | Released        | ImdbRating |
+		| 7  | Media Title 7 | game | Media Poster 7 | Horror, Thriller | 16 October 2026 | 3          |
 
 Scenario: Get latest
 	When I call GetLatest
@@ -123,12 +123,12 @@ Scenario: Get latest
 		| TotalMediaCount | MediaSummaryModels |
 		| 5               | 5                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre             | Released   | ImdbRating |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama     | 2025-02-03 | 7.2        |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance    | 2025-01-01 | 2          |
-		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 2024-11-09 | 9          |
-		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 2024-06-21 | 8.5        |
-		| 6  | Media Title 6 | movie  | Media Poster 6 | Fantasy, Action   | 2022-04-10 | 5          |
+		| Id | Title         | Type   | Poster         | Genre             | Released         | ImdbRating |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama     | 03 February 2025 | 7.2        |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance    | 01 January 2025  | 2          |
+		| 2  | Media Title 2 | series | Media Poster 2 | Action, Adventure | 09 November 2024 | 9          |
+		| 3  | Media Title 3 | game   | Media Poster 3 | Comedy, Drama     | 21 June 2024     | 8.5        |
+		| 6  | Media Title 6 | movie  | Media Poster 6 | Fantasy, Action   | 10 April 2022    | 5          |
 
 Scenario: Get seasonal picks
 	When I call GetSeasonalPicks
@@ -137,9 +137,9 @@ Scenario: Get seasonal picks
 		| TotalMediaCount | MediaSummaryModels |
 		| 2               | 2                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
+		| Id | Title         | Type   | Poster         | Genre          | Released         | ImdbRating |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 03 February 2025 | 7.2        |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 01 January 2025  | 2          |
 
 Scenario: Get most reviewed
 	When I call GetMostReviewed
@@ -148,9 +148,9 @@ Scenario: Get most reviewed
 		| TotalMediaCount | MediaSummaryModels |
 		| 2               | 2                  |	
 		And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
+		| Id | Title         | Type   | Poster         | Genre          | Released         | ImdbRating |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 03 February 2025 | 7.2        |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 01 January 2025  | 2          |
 
 Scenario: Get recently reviewed
 	When I call GetRecentlyReviewed
@@ -159,9 +159,9 @@ Scenario: Get recently reviewed
 		| TotalMediaCount | MediaSummaryModels |
 		| 2               | 2                  |
 	And The MediaSummaryModels should be
-		| Id | Title         | Type   | Poster         | Genre          | Released   | ImdbRating |
-		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 2025-01-01 | 2          |
-		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 2025-02-03 | 7.2        |
+		| Id | Title         | Type   | Poster         | Genre          | Released         | ImdbRating |
+		| 5  | Media Title 5 | series | Media Poster 5 | Drama, Romance | 01 January 2025  | 2          |
+		| 1  | Media Title 1 | movie  | Media Poster 1 | Action, Drama  | 03 February 2025 | 7.2        |
 
 Scenario: Get movie internally
 	When I call GetMovie with id 1

@@ -7,6 +7,6 @@
         public string MediaType { get; set; }
         public string Title { get; set; }
         public double Rating { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
 }

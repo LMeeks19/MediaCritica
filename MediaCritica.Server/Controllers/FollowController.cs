@@ -20,7 +20,6 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
-                .Include(u => u.Preference)
                 .Include(u => u.Followers)
                     .ThenInclude(f => f.Follower)
                 .SingleOrDefaultAsync(u => u.Id == userId);
@@ -28,11 +27,13 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var followers = user.Followers
                 .OrderByDescending(f => f.FollowedOn)
                 .Skip(offset)
                 .Take(25)
-                .Select(f => _mapper.FollowMapper.MapFollowerSummaryModel(f, user.Preference.Timezone, _dateTimeProviderHelper))
+                .Select(f => _mapper.FollowMapper.MapFollowerSummaryModel(f, preference, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(followers);
@@ -43,7 +44,6 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
-                .Include(u => u.Preference)
                 .Include(u => u.Following)
                     .ThenInclude(f => f.Followed)
                 .SingleOrDefaultAsync(u => u.Id == userId);
@@ -51,11 +51,13 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var following = user.Following
                 .OrderByDescending(f => f.FollowedOn)
                 .Skip(offset)
                 .Take(25)
-                .Select(f => _mapper.FollowMapper.MapFollowedSummaryModel(f, user.Preference.Timezone, _dateTimeProviderHelper))
+                .Select(f => _mapper.FollowMapper.MapFollowedSummaryModel(f, preference, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(following);
@@ -67,14 +69,14 @@ namespace MediaCritica.Server.Controllers
             var followerId = _helper.AuthenticationHelper.GetUserId();
             var userFollow = await _databaseContext.UserFollows
                 .Include(f => f.Followed)
-                .Include(f => f.Follower)
-                    .ThenInclude(f => f.Preference)
                 .SingleOrDefaultAsync(f => f.FollowerId == followerId && f.Followed.Username == followedUsername);
 
             if (userFollow == null)
                 return NotFound(new { Message = "Follow relationship not found" });
 
-            return Ok(_mapper.FollowMapper.MapFollowModel(userFollow, _dateTimeProviderHelper));
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
+            return Ok(_mapper.FollowMapper.MapFollowModel(userFollow, preference, _dateTimeProviderHelper));
         }
 
         [HttpPost("[action]")]

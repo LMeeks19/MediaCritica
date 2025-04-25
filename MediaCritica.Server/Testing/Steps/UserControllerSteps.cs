@@ -30,9 +30,9 @@ namespace MediaCritica.Server.Testing.Steps
         }
 
         [When(@"I call GetUsersBySearch with search term ""(.*)""")]
-        public void WhenICallGetUsersBySearchWithSearchTerm(string searchTerm)
+        public async void WhenICallGetUsersBySearchWithSearchTerm(string searchTerm)
         {
-            GlobalSteps._response = GlobalSteps._controller.UserController.GetUsersBySearch(searchTerm);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUsersBySearch(searchTerm);
         }
 
         [When(@"I call GetUser with the username ""(.*)""")]

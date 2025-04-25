@@ -25,12 +25,12 @@ namespace MediaCritica.Server.Mappers
             return movie;
         }
 
-        public MovieModel MapMovieModel(Movie movie, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public MovieModel MapMovieModel(Movie movie, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, MovieModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(movie, timezone, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(movie, preference, dateTimeProviderHelper);
             MovieModel movieModel = mapper.Map<MovieModel>(mediaModel);
 
             movieModel.BoxOffice = movie.BoxOffice;

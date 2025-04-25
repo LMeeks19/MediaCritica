@@ -24,9 +24,9 @@ Scenario: Get followers for a user
 	When I call GetUserFollowers with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
-		| Id | Username  | Name   | FollowedOn          |
-		| 3  | Username3 | Test 3 | 2025-01-03 09:06:22 |
-		| 2  | Username2 | Test 2 | 2025-01-02 13:02:43 |
+		| Id | Username  | Name   | FollowedOn                |
+		| 3  | Username3 | Test 3 | Friday, January 3, 2025   |
+		| 2  | Username2 | Test 2 | Thursday, January 2, 2025 |
 
 Scenario: Get followers for a user that doesn't exist
 	When I call GetUserFollowers with the offset 0
@@ -40,8 +40,8 @@ Scenario: Get following for a user
 	When I call GetUserFollowing with the offset 0
 	Then The status code should be 200
 	And The UserFollowSummaryModels returned should be
-		| Id | Username  | Name   | FollowedOn          |
-		| 1  | Username2 | Test 2 | 2025-01-01 05:10:50 |
+		| Id | Username  | Name   | FollowedOn                 |
+		| 1  | Username2 | Test 2 | Wednesday, January 1, 2025 |
 
 Scenario: Get following for a user that doesn't exist
 	When I call GetUserFollowing with the offset 0
@@ -55,8 +55,8 @@ Scenario: Get a users follow status for another user
 	When I call GetUserFollowStatus on username Username2
 	Then The status code should be 200
 	And The UserFollowModel should be
-		| Id | FollowerId | FollowedId | FollowedOn          | EnabledNotifications |
-		| 1  | 1          | 2          | 2025-01-01 05:10:50 | true                 |
+		| Id | FollowerId | FollowedId | FollowedOn                 | EnabledNotifications |
+		| 1  | 1          | 2          | Wednesday, January 1, 2025 | true                 |
 
 Scenario: Get a users follow status for another user that doesn't exist
 	When I call GetUserFollowStatus on username Username3

@@ -21,8 +21,8 @@ Scenario: Get a review by id
 	When I call GetReview with id 1
 	Then The status code should be 200
 	And The ReviewModel should be
-		| Id | Date       | Description      | MediaType | MediaId | MediaPoster    | MediaTitle    | MediaSeriesId | MediaSeriesTitle | MediaEpisode | Rating | ReviewerId | ReviewerUsername | Title      | Likes | Dislikes |
-		| 1  | 2025-01-01 | Test Description | movie     | 1       | Media Poster 1 | Media Title 1 | <null>        | <null>           | <null>       | 4      | 3          | Username3        | Test Title | 0     | 0        |
+		| Id | Date        | Description      | MediaType | MediaId | MediaPoster    | MediaTitle    | MediaSeriesId | MediaSeriesTitle | MediaEpisode | Rating | ReviewerId | ReviewerUsername | Title      | Likes | Dislikes |
+		| 1  | 1 month ago | Test Description | movie     | 1       | Media Poster 1 | Media Title 1 | <null>        | <null>           | <null>       | 4      | 3          | Username3        | Test Title | 0     | 0        |
 
 Scenario: Get a review by id that doesn't exist
 	When I call GetReview with id 10
@@ -67,17 +67,17 @@ Scenario: Post a review that a user has already reviewed
 
 Scenario: Update a review
 	When I call UpdateReview with the following data
-		| ReviewId | Title         | Description         | Rating | Date       |
-		| 1        | Updated Title | Updated Description | 1      | 2025-03-01 |
-	Then The status code should be 200
+		| ReviewId | Title         | Description         | Rating | 
+		| 1        | Updated Title | Updated Description | 1      |
+Then The status code should be 200
 	And The ReviewModel should be
-		| Id | Date       | Description         | MediaType | MediaId | MediaPoster    | MediaTitle    | MediaSeriesId | MediaSeriesTitle | MediaEpisode | Rating | ReviewerId | ReviewerUsername | Title         | Likes | Dislikes |
-		| 1  | 2025-03-01 | Updated Description | movie     | 1       | Media Poster 1 | Media Title 1 | <null>        | <null>           | <null>       | 1      | 3          | Username3        | Updated Title | 0     | 0        |
+		| Id | Date     | Description         | MediaType | MediaId | MediaPoster    | MediaTitle    | MediaSeriesId | MediaSeriesTitle | MediaEpisode | Rating | ReviewerId | ReviewerUsername | Title         | Likes | Dislikes |
+		| 1  | just now | Updated Description | movie     | 1       | Media Poster 1 | Media Title 1 | <null>        | <null>           | <null>       | 1      | 3          | Username3        | Updated Title | 0     | 0        |
 
 Scenario: Update a review that doesn't exist
 	When I call UpdateReview with the following data
-		| ReviewId | Title         | Description         | Rating | Date       |
-		| 10       | Updated Title | Updated Description | 1      | 2025-03-01 |
+		| ReviewId | Title         | Description         | Rating |
+		| 10       | Updated Title | Updated Description | 1      |
 	Then The status code should be 404
 	And The response should be "Review not found"
 

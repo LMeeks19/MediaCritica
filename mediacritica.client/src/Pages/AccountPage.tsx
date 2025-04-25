@@ -57,7 +57,6 @@ import AddIcon from "@mui/icons-material/Add";
 import SortIcon from "@mui/icons-material/Sort";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
-import { format } from "date-fns";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
 import MilestonesAccordion from "../Components/MilestonesAccordion";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -578,8 +577,7 @@ function AccountPage() {
                                 {follower.name}
                               </div>
                               <div className="text-xs text-[gray] truncate">
-                                Followed You:{" "}
-                                {format(follower.followedOn, "do MMMM yyyy")}
+                                Followed You: {follower.followedOn}
                               </div>
                             </div>
                           </div>
@@ -632,8 +630,7 @@ function AccountPage() {
                                 {follower.name}
                               </div>
                               <div className="text-xs text-[gray] truncate">
-                                You Followed:{" "}
-                                {format(follower.followedOn, "do MMMM yyyy")}
+                                You Followed: {follower.followedOn}
                               </div>
                             </div>
                           </div>
@@ -719,9 +716,7 @@ function AccountPage() {
                                 <Divider />
                                 <CardContent>
                                   <Typography>{review.mediaTitle}</Typography>
-                                  <Typography>
-                                    {format(review.date, "do MMMM yyyy")}
-                                  </Typography>
+                                  <Typography>{review.date}</Typography>
                                   <div className="flex justify-around">
                                     <Typography>
                                       {CapitaliseFirstLetter(review.mediaType)}

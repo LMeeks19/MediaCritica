@@ -5,12 +5,11 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class MilestoneCalculatorHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, MilestoneMapper milestoneMapper)
+    public class MilestoneCalculatorHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, MilestoneMapper milestoneMapper, InternalApiHelper internalApiHelper, AuthenticationHelper authenticationHelper)
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
         private readonly MilestoneMapper _milestoneMapper = milestoneMapper;
-
         public List<Milestone> CreateMilestones()
         {
             var milestones = new List<Milestone>();
@@ -238,7 +237,7 @@ namespace MediaCritica.Server.Helpers
 
             // Calculate progress for each milestone
             var progress = milestonesData
-                .Select(data => CalculateMilestone(user, data.Type, data.Count))
+                .Select(data => CalculateMilestoneAsync(user, data.Type, data.Count))
                 .ToList();
 
             return progress;
@@ -335,7 +334,7 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
-        private MilestoneModel CalculateMilestone(
+        private MilestoneModel CalculateMilestoneAsync(
             User user,
             MilestoneType type,
             int currentCount)
@@ -356,6 +355,8 @@ namespace MediaCritica.Server.Helpers
                 ? (double)currentCount / thresholds[nextLevel] * 100
                 : 100);
 
+            var preference = internalApiHelper.GetUserPreference(authenticationHelper.GetUserId());
+
             return _milestoneMapper.MapMilestoneModel(
                 GetTitle(type),
                 GetDescription(type),
@@ -367,7 +368,7 @@ namespace MediaCritica.Server.Helpers
                 thresholds[nextLevel],
                 progressPercent,
                 _dateTimeProviderHelper,
-                user.Preference.Timezone);
+                preference.Result);
         }
 
         private static string GetTitle(MilestoneType type)

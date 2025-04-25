@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public DateTime Joined { get; set; }
+        public string Joined { get; set; }
     }
 }

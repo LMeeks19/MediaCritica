@@ -1,5 +1,4 @@
 import "./Comments.scss";
-import { formatDistanceStrict } from "date-fns";
 import ReplyIcon from "@mui/icons-material/MapsUgcOutlined";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -23,7 +22,6 @@ import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
 import { CommentModel } from "../Interfaces/CommentModel";
 import ReportDialog from "./ReportDialog";
-import { toZonedTime } from "date-fns-tz";
 import { useNavigate } from "react-router-dom";
 
 export function Comment({
@@ -129,12 +127,7 @@ export function Comment({
             >
               {curComment.commenterUsername}
             </div>{" "}
-            -{" "}
-            {formatDistanceStrict(
-              curComment.commentedAt!,
-              toZonedTime(new Date(), user.preference.timezone),
-              { addSuffix: true }
-            )}
+            | {curComment.commentedAt}
           </Fragment>
         )}
         {!curComment.isDeleted && (
@@ -194,42 +187,37 @@ export function Comment({
             readOnly={!isEditing}
           />
         )}
-        {!curComment.isDeleted &&
-          user.id !== curComment.commenterId &&
-          user.id !== undefined && (
-            <div
-              className={`actions ${
-                curComment.replies.length === 0 && "blank"
-              }`}
-            >
+        {!curComment.isDeleted && user.id !== undefined && (
+          <div
+            className={`actions ${curComment.replies.length === 0 && "blank"}`}
+          >
+            {user.id !== curComment.commenterId && (
               <CustomTooltip
                 title="Report"
                 onClick={() => setIsReporting(true)}
               >
                 <FlagIcon className="icon" />
               </CustomTooltip>
-              {isReplying ? (
-                <CustomTooltip
-                  title="Cancel"
-                  onClick={() => setIsReplying(false)}
-                >
-                  <CancelIcon className="icon" />
-                </CustomTooltip>
-              ) : (
-                <CustomTooltip
-                  title="Reply"
-                  onClick={() => setIsReplying(true)}
-                >
-                  <ReplyIcon className="icon" />
-                </CustomTooltip>
-              )}
-              {isReplying && (
-                <CustomTooltip title="Send" onClick={() => sendReply()}>
-                  <SendIcon className="icon" />
-                </CustomTooltip>
-              )}
-            </div>
-          )}
+            )}
+            {isReplying ? (
+              <CustomTooltip
+                title="Cancel"
+                onClick={() => setIsReplying(false)}
+              >
+                <CancelIcon className="icon" />
+              </CustomTooltip>
+            ) : (
+              <CustomTooltip title="Reply" onClick={() => setIsReplying(true)}>
+                <ReplyIcon className="icon" />
+              </CustomTooltip>
+            )}
+            {isReplying && (
+              <CustomTooltip title="Send" onClick={() => sendReply()}>
+                <SendIcon className="icon" />
+              </CustomTooltip>
+            )}
+          </div>
+        )}
         {isReplying && (
           <ReactQuill
             className="reply"

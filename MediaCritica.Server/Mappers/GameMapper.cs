@@ -25,12 +25,12 @@ namespace MediaCritica.Server.Mappers
             return game;
         }
 
-        public GameModel MapGameModel(Game game, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public GameModel MapGameModel(Game game, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, GameModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(game, timezone, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(game, preference, dateTimeProviderHelper);
             GameModel gameModel = mapper.Map<GameModel>(mediaModel);
 
             gameModel.BoxOffice = game.BoxOffice;

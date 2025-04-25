@@ -2,6 +2,7 @@
 using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Hubs;
 using MediaCritica.Server.Mappers;
+using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
@@ -33,17 +34,15 @@ namespace MediaCritica.Server.Testing
             return mapper.Object;
         }
 
-        private static IHelpers SetupHelper(DatabaseContext dbContext, IConfiguration configuration, IDateTimeProviderHelper dateTimeProviderHelper)
+        private static IHelpers SetupHelper(DatabaseContext dbContext, IConfiguration configuration, IDateTimeProviderHelper dateTimeProviderHelper, IHttpContextAccessor httpContext)
         {
-            var httpContext = SetupHttpContext();
-
             var helper = new Mock<IHelpers>();
             helper.Setup(h => h.TrendCalculatorHelper).Returns(new TrendCalculatorHelper());
             helper.Setup(h => h.DateRangeCalculatorHelper).Returns(new DateRangeCalculatorHelper(dateTimeProviderHelper));
             helper.Setup(h => h.ExternalApiHelper).Returns(new ExternalApiHelper(configuration, true));
             helper.Setup(h => h.InternalApiHelper).Returns(new InternalApiHelper(dbContext));
-            helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext, dateTimeProviderHelper, new MilestoneMapper()));
             helper.Setup(h => h.AuthenticationHelper).Returns(new AuthenticationHelper(dbContext, dateTimeProviderHelper, httpContext, true));
+            helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext, dateTimeProviderHelper, new MilestoneMapper(), helper.Object.InternalApiHelper, helper.Object.AuthenticationHelper));
 
             return helper.Object;
         }
@@ -53,9 +52,14 @@ namespace MediaCritica.Server.Testing
             var dateTimeProviderHelper = new Mock<IDateTimeProviderHelper>();
             dateTimeProviderHelper.Setup(provider => provider.UtcNow).Returns(DateTime.Parse("2025-02-27T16:30:00"));
             dateTimeProviderHelper
-                .Setup(provider => provider.GetLocalDateTime(It.IsAny<DateTime>(), It.IsAny<string>()))
-                .Returns((DateTime utcDateTime, string timezoneId) =>
-                    new DateTimeProviderHelper().GetLocalDateTime(utcDateTime, timezoneId));
+                .Setup(provider => provider.GetLocalDate(It.IsAny<DateTime>(), It.IsAny<PreferenceModel>()))
+                .Returns((DateTime utcDateTime, PreferenceModel preference) =>
+                    new DateTimeProviderHelper().GetLocalDate(utcDateTime, preference));
+            dateTimeProviderHelper
+                .Setup(provider => provider.GetDateTimeDistance(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .Returns((DateTime utcDateTime, DateTime objectUtcDateTime) =>
+                    new DateTimeProviderHelper().GetDateTimeDistance(utcDateTime, objectUtcDateTime));
+
             return dateTimeProviderHelper.Object;
         }
 
@@ -88,9 +92,11 @@ namespace MediaCritica.Server.Testing
                 .Setup(sp => sp.GetService(typeof(IAuthenticationService)))
                 .Returns(mockAuthenticationService.Object);
 
-            mockHttpContext.Setup(ctx => ctx.HttpContext).Returns(new DefaultHttpContext());
-            mockHttpContext.Setup(ctx => ctx.HttpContext!.RequestServices).Returns(mockServiceProvider.Object);
-            mockHttpContext.SetupProperty(ctx => ctx.HttpContext!.User);
+            mockHttpContext
+                .Setup(ctx => ctx.HttpContext)
+                .Returns(new DefaultHttpContext());
+            mockHttpContext.Setup(ctx => ctx!.HttpContext.RequestServices).Returns(mockServiceProvider.Object);
+            mockHttpContext.SetupProperty(ctx => ctx.HttpContext.User);
 
             return mockHttpContext.Object;
         }
@@ -99,7 +105,8 @@ namespace MediaCritica.Server.Testing
         {
             var configuration = SetupConfiguration();
             var dateTimeProviderHelper = SetupDateTimeProviderHelper();
-            var helper = SetupHelper(dbContext, configuration, dateTimeProviderHelper);
+            var httpContext = SetupHttpContext();
+            var helper = SetupHelper(dbContext, configuration, dateTimeProviderHelper, httpContext);
             var mapper = SetupMapper(helper);
             var hubContext = SetupNotificationHub();
             var hub = SetupHub();
@@ -115,7 +122,7 @@ namespace MediaCritica.Server.Testing
             controller.Setup(c => c.NotificationController).Returns(new NotificationController(dbContext, helper, mapper, hubContext, hub, dateTimeProviderHelper));
             controller.Setup(c => c.ReviewController).Returns(new ReviewController(dbContext, mapper, helper, dateTimeProviderHelper, controller.Object.NotificationController));
             controller.Setup(c => c.UserController).Returns(new UserController(dbContext, mapper, helper, dateTimeProviderHelper));
-            controller.Setup(c => c.CommentController).Returns(new CommentController(dbContext, mapper, dateTimeProviderHelper));
+            controller.Setup(c => c.CommentController).Returns(new CommentController(dbContext, mapper, helper, dateTimeProviderHelper));
 
             return controller.Object;
         }

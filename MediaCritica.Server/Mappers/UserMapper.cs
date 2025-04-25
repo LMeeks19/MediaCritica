@@ -66,18 +66,18 @@ namespace MediaCritica.Server.Mappers
             return preferenceModel;
         }
 
-        public UserSummaryModel MapUserSummaryModel(User user, IDateTimeProviderHelper dateTimeProviderHelper)
+        public UserSummaryModel MapUserSummaryModel(User user, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var viewUserSummaryModel = new UserSummaryModel()
             {
                 Id = user.Id,
                 Username = user.Username,
-                Joined = dateTimeProviderHelper.GetLocalDateTime(user.Joined, user.Preference.Timezone),
+                Joined = dateTimeProviderHelper.GetLocalDate(user.Joined, preference),
                 Reviews = user.Reviews
                      .OrderByDescending(r => r.Date)
                      .ThenByDescending(r => r.Rating)
                      .Take(8)
-                     .Select(r => _reviewMapper.MapReviewModel(r, user.Preference.Timezone, dateTimeProviderHelper))
+                     .Select(r => _reviewMapper.MapReviewModel(r, preference, dateTimeProviderHelper))
                      .ToList(),
                 Milestones = _helper.MilestoneCalculatorHelper
                      .GetUserMilestones(user)
@@ -101,13 +101,13 @@ namespace MediaCritica.Server.Mappers
             return viewUserSummaryModel;
         }
 
-        public UserSearchModel MapUserSearchModel(User user, IDateTimeProviderHelper dateTimeProviderHelper)
+        public UserSearchModel MapUserSearchModel(User user, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var userSearchModel = new UserSearchModel()
             {
                 Id = user.Id,
                 Username = user.Username,
-                Joined = dateTimeProviderHelper.GetLocalDateTime(user.Joined, user.Preference.Timezone),
+                Joined = dateTimeProviderHelper.GetLocalDate(user.Joined, preference),
             };
 
             return userSearchModel;

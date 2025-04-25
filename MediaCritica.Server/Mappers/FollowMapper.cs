@@ -18,37 +18,37 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public UserFollowModel MapFollowModel(UserFollow userFollow, IDateTimeProviderHelper dateTimeProviderHelper)
+        public UserFollowModel MapFollowModel(UserFollow userFollow, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new UserFollowModel
             {
                 Id = userFollow.Id,
                 FollowerId = userFollow.FollowerId,
                 FollowedId = userFollow.FollowedId,
-                FollowedOn = dateTimeProviderHelper.GetLocalDateTime(userFollow.FollowedOn, userFollow.Follower.Preference.Timezone),
+                FollowedOn = dateTimeProviderHelper.GetLocalDate(userFollow.FollowedOn, preference),
                 EnabledNotifications = userFollow.EnabledNotifications,
             };
         }
 
-        public UserFollowSummaryModel MapFollowedSummaryModel(UserFollow userFollow, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public UserFollowSummaryModel MapFollowedSummaryModel(UserFollow userFollow, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new UserFollowSummaryModel
             {
                 Id = userFollow.Id,
                 Username = userFollow.Followed.Username,
                 Name = userFollow.Followed.FullName,
-                FollowedOn = dateTimeProviderHelper.GetLocalDateTime(userFollow.FollowedOn, timezone),
+                FollowedOn = dateTimeProviderHelper.GetLocalDate(userFollow.FollowedOn, preference),
             };
         }
 
-        public UserFollowSummaryModel MapFollowerSummaryModel(UserFollow userFollow, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public UserFollowSummaryModel MapFollowerSummaryModel(UserFollow userFollow, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new UserFollowSummaryModel
             {
                 Id = userFollow.Id,
                 Username = userFollow.Follower.Username,
                 Name = userFollow.Follower.FullName,
-                FollowedOn = dateTimeProviderHelper.GetLocalDateTime(userFollow.FollowedOn, timezone),
+                FollowedOn = dateTimeProviderHelper.GetLocalDate(userFollow.FollowedOn, preference),
             };
         }
     }

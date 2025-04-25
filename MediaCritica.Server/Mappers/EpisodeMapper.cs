@@ -23,12 +23,12 @@ namespace MediaCritica.Server.Mappers
             return episode;
         }
 
-        public EpisodeModel MapEpisodeModel(Episode episode, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public EpisodeModel MapEpisodeModel(Episode episode, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, EpisodeModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(episode, timezone, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(episode, preference, dateTimeProviderHelper);
             EpisodeModel episodeModel = mapper.Map<EpisodeModel>(mediaModel);
 
             episodeModel.Episode = episode.EpisodeNo.ToString();

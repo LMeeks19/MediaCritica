@@ -17,7 +17,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public MilestoneModel MapMilestoneModel(string title, string description, MilestoneType type, string category, MilestoneLevel earnedLevel, DateTime? earnedDate, double current, double target, double percentage, IDateTimeProviderHelper dateTimeProviderHelper, string timezone)
+        public MilestoneModel MapMilestoneModel(string title, string description, MilestoneType type, string category, MilestoneLevel earnedLevel, DateTime? earnedDate, double current, double target, double percentage, IDateTimeProviderHelper dateTimeProviderHelper, PreferenceModel preference)
         {
             return new MilestoneModel
             {
@@ -26,7 +26,7 @@ namespace MediaCritica.Server.Mappers
                 Type = type,
                 Category = category,
                 EarnedLevel = earnedLevel,
-                EarnedDate = earnedDate != null ? dateTimeProviderHelper.GetLocalDateTime((DateTime)earnedDate, timezone) : null,
+                EarnedDate = earnedDate != null ? dateTimeProviderHelper.GetLocalDate((DateTime)earnedDate, preference) : null,
                 Progress = new ProgressModel()
                 {
                     Current = current,

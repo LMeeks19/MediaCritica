@@ -2,11 +2,11 @@
 {
     public class PreferenceModel
     {
-        public required int Id { get; set; }
-        public required string Theme { get; set; }
-        public required string Palette { get; set; }
-        public required string Locale { get; set; }
-        public required string Timezone { get; set; }
+        public int Id { get; set; }
+        public string Theme { get; set; }
+        public string Palette { get; set; }
+        public string Locale { get; set; }
+        public string Timezone { get; set; }
 
     }
 }

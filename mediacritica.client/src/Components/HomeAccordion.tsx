@@ -16,7 +16,6 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
 import Loader from "./Loader";
@@ -67,7 +66,7 @@ const MediaGrid: FC<{
               <Divider />
               <CardContent>
                 <Typography>{item.genre}</Typography>
-                <Typography>{format(item.released, "do MMMM yyyy")}</Typography>
+                <Typography>{item.released}</Typography>
                 <div className="flex justify-around">
                   <Typography>{CapitaliseFirstLetter(item.type)}</Typography>
                   {item.imdbRating !== null && (

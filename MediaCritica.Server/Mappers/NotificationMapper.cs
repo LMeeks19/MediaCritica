@@ -19,7 +19,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public NotificationModel MapNotificationModel(Notification notification, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public NotificationModel MapNotificationModel(Notification notification, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new NotificationModel
             {
@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Mappers
                 Message = notification.Message,
                 IsRead = notification.IsRead,
                 IsBookmarked = notification.IsBookmarked,
-                CreatedAt = dateTimeProviderHelper.GetLocalDateTime(notification.CreatedAt, timezone)
+                CreatedAt = dateTimeProviderHelper.GetDateTimeDistance(dateTimeProviderHelper.UtcNow, notification.CreatedAt)
             };
         }
     }

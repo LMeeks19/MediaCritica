@@ -20,12 +20,12 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public BacklogModel MapBacklogModel(Backlog backlog, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public BacklogModel MapBacklogModel(Backlog backlog, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new BacklogModel()
             {
                 Id = backlog.Id,
-                AddedDate = dateTimeProviderHelper.GetLocalDateTime(backlog.AddedDate, timezone),
+                AddedDate = dateTimeProviderHelper.GetLocalDate(backlog.AddedDate, preference),
                 Category = backlog.Category,
                 MediaId = backlog.MediaId,
                 MediaPoster = backlog.MediaPoster,

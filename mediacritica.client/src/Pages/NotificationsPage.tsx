@@ -6,7 +6,6 @@ import TopBar from "../Components/TopBar";
 import Loader from "../Components/Loader";
 import { useNavigate } from "react-router-dom";
 import { GetUserNotifications } from "../Server/Server";
-import { formatDistanceStrict } from "date-fns";
 import {
   Button,
   Fab,
@@ -27,8 +26,6 @@ import AddIcon from "@mui/icons-material/Add";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import { NotificationModel } from "../Interfaces/NotificationModel";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
-import { toZonedTime } from "date-fns-tz";
 
 function NotificationsPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -220,13 +217,7 @@ function NotificationsPage() {
                     <div className="details">
                       <div className="message">{notification.message}</div>
                       <div className="date">
-                        {`${CapitaliseFirstLetter(
-                          formatDistanceStrict(
-                            notification.createdAt,
-                            toZonedTime(new Date(), user.preference.timezone),
-                            { addSuffix: true }
-                          )
-                        )} | ${notification.authorUsername}`}
+                        {`${notification.createdAt} | ${notification.authorUsername}`}
                       </div>
                     </div>
                     <div className="actions">

@@ -24,12 +24,12 @@ namespace MediaCritica.Server.Mappers
             return series;
         }
 
-        public SeriesModel MapSeriesModel(Series series, string timezone, IDateTimeProviderHelper dateTimeProviderHelper)
+        public SeriesModel MapSeriesModel(Series series, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, SeriesModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(series, timezone, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(series, preference, dateTimeProviderHelper);
             SeriesModel seriesModel = mapper.Map<SeriesModel>(mediaModel);
 
             seriesModel.totalSeasons = series.TotalSeasons.ToString();

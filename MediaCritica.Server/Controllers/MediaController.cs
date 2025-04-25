@@ -15,7 +15,6 @@ namespace MediaCritica.Server.Controllers
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly string _timezone = helper.InternalApiHelper.GetUserTimezone(helper.AuthenticationHelper.GetUserId()).Result;
 
         [HttpGet("[action]/{searchTerm}/{page}")]
         public async Task<IActionResult> GetMediaByExternalSearch(string searchTerm, int page)
@@ -31,6 +30,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{searchTerm}")]
         public async Task<IActionResult> GetExploreMediaBySearch(string searchTerm)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var mediaQuery = _databaseContext.Media
                 .Where(m => m.Type != MediaType.Episode && m.Title.StartsWith(searchTerm))
                 .OrderBy(m => m.Title);
@@ -39,7 +40,7 @@ namespace MediaCritica.Server.Controllers
             {
                 MediaSummaryModels = await mediaQuery
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -51,6 +52,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetExploreMedia(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var mediaQuery = _databaseContext.Media
                 .Where(m => m.Type != MediaType.Episode)
                 .OrderBy(m => m.Title);
@@ -60,7 +63,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(50)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -71,6 +74,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetBestOfPrevYear(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var lastYear = _dateTimeProviderHelper.UtcNow.Year - 1;
 
             var query = _databaseContext.Media
@@ -83,7 +88,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -94,6 +99,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetBestOfCurYear(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var currentYear = _dateTimeProviderHelper.UtcNow.Year;
 
             var query = _databaseContext.Media
@@ -106,7 +113,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -117,6 +124,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetBestOfAllTime(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var query = _databaseContext.Media
                 .Where(m => m.Type != MediaType.Episode && m.Released < _dateTimeProviderHelper.UtcNow)
                 .OrderByDescending(m => m.ImdbRating)
@@ -127,7 +136,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -138,6 +147,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetUpcoming(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var query = _databaseContext.Media
                 .Where(m => m.Type != MediaType.Episode && m.Released > _dateTimeProviderHelper.UtcNow)
                 .OrderBy(m => m.Released)
@@ -148,7 +159,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -159,6 +170,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetLatest(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var mediaQuery = _databaseContext.Media
                 .Where(media => media.Type != MediaType.Episode && media.Released <= _dateTimeProviderHelper.UtcNow)
                 .OrderByDescending(media => media.Released)
@@ -169,7 +182,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -180,6 +193,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetSeasonalPicks(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var currentMonth = _dateTimeProviderHelper.UtcNow.Month;
             var (currentSeasonStartMonth, currentSeasonEndMonth) = _helper.DateRangeCalculatorHelper.GetSeasonMonths(currentMonth);
 
@@ -199,7 +214,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -210,6 +225,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetMostReviewed(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var mediaQuery = _databaseContext.Media
                 .Include(media => media.Reviews)
                 .Where(media => media.Type != MediaType.Episode && media.Released <= _dateTimeProviderHelper.UtcNow && media.Reviews.Any())
@@ -221,7 +238,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -232,6 +249,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetRecentlyReviewed(int offset)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var mediaQuery = _databaseContext.Media
                 .Where(media => media.Type != MediaType.Episode && media.Released <= _dateTimeProviderHelper.UtcNow && media.Reviews.Any())
                 .OrderByDescending(media => media.Reviews.OrderByDescending(review => review.Date).First().Date)
@@ -242,7 +261,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -255,8 +274,10 @@ namespace MediaCritica.Server.Controllers
         {
             var movie = await _helper.InternalApiHelper.GetMovieMedia(movieId);
 
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             if (movie != null)
-                return Ok(_mapper.MovieMapper.MapMovieModel(movie, _timezone, _dateTimeProviderHelper));
+                return Ok(_mapper.MovieMapper.MapMovieModel(movie, preference, _dateTimeProviderHelper));
 
             var movieModel = await _helper.ExternalApiHelper.GetMovieMedia(movieId);
 
@@ -268,7 +289,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Media.AddAsync(movie);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(_mapper.MovieMapper.MapMovieModel(movie, _timezone, _dateTimeProviderHelper));
+            return Ok(_mapper.MovieMapper.MapMovieModel(movie, preference, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{seriesId}")]
@@ -276,8 +297,10 @@ namespace MediaCritica.Server.Controllers
         {
             var series = await _helper.InternalApiHelper.GetSeriesMedia(seriesId);
 
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             if (series != null)
-                return Ok(_mapper.SeriesMapper.MapSeriesModel(series, _timezone, _dateTimeProviderHelper));
+                return Ok(_mapper.SeriesMapper.MapSeriesModel(series, preference, _dateTimeProviderHelper));
 
             var seriesModel = await _helper.ExternalApiHelper.GetSeriesMedia(seriesId);
 
@@ -291,7 +314,7 @@ namespace MediaCritica.Server.Controllers
 
             await GetSeason(seriesId);
 
-            return Ok(_mapper.SeriesMapper.MapSeriesModel(series, _timezone, _dateTimeProviderHelper));
+            return Ok(_mapper.SeriesMapper.MapSeriesModel(series, preference, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{seriesId}/{seasonNo}")]
@@ -328,8 +351,10 @@ namespace MediaCritica.Server.Controllers
         {
             var game = await _helper.InternalApiHelper.GetGameMedia(gameId);
 
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             if (game != null)
-                return Ok(_mapper.GameMapper.MapGameModel(game, _timezone, _dateTimeProviderHelper));
+                return Ok(_mapper.GameMapper.MapGameModel(game, preference, _dateTimeProviderHelper));
 
             var gameModel = await _helper.ExternalApiHelper.GetGameMedia(gameId);
 
@@ -341,7 +366,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Media.AddAsync(game);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(_mapper.GameMapper.MapGameModel(game, _timezone, _dateTimeProviderHelper));
+            return Ok(_mapper.GameMapper.MapGameModel(game, preference, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{episodeId}")]
@@ -349,8 +374,10 @@ namespace MediaCritica.Server.Controllers
         {
             var episode = await _helper.InternalApiHelper.GetEpisodeMedia(episodeId);
 
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             if (episode != null && seasonId == -1)
-                return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, _timezone, _dateTimeProviderHelper));
+                return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, preference, _dateTimeProviderHelper));
 
             var episodeModel = await _helper.ExternalApiHelper.GetEpisodeMedia(episodeId);
             if (seasonId != -1 && episodeModel != null)
@@ -364,7 +391,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Media.AddAsync(episode);
             await _databaseContext.SaveChangesAsync();
 
-            return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, _timezone, _dateTimeProviderHelper));
+            return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, preference, _dateTimeProviderHelper));
         }
     }
 }

@@ -10,6 +10,6 @@ namespace MediaCritica.Server.Models
         public int ReporterId { get; set; }
         public ReportReason Reason { get; set; }
         public string? Details { get; set; }
-        public DateTime ReportedAt { get; set; }
+        public string ReportedAt { get; set; }
     }
 }

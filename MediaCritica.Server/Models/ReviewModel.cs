@@ -15,7 +15,7 @@
         public string Title { get; set; }
         public double Rating { get; set; }
         public string Description { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public int Likes { get; set; }
         public int Dislikes { get; set; }
         public int TotalComments { get; set; }

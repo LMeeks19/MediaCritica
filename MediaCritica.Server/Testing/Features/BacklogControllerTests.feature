@@ -56,15 +56,15 @@ Scenario: Get a users backlog
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 2       | 2                 | 1          | 1                    | 1        | 1                  |
 	And The Backlogged backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate           |
-		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 01:15:55 |
-		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 23:13:41 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                  |
+		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | Friday, February 7, 2025   |
+		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | Saturday, February 1, 2025 |
 	And The InProgress backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate           |
-		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 20:29:16 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
+		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | Tuesday, February 4, 2025 |
 	And The Finished backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate           |
-		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 15:16:15 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
+		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | Monday, February 12, 2024 |
 
 Scenario: Get a users backlog that doesn't exist
 	Given I am the following user
@@ -89,9 +89,9 @@ Scenario: Get a users backlog by Backlogged type
 	When I call GetBackloggedBacklog
 	Then The status code should be 200
 	And The Backlogged backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate           |
-		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | 2025-02-08 01:15:55 |
-		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | 2025-02-01 23:13:41 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                  |
+		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | Friday, February 7, 2025   |
+		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | Saturday, February 1, 2025 |
 
 Scenario: Get a users backlog by InProgress type
 	Given I am the following user
@@ -100,8 +100,8 @@ Scenario: Get a users backlog by InProgress type
 	When I call GetInProgressBacklog
 	Then The status code should be 200
 	And The InProgress backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate           |
-		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | 2025-02-04 20:29:16 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
+		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | Tuesday, February 4, 2025 |
 
 Scenario: Get a users backlog by Finished type
 	Given I am the following user
@@ -110,8 +110,8 @@ Scenario: Get a users backlog by Finished type
 	When I call GetFinishedBacklog
 	Then The status code should be 200
 	And The Finished backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate           |
-		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | 2024-02-12 15:16:15 |
+		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
+		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | Monday, February 12, 2024 |
 
 Scenario: Post a backlog
 	Given I am the following user

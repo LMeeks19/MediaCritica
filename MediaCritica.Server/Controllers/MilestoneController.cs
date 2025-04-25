@@ -17,7 +17,6 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
-                .Include(u => u.Preference)
                 .Include(u => u.Reviews)
                     .ThenInclude(r => r.Media)
                 .Include(u => u.Reviews)

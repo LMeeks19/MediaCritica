@@ -76,8 +76,8 @@ Scenario: Get users by search
 	When I call GetUsersBySearch with search term "T_Stark"
 	Then The status code should be 200
 	And The UserSearchModels should be
-		| Id | Username | FullName   | Joined              |
-		| 2  | T_Stark  | Tony Stark | 2025-01-02 20:01:00 |
+		| Id | Username | FullName   | Joined          |
+		| 2  | T_Stark  | Tony Stark | 02 January 2025 |
 
 Scenario: Get a user by username that exists
 	When I call GetUser with the username "B_Banner"
@@ -337,8 +337,8 @@ Scenario: Get a user summary
 	When I call GetViewUserSummary with the username B_Banner
 	Then The status code should be 200
 	And The UserSummaryModel response should be
-		| Id | Username | Joined              |
-		| 1  | B_Banner | 2025-01-01 08:21:55 |
+		| Id | Username | Joined          |
+		| 1  | B_Banner | 01 January 2025 |
 
 
 
