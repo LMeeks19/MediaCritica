@@ -24,7 +24,7 @@ import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
 import { UserLoginModel } from "../Interfaces/UserLoginModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
-import { PreferenceModel, UserModel } from "../Interfaces/UserModel";
+import { CreateUserModel, PreferenceModel, UserModel } from "../Interfaces/UserModel";
 import { UserModelObject } from "../Interfaces/UserModelObject";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
@@ -108,7 +108,7 @@ export async function GetUser(email: string): Promise<UserModel> {
   return response;
 }
 
-export async function PostUser(user: UserModel): Promise<UserModel> {
+export async function PostUser(user: CreateUserModel): Promise<UserModel> {
   const response = await MakeRequest<UserModel>(`/User/PostUser`, {
     method: "POST",
     body: JSON.stringify(user),

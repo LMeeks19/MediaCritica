@@ -1,20 +1,22 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class MilestoneCalculatorHelper(DatabaseContext databaseContext)
+    public class MilestoneCalculatorHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, MilestoneMapper milestoneMapper, InternalApiHelper internalApiHelper, AuthenticationHelper authenticationHelper)
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
-
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
+        private readonly MilestoneMapper _milestoneMapper = milestoneMapper;
         public List<Milestone> CreateMilestones()
         {
             var milestones = new List<Milestone>();
 
-            foreach (var value in Enum.GetValues(typeof(MilestoneType)))
+            foreach (var value in Enum.GetValues<MilestoneType>())
             {
-                milestones.Add(CreateMilestone((MilestoneType)value));
+                milestones.Add(CreateMilestone(value));
             }
 
             return milestones;
@@ -22,12 +24,7 @@ namespace MediaCritica.Server.Helpers
 
         public Milestone CreateMilestone(MilestoneType type)
         {
-            return new Milestone()
-            {
-                MilestoneType = type,
-                EarnedLevel = MilestoneLevel.None,
-                EarnedDate = null
-            };
+            return _milestoneMapper.MapMilestone(type);
         }
 
         public async Task UpdateEngagementMilestones(User user)
@@ -108,8 +105,8 @@ namespace MediaCritica.Server.Helpers
                 await UpdateMilestone(user, MilestoneType.SingleDirectorReviewed, directors.Count == 0 ? 0 : directors.Max(g => g.Count));
                 await UpdateMilestone(user, MilestoneType.DirectorVariety, uniqueDirectorsReviewed);
 
-                await UpdateMilestone(user, MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month));
-                await UpdateMilestone(user, MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year));
+                await UpdateMilestone(user, MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == _dateTimeProviderHelper.UtcNow.Month));
+                await UpdateMilestone(user, MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == _dateTimeProviderHelper.UtcNow.Year));
                 await UpdateMilestone(user, MilestoneType.ConsecutiveActivity, consecutiveDaysActive);
             }
         }
@@ -146,7 +143,7 @@ namespace MediaCritica.Server.Helpers
                     UserId = user.Id,
                     MilestoneType = type,
                     EarnedLevel = earnedLevel,
-                    EarnedDate = earnedLevel != MilestoneLevel.None ? DateTime.UtcNow : null,
+                    EarnedDate = earnedLevel != MilestoneLevel.None ? _dateTimeProviderHelper.UtcNow : null,
                 };
 
                 await _databaseContext.Milestones.AddAsync(milestone);
@@ -155,7 +152,7 @@ namespace MediaCritica.Server.Helpers
             {
                 // Update existing milestone
                 milestone.EarnedLevel = earnedLevel > milestone.EarnedLevel ? earnedLevel : milestone.EarnedLevel;
-                milestone.EarnedDate = earnedLevel != MilestoneLevel.None ? DateTime.Now : milestone.EarnedDate;
+                milestone.EarnedDate = earnedLevel != MilestoneLevel.None ? _dateTimeProviderHelper.UtcNow : milestone.EarnedDate;
             }
 
             _databaseContext.SaveChanges();
@@ -233,14 +230,14 @@ namespace MediaCritica.Server.Helpers
                 (MilestoneType.Followers, user.Followers.Count),
                 (MilestoneType.Following, user.Following.Count),
 
-                (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == DateTime.Now.Month)),
-                (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == DateTime.Now.Year)),
+                (MilestoneType.MonthlyReviews, user.Reviews.Count(r => r.Date.Month == _dateTimeProviderHelper.UtcNow.Month)),
+                (MilestoneType.YearlyReviews, user.Reviews.Count(r => r.Date.Year == _dateTimeProviderHelper.UtcNow.Year)),
                 (MilestoneType.ConsecutiveActivity, consecutiveDaysActive)
             };
 
             // Calculate progress for each milestone
             var progress = milestonesData
-                .Select(data => CalculateMilestone(user.Milestones, data.Type, data.Count))
+                .Select(data => CalculateMilestoneAsync(user, data.Type, data.Count))
                 .ToList();
 
             return progress;
@@ -337,16 +334,15 @@ namespace MediaCritica.Server.Helpers
             };
         }
 
-        private static MilestoneModel CalculateMilestone(
-            ICollection<Milestone> earnedmilestones,
+        private MilestoneModel CalculateMilestoneAsync(
+            User user,
             MilestoneType type,
             int currentCount)
         {
             // Define thresholds
             var thresholds = GetThresholds(type);
-
             // Find the highest earned level
-            var earnedmilestone = earnedmilestones
+            var earnedmilestone = user.Milestones
                 .FirstOrDefault(a => a.MilestoneType == type);
             var earnedLevel = earnedmilestone?.EarnedLevel ?? MilestoneLevel.None;
 
@@ -359,21 +355,20 @@ namespace MediaCritica.Server.Helpers
                 ? (double)currentCount / thresholds[nextLevel] * 100
                 : 100);
 
-            return new MilestoneModel
-            {
-                Title = GetTitle(type),
-                Description = GetDescription(type),
-                Type = type,
-                Category = GetCategoryTitle(GetCategory(type)),
-                EarnedLevel = earnedLevel,
-                Progress = new ProgressModel()
-                {
-                    Current = currentCount,
-                    Target = thresholds[nextLevel],
-                    Percentage = progressPercent,
-                },
-                EarnedDate = earnedmilestone?.EarnedDate
-            };
+            var preference = internalApiHelper.GetUserPreference(authenticationHelper.GetUserId());
+
+            return _milestoneMapper.MapMilestoneModel(
+                GetTitle(type),
+                GetDescription(type),
+                type,
+                GetCategoryTitle(GetCategory(type)),
+                earnedLevel,
+                earnedmilestone?.EarnedDate,
+                currentCount,
+                thresholds[nextLevel],
+                progressPercent,
+                _dateTimeProviderHelper,
+                preference.Result);
         }
 
         private static string GetTitle(MilestoneType type)

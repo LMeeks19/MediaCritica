@@ -7,7 +7,6 @@ import {
 } from "../Helpers/StringHelper";
 import TopBar from "../Components/TopBar";
 import { Button, ButtonGroup, MenuItem, Rating, Select } from "@mui/material";
-import { format, formatDistanceToNowStrict } from "date-fns";
 import { GetMedia, GetSeason } from "../Server/Server";
 import { MediaType } from "../Enums/MediaType";
 import { SeriesModel } from "../Interfaces/SeriesModel";
@@ -122,12 +121,7 @@ function MediaPage() {
                   <div className="episode-number">{episode.episode}</div>
                   <div className="episode-info">
                     <h3>{episode.title}</h3>
-                    <p>
-                      Released:{" "}
-                      {episode.released !== "N/A"
-                        ? format(new Date(episode.released), "do MMM yyyy")
-                        : episode.released}
-                    </p>
+                    <p>Released: {episode.released}</p>
                     <p className="rating">
                       Rating: <StarIcon className="star-icon" />{" "}
                       {episode.imdbRating === "" ? "N/A" : episode.imdbRating}
@@ -293,7 +287,7 @@ function MediaPage() {
                           <div className="details">
                             <h3>{review.title}</h3>
                             <p>{review.reviewerUsername}</p>
-                            <p>{formatDistanceToNowStrict(review.date)} ago</p>
+                            <p>{review.date}</p>
                           </div>
                         </div>
                       );

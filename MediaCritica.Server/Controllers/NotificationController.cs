@@ -1,5 +1,6 @@
 ﻿using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Hubs;
+using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
@@ -10,32 +11,29 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(DatabaseContext databaseContext, IHelpers helper, IHubContext<NotificationHub> notificationHubContext, IHubs hubs) : ControllerBase
+    public class NotificationController(DatabaseContext databaseContext, IHelpers helper, IMappers mapper, IHubContext<NotificationHub> notificationHubContext, IHubs hubs, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IHelpers _helper = helper;
+        private readonly IMappers _mapper = mapper;
         private readonly IHubContext<NotificationHub> _notificationHubContext = notificationHubContext;
         private readonly IHubs _hubs = hubs;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]/{offset}/{limit}")]
         public async Task<IActionResult> GetUserNotifications(int offset, int limit = 25)
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
+
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
             var notifications = await _databaseContext.Notifications
                 .Include(n => n.Author)
                 .Where(n => n.RecipientId == userId)
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(offset)
                 .Take(limit)
-                .Select(notification => new NotificationModel()
-                {
-                    Id = notification.Id,
-                    AuthorUsername = notification.Author.Username,
-                    Message = notification.Message,
-                    IsRead = notification.IsRead,
-                    IsBookmarked = notification.IsBookmarked,
-                    CreatedAt = notification.CreatedAt,
-                })
+                .Select(notification => _mapper.NotificationMapper.MapNotificationModel(notification, preference, _dateTimeProviderHelper))
                 .ToListAsync();
 
             return Ok(notifications);
@@ -110,14 +108,7 @@ namespace MediaCritica.Server.Controllers
         {
             var notifications = await _databaseContext.UserFollows
                 .Where(f => f.FollowedId == newNotificationModel.AuthorId && f.EnabledNotifications)
-                .Select(f => new Notification()
-                {
-                    RecipientId = f.FollowerId,
-                    AuthorId = newNotificationModel.AuthorId,
-                    Message = newNotificationModel.Message,
-                    CreatedAt = DateTime.Now,
-                    IsRead = false
-                })
+                .Select(f => _mapper.NotificationMapper.MapNotification(newNotificationModel, f.FollowerId, _dateTimeProviderHelper))
                 .ToListAsync();
 
             if (notifications.Count == 0)

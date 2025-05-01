@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { GetMediaReviews } from "../Server/Server";
-import { formatDistanceToNowStrict } from "date-fns";
 import { Fab, Rating } from "@mui/material";
 import TopBar from "../Components/TopBar";
 import { CustomTooltip } from "../Components/Tooltip";
@@ -60,7 +59,7 @@ function ReviewsPage() {
                   <h3>{review.title}</h3>
                   <div className="flex justify-evenly gap-2 flex-wrap">
                     <Rating value={review.rating} precision={0.5} readOnly />
-                    <p>{formatDistanceToNowStrict(review.date)} ago </p>
+                    <p>{review.date}</p>
                     <p>{review.reviewerUsername}</p>
                   </div>
                 </div>

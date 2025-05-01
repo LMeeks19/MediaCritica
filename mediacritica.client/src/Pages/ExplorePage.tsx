@@ -24,7 +24,6 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortIcon from "@mui/icons-material/Sort";
 import ExploreFiltersDialog from "../Components/ExploreFiltersDialog";
 import GradeIcon from "@mui/icons-material/Grade";
-import { format } from "date-fns";
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { useNavigate } from "react-router-dom";
 import { GetExploreMedia, GetExploreMediaBySearch } from "../Server/Server";
@@ -196,9 +195,7 @@ function ExplorePage() {
                       <Divider />
                       <CardContent>
                         <Typography>{item.genre}</Typography>
-                        <Typography>
-                          {format(item.released, "do MMMM yyyy")}
-                        </Typography>
+                        <Typography>{item.released}</Typography>
                         <div className="flex justify-around">
                           <Typography>
                             {CapitaliseFirstLetter(item.type)}

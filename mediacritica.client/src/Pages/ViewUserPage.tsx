@@ -17,7 +17,6 @@ import PersonAddIcon from "@mui/icons-material/PersonAddOutlined";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { CustomTooltip } from "../Components/Tooltip";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
 import ThumbDownIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUpOutlined";
 import millify from "millify";
@@ -116,7 +115,7 @@ function ViewUserPage() {
           <div className="header">
             <div className="flex flex-col gap-1">
               <h1>{userSummary.username}</h1>
-              <span>Joined: {format(userSummary.joined, "do MMMM yyyy")}</span>
+              <span>Joined: {userSummary.joined}</span>
             </div>
             <div className="actions">
               {userFollow !== null && user.id !== undefined && (
@@ -310,9 +309,7 @@ function ViewUserPage() {
                             <Divider />
                             <CardContent>
                               <Typography>{item.mediaTitle}</Typography>
-                              <Typography>
-                                {format(item.date, "do MMMM yyyy")}
-                              </Typography>
+                              <Typography>{item.date}</Typography>
                               <div className="flex justify-around">
                                 <Typography>
                                   {CapitaliseFirstLetter(item.mediaType)}

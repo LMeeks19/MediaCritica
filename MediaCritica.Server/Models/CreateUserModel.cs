@@ -2,10 +2,12 @@
 {
     public class CreateUserModel
     {
-        public required string Username { get; set; }
-        public required string Forename { get; set; }
-        public required string Surname { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
+        public string Username { get; set; }
+        public string Forename { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Locale { get; set; }
+        public string Timezone { get; set; }
     }
 }

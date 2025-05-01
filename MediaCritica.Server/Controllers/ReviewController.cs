@@ -32,13 +32,17 @@ namespace MediaCritica.Server.Controllers
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
 
-            return Ok(_mapper.ReviewMapper.MapReviewModel(review));
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
+            return Ok(_mapper.ReviewMapper.MapReviewModel(review, preference, _dateTimeProviderHelper));
         }
 
         [HttpGet("[action]/{offset}")]
         public async Task<IActionResult> GetUserReviews(int offset)
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
             var reviews = await _databaseContext.Reviews
                    .Include(r => r.User)
                    .Include(r => r.Engagements)
@@ -49,7 +53,7 @@ namespace MediaCritica.Server.Controllers
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
-                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r))
+                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r, preference, _dateTimeProviderHelper))
                    .ToListAsync();
 
             var breakdown = await GetUserReviewsBreakdown(userId);
@@ -75,6 +79,8 @@ namespace MediaCritica.Server.Controllers
         [HttpGet("[action]/{mediaId}/{offset}/{limit}")]
         public async Task<IActionResult> GetMediaReviews(string mediaId, int offset, int limit)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var media = await _databaseContext.Media
                 .Include(m => m.Reviews)
                     .ThenInclude(r => r.User)
@@ -86,7 +92,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
-                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r))
+                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r, preference, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(new { media.Title, Reviews = reviews, totalCount = reviews.Count });
@@ -109,7 +115,7 @@ namespace MediaCritica.Server.Controllers
             if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
                 return Conflict(new { Message = "User has already reviewed this media" });
 
-            var review = _mapper.ReviewMapper.MapReview(reviewModel);
+            var review = _mapper.ReviewMapper.MapReview(reviewModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();
@@ -139,7 +145,7 @@ namespace MediaCritica.Server.Controllers
             review.Title = updateReviewModel.Title;
             review.Description = updateReviewModel.Description;
             review.Rating = updateReviewModel.Rating;
-            review.Date = updateReviewModel.Date;
+            review.Date = _dateTimeProviderHelper.UtcNow;
 
             await _databaseContext.SaveChangesAsync();
 
@@ -192,14 +198,7 @@ namespace MediaCritica.Server.Controllers
             if (!_databaseContext.Users.Any(u => u.Id == reportModel.ReporterId))
                 return NotFound(new { Message = "User Not Found" });
 
-            var report = new Report
-            {
-                ReviewId = reportModel.ReviewId,
-                ReporterId = reportModel.ReporterId,
-                Reason = reportModel.Reason,
-                Details = reportModel.Details,
-                ReportedAt = _dateTimeProviderHelper.UtcNow,
-            };
+            var report = _mapper.ReportMapper.MapReport(reportModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reports.AddAsync(report);
 

@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
@@ -6,11 +7,11 @@ namespace MediaCritica.Server.Mappers
 {
     public class ReviewMapper
     {
-        public Review MapReview(ReviewModel reviewModel)
+        public Review MapReview(ReviewModel reviewModel, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new Review()
             {
-                Date = reviewModel.Date,
+                Date = dateTimeProviderHelper.UtcNow,
                 Description = reviewModel.Description,
                 MediaId = reviewModel.MediaId,
                 MediaPoster = reviewModel.MediaPoster,
@@ -23,12 +24,12 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReviewModel MapReviewModel(Review review)
+        public ReviewModel MapReviewModel(Review review, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReviewModel()
             {
                 Id = review.Id,
-                Date = review.Date,
+                Date = dateTimeProviderHelper.GetDateTimeDistance(dateTimeProviderHelper.UtcNow, review.Date),
                 Description = review.Description,
                 MediaType = review.MediaType,
                 MediaId = review.MediaId,
@@ -47,12 +48,12 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReviewSummaryModel MapReviewSummaryModel(Review review)
+        public ReviewSummaryModel MapReviewSummaryModel(Review review, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReviewSummaryModel()
             {
                 Id = review.Id,
-                Date = review.Date,
+                Date = dateTimeProviderHelper.GetDateTimeDistance(dateTimeProviderHelper.UtcNow, review.Date),
                 Rating = review.Rating,
                 ReviewerUsername = review.User.Username,
                 MediaType = review.MediaType,

@@ -30,9 +30,9 @@ namespace MediaCritica.Server.Testing.Steps
         }
 
         [When(@"I call GetUsersBySearch with search term ""(.*)""")]
-        public void WhenICallGetUsersBySearchWithSearchTerm(string searchTerm)
+        public async void WhenICallGetUsersBySearchWithSearchTerm(string searchTerm)
         {
-            GlobalSteps._response = GlobalSteps._controller.UserController.GetUsersBySearch(searchTerm);
+            GlobalSteps._response = await GlobalSteps._controller.UserController.GetUsersBySearch(searchTerm);
         }
 
         [When(@"I call GetUser with the username ""(.*)""")]
@@ -142,7 +142,9 @@ namespace MediaCritica.Server.Testing.Steps
                 {
                     Id = int.Parse(row["PreferenceId"]),
                     Theme = row["Theme"],
-                    Palette = row["Palette"]
+                    Palette = row["Palette"],
+                    Locale = row["Locale"],
+                    Timezone = row["Timezone"],
                 },
             };
 
@@ -180,7 +182,6 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.IsNotNull(expectedUserSummary);
 
             var actualUserSummary = table.Rows[0].CreateInstance<UserSummaryModel>();
-            actualUserSummary.Joined = DateOnly.Parse(table.Rows[0]["Joined"]);
 
             Assert.AreEqual(actualUserSummary.Id, expectedUserSummary.Id);
             Assert.AreEqual(actualUserSummary.Username, expectedUserSummary.Username);

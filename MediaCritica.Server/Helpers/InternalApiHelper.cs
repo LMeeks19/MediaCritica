@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Objects;
+﻿using MediaCritica.Server.Models;
+using MediaCritica.Server.Objects;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediaCritica.Server.Helpers
@@ -63,6 +64,19 @@ namespace MediaCritica.Server.Helpers
                 .SingleOrDefaultAsync(episode => episode.Id == episodeId);
 
             return episode;
+        }
+
+        public async Task<PreferenceModel> GetUserPreference(int? userId)
+        {
+            var user = await _databaseContext.Users
+                .Include(user => user.Preference)
+                .SingleOrDefaultAsync(user => user.Id == userId);
+
+            return new PreferenceModel
+            {
+                Timezone = user?.Preference?.Timezone ?? "UTC",
+                Locale = user?.Preference?.Locale ?? "en-GB"
+            };
         }
     }
 }

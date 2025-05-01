@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public CommentModel MapCommentModel(Comment comment, List<CommentModel> replies, int totalReplies)
+        public CommentModel MapCommentModel(Comment comment, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper, List<CommentModel> replies, int totalReplies)
         {
             return new CommentModel()
             {
@@ -30,7 +30,7 @@ namespace MediaCritica.Server.Mappers
                 Content = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Content,
                 CommenterId = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommenterId,
                 CommenterUsername = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Commenter.Username,
-                CommentedAt = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommentedAt,
+                CommentedAt = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : dateTimeProviderHelper.GetDateTimeDistance(dateTimeProviderHelper.UtcNow, comment.CommentedAt),
                 IsDeleted = comment.IsDeleted,
                 Replies = replies,
                 TotalReplies = totalReplies,

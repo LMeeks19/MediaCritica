@@ -6,7 +6,6 @@ import TopBar from "../Components/TopBar";
 import Loader from "../Components/Loader";
 import { useNavigate } from "react-router-dom";
 import { GetUserNotifications } from "../Server/Server";
-import { formatDistanceToNowStrict } from "date-fns";
 import {
   Button,
   Fab,
@@ -27,7 +26,6 @@ import AddIcon from "@mui/icons-material/Add";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import { NotificationModel } from "../Interfaces/NotificationModel";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 
 function NotificationsPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -151,7 +149,6 @@ function NotificationsPage() {
                 title={
                   notifications.some((n) => !n.isRead) && "Mark all as read"
                 }
-               
               >
                 <Button
                   onClick={() => MarkAllAsRead()}
@@ -220,10 +217,7 @@ function NotificationsPage() {
                     <div className="details">
                       <div className="message">{notification.message}</div>
                       <div className="date">
-                        {`${CapitaliseFirstLetter(
-                          formatDistanceToNowStrict(notification.createdAt)
-                        )}
-                        ago | ${notification.authorUsername}`}
+                        {`${notification.createdAt} | ${notification.authorUsername}`}
                       </div>
                     </div>
                     <div className="actions">
@@ -242,7 +236,6 @@ function NotificationsPage() {
                         title={
                           notification.isBookmarked ? "Unbookmark" : "Bookmark"
                         }
-                       
                       >
                         <IconButton
                           onClick={() => UpdateBookmarkStatus(notification.id)}

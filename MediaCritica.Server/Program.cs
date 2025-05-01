@@ -41,17 +41,20 @@ builder.Services.AddScoped<RatingMapper>();
 builder.Services.AddScoped<ReviewMapper>();
 builder.Services.AddScoped<BacklogMapper>();
 builder.Services.AddScoped<CommentMapper>();
+builder.Services.AddScoped<ReportMapper>();
+builder.Services.AddScoped<NotificationMapper>();
+builder.Services.AddScoped<FollowMapper>();
+builder.Services.AddScoped<MilestoneMapper>();
 
 // Register Helpers
 builder.Services.AddScoped<IHelpers, Helpers>();
-builder.Services.AddScoped<IDateTimeProviderHelper, DateTimeProviderHelper>();
-builder.Services.AddScoped<DateTimeProviderHelper>();
 builder.Services.AddScoped<DateRangeCalculatorHelper>();
 builder.Services.AddScoped<ExternalApiHelper>();
 builder.Services.AddScoped<InternalApiHelper>();
 builder.Services.AddScoped<MilestoneCalculatorHelper>();
 builder.Services.AddScoped<TrendCalculatorHelper>();
 builder.Services.AddScoped<AuthenticationHelper>();
+builder.Services.AddScoped<IDateTimeProviderHelper, DateTimeProviderHelper>();
 
 //Register Hubs
 builder.Services.AddScoped<IHubs, Hubs>();

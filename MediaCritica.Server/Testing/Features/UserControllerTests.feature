@@ -2,17 +2,17 @@ Feature: UserControllerTests
 
 Background: 
 	Given I have the following users
-		| Id | Username  | Forename | Surname | Email           | Password     | Joined     |
-		| 1  | B_Banner  | Bruce    | Banner  | test1@email.com | Password123! | 2025-01-01 |
-		| 2  | T_Stark   | Tony     | Stark   | test2@email.com | Password123! | 2025-01-02 |
-		| 3  | T_Odinson | Thor     | Odinson | test3@email.com | Password123! | 2025-01-01 |
-		| 4  | C_Barton  | Clint    | Barton  | tes42@email.com | Password123! | 2025-01-02 |
+		| Id | Username  | Forename | Surname | Email           | Password     | Joined              |
+		| 1  | B_Banner  | Bruce    | Banner  | test1@email.com | Password123! | 2025-01-01 13:21:55 |
+		| 2  | T_Stark   | Tony     | Stark   | test2@email.com | Password123! | 2025-01-02 20:01:00 |
+		| 3  | T_Odinson | Thor     | Odinson | test3@email.com | Password123! | 2025-01-01 01:50:44 |
+		| 4  | C_Barton  | Clint    | Barton  | tes42@email.com | Password123! | 2025-01-02 09:33:16 |
 	And I have the following preferences
-		| Id | UserId | Theme  | Palette |
-		| 1  | 1      | System | #000000 |
-		| 2  | 2      | Light  | #FFFFFF |
-		| 3  | 3      | System | #000000 |
-		| 4  | 4      | Dark   | #FFFFFF |
+		| Id | UserId | Theme  | Palette | Locale | Timezone         |
+		| 1  | 1      | System | #000000 | en-US  | America/New_York |
+		| 2  | 2      | Light  | #FFFFFF | en-GB  | Europe/London    |
+		| 3  | 3      | System | #000000 | en-GB  | Europe/Paris     |
+		| 4  | 4      | Dark   | #FFFFFF | en-US  | Asia/Tokyo       |
 	And I have the following auth tokens
 		| Id | UserId | Token | Expiration |
 		| 1  | 3      | 1     | 2025-03-15 |
@@ -33,8 +33,8 @@ Scenario: Login a user and remember them
 		| B_Banner | Password123! | true       |
 	Then The status code should be 200
 	And The UserAuthModel response should be 
-		| AuthTokenId | AuthUserId | Expiration | UserId | Forename | Surname | Email           | Password     |
-		| 3           | 1          | 2025-03-29 | 1      | Bruce    | Banner  | test1@email.com | Password123! |
+		| AuthTokenId | AuthUserId | Expiration          | UserId | Forename | Surname | Email           | Password     |
+		| 3           | 1          | 2025-03-29 16:30:00 | 1      | Bruce    | Banner  | test1@email.com | Password123! |
 
 Scenario: Login a user that doesn't exist 
 	When I call Login with the following details
@@ -54,8 +54,8 @@ Scenario: Auto login a user
 	When I call AutoLogin with the token "1"
 	Then The status code should be 200
 	And The UserAuthModel response should be
-		| AuthTokenId | AuthUserId | Token | Expiration | UserId | Forename | Surname | Email           | Password     |
-		| 1           | 3          | 1     | 2025-03-29 | 3      | Thor     | Odinson | test3@email.com | Password123! |
+		| AuthTokenId | AuthUserId | Token | Expiration          | UserId | Forename | Surname | Email           | Password     |
+		| 1           | 3          | 1     | 2025-03-29 16:30:00 | 3      | Thor     | Odinson | test3@email.com | Password123! |
 
 Scenario: Logout a user
 	When I call Logout with token "1"
@@ -76,15 +76,15 @@ Scenario: Get users by search
 	When I call GetUsersBySearch with search term "T_Stark"
 	Then The status code should be 200
 	And The UserSearchModels should be
-		| Id | Username | FullName   | Joined                    |
-		| 2  | T_Stark  | Tony Stark | Thursday, January 2, 2025 |
+		| Id | Username | FullName   | Joined          |
+		| 2  | T_Stark  | Tony Stark | 02 January 2025 |
 
 Scenario: Get a user by username that exists
 	When I call GetUser with the username "B_Banner"
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname | Email           | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 |
+		| Id | Username | Forename | Surname | Email           | PreferenceId | Theme  | Palette | Locale | Timezone      |
+		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 | en-GB  | Europe/London |
 
 Scenario: Get a user by username that doesn't exist
 	When I call GetUser with the username "S_Rogers"
@@ -93,29 +93,29 @@ Scenario: Get a user by username that doesn't exist
 
 Scenario: Post a user with a username that already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| B_Banner | Test     | 9       | test9@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         |
+		| B_Banner | Test     | 9       | test9@email.com | Password456! | en-US  | America/New_York |
 	Then The status code should be 409
 	And The response should be "Username already in use"
 
 Scenario: Post a user with a username that doesn't already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         | 
+		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! | en-US  | America/New_York | 
 	Then The status code should be 200
 	And The response should be "Account Created"
 
 Scenario: Post a user with an email that already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| S_Rogers | Test     | 9       | test2@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         |
+		| S_Rogers | Test     | 9       | test2@email.com | Password456! | en-US  | America/New_York |
 	Then The status code should be 409
 	And The response should be "Email already in use"
 
 Scenario: Post a user with an email that doesn't already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         |
+		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! | en-US  | America/New_York |
 	Then The status code should be 200
 	And The response should be "Account Created"
 
@@ -161,8 +161,8 @@ Scenario: Update a users username
 		| New_B_Banner | 0    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username     | Forename | Surname | Email           | PreferenceId | Theme  | Palette |
-		| 1  | New_B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 |
+		| Id | Username     | Forename | Surname | Email           | PreferenceId | Theme  | Palette | Locale | Timezone      |
+		| 1  | New_B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 | en-GB  | Europe/London |
 
 Scenario: Update a users username that already exists
 	Given I am the following user
@@ -183,8 +183,8 @@ Scenario: Update a users forename
 		| NewForename | 1    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename    | Surname | Email           | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | NewForename | Banner  | test1@email.com | 1            | System | #000000 |
+		| Id | Username | Forename    | Surname | Email           | PreferenceId | Theme  | Palette | Locale | Timezone      |
+		| 1  | B_Banner | NewForename | Banner  | test1@email.com | 1            | System | #000000 | en-GB  | Europe/London |
 
 Scenario: Update a users surname
 	Given I am the following user
@@ -195,8 +195,8 @@ Scenario: Update a users surname
 		| NewSurname | 2    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname    | Email           | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | NewSurname | test1@email.com | 1            | System | #000000 |
+		| Id | Username | Forename | Surname    | Email           | PreferenceId | Theme  | Palette | Locale | Timezone      |
+		| 1  | B_Banner | Bruce    | NewSurname | test1@email.com | 1            | System | #000000 | en-GB  | Europe/London |
 
 Scenario: Update a users email
 	Given I am the following user
@@ -207,8 +207,8 @@ Scenario: Update a users email
 		| NewEmail@email.com | 3    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname | Email              | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | Banner  | NewEmail@email.com | 1            | System | #000000 |
+		| Id | Username | Forename | Surname | Email              | PreferenceId | Theme  | Palette | Locale | Timezone      |
+		| 1  | B_Banner | Bruce    | Banner  | NewEmail@email.com | 1            | System | #000000 | en-GB  | Europe/London |
 
 Scenario: Update a users email that already exists
 	Given I am the following user
@@ -229,8 +229,8 @@ Scenario: Update a users password
 		| NewPassword123! | 4    |
 	Then The status code should be 200
 	And The UserModel response should be
-		| Id | Username | Forename | Surname | Email           | PreferenceId | Theme  | Palette |
-		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 |
+		| Id | Username | Forename | Surname | Email           | PreferenceId | Theme  | Palette | Locale | Timezone      |
+		| 1  | B_Banner | Bruce    | Banner  | test1@email.com | 1            | System | #000000 | en-GB  | Europe/London |
 
 Scenario: Update a users password that matches old password
 	Given I am the following user
@@ -314,19 +314,19 @@ Scenario: Update a users password that does contains spaces
 
 Scenario: Update a user preference that doesn't exist
 	When I call UpdateUserPreference with the PreferenceModel
-		| Id | Theme | Palette |
-		| 9  | Light | #FFFFFF |
+		| Id | Theme | Palette | Locale | Timezone |
+		| 9  | Light | #FFFFFF | en-US  | UTC      |
 	Then The status code should be 404
 	And The response should be "Preference not found"
 
 Scenario: Update a user preference that exists
 	When I call UpdateUserPreference with the PreferenceModel
-		| Id | Theme | Palette |
-		| 1  | Light | #FFFFFF |
+		| Id | Theme | Palette | Locale | Timezone |
+		| 1  | Light | #FFFFFF | en-US  | UTC      |
 	Then The status code should be 200
 	And The PreferenceModel response should be
-		| Id | Theme | Palette |
-		| 1  | Light | #FFFFFF |
+		| Id | Theme | Palette | Locale | Timezone |
+		| 1  | Light | #FFFFFF | en-US  | UTC      |
 
 Scenario: Get a user summary that doesn't exist
 	When I call GetViewUserSummary with the username S_Rogers
@@ -337,8 +337,8 @@ Scenario: Get a user summary
 	When I call GetViewUserSummary with the username B_Banner
 	Then The status code should be 200
 	And The UserSummaryModel response should be
-		| Id | Username | Joined     |
-		| 1  | B_Banner | 2025-01-01 |
+		| Id | Username | Joined          |
+		| 1  | B_Banner | 01 January 2025 |
 
 
 

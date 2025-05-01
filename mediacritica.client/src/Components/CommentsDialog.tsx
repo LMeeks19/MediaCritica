@@ -72,6 +72,7 @@ function CommentsDialog(props: {
 
     await PostComment(newComment)
       .then((data) => setComments([data, ...comments]))
+      .then(() => setComment("{}"))
       .then(() => setIsCommenting(false));
   }
 
@@ -114,7 +115,7 @@ function CommentsDialog(props: {
               <CustomTooltip title="Refresh">
                 <RefreshIcon className="icon" onClick={() => FetchComments()} />
               </CustomTooltip>
-              {!isCommenting && (
+              {!isCommenting && user.id !== undefined && (
                 <CustomTooltip title="Comment">
                   <ReplyIcon
                     className="icon"
@@ -122,7 +123,7 @@ function CommentsDialog(props: {
                   />
                 </CustomTooltip>
               )}
-              {isCommenting && (
+              {isCommenting && user.id !== undefined && (
                 <CustomTooltip title="Cancel">
                   <CancelIcon
                     className="icon"
@@ -130,7 +131,7 @@ function CommentsDialog(props: {
                   />
                 </CustomTooltip>
               )}
-              {isCommenting && (
+              {isCommenting && user.id !== undefined && (
                 <CustomTooltip title="Send">
                   <SendIcon className="icon" onClick={() => sendComment()} />
                 </CustomTooltip>

@@ -9,11 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, IHttpContextAccessor httpContextAccessor, bool isTestEnvironment = false) : ControllerBase
+    public class AuthenticationHelper(DatabaseContext databaseContext, IDateTimeProviderHelper dateTimeProviderHelper, IHttpContextAccessor httpContext, bool isTestEnvironment = false) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
-        private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
+        private readonly HttpContext _httpContext = httpContext.HttpContext;
         private readonly bool _isTestEnvironment = isTestEnvironment;
 
         public async Task<User?> AuthenticateUser(UserLoginModel userLoginModel)

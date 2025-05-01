@@ -22,6 +22,17 @@
     }
   }
 
+  .info-value {
+
+    .MuiOutlinedInput-notchedOutline  {
+      border: none !important;
+
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+  }
+
   .info-label,
   .info-value,
   input,

@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.Media_Models;
 using MediaCritica.Server.Objects;
 
@@ -38,7 +39,7 @@ namespace MediaCritica.Server.Mappers
             return media;
         }
 
-        public MediaModel MapMediaModel(Media media)
+        public MediaModel MapMediaModel(Media media, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var mediaModel = new MediaModel()
             {
@@ -65,14 +66,14 @@ namespace MediaCritica.Server.Mappers
                 Reviews = media.Reviews
                     .OrderByDescending(review => review.Date)
                     .Take(10)
-                    .Select(_reviewMapper.MapReviewSummaryModel)
+                    .Select(r => _reviewMapper.MapReviewSummaryModel(r, preference, dateTimeProviderHelper))
                     .ToList(),
             };
 
             return mediaModel;
         }
 
-        public MediaSummaryModel MapMediaSummaryModel(Media media)
+        public MediaSummaryModel MapMediaSummaryModel(Media media, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var mediaSummaryModel = new MediaSummaryModel()
             {
@@ -81,7 +82,7 @@ namespace MediaCritica.Server.Mappers
                 Type = media.Type,
                 Poster = media.Poster,
                 Genre = media.Genres,
-                Released = media.Released,
+                Released = media.Released == null ? null : dateTimeProviderHelper.GetLocalDate((DateTime)media.Released, preference),
                 ImdbRating = media.ImdbRating,
             };
 

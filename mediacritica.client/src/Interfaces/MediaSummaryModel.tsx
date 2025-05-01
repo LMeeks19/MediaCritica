@@ -4,6 +4,6 @@ export interface MediaSummaryModel {
   type: string;
   poster?: string;
   genre: string;
-  released: Date;
+  released: string;
   imdbRating: number;
 }

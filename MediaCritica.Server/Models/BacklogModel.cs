@@ -10,6 +10,6 @@ namespace MediaCritica.Server.Models
         public string MediaPoster { get; set; }
         public string MediaTitle { get; set; }
         public BacklogCategoryType Category { get; set; }
-        public DateTime AddedDate { get; set; }
+        public string AddedDate { get; set; }
     }
 }

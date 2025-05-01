@@ -19,8 +19,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import { formatDistanceToNowStrict } from "date-fns";
-import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { UpdateReviewModel } from "../Interfaces/UpdateReviewModel";
 import { ConfirmationDialogModel } from "../Interfaces/ConfirmationDialogModel";
 import Loader from "../Components/Loader";
@@ -223,10 +221,7 @@ function ViewReviewPage() {
                   )}
                 </div>
                 <div className="review-date">
-                  {CapitaliseFirstLetter(
-                    formatDistanceToNowStrict(review.date)
-                  )}{" "}
-                  ago |{" "}
+                  {review.date} |{" "}
                   <span
                     className="reviewer"
                     onClick={() =>

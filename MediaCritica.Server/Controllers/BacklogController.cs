@@ -9,11 +9,12 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BacklogController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper) : ControllerBase
+    public class BacklogController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
         private readonly IHelpers _helper = helper;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBacklog()
@@ -36,14 +37,16 @@ namespace MediaCritica.Server.Controllers
 
         private async Task<List<BacklogModel>> GetBacklogByCategory(int? userId, BacklogCategoryType category, int offset, int limit)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
             if (userId == null)
                 return [];
 
             var backlog = await _databaseContext.Backlogs
-                .Where(media => media.UserId == userId && media.Category == category)
+                .Where(b => b.UserId == userId && b.Category == category)
                 .OrderByDescending(media => media.AddedDate)
-                .ThenBy(media => media.MediaTitle)
-                .Select(media => _mapper.BacklogMapper.MapBacklogModel(media))
+                .ThenBy(b => b.MediaTitle)
+                .Select(backlog => _mapper.BacklogMapper.MapBacklogModel(backlog, preference, _dateTimeProviderHelper))
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();
@@ -89,7 +92,7 @@ namespace MediaCritica.Server.Controllers
             if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
                 return NotFound(new { Message = "Media not found" });
 
-            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!);
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!, _dateTimeProviderHelper);
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();

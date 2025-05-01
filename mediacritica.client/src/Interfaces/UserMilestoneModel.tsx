@@ -7,7 +7,7 @@ export interface UserMilestoneModel {
   type: UserMilestoneType
   earnedLevel: UserMilestoneLevel;
   progress: { current: number; target: number; percentage: number };
-  earnedDate: Date | null;
+  earnedDate?: string;
 }
 
 export interface UserMilestoneModelObject {

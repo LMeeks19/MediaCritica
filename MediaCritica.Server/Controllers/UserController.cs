@@ -9,23 +9,24 @@ namespace MediaCritica.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(DatabaseContext databaseContext, IMappers mapper, IHelpers helpers) : ControllerBase
+    public class UserController(DatabaseContext databaseContext, IMappers mapper, IHelpers helper, IDateTimeProviderHelper dateTimeProviderHelper) : ControllerBase
     {
         private readonly DatabaseContext _databaseContext = databaseContext;
         private readonly IMappers _mapper = mapper;
-        private readonly IHelpers _helpers = helpers;
+        private readonly IHelpers _helper = helper;
+        private readonly IDateTimeProviderHelper _dateTimeProviderHelper = dateTimeProviderHelper;
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
         {
-            var user = await _helpers.AuthenticationHelper.AuthenticateUser(userLoginModel);
+            var user = await _helper.AuthenticationHelper.AuthenticateUser(userLoginModel);
 
             if (user == null)
                 return Unauthorized(new { Message = "Invalid Credentials" });
 
-            await _helpers.AuthenticationHelper.SetUserId(user.Id);
+            await _helper.AuthenticationHelper.SetUserId(user.Id);
 
-            var authToken = userLoginModel.RememberMe ? await _helpers.AuthenticationHelper.GenerateAuthToken(user.Id) : null;
+            var authToken = userLoginModel.RememberMe ? await _helper.AuthenticationHelper.GenerateAuthToken(user.Id) : null;
 
             return Ok(new UserAuthModel
             {
@@ -37,25 +38,25 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> AutoLogin([FromBody] TokenModel tokenModel)
         {
-            var authToken = await _helpers.AuthenticationHelper.GetAuthToken(tokenModel.Token);
+            var authToken = await _helper.AuthenticationHelper.GetAuthToken(tokenModel.Token);
 
             if (authToken == null)
                 return Unauthorized(new { Message = "Auto Login Failed" });
 
-            if (_helpers.AuthenticationHelper.HasTokenExpired(authToken))
+            if (_helper.AuthenticationHelper.HasTokenExpired(authToken))
             {
-                _helpers.AuthenticationHelper.RemoveAuthToken(authToken.Id);
+                _helper.AuthenticationHelper.RemoveAuthToken(authToken.Id);
                 return Unauthorized(new { Message = "Authentication Expired" });
             }
 
-            authToken = await _helpers.AuthenticationHelper.UpdateAuthToken(authToken);
+            authToken = await _helper.AuthenticationHelper.UpdateAuthToken(authToken);
 
-            var user = await _helpers.AuthenticationHelper.GetUser(id: authToken.UserId);
+            var user = await _helper.AuthenticationHelper.GetUser(id: authToken.UserId);
 
             if (user == null)
                 return Unauthorized(new { Message = "Auto Login Failed" });
 
-            await _helpers.AuthenticationHelper.SetUserId(user.Id);
+            await _helper.AuthenticationHelper.SetUserId(user.Id);
 
             return Ok(new UserAuthModel
             {
@@ -67,7 +68,7 @@ namespace MediaCritica.Server.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Logout([FromBody] TokenModel tokenModel)
         {
-            var authToken = await _helpers.AuthenticationHelper.GetAuthToken(tokenModel.Token);
+            var authToken = await _helper.AuthenticationHelper.GetAuthToken(tokenModel.Token);
 
             if (authToken != null)
             {
@@ -75,7 +76,7 @@ namespace MediaCritica.Server.Controllers
                 await _databaseContext.SaveChangesAsync();
             }
 
-            await _helpers.AuthenticationHelper.UnSetUserId();
+            await _helper.AuthenticationHelper.UnSetUserId();
 
             return Ok(new { Message = "User Logged Out" });
         }
@@ -99,8 +100,10 @@ namespace MediaCritica.Server.Controllers
         }
 
         [HttpGet("[action]/{searchTerm}")]
-        public IActionResult GetUsersBySearch(string searchTerm)
+        public async Task<IActionResult> GetUsersBySearch(string searchTerm)
         {
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
             var userQuery = _databaseContext.Users
                 .AsEnumerable()
                 .Where(u => u.Username.StartsWith(searchTerm, StringComparison.OrdinalIgnoreCase))
@@ -108,8 +111,8 @@ namespace MediaCritica.Server.Controllers
 
             var users = userQuery
                 .Take(20)
-                .Select(u => _mapper.UserMapper
-                .MapUserSearchModel(u))
+                .Select(u => _mapper.UserMapper.MapUserSearchModel(u, preference, _dateTimeProviderHelper))
+                .OrderByDescending(u => u.Username)
                 .ToList();
 
             if (users.Count == 0)
@@ -131,12 +134,12 @@ namespace MediaCritica.Server.Controllers
             if (emailExists)
                 return Conflict(new { Message = "Email already in use" });
 
-            var response = _helpers.AuthenticationHelper.IsValidPassword(userModel.Password);
+            var response = _helper.AuthenticationHelper.IsValidPassword(userModel.Password);
             if (!response.IsValid)
                 return BadRequest(new { response.Message });
 
-            userModel.Password = _helpers.AuthenticationHelper.HashPassword(userModel.Password);
-            var user = _mapper.UserMapper.MapUser(userModel);
+            userModel.Password = _helper.AuthenticationHelper.HashPassword(userModel.Password);
+            var user = _mapper.UserMapper.MapUser(userModel, _dateTimeProviderHelper);
 
             await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
@@ -147,7 +150,7 @@ namespace MediaCritica.Server.Controllers
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteUser()
         {
-            var userId = _helpers.AuthenticationHelper.GetUserId();
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
@@ -163,7 +166,7 @@ namespace MediaCritica.Server.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
         {
-            var userId = _helpers.AuthenticationHelper.GetUserId();
+            var userId = _helper.AuthenticationHelper.GetUserId();
             var user = await _databaseContext.Users.SingleOrDefaultAsync(user => user.Id == userId);
 
             if (user == null)
@@ -188,10 +191,10 @@ namespace MediaCritica.Server.Controllers
                     user.Email = updateUserModel.Value;
                     break;
                 case UpdateUserEnum.Password:
-                    var response = _helpers.AuthenticationHelper.IsValidPassword(updateUserModel.Value, user.Password);
+                    var response = _helper.AuthenticationHelper.IsValidPassword(updateUserModel.Value, user.Password);
                     if (!response.IsValid)
                         return BadRequest(new { response.Message });
-                    user.Password = _helpers.AuthenticationHelper.HashPassword(updateUserModel.Value);
+                    user.Password = _helper.AuthenticationHelper.HashPassword(updateUserModel.Value);
                     break;
                 default:
                     return BadRequest(new { Message = "Invalid update type" });
@@ -213,6 +216,8 @@ namespace MediaCritica.Server.Controllers
 
             preference.Theme = preferenceModel.Theme;
             preference.Palette = preferenceModel.Palette;
+            preference.Locale = preferenceModel.Locale;
+            preference.Timezone = preferenceModel.Timezone;
 
             await _databaseContext.SaveChangesAsync();
 
@@ -239,7 +244,9 @@ namespace MediaCritica.Server.Controllers
             if (user == null)
                 return NotFound(new { Message = "User not found" });
 
-            return Ok(_mapper.UserMapper.MapUserSummaryModel(user));
+            var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
+
+            return Ok(_mapper.UserMapper.MapUserSummaryModel(user, preference, _dateTimeProviderHelper));
         }
     }
 }

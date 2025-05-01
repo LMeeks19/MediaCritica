@@ -21,11 +21,11 @@ Scenario: Get Notifications
 	When I call GetUserNotifications 
 	Then The status code should be 200
 	And The NotificationModels should be
-		| Id | AuthorUsername | Message        | IsRead | IsBookmarked | CreatedAt  |
-		| 1  | Username2      | Test Message 1 | false  | false        | 2024-04-01 |
-		| 3  | Username2      | Test Message 3 | false  | true         | 2024-03-01 |
-		| 4  | Username2      | Test Message 4 | true   | false        | 2024-02-01 |
-		| 2  | Username2      | Test Message 2 | true   | true         | 2024-01-01 |
+		| Id | AuthorUsername | Message        | IsRead | IsBookmarked | CreatedAt     |
+		| 1  | Username2      | Test Message 1 | false  | false        | 11 months ago |
+		| 3  | Username2      | Test Message 3 | false  | true         | 12 months ago |
+		| 4  | Username2      | Test Message 4 | true   | false        | 1 year ago    |
+		| 2  | Username2      | Test Message 2 | true   | true         | 1 year ago    |
 
 Scenario: Get Notifications but the user has none
 	When I call GetUserNotifications 
@@ -106,6 +106,6 @@ Scenario: Post notifications
 		| 1        | Test Notification Message |
 	Then The status code should be 200
 	And The following notifications should have been created
-		| Id | RecipientId | AuthorId | Message                   | IsRead | IsBookmarked |
-		| 6  | 2           | 1        | Test Notification Message | false  | false        |
+		| Id | RecipientId | AuthorId | Message                   | IsRead | IsBookmarked | CreatedAt           |
+		| 6  | 2           | 1        | Test Notification Message | false  | false        | 2025-02-27 16:30:00 |
 	

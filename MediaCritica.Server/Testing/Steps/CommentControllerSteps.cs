@@ -129,7 +129,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Content = row["Content"],
                 CommenterId = int.Parse(row["CommenterId"]),
                 CommenterUsername = row["CommenterName"],
-                CommentedAt = DateTime.Parse(row["CommentedAt"]),
+                CommentedAt = row["CommentedAt"],
                 IsDeleted = bool.Parse(row["IsDeleted"]),
                 Replies = [],
                 TotalReplies = int.Parse(row["TotalReplies"])

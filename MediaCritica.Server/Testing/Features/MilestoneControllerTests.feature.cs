@@ -77,7 +77,7 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Username",
                         "Forename",
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Email",
                         "Password",
                         "Joined"});
-            table130.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "1",
                         "Username1",
                         "Test",
@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table130.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "2",
                         "Username2",
                         "Test",
@@ -102,7 +102,31 @@ namespace MediaCritica.Server.Testing.Features
                         "Password456!",
                         "2025-01-02"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table130, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table134, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "UserId",
+                        "Theme",
+                        "Palette",
+                        "Locale",
+                        "Timezone"});
+            table135.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "System",
+                        "#000000",
+                        "en-US",
+                        "America/New_York"});
+            table135.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Light",
+                        "#FFFFFF",
+                        "en-GB",
+                        "Europe/London"});
+#line 8
+ testRunner.And("I have the following preferences", ((string)(null)), table135, "And ");
 #line hidden
         }
         
@@ -113,7 +137,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUserMilestones of user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 8
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -126,46 +150,46 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table131.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
-#line 9
- testRunner.Given("I am the following user", ((string)(null)), table131, "Given ");
+#line 14
+ testRunner.Given("I am the following user", ((string)(null)), table136, "Given ");
 #line hidden
-#line 12
+#line 17
  testRunner.When("I call GetUserMilestones", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 18
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
                             "Category",
                             "Milestones"});
-                table132.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "Reviewed Media",
                             "5"});
-                table132.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "Backlogged Media",
                             "2"});
-                table132.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "Review Engagement",
                             "3"});
-                table132.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "Interaction Variety",
                             "6"});
-                table132.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "Consecutive Activity",
                             "3"});
-                table132.AddRow(new string[] {
+                table137.AddRow(new string[] {
                             "Social Connectivity",
                             "2"});
-#line 14
- testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table132, "And ");
+#line 19
+ testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table137, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -178,7 +202,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUserMilestones of user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 23
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -191,13 +215,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 24
+#line 29
  testRunner.When("I call GetUserMilestones", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 30
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 31
  testRunner.And("The response should be \"User not found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

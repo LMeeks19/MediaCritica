@@ -1,16 +1,17 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Helpers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
     public class BacklogMapper
     {
-        public Backlog MapBacklog(BacklogModel backlogModel, int userId)
+        public Backlog MapBacklog(BacklogModel backlogModel, int userId, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new Backlog()
             {
                 UserId = userId,
-                AddedDate = backlogModel.AddedDate,
+                AddedDate = dateTimeProviderHelper.UtcNow,
                 Category = backlogModel.Category,
                 MediaId = backlogModel.MediaId,
                 MediaPoster = backlogModel.MediaPoster,
@@ -19,12 +20,12 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public BacklogModel MapBacklogModel(Backlog backlog)
+        public BacklogModel MapBacklogModel(Backlog backlog, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new BacklogModel()
             {
                 Id = backlog.Id,
-                AddedDate = backlog.AddedDate,
+                AddedDate = dateTimeProviderHelper.GetLocalDate(backlog.AddedDate, preference),
                 Category = backlog.Category,
                 MediaId = backlog.MediaId,
                 MediaPoster = backlog.MediaPoster,
