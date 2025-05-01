@@ -35,7 +35,6 @@
           }
 
           .MuiFormControl-root {
-
             .MuiInputBase-root {
               color: inherit;
             }
@@ -77,35 +76,41 @@
 
           .title {
             grid-area: 1 / 1 / 2 / 3;
-            align-self: center;
           }
-
           .username {
             grid-area: 2 / 1 / 3 / 3;
           }
-
           .forename {
             grid-area: 3 / 1 / 4 / 2;
           }
-
           .surname {
             grid-area: 3 / 2 / 4 / 3;
           }
-
           .email {
             grid-area: 4 / 1 / 5 / 3;
           }
-
-          .password {
+          .locale {
             grid-area: 5 / 1 / 6 / 3;
-          }
 
-          .confirm_password {
+            .MuiInputBase-input {
+              padding: 16.5px 14px;
+            }
+          }
+          .timezone {
             grid-area: 6 / 1 / 7 / 3;
-          }
 
-          .submit {
+            .MuiInputBase-input {
+              padding: 16.5px 14px;
+            }
+          }
+          .password {
             grid-area: 7 / 1 / 8 / 3;
+          }
+          .confirm_password {
+            grid-area: 8 / 1 / 9 / 3;
+          }
+          .submit {
+            grid-area: 9 / 1 / 10 / 3;
           }
         }
       }

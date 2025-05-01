@@ -19,3 +19,13 @@ export interface PreferenceModel {
     locale: string;
     timezone: string;
 }
+
+export interface CreateUserModel {
+    username: string
+    forename: string;
+    surname: string;
+    email: string;
+    password: string;
+    locale: string;
+    timezone: string;
+}

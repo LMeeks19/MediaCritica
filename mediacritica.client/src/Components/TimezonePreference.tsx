@@ -75,12 +75,16 @@ function TimezonePreference() {
             options={timezones}
             getOptionLabel={(option) => option}
             onChange={(_e, v) => setTimezone(v as string)}
-            renderInput={(params) => <TextField {...params} placeholder="Enter new timezone" />}
+            renderInput={(params) => (
+              <TextField {...params} placeholder="Enter new timezone" />
+            )}
             fullWidth
           />
         </div>
       ) : (
-        <div className="info-value">{user.preference?.timezone}</div>
+        <div className="info-value">
+          {user.preference?.timezone.replace("/", " | ")}
+        </div>
       )}
       <ButtonGroup className="info-action">
         {isEditing && (

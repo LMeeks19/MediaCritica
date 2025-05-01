@@ -6,17 +6,20 @@ import {
   Checkbox,
   FormControlLabel,
   TextField,
+  Autocomplete,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../State/GlobalState";
-import { UserModel } from "../Interfaces/UserModel";
+import { CreateUserModel } from "../Interfaces/UserModel";
 import TopBar from "../Components/TopBar";
 import { storeAuthToken } from "../Helpers/AuthenticationHelper";
 import { useNavigate } from "react-router-dom";
 import { UserLoginModel } from "../Interfaces/UserLoginModel";
 import { Login, PostUser } from "../Server/Server";
 import { setThemePalette } from "../Helpers/ThemePaletteHelper";
+import * as LocaleCodes from "locale-codes";
+import moment from "moment";
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -27,6 +30,8 @@ function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassowrd, setConfirmPassword] = useState<string>("");
+  const [locale, setLocale] = useState<string>("");
+  const [timezone, setTimezone] = useState<string>("");
   const [rememberMe, setRememebrMe] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -59,7 +64,9 @@ function LoginPage() {
         surname: surname,
         email: email,
         password: password,
-      } as UserModel);
+        locale: locale,
+        timezone: timezone,
+      } as CreateUserModel);
       setActiveTab(0);
     }
   }
@@ -71,9 +78,14 @@ function LoginPage() {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
+    setLocale("");
+    setTimezone("");
     setRememebrMe(false);
     setActiveTab(tabIndex);
   };
+
+  const locales = LocaleCodes.all.map((locale) => locale);
+  const timezones = moment.tz.names();
 
   return (
     <div className="login-container">
@@ -167,6 +179,31 @@ function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 required
+              />
+              <Autocomplete
+                className="locale"
+                options={locales}
+                getOptionLabel={(option) =>
+                  `${option.name} ${
+                    option.location !== null ? `(${option.location})` : ""
+                  }`
+                }
+                onChange={(_e, v) => setLocale(v?.tag as string)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Locale" required />
+                )}
+                fullWidth
+              />
+              <Autocomplete
+                className="timezone"
+                value={timezone}
+                options={timezones}
+                getOptionLabel={(option) => option}
+                onChange={(_e, v) => setTimezone(v as string)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Timezone" required />
+                )}
+                fullWidth
               />
               <TextField
                 type="password"

@@ -73,9 +73,7 @@ function LocalePreference() {
           <Autocomplete
             options={locales}
             getOptionLabel={(option) =>
-              `${option.name} ${
-                option.location !== null ? `(${option.location})` : ""
-              }`
+              `${option.name} ${option.location ? `(${option.location})` : ""}`
             }
             onChange={(_e, v) => setLocale(v?.tag as string)}
             renderInput={(params) => (
@@ -86,8 +84,9 @@ function LocalePreference() {
         </div>
       ) : (
         <div className="info-value">
-          {LocaleCodes.getByTag(user.preference.locale).name} (
-          {LocaleCodes.getByTag(user.preference.locale).location})
+          {LocaleCodes.getByTag(user.preference.locale).name}{" "}
+          {LocaleCodes.getByTag(user.preference.locale).location &&
+            `(${LocaleCodes.getByTag(user.preference.locale).location})`}
         </div>
       )}
       <ButtonGroup className="info-action">

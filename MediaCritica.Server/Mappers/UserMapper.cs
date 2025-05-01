@@ -24,8 +24,8 @@ namespace MediaCritica.Server.Mappers
                 {
                     Theme = "System",
                     Palette = "#971212",
-                    Locale = "en-GB",
-                    Timezone = "UTC",
+                    Locale = userModel.Locale,
+                    Timezone = userModel.Timezone,
                 },
                 Milestones = _helper.MilestoneCalculatorHelper.CreateMilestones()
             };

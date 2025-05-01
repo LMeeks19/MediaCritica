@@ -686,13 +686,17 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password"});
+                            "Password",
+                            "Locale",
+                            "Timezone"});
                 table179.AddRow(new string[] {
                             "B_Banner",
                             "Test",
                             "9",
                             "test9@email.com",
-                            "Password456!"});
+                            "Password456!",
+                            "en-US",
+                            "America/New_York"});
 #line 95
  testRunner.When("I call PostUser with the User", ((string)(null)), table179, "When ");
 #line hidden
@@ -731,13 +735,17 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password"});
+                            "Password",
+                            "Locale",
+                            "Timezone"});
                 table180.AddRow(new string[] {
                             "S_Rogers",
                             "Steve",
                             "Rogers",
                             "test5@email.com",
-                            "Password456!"});
+                            "Password456!",
+                            "en-US",
+                            "America/New_York"});
 #line 102
  testRunner.When("I call PostUser with the User", ((string)(null)), table180, "When ");
 #line hidden
@@ -776,13 +784,17 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password"});
+                            "Password",
+                            "Locale",
+                            "Timezone"});
                 table181.AddRow(new string[] {
                             "S_Rogers",
                             "Test",
                             "9",
                             "test2@email.com",
-                            "Password456!"});
+                            "Password456!",
+                            "en-US",
+                            "America/New_York"});
 #line 109
  testRunner.When("I call PostUser with the User", ((string)(null)), table181, "When ");
 #line hidden
@@ -821,13 +833,17 @@ this.FeatureBackground();
                             "Forename",
                             "Surname",
                             "Email",
-                            "Password"});
+                            "Password",
+                            "Locale",
+                            "Timezone"});
                 table182.AddRow(new string[] {
                             "S_Rogers",
                             "Steve",
                             "Rogers",
                             "test5@email.com",
-                            "Password456!"});
+                            "Password456!",
+                            "en-US",
+                            "America/New_York"});
 #line 116
  testRunner.When("I call PostUser with the User", ((string)(null)), table182, "When ");
 #line hidden

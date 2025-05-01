@@ -93,29 +93,29 @@ Scenario: Get a user by username that doesn't exist
 
 Scenario: Post a user with a username that already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| B_Banner | Test     | 9       | test9@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         |
+		| B_Banner | Test     | 9       | test9@email.com | Password456! | en-US  | America/New_York |
 	Then The status code should be 409
 	And The response should be "Username already in use"
 
 Scenario: Post a user with a username that doesn't already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         | 
+		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! | en-US  | America/New_York | 
 	Then The status code should be 200
 	And The response should be "Account Created"
 
 Scenario: Post a user with an email that already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| S_Rogers | Test     | 9       | test2@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         |
+		| S_Rogers | Test     | 9       | test2@email.com | Password456! | en-US  | America/New_York |
 	Then The status code should be 409
 	And The response should be "Email already in use"
 
 Scenario: Post a user with an email that doesn't already exists
 	When I call PostUser with the User
-		| Username | Forename | Surname | Email           | Password     |
-		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! |
+		| Username | Forename | Surname | Email           | Password     | Locale | Timezone         |
+		| S_Rogers | Steve    | Rogers  | test5@email.com | Password456! | en-US  | America/New_York |
 	Then The status code should be 200
 	And The response should be "Account Created"
 
