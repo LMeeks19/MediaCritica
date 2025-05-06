@@ -8,6 +8,7 @@ import { BacklogSummaryModel } from "../Interfaces/BacklogSummaryModel";
 import { CommentModel } from "../Interfaces/CommentModel";
 import { EpisodeModel } from "../Interfaces/EpisodeModel";
 import { GameModel } from "../Interfaces/GameModel";
+import { RandomMedia } from "../Interfaces/MediaModel";
 import { MediaSearchResponse } from "../Interfaces/MediaSearchResponse";
 import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelResponse";
@@ -24,7 +25,11 @@ import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import { UserFollowSummaryModel } from "../Interfaces/UserFollowSummaryModel";
 import { UserLoginModel } from "../Interfaces/UserLoginModel";
 import { UserMilestoneModelObject } from "../Interfaces/UserMilestoneModel";
-import { CreateUserModel, PreferenceModel, UserModel } from "../Interfaces/UserModel";
+import {
+  CreateUserModel,
+  PreferenceModel,
+  UserModel,
+} from "../Interfaces/UserModel";
 import { UserModelObject } from "../Interfaces/UserModelObject";
 import { UserRankingModel } from "../Interfaces/UserRankingModel";
 import { UserReviewsModelObject } from "../Interfaces/UserReviewsModelObject";
@@ -640,4 +645,9 @@ export async function ReportReview(reportModel: ReportModel): Promise<void> {
     body: JSON.stringify(reportModel),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
+}
+
+export async function SurpriseMe(): Promise<RandomMedia> {
+  const response = await MakeRequest<RandomMedia>("/Media/SurpriseMe");
+  return response;
 }

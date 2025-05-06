@@ -11,17 +11,19 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { notificationsState, userState } from "../State/GlobalState";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import HomeIcon from "@mui/icons-material/Home";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/LogoutOutlined";
-import NotificationOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationIcon from "@mui/icons-material/Notifications";
 import CustomAutoComplete from "./CustomAutocomplete";
-import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { CustomTooltip } from "./Tooltip";
 import { LogoutUser } from "../Helpers/AuthenticationHelper";
+import RandomIcon from "@mui/icons-material/Casino";
+import { SurpriseMe } from "../Server/Server";
 
 function TopBar(props: { hideBack?: boolean }) {
   const navigate = useNavigate();
@@ -34,9 +36,16 @@ function TopBar(props: { hideBack?: boolean }) {
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  async function selectRandomMedia() {
+    const response = await SurpriseMe();
+    navigate(`/${response.type}/${response.id}`);
+  }
+
   return (
     <div className="topbar">
       <div className="flex gap-2 ml-[1.25rem]">
@@ -45,12 +54,12 @@ function TopBar(props: { hideBack?: boolean }) {
           onClick={() => navigate(-1)}
         >
           <CustomTooltip title="Back">
-            <ArrowCircleLeftOutlinedIcon fontSize="large" />
+            <ArrowCircleLeftIcon fontSize="large" />
           </CustomTooltip>
         </IconButton>
         <IconButton onClick={() => navigate("/")}>
           <CustomTooltip title="Home">
-            <HomeOutlinedIcon fontSize="large" />
+            <HomeIcon fontSize="large" />
           </CustomTooltip>
         </IconButton>
       </div>
@@ -71,7 +80,7 @@ function TopBar(props: { hideBack?: boolean }) {
       >
         <MenuItem onClick={() => navigate("/")}>
           <ListItemIcon>
-            <HomeOutlinedIcon />
+            <HomeIcon />
           </ListItemIcon>
           Home
         </MenuItem>
@@ -81,9 +90,15 @@ function TopBar(props: { hideBack?: boolean }) {
           </ListItemIcon>
           Explore
         </MenuItem>
+        <MenuItem onClick={() => selectRandomMedia()}>
+          <ListItemIcon>
+            <RandomIcon />
+          </ListItemIcon>
+          Surprise Me
+        </MenuItem>
         <MenuItem onClick={() => navigate("/leaderboards")}>
           <ListItemIcon>
-            <LeaderboardOutlinedIcon />
+            <LeaderboardIcon />
           </ListItemIcon>
           Leaderboards
         </MenuItem>
@@ -99,7 +114,7 @@ function TopBar(props: { hideBack?: boolean }) {
         {user.id !== undefined && (
           <MenuItem onClick={() => navigate("/account")}>
             <ListItemIcon>
-              <AccountCircleOutlinedIcon />
+              <AccountCircleIcon />
             </ListItemIcon>
             Account
           </MenuItem>
@@ -107,7 +122,7 @@ function TopBar(props: { hideBack?: boolean }) {
         {user.id !== undefined && (
           <MenuItem onClick={() => navigate("/notifications")}>
             <ListItemIcon>
-              <NotificationOutlinedIcon />
+              <NotificationIcon />
             </ListItemIcon>
             Notifications
           </MenuItem>

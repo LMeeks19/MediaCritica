@@ -1,6 +1,10 @@
 import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
 import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
-import { GetMediaSearchResults, GetUserSearchResults } from "../Server/Server";
+import {
+  GetMediaSearchResults,
+  GetUserSearchResults,
+  SurpriseMe,
+} from "../Server/Server";
 import ImageIcon from "@mui/icons-material/ImageOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import PermMediaIconOutlined from "@mui/icons-material/PermMediaOutlined";
@@ -18,6 +22,7 @@ import {
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomTooltip } from "./Tooltip";
+import RandomIcon from "@mui/icons-material/Casino";
 import "./CustomAutocomplete.scss";
 
 function CustomAutoComplete() {
@@ -66,6 +71,11 @@ function CustomAutoComplete() {
     setUserSearchResults([]);
   };
 
+  async function selectRandomMedia() {
+    const response = await SurpriseMe();
+    navigate(`/${response.type}/${response.id}`);
+  }
+
   const getRenderInput = (params: any) => {
     return (
       <TextField
@@ -86,6 +96,16 @@ function CustomAutoComplete() {
                 {isLoading && (
                   <InputAdornment position="start">
                     <CircularProgress size={"20px"} />
+                  </InputAdornment>
+                )}
+                {selectedSearchTab === 0 && (
+                  <InputAdornment position="start">
+                    <CustomTooltip title="Surprise me!">
+                      <RandomIcon
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => selectRandomMedia()}
+                      />
+                    </CustomTooltip>
                   </InputAdornment>
                 )}
                 <InputAdornment position="start">

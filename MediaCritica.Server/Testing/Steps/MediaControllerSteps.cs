@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.Media_Models;
 using MediaCritica.Server.Objects.Media_Objects;
 using Microsoft.AspNetCore.Mvc;
@@ -105,6 +106,42 @@ namespace MediaCritica.Server.Testing.Steps
         public async Task WhenICallGetEpisodeWithId(string episodeId)
         {
             GlobalSteps._response = await GlobalSteps._controller.MediaController.GetEpisode(episodeId);
+        }
+
+        [When(@"I call SurpriseMe")]
+        public async Task WhenICallSurpriseMe()
+        {
+            GlobalSteps._response = await GlobalSteps._controller.MediaController.SurpriseMe();
+        }
+
+        [Then(@"The response should exist in the database")]
+        public void ThenTheResponseShouldExistInTheDatabase()
+        {
+            var okResult = GlobalSteps._response as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var randomMedia = okResult!.Value;
+            Assert.IsNotNull(randomMedia);
+
+            var mediaId = randomMedia!.GetType().GetProperty("Id")?.GetValue(randomMedia)?.ToString();
+            Assert.IsNotNull(mediaId);
+
+            Assert.IsTrue(GlobalSteps._dbContext.Media.Any(m => m.Id == mediaId));
+        }
+
+        [Then(@"The response should not be an episode")]
+        public void ThenTheResponseShouldNotBeAnEpisode()
+        {
+            var okResult = GlobalSteps._response as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var randomMedia = okResult!.Value;
+            Assert.IsNotNull(randomMedia);
+
+            var mediaType = randomMedia!.GetType().GetProperty("Type")?.GetValue(randomMedia)?.ToString();
+            Assert.IsNotNull(mediaType);
+
+            Assert.IsTrue(mediaType != MediaType.Episode);
         }
 
         [Then(@"The MediaSearchResultResponse should be")]
