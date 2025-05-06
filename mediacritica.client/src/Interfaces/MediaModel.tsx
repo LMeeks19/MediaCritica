@@ -29,3 +29,8 @@ interface Rating {
   source: string;
   value: string;
 }
+
+export interface RandomMedia {
+  id: string,
+  type: string;
+}

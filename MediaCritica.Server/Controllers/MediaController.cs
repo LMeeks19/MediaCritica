@@ -393,5 +393,17 @@ namespace MediaCritica.Server.Controllers
 
             return Ok(_mapper.EpisodeMapper.MapEpisodeModel(episode, preference, _dateTimeProviderHelper));
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SurpriseMe()
+        {
+            var mediaIds = await _databaseContext.Media
+                .Where(m => m.Type != MediaType.Episode)
+                .ToListAsync();
+
+            int randomIndex = new Random().Next(mediaIds.Count);
+
+            return Ok(new { mediaIds[randomIndex].Id, mediaIds[randomIndex].Type });
+        }
     }
 }

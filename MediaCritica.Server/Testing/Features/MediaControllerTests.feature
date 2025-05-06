@@ -257,3 +257,9 @@ Scenario: Get episode that doesn't exist
 	When I call GetEpisode with id 1
 	Then The status code should be 404
 	And The response should be "Episode not found"
+
+Scenario: Get media with surprise me
+	When I call SurpriseMe
+	Then The status code should be 200
+	And The response should exist in the database
+	And The response should not be an episode
