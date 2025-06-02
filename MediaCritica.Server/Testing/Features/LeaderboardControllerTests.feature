@@ -52,7 +52,6 @@ Background:
 		| 26 | 5       | Media Poster 5 | Media Title 5 | series    | 3      | Username3        | 4      | Title 26 | Description 26 | 2024-11-12 |
 		| 27 | 6       | Media Poster 6 | Media Title 6 | movie     | 4      | Username4        | 3.5    | Title 27 | Description 27 | 2025-02-06 |
 		| 28 | 7       | Media Poster 7 | Media Title 7 | game      | 2      | Username2        | 2.5    | Title 28 | Description 28 | 2025-01-19 |
-		| 29 | 4       | Media Poster 4 | Media Title 4 | episode   | 2      | Username2        | 2      | Title 25 | Description 25 | 2025-02-19 |
 	And I have the following backlogs
 		| Id | UserId | MediaId | MediaType | Category | MediaPoster    | MediaTitle    | AddedDate  |
 		| 1  | 1      | 1       | movie     | 0        | Media Poster 1 | Media Title 1 | 2025-02-01 |
@@ -86,7 +85,6 @@ Scenario: Get user rankings for month
 		| 1    | Username1 | 5       | month     |
 		| 2    | Username3 | 4       | month     |
 		| 3    | Username4 | 3       | month     |
-		| 4    | Username2 | 1       | month     |
 
 Scenario: Get user rankings for year
 	When I call GetUserRankings for year
@@ -94,8 +92,8 @@ Scenario: Get user rankings for year
 	And The UserRankingModels reposne should be
 		| Rank | Username  | Reviews | Timeframe |
 		| 1    | Username1 | 9       | year      |
-		| 2    | Username2 | 6       | year      |
-		| 3    | Username4 | 6       | year      |
+		| 2    | Username4 | 6       | year      |
+		| 3    | Username2 | 5       | year      |
 		| 4    | Username3 | 5       | year      |
 
 Scenario: Get user rankings for all time
@@ -104,7 +102,7 @@ Scenario: Get user rankings for all time
 	And The UserRankingModels reposne should be
 		| Rank | Username  | Reviews | Timeframe |
 		| 1    | Username1 | 9       | all-time  |
-		| 2    | Username2 | 8       | all-time  |
+		| 2    | Username2 | 7       | all-time  |
 		| 3    | Username3 | 6       | all-time  |
 		| 4    | Username4 | 6       | all-time  |
 
@@ -113,7 +111,7 @@ Scenario: Get media trends for week
 	Then The status code should be 200
 	And The MediaTrendModels reposne should be
 		| AwardType         | Title         | Description                                     | TimeFrame |
-		| Falling Star      | Media Title 4 | 4 fewer reviews than the previous week.         | week      |
+		| Falling Star      | Media Title 4 | 3 fewer reviews than the previous week.         | week      |
 		| Highest Rated     | Media Title 2 | An outstanding average rating of 2.0 this week! | week      |
 		| Most Active Genre | Action        | Action is the most active genre this week!      | week      |
 		| Most Reviewed     | Media Title 2 | 1 reviews this week!                            | week      |
@@ -125,7 +123,7 @@ Scenario: Get media trends for month
 	And The MediaTrendModels reposne should be
 		| AwardType          | Title         | Description                                                                         | TimeFrame |
 		| Actor Spotlight    | Actor 9       | 2 reviews on their media with an average rating of 4.0!                             | month     |
-		| Comeback           | Media Title 4 | A comeback with 4 reviews this month after a period of inactivity!                  | month     |
+		| Comeback           | Media Title 4 | A comeback with 3 reviews this month after a period of inactivity!                  | month     |
 		| Director Spotlight | Director 7    | 3 reviews on their media with an average rating of 4.5!                             | month     |
 		| Falling Star       | Media Title 7 | 3 fewer reviews than the previous month.                                            | month     |
 		| Hidden Gem         | Media Title 3 | 1 reviews with an average rating of 5.0!                                            | month     |
@@ -134,40 +132,40 @@ Scenario: Get media trends for month
 		| Most Active Genre  | Action        | Action is the most active genre this month!                                         | month     |
 		| Most Backlogged    | Media Title 1 | Added to backlogs 3 times this month!                                               | month     |
 		| Most Polarizing    | Media Title 2 | Media Title 2 sparked a lot of debate this month, with a variability score of 1.00! | month     |
-		| Most Reviewed      | Media Title 4 | 4 reviews this month!                                                               | month     |
+		| Most Reviewed      | Media Title 4 | 3 reviews this month!                                                               | month     |
 		| Most Unfinished    | Media Title 1 | 1 user didn't complete it this month!                                               | month     |
-		| Rising Star        | Media Title 4 | 3 more reviews than the previous month!                                             | month     |
-		| Sleeper Hit        | Media Title 4 | 4 reviews this month! More than its average of 1 per month                          | month     |
+		| Rising Star        | Media Title 4 | 2 more reviews than the previous month!                                             | month     |
+		| Sleeper Hit        | Media Title 4 | 3 reviews this month! More than its average of 1 per month                          | month     |
 
 Scenario: Get media trends for year
 	When I call GetMediaTrends for year
 	Then The status code should be 200
 	And The MediaTrendModels reposne should be		
 		| AwardType         | Title         | Description                                                                        | TimeFrame |
-		| Comeback          | Media Title 4 | A comeback with 5 reviews this year after a period of inactivity!                  | year      |
+		| Comeback          | Media Title 4 | A comeback with 4 reviews this year after a period of inactivity!                  | year      |
 		| Highest Rated     | Media Title 1 | An outstanding average rating of 3.8 this year!                                    | year      |
 		| Most Abandoned    | Media Title 5 | 2 users either abandoned it early or never started it this year!                   | year      |
 		| Most Active Genre | Action        | Action is the most active genre this year!                                         | year      |
 		| Most Backlogged   | Media Title 1 | Added to backlogs 3 times this year!                                               | year      |
 		| Most Polarizing   | Media Title 3 | Media Title 3 sparked a lot of debate this year, with a variability score of 1.58! | year      |
-		| Most Reviewed     | Media Title 4 | 5 reviews this year!                                                               | year      |
+		| Most Reviewed     | Media Title 4 | 4 reviews this year!                                                               | year      |
 		| Most Unfinished   | Media Title 1 | 1 user didn't complete it this year!                                               | year      |
-		| Rising Star       | Media Title 4 | 5 more reviews than the previous year!                                             | year      |
-		| Sleeper Hit       | Media Title 4 | 5 reviews this year! More than its average of 0 per year                           | year      |
+		| Rising Star       | Media Title 4 | 4 more reviews than the previous year!                                             | year      |
+		| Sleeper Hit       | Media Title 4 | 4 reviews this year! More than its average of 0 per year                           | year      |
 
 Scenario: Get media trends for all-time		
 	When I call GetMediaTrends for all-time
 	Then The status code should be 200
 	And The MediaTrendModels reposne should be
       | AwardType         | Title         | Description                                                                                | TimeFrame |
-      | Comeback          | Media Title 4 | A comeback with 5 reviews this all-time after a period of inactivity!                      | all-time  |
+      | Comeback          | Media Title 4 | A comeback with 4 reviews this all-time after a period of inactivity!                      | all-time  |
       | Highest Rated     | Media Title 1 | An outstanding average rating of 3.8 this all-time!                                        | all-time  |
       | Most Abandoned    | Media Title 5 | 2 users either abandoned it early or never started it this all-time!                       | all-time  |
       | Most Active Genre | Action        | Action is the most active genre this all-time!                                             | all-time  |
       | Most Anticipated  | Media Title 1 | Added to user backlogs 3 times ahead of its release on Monday, February 3rd this all-time! | all-time  |
       | Most Backlogged   | Media Title 1 | Added to backlogs 3 times this all-time!                                                   | all-time  |
       | Most Polarizing   | Media Title 3 | Media Title 3 sparked a lot of debate this all-time, with a variability score of 1.58!     | all-time  |
-      | Most Reviewed     | Media Title 4 | 5 reviews this all-time!                                                                   | all-time  |
+      | Most Reviewed     | Media Title 4 | 4 reviews this all-time!                                                                   | all-time  |
       | Most Unfinished   | Media Title 1 | 1 user didn't complete it this all-time!                                                   | all-time  |
-      | Rising Star       | Media Title 4 | 5 more reviews than the previous all-time!                                                 | all-time  |
-      | Sleeper Hit       | Media Title 4 | 5 reviews this all-time! More than its average of 0 per all-time                           | all-time  |
+      | Rising Star       | Media Title 4 | 4 more reviews than the previous all-time!                                                 | all-time  |
+      | Sleeper Hit       | Media Title 4 | 4 reviews this all-time! More than its average of 0 per all-time                           | all-time  |
