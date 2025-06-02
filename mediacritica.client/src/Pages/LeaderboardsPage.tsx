@@ -231,25 +231,33 @@ function LeaderboardsPage() {
             </div>
           ) : (
             <div className="trends">
-              <div className="trends-list">
-                {filterByAward(
-                  trends.filter(
-                    (trend) => trend.timeframe === selectedTrendTimeFrame
-                  )
-                ).map((trend) => {
-                  return (
-                    <div
-                      key={trend.title + trend.awardType}
-                      className="trend-item"
-                    >
-                      <h3>
-                        {trend.awardType}: <span>{trend.title}</span>
-                      </h3>
-                      <p>{trend.description}</p>
-                    </div>
-                  );
-                })}
-              </div>
+              {filterByAward(
+                trends.filter(
+                  (trend) => trend.timeframe === selectedTrendTimeFrame
+                )
+              ).length === 0 ? (
+                <div className="trends-list empty">No trends this {selectedTrendTimeFrame}</div>
+              ) : (
+                <div className="trends-list">
+                  {filterByAward(
+                    trends.filter(
+                      (trend) => trend.timeframe === selectedTrendTimeFrame
+                    )
+                  ).map((trend) => {
+                    return (
+                      <div
+                        key={trend.title + trend.awardType}
+                        className="trend-item"
+                      >
+                        <h3>
+                          {trend.awardType}: <span>{trend.title}</span>
+                        </h3>
+                        <p>{trend.description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </div>

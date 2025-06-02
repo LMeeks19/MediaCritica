@@ -24,6 +24,8 @@
 
     .content {
       overflow: hidden auto;
+      display: flex;
+      flex-direction: column;
       flex: 1;
 
       .sub-header {
@@ -38,15 +40,15 @@
             .MuiInputBase-root {
               color: var(--light-dark) !important;
               overflow: hidden !important;
-              padding: 5px;
-              padding-left: 14px;
+              padding: 5px !important;
+              padding-left: 14px !important;
 
               &.Mui-focused {
                 background-color: light-dark(whitesmoke, #242424) !important;
               }
 
               .MuiInputBase-input {
-                padding: 10px;
+                padding: 5px !important;
                 display: flex !important;
                 gap: 0.5rem !important;
                 overflow: hidden !important;
@@ -63,8 +65,8 @@
             }
 
             .MuiInputBase-root {
-              padding: 5px;
-              padding-left: 14px;
+              padding: 5px !important;
+              padding-left: 14px !important;
 
               .MuiChip-root {
                 color: whitesmoke !important;
@@ -77,6 +79,7 @@
 
               .MuiInputBase-input {
                 color: var(--light-dark) !important;
+                font-size: inherit !important;
               }
             }
           }
@@ -156,6 +159,7 @@
       .trends {
         padding: 2rem;
         overflow: hidden auto;
+        flex: 1;
 
         .trends-list > .trend-item:last-child {
           flex-grow: 1; /* The last item takes the remaining space */
@@ -165,6 +169,10 @@
           display: flex;
           flex-wrap: wrap;
           gap: 1rem;
+
+          &.empty {
+            height: 100%
+          }
 
           .trend-item {
             flex: 1 1 45%; /* Each item takes 1/3 of the space */
