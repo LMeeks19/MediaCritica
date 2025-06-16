@@ -733,6 +733,18 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 28",
                         "Description 28",
                         "2025-01-19"});
+            table86.AddRow(new string[] {
+                        "29",
+                        "4",
+                        "Media Poster 4",
+                        "Media Title 4",
+                        "episode",
+                        "2",
+                        "Username2",
+                        "2",
+                        "Title 25",
+                        "Description 25",
+                        "2025-02-19"});
 #line 25
  testRunner.And("I have the following reviews", ((string)(null)), table86, "And ");
 #line hidden
@@ -880,7 +892,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 1",
                         "Media Title 1",
                         "2025-02-14"});
-#line 55
+#line 56
  testRunner.And("I have the following backlogs", ((string)(null)), table87, "And ");
 #line hidden
         }
@@ -892,7 +904,7 @@ namespace MediaCritica.Server.Testing.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for week", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 73
+#line 74
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -905,10 +917,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 74
+#line 75
  testRunner.When("I call GetUserRankings for week", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 76
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
@@ -921,7 +933,7 @@ this.FeatureBackground();
                             "Username1",
                             "1",
                             "week"});
-#line 76
+#line 77
  testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table88, "And ");
 #line hidden
             }
@@ -935,7 +947,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for month", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 80
+#line 81
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -948,10 +960,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 81
+#line 82
  testRunner.When("I call GetUserRankings for month", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 82
+#line 83
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
@@ -974,7 +986,12 @@ this.FeatureBackground();
                             "Username4",
                             "3",
                             "month"});
-#line 83
+                table89.AddRow(new string[] {
+                            "4",
+                            "Username2",
+                            "1",
+                            "month"});
+#line 84
  testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table89, "And ");
 #line hidden
             }
@@ -988,7 +1005,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 89
+#line 91
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1001,10 +1018,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 90
+#line 92
  testRunner.When("I call GetUserRankings for year", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 91
+#line 93
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1019,20 +1036,20 @@ this.FeatureBackground();
                             "year"});
                 table90.AddRow(new string[] {
                             "2",
-                            "Username4",
+                            "Username2",
                             "6",
                             "year"});
                 table90.AddRow(new string[] {
                             "3",
-                            "Username2",
-                            "5",
+                            "Username4",
+                            "6",
                             "year"});
                 table90.AddRow(new string[] {
                             "4",
                             "Username3",
                             "5",
                             "year"});
-#line 92
+#line 94
  testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table90, "And ");
 #line hidden
             }
@@ -1046,7 +1063,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get user rankings for all time", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 99
+#line 101
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1059,10 +1076,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 100
+#line 102
  testRunner.When("I call GetUserRankings for all-time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 101
+#line 103
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1078,7 +1095,7 @@ this.FeatureBackground();
                 table91.AddRow(new string[] {
                             "2",
                             "Username2",
-                            "7",
+                            "8",
                             "all-time"});
                 table91.AddRow(new string[] {
                             "3",
@@ -1090,7 +1107,7 @@ this.FeatureBackground();
                             "Username4",
                             "6",
                             "all-time"});
-#line 102
+#line 104
  testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table91, "And ");
 #line hidden
             }
@@ -1104,7 +1121,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for week", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 109
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1117,10 +1134,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 110
+#line 112
  testRunner.When("I call GetMediaTrends for week", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 111
+#line 113
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1131,7 +1148,7 @@ this.FeatureBackground();
                 table92.AddRow(new string[] {
                             "Falling Star",
                             "Media Title 4",
-                            "3 fewer reviews than the previous week.",
+                            "4 fewer reviews than the previous week.",
                             "week"});
                 table92.AddRow(new string[] {
                             "Highest Rated",
@@ -1153,7 +1170,7 @@ this.FeatureBackground();
                             "Media Title 2",
                             "1 more reviews than the previous week!",
                             "week"});
-#line 112
+#line 114
  testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table92, "And ");
 #line hidden
             }
@@ -1167,7 +1184,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for month", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 120
+#line 122
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1180,10 +1197,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 121
+#line 123
  testRunner.When("I call GetMediaTrends for month", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 122
+#line 124
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1199,7 +1216,7 @@ this.FeatureBackground();
                 table93.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
-                            "A comeback with 3 reviews this month after a period of inactivity!",
+                            "A comeback with 4 reviews this month after a period of inactivity!",
                             "month"});
                 table93.AddRow(new string[] {
                             "Director Spotlight",
@@ -1245,7 +1262,7 @@ this.FeatureBackground();
                 table93.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
-                            "3 reviews this month!",
+                            "4 reviews this month!",
                             "month"});
                 table93.AddRow(new string[] {
                             "Most Unfinished",
@@ -1255,14 +1272,14 @@ this.FeatureBackground();
                 table93.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
-                            "2 more reviews than the previous month!",
+                            "3 more reviews than the previous month!",
                             "month"});
                 table93.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
-                            "3 reviews this month! More than its average of 1 per month",
+                            "4 reviews this month! More than its average of 1 per month",
                             "month"});
-#line 123
+#line 125
  testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table93, "And ");
 #line hidden
             }
@@ -1276,7 +1293,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for year", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 140
+#line 142
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1289,10 +1306,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 141
+#line 143
  testRunner.When("I call GetMediaTrends for year", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 142
+#line 144
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1303,7 +1320,7 @@ this.FeatureBackground();
                 table94.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
-                            "A comeback with 4 reviews this year after a period of inactivity!",
+                            "A comeback with 5 reviews this year after a period of inactivity!",
                             "year"});
                 table94.AddRow(new string[] {
                             "Highest Rated",
@@ -1334,7 +1351,7 @@ this.FeatureBackground();
                 table94.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
-                            "4 reviews this year!",
+                            "5 reviews this year!",
                             "year"});
                 table94.AddRow(new string[] {
                             "Most Unfinished",
@@ -1344,14 +1361,14 @@ this.FeatureBackground();
                 table94.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
-                            "4 more reviews than the previous year!",
+                            "5 more reviews than the previous year!",
                             "year"});
                 table94.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
-                            "4 reviews this year! More than its average of 0 per year",
+                            "5 reviews this year! More than its average of 0 per year",
                             "year"});
-#line 143
+#line 145
  testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table94, "And ");
 #line hidden
             }
@@ -1365,7 +1382,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get media trends for all-time", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 156
+#line 158
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1378,10 +1395,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 157
+#line 159
  testRunner.When("I call GetMediaTrends for all-time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 158
+#line 160
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1392,7 +1409,7 @@ this.FeatureBackground();
                 table95.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
-                            "A comeback with 4 reviews this all-time after a period of inactivity!",
+                            "A comeback with 5 reviews this all-time after a period of inactivity!",
                             "all-time"});
                 table95.AddRow(new string[] {
                             "Highest Rated",
@@ -1429,7 +1446,7 @@ this.FeatureBackground();
                 table95.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
-                            "4 reviews this all-time!",
+                            "5 reviews this all-time!",
                             "all-time"});
                 table95.AddRow(new string[] {
                             "Most Unfinished",
@@ -1439,14 +1456,14 @@ this.FeatureBackground();
                 table95.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
-                            "4 more reviews than the previous all-time!",
+                            "5 more reviews than the previous all-time!",
                             "all-time"});
                 table95.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
-                            "4 reviews this all-time! More than its average of 0 per all-time",
+                            "5 reviews this all-time! More than its average of 0 per all-time",
                             "all-time"});
-#line 159
+#line 161
  testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table95, "And ");
 #line hidden
             }

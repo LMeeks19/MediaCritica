@@ -123,7 +123,7 @@ namespace MediaCritica.Server.Helpers
                 .OrderByDescending(x => x.AverageRating)
                 .FirstOrDefault();
 
-            if (trend == null) return null;
+            if (trend == null || trend.AverageRating == 0) return null;
 
             return new MediaTrendModel
             {
@@ -143,7 +143,7 @@ namespace MediaCritica.Server.Helpers
                     RecentReviews = media.Reviews.Count(r => r.Date >= start && r.Date <= end),
                     PastReviews = media.Reviews.Count(r => r.Date < start.AddDays(-(end - start).Days))
                 })
-                .Where(x => x.RecentReviews > 0 && x.PastReviews == 0)
+                .Where(x => x.RecentReviews > 0 && x.PastReviews == 0 && (x.RecentReviews - x.PastReviews) > 3)
                 .OrderByDescending(x => x.RecentReviews)
                 .FirstOrDefault();
 
