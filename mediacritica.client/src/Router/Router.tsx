@@ -11,9 +11,11 @@ import LeaderboardsPage from "../Pages/LeaderboardsPage";
 import ViewUserPage from "../Pages/ViewUserPage";
 import NotificationsPage from "../Pages/NotificationsPage";
 import NotFoundPage from "../Pages/NotFoundPage";
+import AdminPage from "../Pages/Admin";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
+  { path: "/admin", element: <AdminPage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/explore", element: <ExplorePage /> },
   { path: "/leaderboards", element: <LeaderboardsPage /> },

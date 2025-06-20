@@ -7,6 +7,7 @@
         public string? Forename { get; set; }
         public string? Surname { get; set; }
         public string? Email { get; set; }
+        public bool IsAdmin { get; set; }
         public PreferenceModel? Preference { get; set; }
         public int TotalReviews { get; set; }
         public int TotalBacklogs { get; set; }

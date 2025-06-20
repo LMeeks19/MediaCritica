@@ -9,6 +9,7 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime Joined { get; set; }
+        public bool IsAdmin { get; set; }
         public virtual Preference Preference { get; set; }
         public virtual List<Backlog> Backlogs { get; set; }
         public virtual List<Review> Reviews { get; set; }

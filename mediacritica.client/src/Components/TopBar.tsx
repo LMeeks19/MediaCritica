@@ -20,6 +20,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationIcon from "@mui/icons-material/Notifications";
 import CustomAutoComplete from "./CustomAutocomplete";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import AdminIcon from "@mui/icons-material/AdminPanelSettings";
 import { CustomTooltip } from "./Tooltip";
 import { LogoutUser } from "../Helpers/AuthenticationHelper";
 import RandomIcon from "@mui/icons-material/Casino";
@@ -138,6 +139,17 @@ function TopBar(props: { hideBack?: boolean }) {
             </ListItemIcon>
             Logout
           </MenuItem>
+        )}
+        {user.id !== undefined && user.isAdmin && (
+          <>
+            <Divider />
+            <MenuItem onClick={() => navigate("/admin")}>
+              <ListItemIcon>
+                <AdminIcon />
+              </ListItemIcon>
+              Admin
+            </MenuItem>
+          </>
         )}
       </Menu>
     </div>

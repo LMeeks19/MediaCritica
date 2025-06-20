@@ -1,5 +1,6 @@
 export interface UserModel {
     id: number;
+    isAdmin: boolean;
     username: string
     forename: string;
     surname: string;
