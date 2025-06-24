@@ -1,6 +1,7 @@
 ﻿using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
+using MediaCritica.Server.Models.ReportModels;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -152,9 +153,6 @@ namespace MediaCritica.Server.Controllers
             var report = _mapper.ReportMapper.MapReport(reportModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reports.AddAsync(report);
-
-            if (comment.Reports.Count >= 5)
-                comment.IsDeleted = true;
 
             await _databaseContext.SaveChangesAsync();
 

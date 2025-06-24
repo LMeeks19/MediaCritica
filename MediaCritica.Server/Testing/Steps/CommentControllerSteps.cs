@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Models;
+using MediaCritica.Server.Models.ReportModels;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using TechTalk.SpecFlow;

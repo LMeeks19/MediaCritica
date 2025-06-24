@@ -11,5 +11,6 @@ namespace MediaCritica.Server.Models
         public ReportReason Reason { get; set; }
         public string? Details { get; set; }
         public string ReportedAt { get; set; }
+        public ReportStatus Status { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace MediaCritica.Server.Mappers
                 ReviewId = commentModel.ReviewId,
                 ParentId = commentModel.ParentId,
                 Content = commentModel.Content!,
-                CommenterId = commentModel.CommenterId,
+                CommenterId = (int)commentModel.CommenterId!,
                 CommentedAt = dateTimeProviderHelper.UtcNow,
                 IsDeleted = false
             };
