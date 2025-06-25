@@ -15,6 +15,7 @@ import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelRespon
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { NotificationModel } from "../Interfaces/NotificationModel";
+import { ReportModelObject } from "../Interfaces/ReportInterfaces";
 import { ReportModel } from "../Interfaces/ReportModel";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
@@ -649,5 +650,19 @@ export async function ReportReview(reportModel: ReportModel): Promise<void> {
 
 export async function SurpriseMe(): Promise<RandomMedia> {
   const response = await MakeRequest<RandomMedia>("/Media/SurpriseMe");
+  return response;
+}
+
+export async function GetCommentReports(): Promise<ReportModelObject[]> {
+  const response = await MakeRequest<ReportModelObject[]>(
+    "/Admin/GetCommentReports"
+  );
+  return response;
+}
+
+export async function GetReviewReports(): Promise<ReportModelObject[]> {
+  const response = await MakeRequest<ReportModelObject[]>(
+    "/Admin/GetReviewReports"
+  );
   return response;
 }

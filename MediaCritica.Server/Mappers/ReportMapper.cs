@@ -1,6 +1,7 @@
 ﻿using MediaCritica.Server.Enums;
 using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
+using MediaCritica.Server.Models.ReportModels;
 using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
@@ -29,6 +30,7 @@ namespace MediaCritica.Server.Mappers
                 ReviewId = report.ReviewId,
                 CommentId = report.CommentId,
                 ReporterId = report.ReporterId,
+                ReporterUsername = report.Reporter.Username,
                 Reason = report.Reason,
                 Details = report.Details,
                 ReportedAt = dateTimeProviderHelper.GetLocalDate(report.ReportedAt, preference),

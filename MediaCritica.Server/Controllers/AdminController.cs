@@ -22,28 +22,29 @@ namespace MediaCritica.Server.Controllers
             var userId = _helper.AuthenticationHelper.GetUserId();
             var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
 
-            var reports = await _databaseContext.Reports
+            var reports = _databaseContext.Reports
                 .Include(r => r.Review)
-                .Where(r => r.ReviewId != null)
+                .Include(r => r.Reporter)
+                .Where(r => r.CommentId == null)
                 .GroupBy(x => x.ReviewId)
-                .Select(r => new ReportModelObject
+                .AsEnumerable()
+                .Select((r, index) => new ReportModelObject
                 {
-                    ReviewId = r.Key,
+                    Id = index,
+                    ReviewId = (int)r.Key!,
                     ReviewTitle = r.First().Review!.Title,
-                    ReportedId = r.First().Review!.UserId,
                     ReportedUsername = r.First().Review!.User.Username,
-                    ReportReasons = r.GroupBy(report => report.Reason)
+                    ReportReasons = [.. r.GroupBy(report => report.Reason)
                         .OrderByDescending(g => g.Count())
-                        .Select(g => new ReportReasonModel
+                        .Select((g, index) => new ReportReasonModel
                         {
+                            Id = index,
                             Reason = GetReasonString((ReportReason)r.Key!),
-                            Reports = g.OrderByDescending(r => r.ReportedAt)
+                            Reports = [.. g.OrderByDescending(r => r.ReportedAt)
                                 .ThenByDescending(r => r.Status)
-                                .Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))
-                                .ToList()
-                        })
-                        .ToList()
-                }).ToListAsync();
+                                .Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                        })]
+                }).ToList();
 
             return Ok(reports);
         }
@@ -54,29 +55,31 @@ namespace MediaCritica.Server.Controllers
             var userId = _helper.AuthenticationHelper.GetUserId();
             var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
 
-            var reports = await _databaseContext.Reports
+            var reports = _databaseContext.Reports
                 .Include(r => r.Comment)
                     .ThenInclude(c => c.Commenter)
+                .Include(r => r.Reporter)
                 .Where(r => r.CommentId != null)
                 .GroupBy(x => x.CommentId)
-                .Select(r => new ReportModelObject
+                .AsEnumerable()
+                .Select((r, index) => new ReportModelObject
                 {
+                    Id = index,
                     CommentId = r.Key,
+                    ReviewId = r.First().Comment!.ReviewId!,
                     CommentContent = r.First().Comment!.Content,
-                    ReportedId = (int)r.First().Comment!.CommenterId!,
                     ReportedUsername = r.First().Comment!.Commenter.Username,
-                    ReportReasons = r.GroupBy(report => report.Reason)
+                    ReportReasons = [.. r.GroupBy(report => report.Reason)
                         .OrderByDescending(g => g.Count())
-                        .Select(g => new ReportReasonModel
+                        .Select((g, index) => new ReportReasonModel
                         {
+                            Id = index,
                             Reason = GetReasonString((ReportReason)r.Key!),
-                            Reports = g.OrderByDescending(r => r.ReportedAt)
+                            Reports = [.. g.OrderByDescending(r => r.ReportedAt)
                                 .ThenByDescending(r => r.Status)
-                                .Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))
-                                .ToList()
-                        })
-                        .ToList()
-                }).ToListAsync();
+                                .Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                        })]
+                });
 
             return Ok(reports);
         }

@@ -8,3 +8,9 @@ export enum ReportReason {
     Violence,
     Abuse
 }
+
+export enum ReportStatus {
+    PENDING,
+    APPROVED,
+    REJECTED,
+}

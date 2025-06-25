@@ -8,5 +8,148 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+
+    .header {
+      margin-top: 4rem !important;
+      z-index: 999;
+      border-top: none !important;
+    }
+
+    .admin-reports {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow: auto hidden;
+      padding: 2rem;
+
+      .report-card {
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 10px 0 black;
+        border-radius: 8px;
+        overflow: hidden;
+
+        .report-card-details {
+          display: flex;
+          align-items: center;
+          color: whitesmoke;
+          background-color: var(--palette-colour);
+          gap: 1.25rem;
+          padding: 1rem 1.5rem;
+          box-shadow: 0 0 10px 0 black;
+          z-index: 999;
+          cursor: pointer;
+
+          .reported-user {
+            background-color: whitesmoke;
+            color: var(--palette-colour);
+            padding: 5px 15px;
+            border-radius: 8px;
+
+            &:hover {
+              background-color: #141414;
+              cursor: pointer;
+            }
+          }
+
+          .report-card-counts {
+            background-color: whitesmoke;
+            color: var(--palette-colour);
+            padding: 5px 15px;
+            border-radius: 8px;
+            cursor: default;
+          }
+        }
+
+        .report-reason {
+          display: flex;
+          flex-direction: column;
+          background-color: var(--dark-light);
+          overflow: hidden;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid grey;
+          }
+
+          .reason-details {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1rem 1.5rem;
+            background-color: var(--dark-light);
+            z-index: 998;
+
+            &:not(:last-child) {
+              border-bottom: 1px solid grey;
+            }
+
+            &:hover {
+              cursor: pointer;
+              background-color: var(--palette-colour-faded);
+            }
+
+            .reason-counts {
+              margin-left: auto;
+              background-color: var(--palette-colour);
+              color: whitesmoke;
+              padding: 5px 15px;
+              border-radius: 8px;
+              cursor: default;
+            }
+          }
+
+          .reports {
+            box-shadow: inset 0px -10px 10px -10px black,
+              inset 0px 10px 10px -10px black;
+            z-index: 997;
+            background-color: light-dark(whitesmoke, #242424);
+
+            .report {
+              display: flex;
+              align-items: center;
+              gap: 1.25rem;
+              padding: 1rem 1.5rem;
+              z-index: 996;
+
+              &:not(:last-child) {
+                border-bottom: 1px solid grey;
+              }
+
+              .status {
+                margin-left: auto;
+                color: whitesmoke;
+                padding: 5px 15px;
+                border-radius: 8px;
+
+                &.Pending {
+                  background-color: goldenrod;
+                }
+                &.Approved {
+                  background-color: green;
+                }
+                &.Rejected {
+                  background-color: red;
+                }
+              }
+
+              .reporter,
+              .date {
+                background-color: var(--palette-colour);
+                color: whitesmoke;
+                padding: 5px 15px;
+                border-radius: 8px;
+              }
+
+              .reporter:hover {
+                cursor: pointer;
+                background-color: var(--light-dark);
+                color: var(--palette-colour);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

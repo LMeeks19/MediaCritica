@@ -1,4 +1,4 @@
-import { ReportReason } from "../Enums/ReportReason";
+import { ReportReason } from "../Enums/ReportEnums";
 
 export interface ReportModel {
     id: number;
