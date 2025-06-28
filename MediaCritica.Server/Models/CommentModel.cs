@@ -1,4 +1,6 @@
-﻿namespace MediaCritica.Server.Models
+﻿using MediaCritica.Server.Enums;
+
+namespace MediaCritica.Server.Models
 {
     public class CommentModel
     {
@@ -11,6 +13,6 @@
         public string? CommentedAt { get; set; }
         public List<CommentModel> Replies { get; set; } = [];
         public int TotalReplies { get; set; }
-        public bool IsDeleted { get; set; }
+        public ContentStatus Status { get; set; }
     }
 }

@@ -1,23 +1,15 @@
-import { ReportReason, ReportStatus } from "../Enums/ReportEnums"
+import { ReportReason } from "../Enums/ReportReason"
 
 export interface ReportModelObject {
-    id: number;
-    
-    reportedId: number
-    reportedUsername : string
-
-    reviewId: number
+    id: number
+    reviewId: number;
     commentId?: number
-
+    mediaId: string
+    mediaType: string
+    reportedUsername : string
     reviewTitle?: string
     commentContent?: string
-
     reportReasons: ReportReasonModel[]
-
-    totalReports: number
-    totalApprovedReports: number
-    totalRejectedReports: number
-    totalPendingReports: number
 }
 
 export interface ReportReasonModel {
@@ -25,9 +17,6 @@ export interface ReportReasonModel {
     reason: string
     reports: ReportModel[]
     totalReports: number
-    totalApprovedReports: number
-    totalRejectedReports: number
-    totalPendingReports: number
 }
 
 export interface ReportModel {
@@ -39,5 +28,4 @@ export interface ReportModel {
     reason: ReportReason
     details: string
     reportedAt: string
-    status: ReportStatus
 }

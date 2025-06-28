@@ -10,14 +10,14 @@ import { GetCommentReports } from "../Server/Server";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import ReviewsIcon from "@mui/icons-material/ReviewsOutlined";
 import CommentIcon from "@mui/icons-material/CommentOutlined";
+import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
-import { useNavigate } from "react-router-dom";
-import { ReportStatus } from "../Enums/ReportEnums";
+import ReactQuill from "react-quill";
+import { DeltaStatic } from "quill";
 
 function AdminPage() {
   const [reports, setReports] = useState<ReportModelObject[]>([]);
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function GetRports() {
@@ -27,50 +27,51 @@ function AdminPage() {
     GetRports();
   }, []);
 
-  function getReportStatusString(status: ReportStatus): string {
-    switch (status) {
-      case ReportStatus.PENDING:
-        return "Pending";
-      case ReportStatus.APPROVED:
-        return "Approved";
-      case ReportStatus.REJECTED:
-        return "Rejected";
-      default:
-        return "";
-    }
-  }
-
   function ReportCard(props: { report: ReportModelObject }) {
     const report = props.report;
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
-      <div className="report-card" key={report.id}>
+      <div className="report-card">
         <div className="report-card-details" onClick={() => setIsOpen(!isOpen)}>
-          <div className="report-card-title">
-            {report.reviewTitle ?? report.commentContent}
-          </div>
-          <div className="ml-auto flex gap-[1.25rem]">
+          <ReactQuill
+            className="report-card-title"
+            value={JSON.parse(report.commentContent!) as DeltaStatic}
+            readOnly
+          />
+          <div className="ml-auto flex gap-4">
             <CustomTooltip title="View reported user's profile">
               <div
                 className="reported-user"
                 onClick={() =>
-                  navigate(`/view-user/${report.reportedUsername}`)
+                  window.open(`/view-user/${report.reportedUsername}`)
                 }
               >
                 {report.reportedUsername}
               </div>
             </CustomTooltip>
-            <CustomTooltip title="Pending / Approved / Rejected / Total">
-              <div className="report-card-counts">
-                {`${report.totalPendingReports} / ${report.totalApprovedReports} / ${report.totalRejectedReports} / ${report.totalReports}`}
+            <CustomTooltip
+              title={`View ${
+                report.commentContent !== null ? "comment" : "review"
+              }`}
+            >
+              <div
+                className="view-content"
+                onClick={() =>
+                  window.open(
+                    `/${report.mediaType}/${report.mediaId}/reviews/${report.reviewId}`,
+                    "_blank"
+                  )
+                }
+              >
+                <VisibilityIcon />
               </div>
             </CustomTooltip>
           </div>
         </div>
         {isOpen &&
           report.reportReasons.map((reason) => (
-            <ReportReason reason={reason} />
+            <ReportReason key={reason.id} reason={reason} />
           ))}
       </div>
     );
@@ -83,17 +84,18 @@ function AdminPage() {
     return (
       <div className="report-reason" key={reason.id}>
         <div className="reason-details" onClick={() => setIsOpen(!isOpen)}>
-          <div className="reason-name">Reason: {reason.reason}</div>
-          <div className="ml-auto flex gap-[1.25rem]">
-            <CustomTooltip title="Pending / Approved / Rejected / Total">
-              <div className="reason-counts">
-                {`${reason.totalPendingReports} / ${reason.totalApprovedReports} / ${reason.totalRejectedReports} / ${reason.totalReports}`}
-              </div>
+          <div className="reason-name">{reason.reason}</div>
+          <div className="ml-auto">
+            <CustomTooltip title="Total reports for reasons">
+              <div className="reason-counts">{reason.totalReports}</div>
             </CustomTooltip>
           </div>
         </div>
         <div className="reports">
-          {isOpen && reason.reports.map((report) => <Report report={report} />)}
+          {isOpen &&
+            reason.reports.map((report) => (
+              <Report key={report.id} report={report} />
+            ))}
         </div>
       </div>
     );
@@ -104,19 +106,22 @@ function AdminPage() {
 
     return (
       <div className="report" key={report.id}>
-        <div>Details: {report.details}</div>
-        <div className={`status ${getReportStatusString(report.status)}`}>
-          {getReportStatusString(report.status)}
+        <div className="report-details">{report.details}</div>
+        <div className="flex gap-4 ml-auto">
+          <CustomTooltip title="View reporter's profile">
+            <div
+              className="reporter"
+              onClick={() =>
+                window.open(`/view-user/${report.reporterUsername}`)
+              }
+            >
+              {report.reporterUsername}
+            </div>
+          </CustomTooltip>
+          <CustomTooltip title="Reported at">
+            <div className="date">{report.reportedAt}</div>
+          </CustomTooltip>
         </div>
-        <CustomTooltip title="View reporter's profile">
-          <div
-            className="reporter"
-            onClick={() => navigate(`/view-user/${report.reporterUsername}`)}
-          >
-            {report.reporterUsername}
-          </div>
-        </CustomTooltip>
-        <div className="date">{report.reportedAt}</div>
       </div>
     );
   }
@@ -148,10 +153,12 @@ function AdminPage() {
             </ToggleButtonGroup>
           </div>
         </div>
-        <div className="admin-reports">
-          {reports.map((report) => (
-            <ReportCard report={report} />
-          ))}
+        <div className="content">
+          <div className="admin-reports">
+            {reports.map((report) => (
+              <ReportCard key={report.id} report={report} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

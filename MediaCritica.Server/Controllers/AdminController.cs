@@ -22,27 +22,26 @@ namespace MediaCritica.Server.Controllers
             var userId = _helper.AuthenticationHelper.GetUserId();
             var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
 
-            var reports = _databaseContext.Reports
-                .Include(r => r.Review)
-                .Include(r => r.Reporter)
-                .Where(r => r.CommentId == null)
-                .GroupBy(x => x.ReviewId)
+            var reports = _databaseContext.Reviews
+                .Include(review => review.User)
+                .Include(review => review.Reports)
+                    .ThenInclude(report => report.Reporter)
+                .Where(review => review.Status == ContentStatus.UnderReview)
                 .AsEnumerable()
-                .Select((r, index) => new ReportModelObject
+                .Select((review, index) => new ReportModelObject
                 {
                     Id = index,
-                    ReviewId = (int)r.Key!,
-                    ReviewTitle = r.First().Review!.Title,
-                    ReportedUsername = r.First().Review!.User.Username,
-                    ReportReasons = [.. r.GroupBy(report => report.Reason)
-                        .OrderByDescending(g => g.Count())
-                        .Select((g, index) => new ReportReasonModel
+                    ReviewId = review.Id,
+                    ReviewTitle = review.Title,
+                    MediaId = review.MediaId,
+                    MediaType = review.MediaType,
+                    ReportedUsername = review.User.Username,
+                    ReportReasons = [.. review.Reports.GroupBy(report => report.Reason)
+                        .Select((group, index) => new ReportReasonModel
                         {
                             Id = index,
-                            Reason = GetReasonString((ReportReason)r.Key!),
-                            Reports = [.. g.OrderByDescending(r => r.ReportedAt)
-                                .ThenByDescending(r => r.Status)
-                                .Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                            Reason = GetReasonString(group.Key),
+                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
                         })]
                 }).ToList();
 
@@ -55,31 +54,30 @@ namespace MediaCritica.Server.Controllers
             var userId = _helper.AuthenticationHelper.GetUserId();
             var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
 
-            var reports = _databaseContext.Reports
-                .Include(r => r.Comment)
-                    .ThenInclude(c => c.Commenter)
-                .Include(r => r.Reporter)
-                .Where(r => r.CommentId != null)
-                .GroupBy(x => x.CommentId)
+            var reports = _databaseContext.Comments
+                .Include(comment => comment.Review)
+                .Include(comment => comment.Commenter)
+                .Include(comment => comment.Reports)
+                    .ThenInclude(report => report.Reporter)
+                .Where(comment => comment.Status == ContentStatus.UnderReview)
                 .AsEnumerable()
-                .Select((r, index) => new ReportModelObject
+                .Select((comment, index) => new ReportModelObject
                 {
                     Id = index,
-                    CommentId = r.Key,
-                    ReviewId = r.First().Comment!.ReviewId!,
-                    CommentContent = r.First().Comment!.Content,
-                    ReportedUsername = r.First().Comment!.Commenter.Username,
-                    ReportReasons = [.. r.GroupBy(report => report.Reason)
-                        .OrderByDescending(g => g.Count())
-                        .Select((g, index) => new ReportReasonModel
+                    ReviewId = comment.ReviewId,
+                    CommentId = comment.Id,
+                    MediaType = comment.Review.MediaType,
+                    MediaId = comment.Review.MediaId,
+                    CommentContent = comment.Content,
+                    ReportedUsername = comment.Commenter.Username,
+                    ReportReasons = [.. comment.Reports.GroupBy(report => report.Reason)
+                        .Select((group, index) => new ReportReasonModel
                         {
                             Id = index,
-                            Reason = GetReasonString((ReportReason)r.Key!),
-                            Reports = [.. g.OrderByDescending(r => r.ReportedAt)
-                                .ThenByDescending(r => r.Status)
-                                .Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                            Reason = GetReasonString(group.Key),
+                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
                         })]
-                });
+                }).ToList();
 
             return Ok(reports);
         }

@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Helpers;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.ReportModels;
@@ -29,7 +30,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(c => c.Reports)
                 .Include(c => c.Commenter)
                 .Where(c => c.ReviewId == reviewId)
-                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
+                .Where(c => c.Status == ContentStatus.Active || (c.Status == ContentStatus.Active && c.Replies.Count > 0 && c.Replies.Any(c => c.Status == ContentStatus.Active)))
                 .OrderByDescending(c => c.CommentedAt)
                 .ToListAsync();
 
@@ -45,7 +46,7 @@ namespace MediaCritica.Server.Controllers
         {
             var children = comments
                 .Where(c => c.ParentId == parentId)
-                .Where(c => !c.IsDeleted || (c.IsDeleted && c.Replies.Count > 0 && c.Replies.Any(c => !c.IsDeleted)))
+                .Where(c => c.Status == ContentStatus.Active || (c.Status == ContentStatus.Active && c.Replies.Count > 0 && c.Replies.Any(c => c.Status == ContentStatus.Active)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Take(2)
                 .Select(c => _mapper.CommentMapper.MapCommentModel(c, preference, _dateTimeProviderHelper, GetReplies(c.Id, comments, preference), comments.Count(child => child.ParentId == c.Id)))
@@ -71,22 +72,6 @@ namespace MediaCritica.Server.Controllers
             return Ok(comments);
         }
 
-        [HttpDelete("[action]/{commentId}")]
-        public async Task<IActionResult> DeleteComment(int commentId)
-        {
-            var comment = await _databaseContext.Comments
-                .SingleOrDefaultAsync(c => c.Id == commentId && !c.IsDeleted);
-
-            if (comment == null)
-                return NotFound(new { Message = "Comment Not Found" });
-
-            comment.IsDeleted = true;
-
-            await _databaseContext.SaveChangesAsync();
-
-            return Ok(new { Message = "Comment Deleted" });
-        }
-
         [HttpPost("[action]")]
         public async Task<IActionResult> PostComment([FromBody] CommentModel commentModel)
         {
@@ -96,7 +81,7 @@ namespace MediaCritica.Server.Controllers
                 return NotFound(new { Message = "User Not Found" });
             if (comment.ParentId != null && !_databaseContext.Comments.Any(c => c.Id == comment.ParentId))
                 return NotFound(new { Message = "Parent Comment Not Found" });
-            if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.IsDeleted))
+            if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.Status == ContentStatus.Active))
                 return Conflict(new { Message = "Cannot reply to a deleted comment" });
 
             await _databaseContext.Comments.AddAsync(comment);
@@ -122,7 +107,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentModel updateCommentModel)
         {
             var comment = await _databaseContext.Comments
-                .SingleOrDefaultAsync(c => c.Id == updateCommentModel.Id && !c.IsDeleted);
+                .SingleOrDefaultAsync(c => c.Id == updateCommentModel.Id && c.Status == ContentStatus.Active);
 
             if (comment == null)
                 return NotFound(new { Message = "Comment Not Found" });
@@ -143,7 +128,7 @@ namespace MediaCritica.Server.Controllers
 
             var comment = await _databaseContext.Comments
                 .Include(c => c.Reports)
-                .FirstOrDefaultAsync(c => c.Id == reportModel.CommentId && !c.IsDeleted);
+                .FirstOrDefaultAsync(c => c.Id == reportModel.CommentId && c.Status == ContentStatus.Active);
             if (comment == null)
                 return NotFound(new { Message = "Comment Not Found" });
 
@@ -153,6 +138,9 @@ namespace MediaCritica.Server.Controllers
             var report = _mapper.ReportMapper.MapReport(reportModel, _dateTimeProviderHelper);
 
             await _databaseContext.Reports.AddAsync(report);
+
+            if (comment.Reports.Count >= 10)
+                comment.Status = ContentStatus.UnderReview;
 
             await _databaseContext.SaveChangesAsync();
 

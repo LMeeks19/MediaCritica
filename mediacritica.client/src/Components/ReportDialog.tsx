@@ -14,7 +14,7 @@ import { SetterOrUpdater, useRecoilValue } from "recoil";
 import { CustomTooltip } from "./Tooltip";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
-import { ReportReason } from "../Enums/ReportEnums";
+import { ReportReason } from "../Enums/ReportReason";
 import { useRef, useState } from "react";
 import { ReportModel } from "../Interfaces/ReportModel";
 import { userState } from "../State/GlobalState";

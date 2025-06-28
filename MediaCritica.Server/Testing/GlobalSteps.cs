@@ -176,7 +176,7 @@ namespace MediaCritica.Server.Testing
                 Content = row["Content"],
                 CommenterId = int.Parse(row["CommenterId"]),
                 CommentedAt = DateTime.Parse(row["CommentedAt"]),
-                IsDeleted = bool.Parse(row["IsDeleted"]),
+                // TODO Add status handling
             }).ToList();
             await _dbContext.Comments.AddRangeAsync(comments);
             await _dbContext.SaveChangesAsync();

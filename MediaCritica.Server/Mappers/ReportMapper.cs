@@ -1,5 +1,4 @@
-﻿using MediaCritica.Server.Enums;
-using MediaCritica.Server.Helpers;
+﻿using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.ReportModels;
 using MediaCritica.Server.Objects;
@@ -18,7 +17,6 @@ namespace MediaCritica.Server.Mappers
                 Reason = reportModel.Reason,
                 Details = reportModel.Details,
                 ReportedAt = dateTimeProviderHelper.UtcNow,
-                Status = ReportStatus.PENDING
             };
         }
 
@@ -34,7 +32,6 @@ namespace MediaCritica.Server.Mappers
                 Reason = report.Reason,
                 Details = report.Details,
                 ReportedAt = dateTimeProviderHelper.GetLocalDate(report.ReportedAt, preference),
-                Status = report.Status,
             };
         }
     }

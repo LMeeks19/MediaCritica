@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Helpers;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 
@@ -16,7 +17,6 @@ namespace MediaCritica.Server.Mappers
                 Content = commentModel.Content!,
                 CommenterId = (int)commentModel.CommenterId!,
                 CommentedAt = dateTimeProviderHelper.UtcNow,
-                IsDeleted = false
             };
         }
 
@@ -27,13 +27,13 @@ namespace MediaCritica.Server.Mappers
                 Id = comment.Id,
                 ParentId = comment.ParentId,
                 ReviewId = comment.ReviewId,
-                Content = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Content,
-                CommenterId = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.CommenterId,
-                CommenterUsername = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : comment.Commenter.Username,
-                CommentedAt = (comment.IsDeleted || comment.Reports.Count >= 5) ? null : dateTimeProviderHelper.GetDateTimeDistance(dateTimeProviderHelper.UtcNow, comment.CommentedAt),
-                IsDeleted = comment.IsDeleted,
+                Content = (comment.Status != ContentStatus.Active || comment.Reports.Count >= 5) ? null : comment.Content,
+                CommenterId = (comment.Status != ContentStatus.Active || comment.Reports.Count >= 5) ? null : comment.CommenterId,
+                CommenterUsername = (comment.Status != ContentStatus.Active || comment.Reports.Count >= 5) ? null : comment.Commenter.Username,
+                CommentedAt = (comment.Status != ContentStatus.Active || comment.Reports.Count >= 5) ? null : dateTimeProviderHelper.GetDateTimeDistance(dateTimeProviderHelper.UtcNow, comment.CommentedAt),
                 Replies = replies,
                 TotalReplies = totalReplies,
+                Status = comment.Status,
             };
         }
     }

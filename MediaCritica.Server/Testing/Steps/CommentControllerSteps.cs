@@ -36,12 +36,6 @@ namespace MediaCritica.Server.Testing.Steps
             GlobalSteps._response = await GlobalSteps._controller.CommentController.UpdateComment(updateCommentMocel);
         }
 
-        [When(@"I call DeleteComment with the comment id (\d+)")]
-        public async void WhenICallDeleteCommentWithTheCommentId(int commentId)
-        {
-            GlobalSteps._response = await GlobalSteps._controller.CommentController.DeleteComment(commentId);
-        }
-
         [When(@"I call ReportComment with the following data")]
         public async void WhenICallReportCommentWithTheFollowingData(Table table)
         {
@@ -62,7 +56,7 @@ namespace MediaCritica.Server.Testing.Steps
             Assert.AreEqual(expectedCommentModel.CommenterId, actualCommentModel.CommenterId);
             Assert.AreEqual(expectedCommentModel.CommenterUsername, actualCommentModel.CommenterUsername);
             Assert.AreEqual(expectedCommentModel.CommentedAt, actualCommentModel.CommentedAt);
-            Assert.AreEqual(expectedCommentModel.IsDeleted, actualCommentModel.IsDeleted);
+            Assert.AreEqual(expectedCommentModel.Status, actualCommentModel.Status);
             Assert.AreEqual(expectedCommentModel.TotalReplies, actualCommentModel.TotalReplies);
 
         }
@@ -87,7 +81,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedCommentModel.CommenterId, actualCommentModel.CommenterId);
                 Assert.AreEqual(expectedCommentModel.CommenterUsername, actualCommentModel.CommenterUsername);
                 Assert.AreEqual(expectedCommentModel.CommentedAt, actualCommentModel.CommentedAt);
-                Assert.AreEqual(expectedCommentModel.IsDeleted, actualCommentModel.IsDeleted);
+                Assert.AreEqual(expectedCommentModel.Status, actualCommentModel.Status);
                 Assert.AreEqual(expectedCommentModel.TotalReplies, actualCommentModel.TotalReplies);
             }
         }
@@ -131,7 +125,7 @@ namespace MediaCritica.Server.Testing.Steps
                 CommenterId = int.Parse(row["CommenterId"]),
                 CommenterUsername = row["CommenterName"],
                 CommentedAt = row["CommentedAt"],
-                IsDeleted = bool.Parse(row["IsDeleted"]),
+                // TODO Add Status handling
                 Replies = [],
                 TotalReplies = int.Parse(row["TotalReplies"])
             }).ToList();
@@ -155,7 +149,7 @@ namespace MediaCritica.Server.Testing.Steps
                 Assert.AreEqual(expectedComment.ReviewId, actualComment.ReviewId);
                 Assert.AreEqual(expectedComment.ParentId, actualComment.ParentId);
                 Assert.AreEqual(expectedComment.Content, actualComment.Content);
-                Assert.AreEqual(expectedComment.IsDeleted, actualComment.IsDeleted);
+                Assert.AreEqual(expectedComment.Status, actualComment.Status);
 
                 // Recursively validate replies
                 ValidateCommentHierarchy(actualComment.Replies, expectedComment.Replies);

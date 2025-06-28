@@ -11,7 +11,6 @@ namespace MediaCritica.Server.Objects
         public ReportReason Reason { get; set; }
         public string? Details { get; set; }
         public DateTime ReportedAt { get; set; }
-        public ReportStatus Status { get; set; }
 
         public virtual Review? Review { get; set; }
         public virtual Comment? Comment { get; set; }

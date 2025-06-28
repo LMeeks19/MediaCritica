@@ -605,12 +605,6 @@ export async function GetCommentsRemainingChildren(
   return response;
 }
 
-export async function DeleteComment(commentId: number): Promise<void> {
-  await MakeRequest<void>(`/Comment/DeleteComment/${commentId}`, {
-    method: "DELETE",
-  });
-}
-
 export async function PostComment(commentModel: any): Promise<CommentModel> {
   const response = await MakeRequest<CommentModel>(`/Comment/PostComment`, {
     method: "POST",
