@@ -1,6 +1,7 @@
 ﻿using MediaCritica.Server.Enums;
 using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Models.ReportModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace MediaCritica.Server.Controllers
                     .ThenInclude(report => report.Reporter)
                 .Where(review => review.Status == ContentStatus.UnderReview)
                 .AsEnumerable()
+                .Take(20)
                 .Select((review, index) => new ReportModelObject
                 {
                     Id = index,
@@ -41,7 +43,7 @@ namespace MediaCritica.Server.Controllers
                         {
                             Id = index,
                             Reason = GetReasonString(group.Key),
-                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Take(5).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
                         })]
                 }).ToList();
 
@@ -61,6 +63,7 @@ namespace MediaCritica.Server.Controllers
                     .ThenInclude(report => report.Reporter)
                 .Where(comment => comment.Status == ContentStatus.UnderReview)
                 .AsEnumerable()
+                .Take(20)
                 .Select((comment, index) => new ReportModelObject
                 {
                     Id = index,
@@ -75,11 +78,37 @@ namespace MediaCritica.Server.Controllers
                         {
                             Id = index,
                             Reason = GetReasonString(group.Key),
-                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Take(5).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
                         })]
                 }).ToList();
 
             return Ok(reports);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateReportStatus([FromBody] UpdateReportStatusModel updateReportStatusModel)
+        {
+            var review = await _databaseContext.Reviews
+                .FirstOrDefaultAsync(r => r.Id == updateReportStatusModel.ReviewId);
+
+            if (review == null)
+                return NotFound(new { Message = "Review not found" });
+            else
+                review.Status = updateReportStatusModel.Action == ReportAction.Approve ? ContentStatus.Removed : ContentStatus.Active;
+
+            var comment = await _databaseContext.Comments
+                .FirstOrDefaultAsync(c => c.Id == updateReportStatusModel.CommentId);
+
+            if (comment == null)
+                return NotFound(new { Message = "Comment not found" });
+            else
+                comment.Status = updateReportStatusModel.Action == ReportAction.Approve ? ContentStatus.Removed : ContentStatus.Active;
+
+            await _databaseContext.SaveChangesAsync();
+
+            var message = $"{(review == null ? "Comment" : "Review")} {(updateReportStatusModel.Action == ReportAction.Approve ? "Removed" : "Reinstated")}";
+
+            return Ok(new { Message = message });
         }
 
         private static string GetReasonString(ReportReason reason)

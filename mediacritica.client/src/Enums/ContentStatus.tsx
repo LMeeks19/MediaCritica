@@ -3,3 +3,8 @@ export enum ContentStatus {
     UnderReview,
     Removed
 }
+
+export enum ReportAction {
+    Approve,
+    Reject,
+}

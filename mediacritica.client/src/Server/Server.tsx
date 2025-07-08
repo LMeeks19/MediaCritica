@@ -1,5 +1,6 @@
 import Snackbar from "../Components/Snackbar";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
+import { ReportAction } from "../Enums/ContentStatus";
 import { MediaType } from "../Enums/MediaType";
 import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
@@ -659,4 +660,16 @@ export async function GetReviewReports(): Promise<ReportModelObject[]> {
     "/Admin/GetReviewReports"
   );
   return response;
+}
+
+export async function UpdateReportStatus(details: {
+  reviewId?: number;
+  commentId?: number;
+  action: ReportAction;
+}): Promise<void> {
+  await MakeRequest<void>(`/Admin/UpdateReportStatus`, {
+    method: "POST",
+    body: JSON.stringify(details),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
 }

@@ -6,26 +6,58 @@ import {
   ReportModelObject,
   ReportReasonModel,
 } from "../Interfaces/ReportInterfaces";
-import { GetCommentReports } from "../Server/Server";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  GetCommentReports,
+  UpdateReportStatus,
+  GetReviewReports,
+} from "../Server/Server";
+import {
+  Button,
+  ButtonGroup,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import ReviewsIcon from "@mui/icons-material/ReviewsOutlined";
 import CommentIcon from "@mui/icons-material/CommentOutlined";
 import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 import { CustomTooltip } from "../Components/Tooltip";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
+import ApproveIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import RejectIcon from "@mui/icons-material/CancelOutlined";
+import UserIcon from "@mui/icons-material/AccountCircleOutlined";
+import { ReportAction } from "../Enums/ContentStatus";
+import Loader from "../Components/Loader";
 
 function AdminPage() {
   const [reports, setReports] = useState<ReportModelObject[]>([]);
   const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function GetRports() {
-      const reports = await GetCommentReports();
-      setReports(reports);
-    }
     GetRports();
-  }, []);
+  }, [selectedTab]);
+
+  async function GetRports() {
+    setIsLoading(true);
+    var reports: ReportModelObject[] = [];
+    selectedTab === 0
+      ? (reports = await GetReviewReports())
+      : (reports = await GetCommentReports());
+    setReports(reports);
+    setIsLoading(false);
+  }
+
+  async function UpdateReport(
+    index: number,
+    action: ReportAction,
+    reviewId?: number,
+    commentId?: number
+  ) {
+    await UpdateReportStatus({ reviewId, commentId, action });
+    const updatedReports = reports.filter((report) => report.id !== index);
+    setReports(updatedReports);
+  }
 
   function ReportCard(props: { report: ReportModelObject }) {
     const report = props.report;
@@ -39,33 +71,65 @@ function AdminPage() {
             value={JSON.parse(report.commentContent!) as DeltaStatic}
             readOnly
           />
-          <div className="ml-auto flex gap-4">
+          <div className="ml-auto flex gap-3">
+            <ButtonGroup>
+              <CustomTooltip title="Approve report">
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    UpdateReport(
+                      report.id,
+                      ReportAction.Approve,
+                      report.reviewId,
+                      report.commentId
+                    );
+                  }}
+                >
+                  <ApproveIcon fontSize="small" />
+                </Button>
+              </CustomTooltip>
+              <CustomTooltip title="Reject report">
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    UpdateReport(
+                      report.id,
+                      ReportAction.Reject,
+                      report.reviewId,
+                      report.commentId
+                    );
+                  }}
+                >
+                  <RejectIcon fontSize="small" />
+                </Button>
+              </CustomTooltip>
+            </ButtonGroup>
             <CustomTooltip title="View reported user's profile">
-              <div
-                className="reported-user"
-                onClick={() =>
-                  window.open(`/view-user/${report.reportedUsername}`)
-                }
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(`/view-user/${report.reportedUsername}`);
+                }}
               >
-                {report.reportedUsername}
-              </div>
+                <UserIcon fontSize="small" />
+              </Button>
             </CustomTooltip>
             <CustomTooltip
               title={`View ${
                 report.commentContent !== null ? "comment" : "review"
               }`}
             >
-              <div
-                className="view-content"
-                onClick={() =>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
                   window.open(
                     `/${report.mediaType}/${report.mediaId}/reviews/${report.reviewId}`,
                     "_blank"
-                  )
-                }
+                  );
+                }}
               >
-                <VisibilityIcon />
-              </div>
+                <VisibilityIcon fontSize="small" />
+              </Button>
             </CustomTooltip>
           </div>
         </div>
@@ -86,8 +150,8 @@ function AdminPage() {
         <div className="reason-details" onClick={() => setIsOpen(!isOpen)}>
           <div className="reason-name">{reason.reason}</div>
           <div className="ml-auto">
-            <CustomTooltip title="Total reports for reasons">
-              <div className="reason-counts">{reason.totalReports}</div>
+            <CustomTooltip title="Total reason reports">
+              <Button className="readonly">{reason.totalReports}</Button>
             </CustomTooltip>
           </div>
         </div>
@@ -107,19 +171,19 @@ function AdminPage() {
     return (
       <div className="report" key={report.id}>
         <div className="report-details">{report.details}</div>
-        <div className="flex gap-4 ml-auto">
+        <div className="flex gap-3 ml-auto">
           <CustomTooltip title="View reporter's profile">
-            <div
-              className="reporter"
-              onClick={() =>
-                window.open(`/view-user/${report.reporterUsername}`)
-              }
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(`/view-user/${report.reporterUsername}`);
+              }}
             >
-              {report.reporterUsername}
-            </div>
+              <UserIcon fontSize="small" />
+            </Button>
           </CustomTooltip>
           <CustomTooltip title="Reported at">
-            <div className="date">{report.reportedAt}</div>
+            <Button className="readonly">{report.reportedAt}</Button>
           </CustomTooltip>
         </div>
       </div>
@@ -154,11 +218,19 @@ function AdminPage() {
           </div>
         </div>
         <div className="content">
-          <div className="admin-reports">
-            {reports.map((report) => (
-              <ReportCard key={report.id} report={report} />
-            ))}
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : reports.length === 0 ? (
+            <div className="admin-reports empty">
+              No {selectedTab === 0 ? "Review" : "Comment"} Reports
+            </div>
+          ) : (
+            <div className="admin-reports">
+              {reports.map((report) => (
+                <ReportCard key={report.id} report={report} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
