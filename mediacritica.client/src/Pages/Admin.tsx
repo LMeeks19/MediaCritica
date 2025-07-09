@@ -10,6 +10,8 @@ import {
   GetCommentReports,
   UpdateReportStatus,
   GetReviewReports,
+  GetMoreReviewReports,
+  GetMoreCommentReports,
 } from "../Server/Server";
 import {
   Button,
@@ -28,6 +30,7 @@ import RejectIcon from "@mui/icons-material/CancelOutlined";
 import UserIcon from "@mui/icons-material/AccountCircleOutlined";
 import { ReportAction } from "../Enums/ContentStatus";
 import Loader from "../Components/Loader";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmptyOutlined";
 
 function AdminPage() {
   const [reports, setReports] = useState<ReportModelObject[]>([]);
@@ -48,6 +51,29 @@ function AdminPage() {
     setIsLoading(false);
   }
 
+  async function GetMoreReports(id: number, reason: number, offset: number) {
+    var newReports: ReportModel[] = [];
+    selectedTab === 0
+      ? (newReports = await GetMoreReviewReports(id, reason, offset))
+      : (newReports = await GetMoreCommentReports(id, reason, offset));
+
+    var updatedReportObjectModels = reports.map((report) => {
+      return {
+        ...report,
+        reportReasons: report.reportReasons.map((reportReason) => {
+          if (reportReason.reasonId === reason) {
+            return {
+              ...reportReason,
+              reports: [...reportReason.reports, ...newReports],
+            };
+          } else return reportReason;
+        }),
+      };
+    });
+
+    setReports(updatedReportObjectModels);
+  }
+
   async function UpdateReport(
     index: number,
     action: ReportAction,
@@ -61,7 +87,7 @@ function AdminPage() {
 
   function ReportCard(props: { report: ReportModelObject }) {
     const report = props.report;
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(true);
 
     return (
       <div className="report-card">
@@ -135,23 +161,50 @@ function AdminPage() {
         </div>
         {isOpen &&
           report.reportReasons.map((reason) => (
-            <ReportReason key={reason.id} reason={reason} />
+            <ReportReason
+              key={reason.reasonId}
+              reason={reason}
+              parentId={report.commentId ?? report.reviewId}
+            />
           ))}
       </div>
     );
   }
 
-  function ReportReason(props: { reason: ReportReasonModel }) {
+  function ReportReason(props: {
+    reason: ReportReasonModel;
+    parentId: number;
+  }) {
     const reason = props.reason;
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
-      <div className="report-reason" key={reason.id}>
+      <div className="report-reason" key={reason.reasonId}>
         <div className="reason-details" onClick={() => setIsOpen(!isOpen)}>
-          <div className="reason-name">{reason.reason}</div>
-          <div className="ml-auto">
+          <div className="reason-name">{reason.reasonText}</div>
+          <div className="flex gap-3 ml-auto">
+            {reason.reports.length < reason.totalReports && isOpen && (
+              <CustomTooltip title="Load more">
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    GetMoreReports(
+                      props.parentId,
+                      reason.reasonId,
+                      reason.reports.length
+                    );
+                  }}
+                >
+                  <HourglassEmptyIcon fontSize="small" />
+                </Button>
+              </CustomTooltip>
+            )}
             <CustomTooltip title="Total reason reports">
-              <Button className="readonly">{reason.totalReports}</Button>
+              <Button className="readonly">
+                <div className="flex justify-center items-center text-[12.5px] w-[20px] h-[20px]">
+                  {reason.totalReports}
+                </div>
+              </Button>
             </CustomTooltip>
           </div>
         </div>

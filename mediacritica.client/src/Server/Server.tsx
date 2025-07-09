@@ -2,6 +2,7 @@ import Snackbar from "../Components/Snackbar";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
 import { ReportAction } from "../Enums/ContentStatus";
 import { MediaType } from "../Enums/MediaType";
+import { ReportReason } from "../Enums/ReportReason";
 import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
@@ -16,8 +17,7 @@ import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelRespon
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { NotificationModel } from "../Interfaces/NotificationModel";
-import { ReportModelObject } from "../Interfaces/ReportInterfaces";
-import { ReportModel } from "../Interfaces/ReportModel";
+import { ReportModel, ReportModelObject } from "../Interfaces/ReportInterfaces";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
@@ -655,9 +655,31 @@ export async function GetCommentReports(): Promise<ReportModelObject[]> {
   return response;
 }
 
+export async function GetMoreCommentReports(
+  commentId: number,
+  reason: ReportReason,
+  offset: number
+): Promise<ReportModel[]> {
+  const response = await MakeRequest<ReportModel[]>(
+    `/Admin/GetMoreCommentReports/${commentId}/${reason}/${offset}`
+  );
+  return response;
+}
+
 export async function GetReviewReports(): Promise<ReportModelObject[]> {
   const response = await MakeRequest<ReportModelObject[]>(
     "/Admin/GetReviewReports"
+  );
+  return response;
+}
+
+export async function GetMoreReviewReports(
+  reviewId: number,
+  reason: ReportReason,
+  offset: number
+): Promise<ReportModel[]> {
+  const response = await MakeRequest<ReportModel[]>(
+    `/Admin/GetMoreReviewReports/${reviewId}/${reason}/${offset}`
   );
   return response;
 }

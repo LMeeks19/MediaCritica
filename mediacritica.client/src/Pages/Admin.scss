@@ -126,6 +126,15 @@
             background-color: var(--dark-light);
             border-top: 1px solid grey;
 
+            .load-more {
+              display: flex;
+              align-items: center;
+              gap: 1.25rem;
+              padding: 0.5rem 0.75rem;
+              z-index: 996;
+              font-size: 12.5px;
+            }
+
             .reason-details {
               display: flex;
               align-items: center;

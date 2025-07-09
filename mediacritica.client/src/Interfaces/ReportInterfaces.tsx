@@ -13,8 +13,8 @@ export interface ReportModelObject {
 }
 
 export interface ReportReasonModel {
-    id: number
-    reason: string
+    reasonId: number
+    reasonText: string
     reports: ReportModel[]
     totalReports: number
 }

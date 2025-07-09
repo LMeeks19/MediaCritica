@@ -39,13 +39,32 @@ namespace MediaCritica.Server.Controllers
                     MediaType = review.MediaType,
                     ReportedUsername = review.User.Username,
                     ReportReasons = [.. review.Reports.GroupBy(report => report.Reason)
-                        .Select((group, index) => new ReportReasonModel
+                        .Select(group => new ReportReasonModel
                         {
-                            Id = index,
-                            Reason = GetReasonString(group.Key),
-                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Take(5).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                            ReasonId = (int)group.Key,
+                            ReasonText = GetReasonString(group.Key),
+                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Take(5).Select(report => _mapper.ReportMapper.MapReportModel(report, preference, _dateTimeProviderHelper))],
+                            TotalReports = group.Count()
                         })]
                 }).ToList();
+
+            return Ok(reports);
+        }
+
+        [HttpGet("[action]/{reviewId}/{reason}/{offset}")]
+        public async Task<IActionResult> GetMoreReviewReports(int reviewId, ReportReason reason, int offset)
+        {
+            var userId = _helper.AuthenticationHelper.GetUserId();
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
+            var reports = await _databaseContext.Reports
+                .Include(report => report.Reporter)
+                .Where(r => r.ReviewId == reviewId && r.Reason == reason)
+                .OrderByDescending(r => r.ReportedAt)
+                .Skip(offset)
+                .Take(5)
+                .Select(r => _mapper.ReportMapper.MapReportModel(r, preference, _dateTimeProviderHelper))
+                .ToListAsync();
 
             return Ok(reports);
         }
@@ -74,13 +93,32 @@ namespace MediaCritica.Server.Controllers
                     CommentContent = comment.Content,
                     ReportedUsername = comment.Commenter.Username,
                     ReportReasons = [.. comment.Reports.GroupBy(report => report.Reason)
-                        .Select((group, index) => new ReportReasonModel
+                        .Select(group => new ReportReasonModel
                         {
-                            Id = index,
-                            Reason = GetReasonString(group.Key),
-                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Take(5).Select(report => _mapper.ReportMapper.MapReportModeL(report, preference, _dateTimeProviderHelper))]
+                            ReasonId = (int)group.Key,
+                            ReasonText = GetReasonString(group.Key),
+                            Reports = [.. group.OrderByDescending(report => report.ReportedAt).Take(5).Select(report => _mapper.ReportMapper.MapReportModel(report, preference, _dateTimeProviderHelper))],
+                            TotalReports = group.Count(),
                         })]
                 }).ToList();
+
+            return Ok(reports);
+        }
+
+        [HttpGet("[action]/{commentId}/{reason}/{offset}")]
+        public async Task<IActionResult> GetMoreCommentReports(int commentId, ReportReason reason, int offset)
+        {
+            var userId = _helper.AuthenticationHelper.GetUserId();
+            var preference = await _helper.InternalApiHelper.GetUserPreference(userId);
+
+            var reports = await _databaseContext.Reports
+                .Include(report => report.Reporter)
+                .Where(r => r.CommentId == commentId && r.Reason == reason)
+                .OrderByDescending(r => r.ReportedAt)
+                .Skip(offset)
+                .Take(5)
+                .Select(r => _mapper.ReportMapper.MapReportModel(r, preference, _dateTimeProviderHelper))
+                .ToListAsync();
 
             return Ok(reports);
         }

@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReportModel MapReportModeL(Report report, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public ReportModel MapReportModel(Report report, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReportModel()
             {
