@@ -9,6 +9,7 @@
         public string MediaType { get; set; }
         public string ReportedUsername { get; set; }
         public string? ReviewTitle { get; set; }
+        public string? ReviewDescription { get; set; }
         public string? CommentContent { get; set; }
         public List<ReportReasonModel> ReportReasons { get; set; } = [];
     }

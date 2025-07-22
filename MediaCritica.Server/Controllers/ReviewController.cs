@@ -51,7 +51,7 @@ namespace MediaCritica.Server.Controllers
                    .Include(r => r.Media)
                    .Include(r => r.Comments)
                        .ThenInclude(c => c.Replies)
-                   .Where(r => r.UserId == userId && r.Status == ContentStatus.Active)
+                   .Where(r => r.UserId == userId && r.Status != ContentStatus.Removed)
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
@@ -68,7 +68,7 @@ namespace MediaCritica.Server.Controllers
                 return [];
 
             var reviews = await _databaseContext.Reviews
-                .Where(r => r.UserId == userId && r.Status == ContentStatus.Active)
+                .Where(r => r.UserId == userId && r.Status != ContentStatus.Removed)
                 .ToListAsync();
 
             var reviewBreakdown = Enumerable.Range(0, 11)

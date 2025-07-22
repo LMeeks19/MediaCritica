@@ -1,0 +1,26 @@
+.MuiDialog-root {
+  .details-box {
+    resize: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+
+    .ql-container {
+      border: none;
+    }
+
+    .ql-editor {
+      padding: 0;
+
+      p {
+        cursor: pointer;
+      }
+    }
+
+    .ql-toolbar {
+      display: none !important;
+    }
+  }
+}

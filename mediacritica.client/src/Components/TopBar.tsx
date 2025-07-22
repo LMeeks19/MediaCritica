@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { notificationsState, userState } from "../State/GlobalState";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
@@ -141,7 +141,7 @@ function TopBar(props: { hideBack?: boolean }) {
           </MenuItem>
         )}
         {user.id !== undefined && user.isAdmin && (
-          <>
+          <Fragment>
             <Divider />
             <MenuItem onClick={() => navigate("/admin")}>
               <ListItemIcon>
@@ -149,7 +149,7 @@ function TopBar(props: { hideBack?: boolean }) {
               </ListItemIcon>
               Admin
             </MenuItem>
-          </>
+          </Fragment>
         )}
       </Menu>
     </div>

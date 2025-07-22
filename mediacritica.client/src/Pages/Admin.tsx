@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import TopBar from "../Components/TopBar";
 import "./Admin.scss";
 import {
@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import ReviewsIcon from "@mui/icons-material/ReviewsOutlined";
 import CommentIcon from "@mui/icons-material/CommentOutlined";
-import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import { CustomTooltip } from "../Components/Tooltip";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
@@ -31,6 +31,11 @@ import UserIcon from "@mui/icons-material/AccountCircleOutlined";
 import { ReportAction } from "../Enums/ContentStatus";
 import Loader from "../Components/Loader";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmptyOutlined";
+import {
+  ExpandCommentDialog,
+  ExpandReportDialog,
+  ExpandReviewDalog,
+} from "../Components/ExpandReportDialogs";
 
 function AdminPage() {
   const [reports, setReports] = useState<ReportModelObject[]>([]);
@@ -88,6 +93,7 @@ function AdminPage() {
   function ReportCard(props: { report: ReportModelObject }) {
     const report = props.report;
     const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     return (
       <div className="report-card">
@@ -141,20 +147,17 @@ function AdminPage() {
               </Button>
             </CustomTooltip>
             <CustomTooltip
-              title={`View ${
+              title={`Expand ${
                 report.commentContent !== null ? "comment" : "review"
               }`}
             >
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open(
-                    `/${report.mediaType}/${report.mediaId}/reviews/${report.reviewId}`,
-                    "_blank"
-                  );
+                  setIsExpanded(true);
                 }}
               >
-                <VisibilityIcon fontSize="small" />
+                <OpenInFullIcon fontSize="small" />
               </Button>
             </CustomTooltip>
           </div>
@@ -167,6 +170,19 @@ function AdminPage() {
               parentId={report.commentId ?? report.reviewId}
             />
           ))}
+        {selectedTab === 0 ? (
+          <ExpandReviewDalog
+            open={isExpanded}
+            setIsOpen={setIsExpanded}
+            reportObject={report}
+          />
+        ) : (
+          <ExpandCommentDialog
+            open={isExpanded}
+            setIsOpen={setIsExpanded}
+            reportObject={report}
+          />
+        )}
       </div>
     );
   }
@@ -220,26 +236,39 @@ function AdminPage() {
 
   function Report(props: { report: ReportModel }) {
     const report = props.report;
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     return (
-      <div className="report" key={report.id}>
-        <div className="report-details">{report.details}</div>
-        <div className="flex gap-3 ml-auto">
-          <CustomTooltip title="View reporter's profile">
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(`/view-user/${report.reporterUsername}`);
-              }}
-            >
-              <UserIcon fontSize="small" />
-            </Button>
-          </CustomTooltip>
-          <CustomTooltip title="Reported at">
-            <Button className="readonly">{report.reportedAt}</Button>
-          </CustomTooltip>
+      <Fragment>
+        <div className="report" key={report.id}>
+          <div className="report-details">{report.details}</div>
+          <div className="flex gap-3 ml-auto">
+            <CustomTooltip title="View reporter's profile">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(`/view-user/${report.reporterUsername}`);
+                }}
+              >
+                <UserIcon fontSize="small" />
+              </Button>
+            </CustomTooltip>
+            <CustomTooltip title="Reported at">
+              <Button className="readonly">{report.reportedAt}</Button>
+            </CustomTooltip>
+            <CustomTooltip title="Expand Report">
+              <Button onClick={() => setIsExpanded(true)}>
+                <OpenInFullIcon fontSize="small" />
+              </Button>
+            </CustomTooltip>
+          </div>
         </div>
-      </div>
+        <ExpandReportDialog
+          open={isExpanded}
+          setIsOpen={setIsExpanded}
+          report={report}
+        />
+      </Fragment>
     );
   }
 

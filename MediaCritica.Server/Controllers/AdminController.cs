@@ -35,6 +35,7 @@ namespace MediaCritica.Server.Controllers
                     Id = index,
                     ReviewId = review.Id,
                     ReviewTitle = review.Title,
+                    ReviewDescription = review.Description,
                     MediaId = review.MediaId,
                     MediaType = review.MediaType,
                     ReportedUsername = review.User.Username,

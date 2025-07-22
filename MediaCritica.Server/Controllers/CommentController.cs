@@ -30,7 +30,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(c => c.Reports)
                 .Include(c => c.Commenter)
                 .Where(c => c.ReviewId == reviewId)
-                .Where(c => c.Status == ContentStatus.Active || (c.Status == ContentStatus.Active && c.Replies.Count > 0 && c.Replies.Any(c => c.Status == ContentStatus.Active)))
+                .Where(c => c.Status != ContentStatus.Removed || (c.Status != ContentStatus.Removed && c.Replies.Count > 0 && c.Replies.Any(c => c.Status != ContentStatus.Removed)))
                 .OrderByDescending(c => c.CommentedAt)
                 .ToListAsync();
 
@@ -46,7 +46,7 @@ namespace MediaCritica.Server.Controllers
         {
             var children = comments
                 .Where(c => c.ParentId == parentId)
-                .Where(c => c.Status == ContentStatus.Active || (c.Status == ContentStatus.Active && c.Replies.Count > 0 && c.Replies.Any(c => c.Status == ContentStatus.Active)))
+                .Where(c => c.Status != ContentStatus.Removed || (c.Status != ContentStatus.Removed && c.Replies.Count > 0 && c.Replies.Any(c => c.Status != ContentStatus.Removed)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Take(2)
                 .Select(c => _mapper.CommentMapper.MapCommentModel(c, preference, _dateTimeProviderHelper, GetReplies(c.Id, comments, preference), comments.Count(child => child.ParentId == c.Id)))
@@ -81,7 +81,7 @@ namespace MediaCritica.Server.Controllers
                 return NotFound(new { Message = "User Not Found" });
             if (comment.ParentId != null && !_databaseContext.Comments.Any(c => c.Id == comment.ParentId))
                 return NotFound(new { Message = "Parent Comment Not Found" });
-            if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.Status == ContentStatus.Active))
+            if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.Status == ContentStatus.Removed))
                 return Conflict(new { Message = "Cannot reply to a deleted comment" });
 
             await _databaseContext.Comments.AddAsync(comment);

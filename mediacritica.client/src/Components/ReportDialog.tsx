@@ -16,11 +16,11 @@ import FlagIcon from "@mui/icons-material/FlagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReportReason } from "../Enums/ReportReason";
 import { useRef, useState } from "react";
-import { ReportModel } from "../Interfaces/ReportModel";
 import { userState } from "../State/GlobalState";
 import { ReportComment, ReportReview } from "../Server/Server";
 import ReactQuill from "react-quill";
 import { DeltaStatic } from "quill";
+import { ReportModel } from "../Interfaces/ReportInterfaces";
 
 function ReportDialog(props: {
   open: boolean;
