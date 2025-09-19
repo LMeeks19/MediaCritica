@@ -295,7 +295,7 @@ function ViewUserPage() {
                               "300.jpg",
                               "180.jpg"
                             )}
-                            alt={item.title}
+                            alt={item.mediaTitle}
                           />
                           <CardActionArea
                             onClick={() =>

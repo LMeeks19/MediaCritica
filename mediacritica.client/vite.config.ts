@@ -47,6 +47,10 @@ export default defineConfig({
                 target,
                 secure: false
             },
+            '^/Admin': {
+                target,
+                secure: false
+            },
             '^/Review': {
                 target,
                 secure: false

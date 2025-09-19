@@ -58,16 +58,6 @@ Scenario: Get comments remaining children
 		| 4  | 1        | 3        | Comment 4 | 4           | Username4         | 28 days ago | false     | 0            |
 	And The children should be empty
 
-Scenario: Delete a comment
-	When I call DeleteComment with the comment id 1
-	Then The status code should be 200
-	And The response should be "Comment Deleted"
-
-Scenario: Delete a comment that doesn't exits
-	When I call DeleteComment with the comment id 99
-	Then The status code should be 404
-	And The response should be "Comment Not Found"
-
 Scenario: Post a comment
 	When I call PostComment with the following data
 		| ReviewId | ParentId | Content     | CommenterId | CommenterName |

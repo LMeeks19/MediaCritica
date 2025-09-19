@@ -2,7 +2,6 @@ import "./Comments.scss";
 import ReplyIcon from "@mui/icons-material/MapsUgcOutlined";
 import FlagIcon from "@mui/icons-material/FlagOutlined";
 import AccountIcon from "@mui/icons-material/AccountCircleOutlined";
-import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import LoadMoreIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
@@ -12,7 +11,6 @@ import { CustomTooltip } from "./Tooltip";
 import { useRecoilValue } from "recoil";
 import { userState } from "../State/GlobalState";
 import {
-  DeleteComment,
   GetCommentsRemainingChildren,
   PostComment,
   UpdateComment,
@@ -23,6 +21,7 @@ import { DeltaStatic } from "quill";
 import { CommentModel } from "../Interfaces/CommentModel";
 import ReportDialog from "./ReportDialog";
 import { useNavigate } from "react-router-dom";
+import { ContentStatus } from "../Enums/ContentStatus";
 
 export function Comment({
   comment,
@@ -52,19 +51,6 @@ export function Comment({
       ...curComment,
       replies: [...curComment.replies, ...commentData],
     });
-  }
-
-  async function deleteComment() {
-    await DeleteComment(comment.id).then(() =>
-      setCurComment({
-        ...curComment,
-        content: undefined,
-        commenterId: undefined,
-        commenterUsername: undefined,
-        commentedAt: undefined,
-        isDeleted: true,
-      })
-    );
   }
 
   async function sendReply() {
@@ -115,8 +101,8 @@ export function Comment({
     <div className={`comment ${user.id === curComment.commenterId && "mine"}`}>
       <div className="details">
         <AccountIcon fontSize="small" />{" "}
-        {curComment.isDeleted ? (
-          "deleted"
+        {curComment.status !== ContentStatus.Active ? (
+          "Removed"
         ) : (
           <Fragment>
             <div
@@ -130,7 +116,7 @@ export function Comment({
             | {curComment.commentedAt}
           </Fragment>
         )}
-        {!curComment.isDeleted && (
+        {curComment.status === ContentStatus.Active && (
           <div className="flex gap-2 ml-auto">
             {user.id === curComment.commenterId && !isEditing && (
               <CustomTooltip title="Edit">
@@ -138,15 +124,6 @@ export function Comment({
                   className="icon"
                   fontSize="small"
                   onClick={() => setIsEditing(true)}
-                />
-              </CustomTooltip>
-            )}
-            {user.id === curComment.commenterId && !isEditing && (
-              <CustomTooltip title="Delete">
-                <DeleteIcon
-                  className="icon"
-                  fontSize="small"
-                  onClick={() => deleteComment()}
                 />
               </CustomTooltip>
             )}
@@ -173,7 +150,9 @@ export function Comment({
       </div>
       <div
         className={`content ${
-          curComment.isDeleted && curComment.replies.length === 0 && "blank"
+          curComment.status !== ContentStatus.Active &&
+          curComment.replies.length === 0 &&
+          "blank"
         } ${user.id === curComment.commenterId && "mine"}`}
       >
         {curComment.content && (
@@ -187,37 +166,43 @@ export function Comment({
             readOnly={!isEditing}
           />
         )}
-        {!curComment.isDeleted && user.id !== undefined && (
-          <div
-            className={`actions ${curComment.replies.length === 0 && "blank"}`}
-          >
-            {user.id !== curComment.commenterId && (
-              <CustomTooltip
-                title="Report"
-                onClick={() => setIsReporting(true)}
-              >
-                <FlagIcon className="icon" />
-              </CustomTooltip>
-            )}
-            {isReplying ? (
-              <CustomTooltip
-                title="Cancel"
-                onClick={() => setIsReplying(false)}
-              >
-                <CancelIcon className="icon" />
-              </CustomTooltip>
-            ) : (
-              <CustomTooltip title="Reply" onClick={() => setIsReplying(true)}>
-                <ReplyIcon className="icon" />
-              </CustomTooltip>
-            )}
-            {isReplying && (
-              <CustomTooltip title="Send" onClick={() => sendReply()}>
-                <SendIcon className="icon" />
-              </CustomTooltip>
-            )}
-          </div>
-        )}
+        {curComment.status === ContentStatus.Active &&
+          user.id !== undefined && (
+            <div
+              className={`actions ${
+                curComment.replies.length === 0 && "blank"
+              }`}
+            >
+              {user.id !== curComment.commenterId && (
+                <CustomTooltip
+                  title="Report"
+                  onClick={() => setIsReporting(true)}
+                >
+                  <FlagIcon className="icon" />
+                </CustomTooltip>
+              )}
+              {isReplying ? (
+                <CustomTooltip
+                  title="Cancel"
+                  onClick={() => setIsReplying(false)}
+                >
+                  <CancelIcon className="icon" />
+                </CustomTooltip>
+              ) : (
+                <CustomTooltip
+                  title="Reply"
+                  onClick={() => setIsReplying(true)}
+                >
+                  <ReplyIcon className="icon" />
+                </CustomTooltip>
+              )}
+              {isReplying && (
+                <CustomTooltip title="Send" onClick={() => sendReply()}>
+                  <SendIcon className="icon" />
+                </CustomTooltip>
+              )}
+            </div>
+          )}
         {isReplying && (
           <ReactQuill
             className="reply"

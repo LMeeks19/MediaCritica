@@ -1,6 +1,8 @@
-﻿using MediaCritica.Server.Helpers;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
+using MediaCritica.Server.Models.ReportModels;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +29,7 @@ namespace MediaCritica.Server.Controllers
                     .ThenInclude(m => (m as Episode)!.Season)
                 .Include(r => r.Comments)
                     .ThenInclude(c => c.Replies)
-                .SingleOrDefaultAsync(r => r.Id == reviewId && !r.IsDeleted);
+                .SingleOrDefaultAsync(r => r.Id == reviewId && r.Status == ContentStatus.Active);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -49,7 +51,7 @@ namespace MediaCritica.Server.Controllers
                    .Include(r => r.Media)
                    .Include(r => r.Comments)
                        .ThenInclude(c => c.Replies)
-                   .Where(r => r.UserId == userId && !r.IsDeleted)
+                   .Where(r => r.UserId == userId && r.Status != ContentStatus.Removed)
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
@@ -66,7 +68,7 @@ namespace MediaCritica.Server.Controllers
                 return [];
 
             var reviews = await _databaseContext.Reviews
-                .Where(r => r.UserId == userId && !r.IsDeleted)
+                .Where(r => r.UserId == userId && r.Status != ContentStatus.Removed)
                 .ToListAsync();
 
             var reviewBreakdown = Enumerable.Range(0, 11)
@@ -88,7 +90,7 @@ namespace MediaCritica.Server.Controllers
                 .SingleAsync();
 
             var reviews = media.Reviews
-                .Where(r => !r.IsDeleted)
+                .Where(r => r.Status == ContentStatus.Active)
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
@@ -137,7 +139,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> UpdateReview([FromBody] UpdateReviewModel updateReviewModel)
         {
             var review = await _databaseContext.Reviews
-                .SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId && !r.IsDeleted);
+                .SingleOrDefaultAsync(r => r.Id == updateReviewModel.ReviewId && r.Status == ContentStatus.Active);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -162,7 +164,7 @@ namespace MediaCritica.Server.Controllers
         public async Task<IActionResult> DeleteReview(int reviewId)
         {
             var review = await _databaseContext.Reviews
-                .SingleOrDefaultAsync(r => r.Id == reviewId && !r.IsDeleted);
+                .SingleOrDefaultAsync(r => r.Id == reviewId && r.Status == ContentStatus.Active);
 
             if (review == null)
                 return NotFound(new { Message = "Review not found" });
@@ -178,7 +180,7 @@ namespace MediaCritica.Server.Controllers
         {
             var userId = _helper.AuthenticationHelper.GetUserId();
             var isReviewed = await _databaseContext.Reviews
-                .AnyAsync(r => r.MediaId == mediaId && r.UserId == userId && !r.IsDeleted);
+                .AnyAsync(r => r.MediaId == mediaId && r.UserId == userId && r.Status == ContentStatus.Active);
 
             return Ok(new { Value = isReviewed });
         }
@@ -203,7 +205,7 @@ namespace MediaCritica.Server.Controllers
             await _databaseContext.Reports.AddAsync(report);
 
             if (review.Reports.Count >= 10)
-                review.IsDeleted = true;
+                review.Status = ContentStatus.UnderReview;
 
             await _databaseContext.SaveChangesAsync();
 

@@ -44,7 +44,7 @@ namespace MediaCritica.Server.Mappers
                 Title = review.Title,
                 Likes = review.Engagements.Count(a => a.Type == EngagementType.Like),
                 Dislikes = review.Engagements.Count(a => a.Type == EngagementType.Dislike),
-                TotalComments = review.Comments.Count(c => !c.IsDeleted),
+                TotalComments = review.Comments.Count(c => c.Status == ContentStatus.Active),
             };
         }
 

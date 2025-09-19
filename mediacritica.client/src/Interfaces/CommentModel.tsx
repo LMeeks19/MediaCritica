@@ -1,3 +1,5 @@
+import { ContentStatus } from "../Enums/ContentStatus";
+
 export interface CommentModel {
   id: number;
   parentId?: number;
@@ -8,5 +10,5 @@ export interface CommentModel {
   commentedAt?: string;
   replies: CommentModel[];
   totalReplies: number;
-  isDeleted: boolean;
+  status: ContentStatus;
 }

@@ -1,5 +1,6 @@
 ﻿using MediaCritica.Server.Helpers;
 using MediaCritica.Server.Models;
+using MediaCritica.Server.Models.ReportModels;
 using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
@@ -19,7 +20,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReportModel MapReportModeL(Report report, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public ReportModel MapReportModel(Report report, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReportModel()
             {
@@ -27,9 +28,10 @@ namespace MediaCritica.Server.Mappers
                 ReviewId = report.ReviewId,
                 CommentId = report.CommentId,
                 ReporterId = report.ReporterId,
+                ReporterUsername = report.Reporter.Username,
                 Reason = report.Reason,
                 Details = report.Details,
-                ReportedAt = dateTimeProviderHelper.GetLocalDate(report.ReportedAt, preference)
+                ReportedAt = dateTimeProviderHelper.GetLocalDate(report.ReportedAt, preference),
             };
         }
     }

@@ -20,6 +20,7 @@ namespace MediaCritica.Server.Mappers
                 Email = userModel.Email,
                 Password = userModel.Password,
                 Joined = dateTimeProviderHelper.UtcNow,
+                IsAdmin = false,
                 Preference = new Preference()
                 {
                     Theme = "System",
@@ -42,6 +43,7 @@ namespace MediaCritica.Server.Mappers
                 Forename = user.Forename,
                 Surname = user.Surname,
                 Email = user.Email,
+                IsAdmin = user.IsAdmin,
                 Preference = user.Preference != null ? MapPreference(user.Preference) : null,
                 TotalReviews = user.Reviews.Count,
                 TotalBacklogs = user.Backlogs.Count,

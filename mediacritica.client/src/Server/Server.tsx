@@ -1,6 +1,8 @@
 import Snackbar from "../Components/Snackbar";
 import { BacklogCategoryType } from "../Enums/BacklogCategoryType";
+import { ReportAction } from "../Enums/ContentStatus";
 import { MediaType } from "../Enums/MediaType";
+import { ReportReason } from "../Enums/ReportReason";
 import { AccountFieldValue } from "../Interfaces/AccountModels";
 import { BacklogModel } from "../Interfaces/BacklogModel";
 import { BacklogObjectModel } from "../Interfaces/BacklogObjectModel";
@@ -15,7 +17,7 @@ import { MediaSummaryModelResponse } from "../Interfaces/MediaSummaryModelRespon
 import { MediaTrendModel } from "../Interfaces/MediaTrendModel";
 import { MovieModel } from "../Interfaces/MovieModel";
 import { NotificationModel } from "../Interfaces/NotificationModel";
-import { ReportModel } from "../Interfaces/ReportModel";
+import { ReportModel, ReportModelObject } from "../Interfaces/ReportInterfaces";
 import { ReviewModel } from "../Interfaces/ReviewModel";
 import { ReviewSummaryModel } from "../Interfaces/ReviewSummaryModel";
 import { SeasonModel } from "../Interfaces/SeasonModel";
@@ -604,12 +606,6 @@ export async function GetCommentsRemainingChildren(
   return response;
 }
 
-export async function DeleteComment(commentId: number): Promise<void> {
-  await MakeRequest<void>(`/Comment/DeleteComment/${commentId}`, {
-    method: "DELETE",
-  });
-}
-
 export async function PostComment(commentModel: any): Promise<CommentModel> {
   const response = await MakeRequest<CommentModel>(`/Comment/PostComment`, {
     method: "POST",
@@ -650,4 +646,52 @@ export async function ReportReview(reportModel: ReportModel): Promise<void> {
 export async function SurpriseMe(): Promise<RandomMedia> {
   const response = await MakeRequest<RandomMedia>("/Media/SurpriseMe");
   return response;
+}
+
+export async function GetCommentReports(): Promise<ReportModelObject[]> {
+  const response = await MakeRequest<ReportModelObject[]>(
+    "/Admin/GetCommentReports"
+  );
+  return response;
+}
+
+export async function GetMoreCommentReports(
+  commentId: number,
+  reason: ReportReason,
+  offset: number
+): Promise<ReportModel[]> {
+  const response = await MakeRequest<ReportModel[]>(
+    `/Admin/GetMoreCommentReports/${commentId}/${reason}/${offset}`
+  );
+  return response;
+}
+
+export async function GetReviewReports(): Promise<ReportModelObject[]> {
+  const response = await MakeRequest<ReportModelObject[]>(
+    "/Admin/GetReviewReports"
+  );
+  return response;
+}
+
+export async function GetMoreReviewReports(
+  reviewId: number,
+  reason: ReportReason,
+  offset: number
+): Promise<ReportModel[]> {
+  const response = await MakeRequest<ReportModel[]>(
+    `/Admin/GetMoreReviewReports/${reviewId}/${reason}/${offset}`
+  );
+  return response;
+}
+
+export async function UpdateReportStatus(details: {
+  reviewId?: number;
+  commentId?: number;
+  action: ReportAction;
+}): Promise<void> {
+  await MakeRequest<void>(`/Admin/UpdateReportStatus`, {
+    method: "POST",
+    body: JSON.stringify(details),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
 }

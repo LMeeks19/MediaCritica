@@ -1,0 +1,214 @@
+.adminpage-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .admin {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      margin-top: 4rem !important;
+      z-index: 999;
+      border-top: none !important;
+    }
+
+    .content {
+      overflow: hidden auto;
+      padding: 2rem;
+      flex: 1;
+
+      .MuiButton-root {
+        padding: 4px 8px !important;
+
+        .MuiSvgIcon-root {
+          width: 1em !important;
+          height: 1em !important;
+        }
+
+        &.readonly {
+          pointer-events: none !important;
+          cursor: default !important;
+        }
+      }
+
+      .admin-reports {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        &.empty {
+          height: 100%;
+        }
+
+        .report-card {
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 0 10px 0 black;
+          border-radius: 4px;
+          overflow: hidden;
+
+          .report-card-details {
+            display: flex;
+            align-items: center;
+            color: whitesmoke;
+            background-color: var(--palette-colour);
+            padding: 0.5rem 0.75rem;
+            box-shadow: 0 0 10px 0 black;
+            z-index: 999;
+            cursor: pointer;
+            font-size: 15px;
+            border: 2px solid transparent;
+
+            &:hover {
+              border: 2px solid whitesmoke;
+            }
+
+            .report-card-title {
+              resize: none;
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              flex: 1;
+              overflow: hidden;
+
+              .ql-container {
+                border: none;
+              }
+
+              .ql-editor {
+                padding: 0;
+
+                p {
+                  cursor: pointer;
+                }
+              }
+
+              .ql-toolbar {
+                display: none !important;
+              }
+            }
+
+            .view-content {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 0 5px !important;
+              height: 26px;
+
+              .MuiSvgIcon-root {
+                width: 22px;
+                height: 22px;
+              }
+            }
+
+            .reported-user,
+            .view-content {
+              background-color: whitesmoke;
+              color: var(--palette-colour);
+              padding: 5px 10px;
+              border-radius: 4px;
+              font-size: 12.5px;
+
+              &:hover {
+                background-color: #141414;
+                cursor: pointer;
+              }
+            }
+          }
+
+          .report-reason {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--dark-light);
+            border-top: 1px solid grey;
+
+            .load-more {
+              display: flex;
+              align-items: center;
+              gap: 1.25rem;
+              padding: 0.5rem 0.75rem;
+              z-index: 996;
+              font-size: 12.5px;
+            }
+
+            .reason-details {
+              display: flex;
+              align-items: center;
+              gap: 1.25rem;
+              padding: 0.5rem 0.75rem;
+              background-color: var(--dark-light);
+              z-index: 998;
+              font-size: 12.5px;
+
+              &:hover {
+                cursor: pointer;
+                background-color: var(--palette-colour-faded);
+              }
+
+              .reason-counts {
+                background-color: var(--palette-colour);
+                color: whitesmoke;
+                width: 26px;
+                height: 24px;
+                border-radius: 4px;
+                cursor: default;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 12.5px;
+              }
+            }
+
+            .reports {
+              box-shadow: inset 0px -10px 10px -10px black,
+                inset 0px 10px 10px -10px black;
+              z-index: 997;
+              background-color: light-dark(whitesmoke, #242424);
+
+              .report {
+                display: flex;
+                align-items: center;
+                gap: 1.25rem;
+                padding: 0.5rem 0.75rem;
+                z-index: 996;
+                font-size: 12.5px;
+
+                &:first-child {
+                  border-top: 1px solid grey;
+                }
+
+                &:not(:last-child) {
+                  border-bottom: 1px solid grey;
+                }
+
+                .reporter {
+                  margin-left: auto;
+                }
+
+                .reporter,
+                .date {
+                  margin-left: auto;
+                  background-color: var(--palette-colour);
+                  color: whitesmoke;
+                  padding: 5px 10px;
+                  border-radius: 4px;
+                  font-size: 10px;
+                }
+
+                .reporter:hover {
+                  cursor: pointer;
+                  background-color: var(--light-dark);
+                  color: var(--palette-colour);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

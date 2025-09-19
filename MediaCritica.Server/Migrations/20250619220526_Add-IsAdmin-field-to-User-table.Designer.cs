@@ -4,6 +4,7 @@ using MediaCritica.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediaCritica.Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250619220526_Add-IsAdmin-field-to-User-table")]
+    partial class AddIsAdminfieldtoUsertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,20 +101,20 @@ namespace MediaCritica.Server.Migrations
                     b.Property<DateTime>("CommentedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CommenterId")
+                    b.Property<int?>("CommenterId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReviewId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -405,6 +408,9 @@ namespace MediaCritica.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MediaId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -426,9 +432,6 @@ namespace MediaCritica.Server.Migrations
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -619,9 +622,7 @@ namespace MediaCritica.Server.Migrations
                 {
                     b.HasOne("MediaCritica.Server.Objects.User", "Commenter")
                         .WithMany()
-                        .HasForeignKey("CommenterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CommenterId");
 
                     b.HasOne("MediaCritica.Server.Objects.Comment", "Parent")
                         .WithMany("Replies")

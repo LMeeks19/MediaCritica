@@ -1,4 +1,6 @@
-﻿namespace MediaCritica.Server.Objects
+﻿using MediaCritica.Server.Enums;
+
+namespace MediaCritica.Server.Objects
 {
     public class Review
     {
@@ -15,7 +17,8 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public bool IsDeleted { get; set; }
+        public ContentStatus Status { get; set; } = ContentStatus.Active;
+
 
         public virtual Media Media { get; set; }
         public virtual User User { get; set; }

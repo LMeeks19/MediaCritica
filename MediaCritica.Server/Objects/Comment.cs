@@ -1,4 +1,6 @@
-﻿namespace MediaCritica.Server.Objects
+﻿using MediaCritica.Server.Enums;
+
+namespace MediaCritica.Server.Objects
 {
     public class Comment
     {
@@ -6,9 +8,10 @@
         public int ReviewId { get; set; }
         public int? ParentId { get; set; }
         public string Content { get; set; }
-        public int? CommenterId { get; set; }
+        public int CommenterId { get; set; }
         public DateTime CommentedAt { get; set; }
-        public bool IsDeleted { get; set; }
+        public ContentStatus Status { get; set; } = ContentStatus.Active;
+
 
         public virtual Review Review { get; set; }
         public virtual Comment Parent { get; set; }
