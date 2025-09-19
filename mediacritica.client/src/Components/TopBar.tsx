@@ -30,7 +30,6 @@ function TopBar(props: { hideBack?: boolean }) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const setNotifications = useSetRecoilState(notificationsState);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -90,6 +89,10 @@ function TopBar(props: { hideBack?: boolean }) {
             <TravelExploreIcon />
           </ListItemIcon>
           Explore
+        </MenuItem>
+        <MenuItem onClick={() => navigate("/wheelspin")}>
+          <ListItemIcon>{/* TODO: Find sutible icon */}</ListItemIcon>
+          Wheelspin
         </MenuItem>
         <MenuItem onClick={() => selectRandomMedia()}>
           <ListItemIcon>

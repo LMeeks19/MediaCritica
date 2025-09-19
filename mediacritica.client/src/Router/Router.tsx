@@ -12,6 +12,7 @@ import ViewUserPage from "../Pages/ViewUserPage";
 import NotificationsPage from "../Pages/NotificationsPage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import AdminPage from "../Pages/Admin";
+import WheelSpinPage from "../Pages/WheelSpinPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
   { path: "/explore", element: <ExplorePage /> },
   { path: "/leaderboards", element: <LeaderboardsPage /> },
   { path: "/notifications", element: <NotificationsPage /> },
+  { path: "/wheelspin", element: <WheelSpinPage /> },
   { path: "/:type/:mediaId", element: <MediaPage /> },
   { path: "/:type/:mediaId/reviews", element: <ReviewsPage /> },
   { path: "/:type/:mediaId/reviews/write", element: <WriteReviewPage /> },
