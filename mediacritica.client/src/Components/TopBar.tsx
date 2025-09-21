@@ -25,6 +25,7 @@ import { CustomTooltip } from "./Tooltip";
 import { LogoutUser } from "../Helpers/AuthenticationHelper";
 import RandomIcon from "@mui/icons-material/Casino";
 import { SurpriseMe } from "../Server/Server";
+import WheelspinIcon from "@mui/icons-material/AutoModeOutlined";
 
 function TopBar(props: { hideBack?: boolean }) {
   const navigate = useNavigate();
@@ -91,7 +92,9 @@ function TopBar(props: { hideBack?: boolean }) {
           Explore
         </MenuItem>
         <MenuItem onClick={() => navigate("/wheelspin")}>
-          <ListItemIcon>{/* TODO: Find sutible icon */}</ListItemIcon>
+          <ListItemIcon>
+            <WheelspinIcon />
+          </ListItemIcon>
           Wheelspin
         </MenuItem>
         <MenuItem onClick={() => selectRandomMedia()}>
