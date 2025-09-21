@@ -46,28 +46,44 @@
         display: flex;
         flex: 1;
         flex-direction: column;
-        padding: 2rem;
         gap: 20px;
         min-width: 500px;
 
         .search,
-        .selection,
-        .result {
+        .selection {
           background-color: #242424;
           box-shadow: 0 0 10px 0 black;
-          padding: 1.5rem 2rem;
+          padding: 1rem;
           border-radius: 8px;
-        }
-
-        .search {
         }
 
         .selection {
           overflow: hidden auto;
           flex: 1;
-        }
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
 
-        .result {
+          .item {
+            padding: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+
+            &:hover {
+              background-color: var(--palette-colour-faded);
+            }
+
+            &.winner {
+              background-color: var(--palette-colour);
+            }
+
+            .remove-wheel {
+              cursor: pointer;
+              color: rgb(204, 17, 17);
+            }
+          }
         }
       }
     }

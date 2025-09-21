@@ -1,21 +1,27 @@
-import { Button } from "@mui/material";
 import "./WheelSpinPage.scss";
 import { Roulette, RouletteItem, useRoulette } from "react-hook-roulette";
 import TopBar from "../Components/TopBar";
-import { useState } from "react";
+import { CapitaliseFirstLetter } from "../Helpers/StringHelper";
+import { MediaSearchModel } from "../Interfaces/MediaSearchModel";
+import { GetMediaSearchResults } from "../Server/Server";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
+import { CustomTooltip } from "../Components/Tooltip";
+import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Snackbar from "../Components/Snackbar";
 
 function WheelSpinPage() {
-  const media = [
-    { name: "Media 1" },
-    { name: "Media 2" },
-    { name: "Media 3" },
-    { name: "Media 4" },
-    { name: "Media 5" },
-    { name: "Media 6" },
-    { name: "Media 7" },
-    { name: "Media 8" },
-    { name: "Media 9" },
-  ] as RouletteItem[];
+  const [media, setMedia] = useState<RouletteItem[]>([] as RouletteItem[]);
 
   const options = {
     size: 600,
@@ -62,6 +68,90 @@ function WheelSpinPage() {
     options: options,
   });
 
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [mediaSearchResults, setMediaSearchResults] = useState<
+    MediaSearchModel[]
+  >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  async function getResults() {
+    const mediaSearchResponse = await GetMediaSearchResults(searchTerm);
+    setMediaSearchResults(mediaSearchResponse.search ?? []);
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      if (searchTerm.length > 2) {
+        setIsLoading(true);
+        await getResults();
+        setIsLoading(false);
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [searchTerm]);
+
+  const handleCloseAutocomplete = () => {};
+
+  const getRenderInput = (params: any) => {
+    return (
+      <TextField
+        {...params}
+        placeholder="Search Media..."
+        slotProps={{
+          input: {
+            ...params.InputProps,
+            startAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <Fragment>
+                {isLoading && (
+                  <InputAdornment position="start">
+                    <CircularProgress size={"20px"} />
+                  </InputAdornment>
+                )}
+              </Fragment>
+            ),
+          },
+        }}
+      />
+    );
+  };
+
+  const getRenderOption = (props: any, result: any) => {
+    const { key, ...resultProps } = props;
+    return (
+      <CustomTooltip title={`Add to wheel`}>
+        <Box
+          key={result.id || result.imdbID}
+          component="li"
+          {...resultProps}
+          sx={{ display: "flex", flexDirection: "row", gap: 2, width: "100%" }}
+        >
+          {result.poster === "N/A" ? (
+            <ImageIcon style={{ width: 60, height: 75 }} />
+          ) : (
+            <img loading="lazy" width="60" height="75" src={result.poster} />
+          )}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <div className="text-xl">{result.title}</div>
+            <div className="text-sm">{CapitaliseFirstLetter(result.type)}</div>
+            <div className="text-xs">{result.year}</div>
+          </Box>
+        </Box>
+      </CustomTooltip>
+    );
+  };
+
   return (
     <div className="wheelspinpage-container">
       <div className="wheelspinpage">
@@ -82,11 +172,54 @@ function WheelSpinPage() {
             </div>
           </div>
           <div className="selection-container">
-            <div className="search">Search</div>
-            <div className="selection">Selection</div>
-            <div className="result">
-              Result: {result ? result : "Not Determined"}
+            <div className="search">
+              <Autocomplete
+                onClose={handleCloseAutocomplete}
+                fullWidth
+                autoComplete
+                loading={isLoading}
+                filterOptions={(x) => x}
+                options={mediaSearchResults}
+                getOptionLabel={(result) => result.title}
+                onInputChange={(_e, v) => setSearchTerm(v)}
+                onChange={(_e, result) => {
+                  if (media.some((m) => m.name === result!.title))
+                    Snackbar.Error("This item is already in the wheel");
+                  else {
+                    setMedia([...media, { name: result!.title }]);
+                    Snackbar.Success(`${result!.title} Added to wheel`);
+                  }
+                }}
+                renderOption={getRenderOption}
+                renderInput={getRenderInput}
+              />
             </div>
+            {media.length !== 0 ? (
+              <div className="selection">
+                {media.map((m) => {
+                  return (
+                    <div
+                      className={`item ${result === m.name && "winner"}`}
+                      key={m.name}
+                    >
+                      {m.name}
+                      <CustomTooltip title="Remove from wheel" arrow>
+                        <DeleteIcon
+                          className="remove-wheel"
+                          onClick={() =>
+                            setMedia(
+                              media.filter((media) => media.name !== m.name)
+                            )
+                          }
+                        />
+                      </CustomTooltip>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="selection empty">No media added</div>
+            )}
           </div>
         </div>
       </div>
