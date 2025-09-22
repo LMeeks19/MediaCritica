@@ -25,12 +25,12 @@ import { CustomTooltip } from "./Tooltip";
 import { LogoutUser } from "../Helpers/AuthenticationHelper";
 import RandomIcon from "@mui/icons-material/Casino";
 import { SurpriseMe } from "../Server/Server";
+import WheelspinIcon from "@mui/icons-material/AutoModeOutlined";
 
 function TopBar(props: { hideBack?: boolean }) {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const setNotifications = useSetRecoilState(notificationsState);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -90,6 +90,12 @@ function TopBar(props: { hideBack?: boolean }) {
             <TravelExploreIcon />
           </ListItemIcon>
           Explore
+        </MenuItem>
+        <MenuItem onClick={() => navigate("/wheelspin")}>
+          <ListItemIcon>
+            <WheelspinIcon />
+          </ListItemIcon>
+          Wheelspin
         </MenuItem>
         <MenuItem onClick={() => selectRandomMedia()}>
           <ListItemIcon>

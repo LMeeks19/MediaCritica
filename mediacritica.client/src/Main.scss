@@ -184,7 +184,6 @@ button:disabled {
   letter-spacing: 2px !important;
   font-size: 10px !important;
   min-width: fit-content !important;
-  transition: backgorund-color 0.3s ease-in-out, color 0.3s ease-in-out !important;
 
   &:hover {
     background-color: var(--light-dark) !important;

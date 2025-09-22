@@ -68,6 +68,7 @@ import SeriesIcon from "@mui/icons-material/LiveTvOutlined";
 import EpisodeIcon from "@mui/icons-material/SubscriptionsOutlined";
 import LocalePreference from "../Components/LocalePreference";
 import TimezonePreference from "../Components/TimezonePreference";
+import WheelspinIcon from "@mui/icons-material/AutoModeOutlined";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -792,18 +793,35 @@ function AccountPage() {
             <div className="backlog-container">
               <div className="sub-header dark-shade">
                 <h2>Backlog</h2>
-                <ToggleButtonGroup
-                  value={selectedBacklogLayout}
-                  onChange={(_e, v) => setSelectedBacklogLayout(v)}
-                  exclusive
-                >
-                  <ToggleButton value={0}>
-                    <TableRowsIcon />
-                  </ToggleButton>
-                  <ToggleButton value={1}>
-                    <ViewColumnIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                <div className="actions">
+                  <CustomTooltip title="Spin the wheel!" arrow>
+                    <Button
+                      onClick={() =>
+                        navigate("/wheelspin", {
+                          state: { backloggedMedia: backlog.backlog },
+                        })
+                      }
+                    >
+                      <WheelspinIcon />
+                    </Button>
+                  </CustomTooltip>
+                  <ToggleButtonGroup
+                    value={selectedBacklogLayout}
+                    onChange={(_e, v) => setSelectedBacklogLayout(v)}
+                    exclusive
+                  >
+                    <CustomTooltip title="Alter layout (horizontal)" arrow>
+                      <ToggleButton value={0}>
+                        <TableRowsIcon />
+                      </ToggleButton>
+                    </CustomTooltip>
+                    <CustomTooltip title="Alter layout (vertical)" arrow>
+                      <ToggleButton value={1}>
+                        <ViewColumnIcon />
+                      </ToggleButton>
+                    </CustomTooltip>
+                  </ToggleButtonGroup>
+                </div>
               </div>
               {isLoading ? (
                 <Loader />
