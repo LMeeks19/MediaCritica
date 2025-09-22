@@ -42,41 +42,43 @@
     /* Headers */
     .header,
     .sub-header {
-      .MuiFormControl-root {
-        .MuiFormLabel-root {
-          color: whitesmoke !important;
-        }
-
-        .MuiOutlinedInput-notchedOutline {
-          border-color: whitesmoke !important;
-        }
-
-        .MuiSelect-select {
-          color: whitesmoke !important;
-        }
-
-        .MuiSvgIcon-root {
-          color: whitesmoke !important;
-        }
-
-        .MuiInputBase-root {
-          color: whitesmoke !important;
-          overflow: hidden !important;
-
-          .MuiAutocomplete-input {
-            padding: 0 !important;
+      .actions {
+        .MuiFormControl-root {
+          .MuiFormLabel-root {
+            color: whitesmoke !important;
           }
 
-          .MuiInputBase-input {
-            padding: 8px 15px;
-            display: flex !important;
-            gap: 0.5rem !important;
+          .MuiOutlinedInput-notchedOutline {
+            border-color: whitesmoke !important;
+          }
+
+          .MuiSelect-select {
+            color: whitesmoke !important;
+          }
+
+          .MuiSvgIcon-root {
+            color: whitesmoke !important;
+          }
+
+          .MuiInputBase-root {
+            color: whitesmoke !important;
             overflow: hidden !important;
-            font-family: "Orbitron" !important;
-          }
 
-          .MuiInputBase-inputAdornedStart {
-            padding: 8px 15px 8px 0 !important;
+            .MuiAutocomplete-input {
+              padding: 0 !important;
+            }
+
+            .MuiInputBase-input {
+              padding: 8px 15px;
+              display: flex !important;
+              gap: 0.5rem !important;
+              overflow: hidden !important;
+              font-family: "Orbitron" !important;
+            }
+
+            .MuiInputBase-inputAdornedStart {
+              padding: 8px 15px 8px 0 !important;
+            }
           }
         }
       }
@@ -229,6 +231,17 @@
 
                     &:hover {
                       background-color: rgba($color: whitesmoke, $alpha: 0.15);
+                    }
+                  }
+                }
+
+                &.palette {
+                  .MuiToggleButton-root {
+                    color: whitesmoke !important;
+                    border-color: whitesmoke !important;
+
+                    &:hover {
+                      background-color: rgba(255, 255, 255, 0.15) !important;
                     }
                   }
                 }

@@ -11,7 +11,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  IconButton,
   InputAdornment,
   TextField,
 } from "@mui/material";
@@ -19,9 +18,29 @@ import { Fragment, useEffect, useState } from "react";
 import { CustomTooltip } from "../Components/Tooltip";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Snackbar from "../Components/Snackbar";
+import { useLocation } from "react-router-dom";
+import { BacklogModel } from "../Interfaces/BacklogModel";
 
 function WheelSpinPage() {
   const [media, setMedia] = useState<RouletteItem[]>([] as RouletteItem[]);
+  const [isWheelSpinning, setIsWheelSpinning] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [mediaSearchResults, setMediaSearchResults] = useState<
+    MediaSearchModel[]
+  >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.backloggedMedia) {
+      const backloggedMedia: RouletteItem[] = location.state?.backloggedMedia.map(
+        (bm: BacklogModel) => {
+          return { id: bm.mediaId, name: bm.mediaTitle } as RouletteItem;
+        }
+      );
+      setMedia(backloggedMedia);
+    }
+  }, []);
 
   const options = {
     size: 600,
@@ -57,7 +76,6 @@ function WheelSpinPage() {
     },
   };
 
-  const [isWheelSpinning, setIsWheelSpinning] = useState(false);
   const { roulette, onStart, onStop, result } = useRoulette({
     items: media,
     onSpinUp: () => {
@@ -67,12 +85,6 @@ function WheelSpinPage() {
     onSpinEnd: () => setIsWheelSpinning(false),
     options: options,
   });
-
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [mediaSearchResults, setMediaSearchResults] = useState<
-    MediaSearchModel[]
-  >([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function getResults() {
     const mediaSearchResponse = await GetMediaSearchResults(searchTerm);
@@ -90,7 +102,9 @@ function WheelSpinPage() {
     return () => clearTimeout(timeout);
   }, [searchTerm]);
 
-  const handleCloseAutocomplete = () => {};
+  const handleCloseAutocomplete = () => {
+    setMediaSearchResults([]);
+  };
 
   const getRenderInput = (params: any) => {
     return (
@@ -183,10 +197,16 @@ function WheelSpinPage() {
                 getOptionLabel={(result) => result.title}
                 onInputChange={(_e, v) => setSearchTerm(v)}
                 onChange={(_e, result) => {
-                  if (media.some((m) => m.name === result!.title))
+                  if (media.some((m) => m.id === result!.imdbID))
                     Snackbar.Error("This item is already in the wheel");
                   else {
-                    setMedia([...media, { name: result!.title }]);
+                    setMedia([
+                      ...media,
+                      {
+                        id: result?.imdbID,
+                        name: result!.title,
+                      } as RouletteItem,
+                    ]);
                     Snackbar.Success(`${result!.title} Added to wheel`);
                   }
                 }}
@@ -207,9 +227,7 @@ function WheelSpinPage() {
                         <DeleteIcon
                           className="remove-wheel"
                           onClick={() =>
-                            setMedia(
-                              media.filter((media) => media.name !== m.name)
-                            )
+                            setMedia(media.filter((media) => media.id !== m.id))
                           }
                         />
                       </CustomTooltip>
