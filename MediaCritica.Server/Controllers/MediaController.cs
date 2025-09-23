@@ -40,7 +40,7 @@ namespace MediaCritica.Server.Controllers
             {
                 MediaSummaryModels = await mediaQuery
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -63,7 +63,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(50)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -88,7 +88,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -113,7 +113,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -136,7 +136,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -159,7 +159,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await query
                     .Skip(offset)
                     .Take(10)
-                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper))
+                    .Select(m => _mapper.MediaMapper.MapMediaSummaryModel(m, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await query.CountAsync()
             };
@@ -182,7 +182,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -214,7 +214,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -238,7 +238,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };
@@ -261,7 +261,7 @@ namespace MediaCritica.Server.Controllers
                 MediaSummaryModels = await mediaQuery
                     .Skip(offset)
                     .Take(10)
-                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper))
+                    .Select(media => _mapper.MediaMapper.MapMediaSummaryModel(media, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                     .ToListAsync(),
                 TotalMediaCount = await mediaQuery.CountAsync()
             };

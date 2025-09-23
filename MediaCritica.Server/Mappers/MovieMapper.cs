@@ -14,7 +14,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Movie>());
             var mapper = config.CreateMapper();
 
-            Media media = _mediaMapper.MapMedia(movieModel);
+            Media media = _mediaMapper.MapMedia(movieModel).Result;
             Movie movie = mapper.Map<Movie>(media);
 
             movie.BoxOffice = movieModel.BoxOffice;
@@ -30,7 +30,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, MovieModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(movie, preference, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(movie, preference, dateTimeProviderHelper).Result;
             MovieModel movieModel = mapper.Map<MovieModel>(mediaModel);
 
             movieModel.BoxOffice = movie.BoxOffice;

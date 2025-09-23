@@ -46,7 +46,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(b => b.UserId == userId && b.Category == category)
                 .OrderByDescending(media => media.AddedDate)
                 .ThenBy(b => b.MediaTitle)
-                .Select(backlog => _mapper.BacklogMapper.MapBacklogModel(backlog, preference, _dateTimeProviderHelper))
+                .Select(backlog => _mapper.BacklogMapper.MapBacklogModel(backlog, preference, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync();
@@ -92,7 +92,7 @@ namespace MediaCritica.Server.Controllers
             if (!await _databaseContext.Media.AnyAsync(m => m.Id == backlogModel.MediaId))
                 return NotFound(new { Message = "Media not found" });
 
-            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!, _dateTimeProviderHelper);
+            var backlogData = _mapper.BacklogMapper.MapBacklog(backlogModel, (int)userId!, _dateTimeProviderHelper, _helper.ImageValidator).Result;
 
             await _databaseContext.Backlogs.AddAsync(backlogData);
             await _databaseContext.SaveChangesAsync();

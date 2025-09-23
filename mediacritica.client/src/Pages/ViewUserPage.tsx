@@ -41,6 +41,7 @@ import { userState } from "../State/GlobalState";
 import { UserFollowModel } from "../Interfaces/UserFollowModel";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
 
 function ViewUserPage() {
   const user = useRecoilValue(userState);
@@ -289,14 +290,11 @@ function ViewUserPage() {
                     {userSummary.reviews?.map((item) => {
                       return (
                         <Card key={item.id}>
-                          <img
-                            className="image"
-                            src={item.mediaPoster?.replace(
-                              "300.jpg",
-                              "180.jpg"
-                            )}
-                            alt={item.mediaTitle}
-                          />
+                          {item.mediaPoster ? (
+                            <img className="image" src={item.mediaPoster} />
+                          ) : (
+                            <ImageIcon className="image" />
+                          )}
                           <CardActionArea
                             onClick={() =>
                               navigate(

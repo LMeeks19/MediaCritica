@@ -15,7 +15,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Series>());
             var mapper = config.CreateMapper();
 
-            Media media = _mediaMapper.MapMedia(seriesModel);
+            Media media = _mediaMapper.MapMedia(seriesModel).Result;
             Series series = mapper.Map<Series>(media);
 
             series.TotalSeasons = int.Parse(seriesModel.totalSeasons);
@@ -29,7 +29,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, SeriesModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(series, preference, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(series, preference, dateTimeProviderHelper).Result;
             SeriesModel seriesModel = mapper.Map<SeriesModel>(mediaModel);
 
             seriesModel.totalSeasons = series.TotalSeasons.ToString();

@@ -36,7 +36,7 @@ namespace MediaCritica.Server.Controllers
 
             var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
 
-            return Ok(_mapper.ReviewMapper.MapReviewModel(review, preference, _dateTimeProviderHelper));
+            return Ok(_mapper.ReviewMapper.MapReviewModel(review, _dateTimeProviderHelper, _helper.ImageValidator).Result);
         }
 
         [HttpGet("[action]/{offset}")]
@@ -55,7 +55,7 @@ namespace MediaCritica.Server.Controllers
                    .OrderByDescending(r => r.Date)
                    .Skip(offset)
                    .Take(20)
-                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r, preference, _dateTimeProviderHelper))
+                   .Select(r => _mapper.ReviewMapper.MapReviewModel(r, _dateTimeProviderHelper, _helper.ImageValidator).Result)
                    .ToListAsync();
 
             var breakdown = await GetUserReviewsBreakdown(userId);
@@ -94,7 +94,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(r => r.Date)
                 .Skip(offset)
                 .Take(limit)
-                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r, preference, _dateTimeProviderHelper))
+                .Select(r => _mapper.ReviewMapper.MapReviewSummaryModel(r, _dateTimeProviderHelper))
                 .ToList();
 
             return Ok(new { media.Title, Reviews = reviews, totalCount = reviews.Count });
@@ -117,7 +117,7 @@ namespace MediaCritica.Server.Controllers
             if (user.Reviews.Any(r => r.UserId == reviewModel.ReviewerId && r.MediaId == reviewModel.MediaId))
                 return Conflict(new { Message = "User has already reviewed this media" });
 
-            var review = _mapper.ReviewMapper.MapReview(reviewModel, _dateTimeProviderHelper);
+            var review = _mapper.ReviewMapper.MapReview(reviewModel, _dateTimeProviderHelper, _helper.ImageValidator).Result;
 
             await _databaseContext.Reviews.AddAsync(review);
             await _databaseContext.SaveChangesAsync();

@@ -30,6 +30,7 @@ import { GetExploreMedia, GetExploreMediaBySearch } from "../Server/Server";
 import { CustomTooltip } from "../Components/Tooltip";
 import { MediaSummaryModel } from "../Interfaces/MediaSummaryModel";
 import AddIcon from "@mui/icons-material/Add";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
 
 function ExplorePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -182,11 +183,11 @@ function ExplorePage() {
               {Sorted(GetSearchFilteredItems()).map((item) => {
                 return (
                   <Card key={item.id}>
-                    <img
-                      className="image"
-                      src={item.poster?.replace("300.jpg", "180.jpg")}
-                      alt={item.title}
-                    />
+                    {item.poster ? (
+                      <img className="image" src={item.poster} />
+                    ) : (
+                      <ImageIcon className="image" />
+                    )}
                     <CardActionArea
                       onClick={() => navigate(`/${item.type}/${item.id}`)}
                     >

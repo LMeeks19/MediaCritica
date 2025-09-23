@@ -3,7 +3,7 @@ namespace MediaCritica.Server.Models
 {
     public class MediaSearchModel
     {
-        public Uri? Poster { get; set; }
+        public string? Poster { get; set; }
         public required string Title { get; set; }
         public required string Type { get; set; }
         public required string Year { get; set; }

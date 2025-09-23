@@ -111,7 +111,7 @@ namespace MediaCritica.Server.Testing.Steps
 
             var actualCommentModels = (List<CommentModel>)((OkObjectResult)GlobalSteps._response).Value;
 
-            ValidateCommentHierarchy(actualCommentModels, expectedCommentModels);
+            ValidateCommentHierarchy(expectedCommentModels, actualCommentModels);
         }
 
         private static List<CommentModel> ParseExpectedCommentsFromTable(Table table)

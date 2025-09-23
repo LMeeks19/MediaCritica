@@ -246,7 +246,7 @@ namespace MediaCritica.Server.Controllers
 
             var preference = await _helper.InternalApiHelper.GetUserPreference(_helper.AuthenticationHelper.GetUserId());
 
-            return Ok(_mapper.UserMapper.MapUserSummaryModel(user, preference, _dateTimeProviderHelper));
+            return Ok(_mapper.UserMapper.MapUserSummaryModel(user, preference, _dateTimeProviderHelper, _helper.ImageValidator));
         }
     }
 }

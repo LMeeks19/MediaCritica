@@ -60,17 +60,27 @@ function WriteReviewPage() {
   async function SubmitReview() {
     setIsLoading(true);
     const review = {
+      id: 0,
       mediaId: media.id,
       mediaPoster: media.poster,
       mediaTitle: media.title,
       mediaSeriesTitle: (media as EpisodeModel).seriesTitle,
+      mediaSeriesId: (media as EpisodeModel).seriesId,
+      mediaEpisode: (media as EpisodeModel).episode
+        ? `S${(media as EpisodeModel).season}:E${
+            (media as EpisodeModel).episode
+          }`
+        : "",
       mediaType: media.type,
       reviewerId: user.id,
       reviewerUsername: user.username,
       title: title,
       rating: rating,
       description: description,
-      date: new Date(),
+      date: new Date().toString(),
+      likes: 0,
+      dislikes: 0,
+      totalComments: 0,
     } as ReviewModel;
 
     const reviewId = await PostReview(review);
@@ -181,20 +191,10 @@ function WriteReviewPage() {
                 </div>
               </form>
             </div>
-            {media.poster !== "N/A" ? (
-              <div
-                className="media-poster"
-                style={{
-                  backgroundImage: `url(${media.poster.replace(
-                    "300.jpg",
-                    "752.jpg"
-                  )})`,
-                }}
-              />
+            {media.poster ? (
+              <img className="image" src={media.poster} />
             ) : (
-              <div className="media-poster empty">
-                <ImageIcon />
-              </div>
+              <ImageIcon className="image" />
             )}
           </div>
         )}

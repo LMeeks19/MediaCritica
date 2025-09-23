@@ -54,6 +54,7 @@ builder.Services.AddScoped<InternalApiHelper>();
 builder.Services.AddScoped<MilestoneCalculatorHelper>();
 builder.Services.AddScoped<TrendCalculatorHelper>();
 builder.Services.AddScoped<AuthenticationHelper>();
+builder.Services.AddScoped<ImageValidator>();
 builder.Services.AddScoped<IDateTimeProviderHelper, DateTimeProviderHelper>();
 
 //Register Hubs

@@ -33,11 +33,10 @@ function WheelSpinPage() {
 
   useEffect(() => {
     if (location.state?.backloggedMedia) {
-      const backloggedMedia: RouletteItem[] = location.state?.backloggedMedia.map(
-        (bm: BacklogModel) => {
+      const backloggedMedia: RouletteItem[] =
+        location.state?.backloggedMedia.map((bm: BacklogModel) => {
           return { id: bm.mediaId, name: bm.mediaTitle } as RouletteItem;
-        }
-      );
+        });
       setMedia(backloggedMedia);
     }
   }, []);
@@ -144,10 +143,10 @@ function WheelSpinPage() {
           {...resultProps}
           sx={{ display: "flex", flexDirection: "row", gap: 2, width: "100%" }}
         >
-          {result.poster === "N/A" ? (
-            <ImageIcon style={{ width: 60, height: 75 }} />
-          ) : (
+          {result.poster ? (
             <img loading="lazy" width="60" height="75" src={result.poster} />
+          ) : (
+            <ImageIcon style={{ width: 60, height: 75 }} />
           )}
           <Box
             sx={{

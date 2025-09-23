@@ -77,7 +77,7 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Username",
                         "Forename",
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Email",
                         "Password",
                         "Joined"});
-            table134.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "1",
                         "Username1",
                         "Test",
@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table134.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "2",
                         "Username2",
                         "Test",
@@ -102,23 +102,23 @@ namespace MediaCritica.Server.Testing.Features
                         "Password456!",
                         "2025-01-02"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table134, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table133, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "Theme",
                         "Palette",
                         "Locale",
                         "Timezone"});
-            table135.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "1",
                         "1",
                         "System",
                         "#000000",
                         "en-US",
                         "America/New_York"});
-            table135.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "2",
                         "2",
                         "Light",
@@ -126,7 +126,7 @@ namespace MediaCritica.Server.Testing.Features
                         "en-GB",
                         "Europe/London"});
 #line 8
- testRunner.And("I have the following preferences", ((string)(null)), table135, "And ");
+ testRunner.And("I have the following preferences", ((string)(null)), table134, "And ");
 #line hidden
         }
         
@@ -150,16 +150,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
                             "Username",
                             "Password",
                             "RememberMe"});
-                table136.AddRow(new string[] {
+                table135.AddRow(new string[] {
                             "Username1",
                             "Password123!",
                             "false"});
 #line 14
- testRunner.Given("I am the following user", ((string)(null)), table136, "Given ");
+ testRunner.Given("I am the following user", ((string)(null)), table135, "Given ");
 #line hidden
 #line 17
  testRunner.When("I call GetUserMilestones", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -167,29 +167,29 @@ this.FeatureBackground();
 #line 18
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
                             "Category",
                             "Milestones"});
-                table137.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Reviewed Media",
                             "5"});
-                table137.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Backlogged Media",
                             "2"});
-                table137.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Review Engagement",
                             "3"});
-                table137.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Interaction Variety",
                             "6"});
-                table137.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Consecutive Activity",
                             "3"});
-                table137.AddRow(new string[] {
+                table136.AddRow(new string[] {
                             "Social Connectivity",
                             "2"});
 #line 19
- testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table137, "And ");
+ testRunner.And("The MilestoneCategoryModels should be", ((string)(null)), table136, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -382,20 +382,10 @@ function ViewReviewPage() {
               </div>
             </form>
           </div>
-          {review.mediaPoster !== "N/A" ? (
-            <div
-              className="media-poster"
-              style={{
-                backgroundImage: `url(${review.mediaPoster.replace(
-                  "300.jpg",
-                  "752.jpg"
-                )})`,
-              }}
-            ></div>
+          {review.mediaPoster ? (
+            <img className="image" src={review.mediaPoster} />
           ) : (
-            <div className="media-poster empty">
-              <ImageIcon />
-            </div>
+            <ImageIcon className="image" />
           )}
         </div>
       )}

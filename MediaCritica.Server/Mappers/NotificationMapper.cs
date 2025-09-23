@@ -19,7 +19,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public NotificationModel MapNotificationModel(Notification notification, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public NotificationModel MapNotificationModel(Notification notification, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new NotificationModel
             {

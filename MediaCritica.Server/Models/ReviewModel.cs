@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string MediaId { get; set; }
-        public string MediaPoster { get; set; }
+        public string? MediaPoster { get; set; }
         public string MediaTitle { get; set; }
         public string? MediaSeriesId { get; set; }
         public string? MediaSeriesTitle { get; set; }

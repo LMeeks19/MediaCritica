@@ -36,20 +36,20 @@ namespace MediaCritica.Server.Controllers
 
             var rootComments = comments
                 .Where(c => c.ParentId == null)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, preference, _dateTimeProviderHelper, GetReplies(c.Id, comments, preference), comments.Count(child => child.ParentId == c.Id)))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, _dateTimeProviderHelper, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
                 .ToList();
 
             return Ok(rootComments);
         }
 
-        private List<CommentModel> GetReplies(int parentId, List<Comment> comments, PreferenceModel preference)
+        private List<CommentModel> GetReplies(int parentId, List<Comment> comments)
         {
             var children = comments
                 .Where(c => c.ParentId == parentId)
                 .Where(c => c.Status != ContentStatus.Removed || (c.Status != ContentStatus.Removed && c.Replies.Count > 0 && c.Replies.Any(c => c.Status != ContentStatus.Removed)))
                 .OrderByDescending(c => c.CommentedAt)
                 .Take(2)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, preference, _dateTimeProviderHelper, GetReplies(c.Id, comments, preference), comments.Count(child => child.ParentId == c.Id)))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, _dateTimeProviderHelper, GetReplies(c.Id, comments), comments.Count(child => child.ParentId == c.Id)))
                 .ToList();
 
             return children;
@@ -66,7 +66,7 @@ namespace MediaCritica.Server.Controllers
                 .Where(c => c.ParentId == commentId)
                 .OrderByDescending(c => c.CommentedAt)
                 .Skip(offset)
-                .Select(c => _mapper.CommentMapper.MapCommentModel(c, preference, _dateTimeProviderHelper, GetReplies(c.Id, c.Replies, preference), c.Replies.Count))
+                .Select(c => _mapper.CommentMapper.MapCommentModel(c, _dateTimeProviderHelper, GetReplies(c.Id, c.Replies), c.Replies.Count))
                 .ToListAsync();
 
             return Ok(comments);
@@ -100,7 +100,7 @@ namespace MediaCritica.Server.Controllers
                 .Include(c => c.Commenter)
                 .SingleAsync(c => c.Id == commentId);
 
-            return _mapper.CommentMapper.MapCommentModel(comment, preference, _dateTimeProviderHelper, GetReplies(comment.Id, comment.Replies, preference), comment.Replies.Count);
+            return _mapper.CommentMapper.MapCommentModel(comment, _dateTimeProviderHelper, GetReplies(comment.Id, comment.Replies), comment.Replies.Count);
         }
 
         [HttpPut("[action]")]

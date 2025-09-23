@@ -8,12 +8,13 @@ namespace MediaCritica.Server.Mappers
     public class EpisodeMapper(MediaMapper mediaMapper)
     {
         private readonly MediaMapper _mediaMapper = mediaMapper;
+
         public Episode MapEpisode(EpisodeModel episodeModel)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Media, Episode>());
             var mapper = config.CreateMapper();
 
-            Media media = _mediaMapper.MapMedia(episodeModel);
+            Media media = _mediaMapper.MapMedia(episodeModel).Result;
             Episode episode = mapper.Map<Episode>(media);
 
             episode.EpisodeNo = int.Parse(episodeModel.Episode);
@@ -28,7 +29,7 @@ namespace MediaCritica.Server.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<MediaModel, EpisodeModel>());
             var mapper = config.CreateMapper();
 
-            MediaModel mediaModel = _mediaMapper.MapMediaModel(episode, preference, dateTimeProviderHelper);
+            MediaModel mediaModel = _mediaMapper.MapMediaModel(episode, preference, dateTimeProviderHelper).Result;
             EpisodeModel episodeModel = mapper.Map<EpisodeModel>(mediaModel);
 
             episodeModel.Episode = episode.EpisodeNo.ToString();

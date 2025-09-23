@@ -20,7 +20,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public CommentModel MapCommentModel(Comment comment, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper, List<CommentModel> replies, int totalReplies)
+        public CommentModel MapCommentModel(Comment comment, IDateTimeProviderHelper dateTimeProviderHelper, List<CommentModel> replies, int totalReplies)
         {
             return new CommentModel()
             {

@@ -146,7 +146,7 @@ function CustomAutoComplete() {
       <Box key={result.id || result.imdbID} component="li" {...resultProps}>
         {selectedSearchTab === 0 ? (
           <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-            {result.poster === "N/A" ? (
+            {!result.poster ? (
               <ImageIcon style={{ width: 60, height: 75 }} />
             ) : (
               <img loading="lazy" width="60" height="75" src={result.poster} />

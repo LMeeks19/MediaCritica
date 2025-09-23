@@ -6,7 +6,7 @@ namespace MediaCritica.Server.Mappers
 {
     public class BacklogMapper
     {
-        public Backlog MapBacklog(BacklogModel backlogModel, int userId, IDateTimeProviderHelper dateTimeProviderHelper)
+        public async Task<Backlog> MapBacklog(BacklogModel backlogModel, int userId, IDateTimeProviderHelper dateTimeProviderHelper, ImageValidator imageValidator)
         {
             return new Backlog()
             {
@@ -14,13 +14,13 @@ namespace MediaCritica.Server.Mappers
                 AddedDate = dateTimeProviderHelper.UtcNow,
                 Category = backlogModel.Category,
                 MediaId = backlogModel.MediaId,
-                MediaPoster = backlogModel.MediaPoster,
+                MediaPoster = await imageValidator.GetValidImageUrlAsync(backlogModel.MediaPoster),
                 MediaTitle = backlogModel.MediaTitle,
                 MediaType = backlogModel.MediaType,
             };
         }
 
-        public BacklogModel MapBacklogModel(Backlog backlog, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public async Task<BacklogModel> MapBacklogModel(Backlog backlog, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper, ImageValidator imageValidator)
         {
             return new BacklogModel()
             {
@@ -28,7 +28,7 @@ namespace MediaCritica.Server.Mappers
                 AddedDate = dateTimeProviderHelper.GetLocalDate(backlog.AddedDate, preference),
                 Category = backlog.Category,
                 MediaId = backlog.MediaId,
-                MediaPoster = backlog.MediaPoster,
+                MediaPoster = await imageValidator.GetValidImageUrlAsync(backlog.MediaPoster),
                 MediaTitle = backlog.MediaTitle,
                 MediaType = backlog.MediaType,
             };

@@ -3,10 +3,11 @@ using System.Text.Json;
 
 namespace MediaCritica.Server.Helpers
 {
-    public class ExternalApiHelper(IConfiguration configuration, bool isTestEnvironment = false)
+    public class ExternalApiHelper(IConfiguration configuration, ImageValidator imageValidator, bool isTestEnvironment = false)
     {
         private readonly string? _apiKey = isTestEnvironment ? null : configuration.GetSection("API_KEYS:MEDIA_SERIVE").Value;
         private readonly bool _isTestEnvironment = isTestEnvironment;
+        private readonly ImageValidator _imageValidator = imageValidator;
 
         public async Task<MediaSearchResultResponse?> GetSearchMedia(string searchTerm, int page)
         {
@@ -32,6 +33,10 @@ namespace MediaCritica.Server.Helpers
                 var response = await new HttpClient().GetAsync($"https://www.omdbapi.com/?s={searchTerm}&page={page}&apikey={_apiKey}");
                 var stringResponse = await response.Content.ReadAsStringAsync();
                 var mediaSearchResultResponse = JsonSerializer.Deserialize<MediaSearchResultResponse>(stringResponse);
+                foreach (var media in mediaSearchResultResponse.Search)
+                {
+                    media.Poster = await _imageValidator.GetValidImageUrlAsync(media.Poster!.ToString());
+                }
                 return mediaSearchResultResponse;
             }
         }

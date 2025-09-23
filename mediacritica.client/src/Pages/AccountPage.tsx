@@ -69,6 +69,7 @@ import EpisodeIcon from "@mui/icons-material/SubscriptionsOutlined";
 import LocalePreference from "../Components/LocalePreference";
 import TimezonePreference from "../Components/TimezonePreference";
 import WheelspinIcon from "@mui/icons-material/AutoModeOutlined";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
 
 function AccountPage() {
   const [user, setUser] = useRecoilState(userState);
@@ -393,11 +394,11 @@ function AccountPage() {
                     onDragStart={(e) => handleDragStart(e, stage, index)}
                     key={item.id}
                   >
-                    <img
-                      className="image"
-                      src={item.mediaPoster?.replace("300.jpg", "180.jpg")}
-                      alt={item.mediaTitle}
-                    />
+                    {item.mediaPoster ? (
+                      <img className="image" src={item.mediaPoster} />
+                    ) : (
+                      <ImageIcon className="image" />
+                    )}
                     <CardActionArea
                       onClick={() =>
                         navigate(`/${item.mediaType}/${item.mediaId}`)
@@ -697,14 +698,14 @@ function AccountPage() {
                         (review) => {
                           return (
                             <Card key={review.id}>
-                              <img
-                                className="image"
-                                src={review.mediaPoster?.replace(
-                                  "300.jpg",
-                                  "180.jpg"
-                                )}
-                                alt={review.mediaTitle}
-                              />
+                              {review.mediaPoster ? (
+                                <img
+                                  className="image"
+                                  src={review.mediaPoster}
+                                />
+                              ) : (
+                                <ImageIcon className="image" />
+                              )}
                               <CardActionArea
                                 onClick={() =>
                                   navigate(

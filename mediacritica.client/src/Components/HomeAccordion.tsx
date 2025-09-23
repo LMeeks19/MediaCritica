@@ -27,6 +27,7 @@ import GameIcon from "@mui/icons-material/SportsEsportsOutlined";
 import MovieIcon from "@mui/icons-material/MovieOutlined";
 import SeriesIcon from "@mui/icons-material/LiveTvOutlined";
 import { CustomTooltip } from "./Tooltip";
+import ImageIcon from "@mui/icons-material/ImageOutlined";
 
 interface SectionProps {
   title: string;
@@ -55,12 +56,14 @@ const MediaGrid: FC<{
       ) : (
         filtered(media.mediaSummaryModels).map((item) => (
           <Card key={item.id}>
-            <img
-              className="image"
-              src={item.poster?.replace("300.jpg", "180.jpg")}
-              alt={item.title}
-            />
-            <CardActionArea onClick={() => navigate(`/${item.type}/${item.id}`)}>
+            {item.poster ? (
+              <img className="image" src={item.poster} />
+            ) : (
+              <ImageIcon className="image" />
+            )}
+            <CardActionArea
+              onClick={() => navigate(`/${item.type}/${item.id}`)}
+            >
               <CardMedia component="div" />
               <CardHeader title={item.title} />
               <Divider />

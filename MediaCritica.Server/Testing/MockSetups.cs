@@ -5,6 +5,7 @@ using MediaCritica.Server.Mappers;
 using MediaCritica.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 
 namespace MediaCritica.Server.Testing
@@ -19,7 +20,7 @@ namespace MediaCritica.Server.Testing
             mapper.Setup(m => m.RatingMapper).Returns(new RatingMapper());
             mapper.Setup(m => m.BacklogMapper).Returns(new BacklogMapper());
             mapper.Setup(m => m.UserMapper).Returns(new UserMapper(helper, mapper.Object.ReviewMapper));
-            mapper.Setup(m => m.MediaMapper).Returns(new MediaMapper(mapper.Object.RatingMapper, mapper.Object.ReviewMapper));
+            mapper.Setup(m => m.MediaMapper).Returns(new MediaMapper(mapper.Object.RatingMapper, mapper.Object.ReviewMapper, helper.ImageValidator));
             mapper.Setup(m => m.MovieMapper).Returns(new MovieMapper(mapper.Object.MediaMapper));
             mapper.Setup(m => m.GameMapper).Returns(new GameMapper(mapper.Object.MediaMapper));
             mapper.Setup(m => m.EpisodeMapper).Returns(new EpisodeMapper(mapper.Object.MediaMapper));
@@ -34,12 +35,13 @@ namespace MediaCritica.Server.Testing
             return mapper.Object;
         }
 
-        private static IHelpers SetupHelper(DatabaseContext dbContext, IConfiguration configuration, IDateTimeProviderHelper dateTimeProviderHelper, IHttpContextAccessor httpContext)
+        private static IHelpers SetupHelper(DatabaseContext dbContext, IConfiguration configuration, IDateTimeProviderHelper dateTimeProviderHelper, IHttpContextAccessor httpContext, IMemoryCache memoryCache)
         {
             var helper = new Mock<IHelpers>();
+            helper.Setup(h => h.ImageValidator).Returns(new ImageValidator(memoryCache));
             helper.Setup(h => h.TrendCalculatorHelper).Returns(new TrendCalculatorHelper());
             helper.Setup(h => h.DateRangeCalculatorHelper).Returns(new DateRangeCalculatorHelper(dateTimeProviderHelper));
-            helper.Setup(h => h.ExternalApiHelper).Returns(new ExternalApiHelper(configuration, true));
+            helper.Setup(h => h.ExternalApiHelper).Returns(new ExternalApiHelper(configuration, helper.Object.ImageValidator, true));
             helper.Setup(h => h.InternalApiHelper).Returns(new InternalApiHelper(dbContext));
             helper.Setup(h => h.AuthenticationHelper).Returns(new AuthenticationHelper(dbContext, dateTimeProviderHelper, httpContext, true));
             helper.Setup(h => h.MilestoneCalculatorHelper).Returns(new MilestoneCalculatorHelper(dbContext, dateTimeProviderHelper, new MilestoneMapper(), helper.Object.InternalApiHelper, helper.Object.AuthenticationHelper));
@@ -61,6 +63,16 @@ namespace MediaCritica.Server.Testing
                     new DateTimeProviderHelper().GetDateTimeDistance(utcDateTime, objectUtcDateTime));
 
             return dateTimeProviderHelper.Object;
+        }
+
+        private static IMemoryCache SetupMemoryCache()
+        {
+            var memoryCache = new Mock<IMemoryCache>();
+            var cacheEntry = new Mock<ICacheEntry>();
+            memoryCache
+                .Setup(mc => mc.CreateEntry(It.IsAny<object>()))
+                .Returns(cacheEntry.Object);
+            return memoryCache.Object;
         }
 
         private static IConfiguration SetupConfiguration()
@@ -106,7 +118,8 @@ namespace MediaCritica.Server.Testing
             var configuration = SetupConfiguration();
             var dateTimeProviderHelper = SetupDateTimeProviderHelper();
             var httpContext = SetupHttpContext();
-            var helper = SetupHelper(dbContext, configuration, dateTimeProviderHelper, httpContext);
+            var memoryCache = SetupMemoryCache();
+            var helper = SetupHelper(dbContext, configuration, dateTimeProviderHelper, httpContext, memoryCache);
             var mapper = SetupMapper(helper);
             var hubContext = SetupNotificationHub();
             var hub = SetupHub();

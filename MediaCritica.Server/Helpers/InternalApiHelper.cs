@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,8 @@ namespace MediaCritica.Server.Helpers
         {
             var movie = await _databaseContext.Movies
                 .Include(movie => movie.Ratings)
-                .Include(movie => movie.Reviews)
+                .Include(movie => movie.Reviews
+                    .Where(review => review.Status == ContentStatus.Active))
                     .ThenInclude(review => review.User)
                 .SingleOrDefaultAsync(movie => movie.Id == movieId);
 
@@ -23,7 +25,8 @@ namespace MediaCritica.Server.Helpers
         {
             var game = await _databaseContext.Games
                 .Include(game => game.Ratings)
-                .Include(game => game.Reviews)
+                .Include(game => game.Reviews
+                    .Where(review => review.Status == ContentStatus.Active))
                     .ThenInclude(review => review.User)
                 .SingleOrDefaultAsync(game => game.Id == gameId);
 
@@ -33,7 +36,8 @@ namespace MediaCritica.Server.Helpers
         public async Task<Series?> GetSeriesMedia(string seriesId)
         {
             var series = await _databaseContext.Series
-                .Include(episdoe => episdoe.Reviews)
+                .Include(episode => episode.Reviews
+                    .Where(review => review.Status == ContentStatus.Active))
                     .ThenInclude(series => series.User)
                 .Include(series => series.Ratings)
                 .Include(series => series.Seasons)
@@ -56,7 +60,8 @@ namespace MediaCritica.Server.Helpers
         {
             var episode = await _databaseContext.Episodes
                 .Include(episode => episode.Ratings)
-                .Include(episdoe => episdoe.Reviews)
+                .Include(episode => episode.Reviews
+                    .Where(review => review.Status == ContentStatus.Active))
                     .ThenInclude(review => review.User)
                 .Include(episode => episode.Season)
                     .ThenInclude(season => season.Series)

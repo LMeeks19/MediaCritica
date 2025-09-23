@@ -8,5 +8,6 @@
         MilestoneCalculatorHelper MilestoneCalculatorHelper { get; }
         TrendCalculatorHelper TrendCalculatorHelper { get; }
         AuthenticationHelper AuthenticationHelper { get; }
+        ImageValidator ImageValidator { get; }
     }
 }

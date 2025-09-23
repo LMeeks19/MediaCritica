@@ -1,4 +1,5 @@
-﻿using MediaCritica.Server.Models;
+﻿using MediaCritica.Server.Enums;
+using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -61,7 +62,7 @@ namespace MediaCritica.Server.Helpers
         {
             var user = await _databaseContext.Users
                 .Include(u => u.Preference)
-                .Include(u => u.Reviews)
+                .Include(u => u.Reviews.Where(review => review.Status == ContentStatus.Active))
                 .Include(u => u.Backlogs)
                 .Include(u => u.Followers)
                 .Include(u => u.Following)

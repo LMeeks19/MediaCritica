@@ -5,12 +5,12 @@ using MediaCritica.Server.Objects;
 
 namespace MediaCritica.Server.Mappers
 {
-    public class MediaMapper(RatingMapper ratingMapper, ReviewMapper reviewMapper)
+    public class MediaMapper(RatingMapper ratingMapper, ReviewMapper reviewMapper, ImageValidator imageValidator)
     {
         private readonly RatingMapper _ratingMapper = ratingMapper;
         private readonly ReviewMapper _reviewMapper = reviewMapper;
 
-        public Media MapMedia(MediaModel mediaModel)
+        public async Task<Media> MapMedia(MediaModel mediaModel)
         {
             var media = new Media()
             {
@@ -25,7 +25,7 @@ namespace MediaCritica.Server.Mappers
                 Languages = mediaModel.Language,
                 Metascore = mediaModel.Metascore != "N/A" ? int.Parse(mediaModel.Metascore) : null,
                 Plot = mediaModel.Plot,
-                Poster = mediaModel.Poster,
+                Poster = await imageValidator.GetValidImageUrlAsync(mediaModel.Poster),
                 Rated = mediaModel.Rated,
                 Ratings = mediaModel.Ratings != null ? mediaModel.Ratings.Select(_ratingMapper.MapRating).ToList() : [],
                 Released = mediaModel.Released == "N/A" ? null : DateTime.Parse(mediaModel.Released),
@@ -39,7 +39,7 @@ namespace MediaCritica.Server.Mappers
             return media;
         }
 
-        public MediaModel MapMediaModel(Media media, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public async Task<MediaModel> MapMediaModel(Media media, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             var mediaModel = new MediaModel()
             {
@@ -54,7 +54,7 @@ namespace MediaCritica.Server.Mappers
                 Language = media.Languages,
                 Metascore = media.Metascore.ToString(),
                 Plot = media.Plot,
-                Poster = media.Poster,
+                Poster = await imageValidator.GetValidImageUrlAsync(media.Poster),
                 Rated = media.Rated,
                 Ratings = media.Ratings.Select(_ratingMapper.MapRatingModel).ToList(),
                 Released = media.Released != null ? ((DateTime)media.Released).ToLongDateString() : "N/A",
@@ -63,24 +63,23 @@ namespace MediaCritica.Server.Mappers
                 Type = media.Type,
                 Writer = media.Writers,
                 Year = media.Year,
-                Reviews = media.Reviews
+                Reviews = [.. media.Reviews
                     .OrderByDescending(review => review.Date)
                     .Take(10)
-                    .Select(r => _reviewMapper.MapReviewSummaryModel(r, preference, dateTimeProviderHelper))
-                    .ToList(),
+                    .Select(r => _reviewMapper.MapReviewSummaryModel(r, dateTimeProviderHelper))],
             };
 
             return mediaModel;
         }
 
-        public MediaSummaryModel MapMediaSummaryModel(Media media, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public async Task<MediaSummaryModel> MapMediaSummaryModel(Media media, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper, ImageValidator imageValidator)
         {
             var mediaSummaryModel = new MediaSummaryModel()
             {
                 Id = media.Id,
                 Title = media.Title,
                 Type = media.Type,
-                Poster = media.Poster,
+                Poster = await imageValidator.GetValidImageUrlAsync(media.Poster),
                 Genre = media.Genres,
                 Released = media.Released == null ? null : dateTimeProviderHelper.GetLocalDate((DateTime)media.Released, preference),
                 ImdbRating = media.ImdbRating,

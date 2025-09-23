@@ -165,15 +165,10 @@ function MediaPage() {
       ) : (
         <div className="media">
           <TopBar />
-          {media.poster !== "N/A" ? (
-            <img
-              className="media-poster"
-              src={media.poster.replace("300.jpg", "752.jpg")}
-            ></img>
+          {media.poster ? (
+            <img className="image" src={media.poster} />
           ) : (
-            <div className="media-poster empty">
-              <ImageIcon />
-            </div>
+            <ImageIcon className="image" />
           )}
           <div className="info">
             <div className="hero">

@@ -68,7 +68,7 @@ namespace MediaCritica.Server.Mappers
             return preferenceModel;
         }
 
-        public UserSummaryModel MapUserSummaryModel(User user, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public UserSummaryModel MapUserSummaryModel(User user, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper, ImageValidator imageValidator)
         {
             var viewUserSummaryModel = new UserSummaryModel()
             {
@@ -79,7 +79,7 @@ namespace MediaCritica.Server.Mappers
                      .OrderByDescending(r => r.Date)
                      .ThenByDescending(r => r.Rating)
                      .Take(8)
-                     .Select(r => _reviewMapper.MapReviewModel(r, preference, dateTimeProviderHelper))
+                     .Select(r => _reviewMapper.MapReviewModel(r, dateTimeProviderHelper, imageValidator).Result)
                      .ToList(),
                 Milestones = _helper.MilestoneCalculatorHelper
                      .GetUserMilestones(user)

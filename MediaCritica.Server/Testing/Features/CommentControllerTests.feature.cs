@@ -404,7 +404,17 @@ this.FeatureBackground();
                             "Test 1",
                             "2025-01-30",
                             "false",
-                            "1"});
+                            "2"});
+                table39.AddRow(new string[] {
+                            "8",
+                            "1",
+                            "5",
+                            "Comment 8",
+                            "4",
+                            "Test 4",
+                            "2025-01-30",
+                            "false",
+                            "0"});
                 table39.AddRow(new string[] {
                             "7",
                             "1",
@@ -449,7 +459,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get review comments for a review that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 48
+#line 49
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -462,13 +472,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 49
+#line 50
  testRunner.When("I call GetReviewComments with the review id 99", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
+#line 51
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 51
+#line 52
  testRunner.And("The response should be \"Review Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -482,7 +492,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get comments remaining children", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 53
+#line 54
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -495,10 +505,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 54
+#line 55
  testRunner.When("I call GetCommentsRemainingChildren with the comment id 3 and offset 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 55
+#line 56
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -521,10 +531,10 @@ this.FeatureBackground();
                             "28 days ago",
                             "false",
                             "0"});
-#line 56
+#line 57
  testRunner.And("The CommentModels should be", ((string)(null)), table40, "And ");
 #line hidden
-#line 59
+#line 60
  testRunner.And("The children should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -538,7 +548,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a comment", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 61
+#line 62
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -563,10 +573,10 @@ this.FeatureBackground();
                             "New Comment",
                             "1",
                             "Test 1"});
-#line 62
+#line 63
  testRunner.When("I call PostComment with the following data", ((string)(null)), table41, "When ");
 #line hidden
-#line 65
+#line 66
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -589,10 +599,10 @@ this.FeatureBackground();
                             "just now",
                             "false",
                             "0"});
-#line 66
+#line 67
  testRunner.And("The CommentModel should be", ((string)(null)), table42, "And ");
 #line hidden
-#line 69
+#line 70
  testRunner.And("The children should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -606,7 +616,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a comment but the user doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 71
+#line 72
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -631,13 +641,13 @@ this.FeatureBackground();
                             "New Comment",
                             "99",
                             "Test 1"});
-#line 72
+#line 73
  testRunner.When("I call PostComment with the following data", ((string)(null)), table43, "When ");
 #line hidden
-#line 75
+#line 76
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 76
+#line 77
  testRunner.And("The response should be \"User Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -651,7 +661,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a comment but the parent doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 78
+#line 79
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -676,13 +686,13 @@ this.FeatureBackground();
                             "New Comment",
                             "1",
                             "Test 1"});
-#line 79
+#line 80
  testRunner.When("I call PostComment with the following data", ((string)(null)), table44, "When ");
 #line hidden
-#line 82
+#line 83
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 83
+#line 84
  testRunner.And("The response should be \"Parent Comment Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -690,13 +700,13 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Post a comment but the parent is deleted")]
-        public void PostACommentButTheParentIsDeleted()
+        [NUnit.Framework.DescriptionAttribute("Update a comment")]
+        public void UpdateAComment()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post a comment but the parent is deleted", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 85
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a comment", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 86
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -710,38 +720,32 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
-                            "ReviewId",
-                            "ParentId",
-                            "Content",
-                            "CommenterId",
-                            "CommenterName"});
+                            "Id",
+                            "Content"});
                 table45.AddRow(new string[] {
                             "1",
-                            "8",
-                            "New Comment",
-                            "1",
-                            "Test 1"});
-#line 86
- testRunner.When("I call PostComment with the following data", ((string)(null)), table45, "When ");
-#line hidden
-#line 89
- testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                            "Updated Comment"});
+#line 87
+ testRunner.When("I call UpdateComment with the following data", ((string)(null)), table45, "When ");
 #line hidden
 #line 90
- testRunner.And("The response should be \"Cannot reply to a deleted comment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 91
+ testRunner.And("The response should be \"Comment Updated\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a comment")]
-        public void UpdateAComment()
+        [NUnit.Framework.DescriptionAttribute("Update a comment tah doesn\'t exist")]
+        public void UpdateACommentTahDoesntExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a comment", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 92
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a comment tah doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 93
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -758,54 +762,15 @@ this.FeatureBackground();
                             "Id",
                             "Content"});
                 table46.AddRow(new string[] {
-                            "1",
-                            "Updated Comment"});
-#line 93
- testRunner.When("I call UpdateComment with the following data", ((string)(null)), table46, "When ");
-#line hidden
-#line 96
- testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 97
- testRunner.And("The response should be \"Comment Updated\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Update a comment tah doesn\'t exist")]
-        public void UpdateACommentTahDoesntExist()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a comment tah doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 99
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-                TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "Content"});
-                table47.AddRow(new string[] {
                             "99",
                             "Updated Comment"});
-#line 100
- testRunner.When("I call UpdateComment with the following data", ((string)(null)), table47, "When ");
+#line 94
+ testRunner.When("I call UpdateComment with the following data", ((string)(null)), table46, "When ");
 #line hidden
-#line 103
+#line 97
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 104
+#line 98
  testRunner.And("The response should be \"Comment Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -819,7 +784,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a comment", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 106
+#line 100
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -832,41 +797,41 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details"});
-                table48.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "1",
                             "1",
                             "Spam",
                             "Spam Comment"});
-#line 107
- testRunner.When("I call ReportComment with the following data", ((string)(null)), table48, "When ");
+#line 101
+ testRunner.When("I call ReportComment with the following data", ((string)(null)), table47, "When ");
 #line hidden
-#line 110
+#line 104
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 111
+#line 105
  testRunner.And("The response should be \"Comment Reported\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "CommentId",
                             "ReporterId",
                             "Reason",
                             "Details",
                             "ReportedAt"});
-                table49.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "2",
                             "1",
                             "1",
                             "Spam",
                             "Spam Comment",
                             "2025-02-27 16:30:00"});
-#line 112
- testRunner.And("The following report should be in the database", ((string)(null)), table49, "And ");
+#line 106
+ testRunner.And("The following report should be in the database", ((string)(null)), table48, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -879,7 +844,50 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a comment that a user has already reported", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 116
+#line 110
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+                TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+                            "CommentId",
+                            "ReporterId",
+                            "Reason",
+                            "Details"});
+                table49.AddRow(new string[] {
+                            "1",
+                            "2",
+                            "Spam",
+                            "Spam Comment"});
+#line 111
+ testRunner.When("I call ReportComment with the following data", ((string)(null)), table49, "When ");
+#line hidden
+#line 114
+ testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 115
+ testRunner.And("The response should be \"Comment Already Reported\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Report a comment that doesn\'t exist")]
+        public void ReportACommentThatDoesntExist()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a comment that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 117
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -898,31 +906,31 @@ this.FeatureBackground();
                             "Reason",
                             "Details"});
                 table50.AddRow(new string[] {
+                            "99",
                             "1",
-                            "2",
                             "Spam",
                             "Spam Comment"});
-#line 117
+#line 118
  testRunner.When("I call ReportComment with the following data", ((string)(null)), table50, "When ");
 #line hidden
-#line 120
- testRunner.Then("The status code should be 409", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 121
- testRunner.And("The response should be \"Comment Already Reported\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 122
+ testRunner.And("The response should be \"Comment Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Report a comment that doesn\'t exist")]
-        public void ReportACommentThatDoesntExist()
+        [NUnit.Framework.DescriptionAttribute("Report a comment with an invalid user")]
+        public void ReportACommentWithAnInvalidUser()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a comment that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 123
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a comment with an invalid user", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 124
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -941,60 +949,17 @@ this.FeatureBackground();
                             "Reason",
                             "Details"});
                 table51.AddRow(new string[] {
-                            "99",
                             "1",
+                            "99",
                             "Spam",
                             "Spam Comment"});
-#line 124
+#line 125
  testRunner.When("I call ReportComment with the following data", ((string)(null)), table51, "When ");
 #line hidden
-#line 127
- testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 128
- testRunner.And("The response should be \"Comment Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Report a comment with an invalid user")]
-        public void ReportACommentWithAnInvalidUser()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Report a comment with an invalid user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 130
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-                TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
-                            "CommentId",
-                            "ReporterId",
-                            "Reason",
-                            "Details"});
-                table52.AddRow(new string[] {
-                            "1",
-                            "99",
-                            "Spam",
-                            "Spam Comment"});
-#line 131
- testRunner.When("I call ReportComment with the following data", ((string)(null)), table52, "When ");
-#line hidden
-#line 134
  testRunner.Then("The status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 135
+#line 129
  testRunner.And("The response should be \"User Not Found\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

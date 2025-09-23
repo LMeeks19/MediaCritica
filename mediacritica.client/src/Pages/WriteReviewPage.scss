@@ -14,20 +14,9 @@
       justify-content: center;
     }
 
-    .media-poster {
-      height: 100%;
+    .image {
       width: 40%;
-      z-index: 999;
-      background-size: 100% 100%;
-      box-shadow: 0 0 10px 0 black;
-
-      &.empty {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 30rem;
-        color: var(--palette-colour);
-      }
+      height: 100%;
     }
 
     .info {
@@ -181,7 +170,7 @@
 @media screen and (max-width: 1080) {
   .writereviewpage-container {
     .review {
-      .media-poster {
+      .image {
         display: none !important;
       }
 

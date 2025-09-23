@@ -7,14 +7,14 @@ namespace MediaCritica.Server.Mappers
 {
     public class ReviewMapper
     {
-        public Review MapReview(ReviewModel reviewModel, IDateTimeProviderHelper dateTimeProviderHelper)
+        public async Task<Review> MapReview(ReviewModel reviewModel, IDateTimeProviderHelper dateTimeProviderHelper, ImageValidator imageValidator)
         {
             return new Review()
             {
                 Date = dateTimeProviderHelper.UtcNow,
                 Description = reviewModel.Description,
                 MediaId = reviewModel.MediaId,
-                MediaPoster = reviewModel.MediaPoster,
+                MediaPoster = await imageValidator.GetValidImageUrlAsync(reviewModel.MediaPoster),
                 MediaTitle = reviewModel.MediaTitle,
                 MediaSeriesTitle = reviewModel.MediaSeriesTitle,
                 MediaType = reviewModel.MediaType,
@@ -24,7 +24,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReviewModel MapReviewModel(Review review, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public async Task<ReviewModel> MapReviewModel(Review review, IDateTimeProviderHelper dateTimeProviderHelper, ImageValidator imageValidator)
         {
             return new ReviewModel()
             {
@@ -33,7 +33,7 @@ namespace MediaCritica.Server.Mappers
                 Description = review.Description,
                 MediaType = review.MediaType,
                 MediaId = review.MediaId,
-                MediaPoster = review.MediaPoster,
+                MediaPoster = await imageValidator.GetValidImageUrlAsync(review.MediaPoster),
                 MediaTitle = review.MediaTitle,
                 MediaSeriesId = review.Media.Type == MediaType.Episode ? (review.Media as Episode)!.Season?.SeriesId : null,
                 MediaSeriesTitle = review.MediaSeriesTitle,
@@ -48,7 +48,7 @@ namespace MediaCritica.Server.Mappers
             };
         }
 
-        public ReviewSummaryModel MapReviewSummaryModel(Review review, PreferenceModel preference, IDateTimeProviderHelper dateTimeProviderHelper)
+        public ReviewSummaryModel MapReviewSummaryModel(Review review, IDateTimeProviderHelper dateTimeProviderHelper)
         {
             return new ReviewSummaryModel()
             {

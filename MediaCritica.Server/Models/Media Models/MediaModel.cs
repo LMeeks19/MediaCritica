@@ -11,7 +11,7 @@
         public string Language { get; set; }
         public string Metascore { get; set; }
         public string Plot { get; set; }
-        public string Poster { get; set; }
+        public string? Poster { get; set; }
         public string Rated { get; set; }
         public List<RatingModel> Ratings { get; set; }
         public string Released { get; set; }

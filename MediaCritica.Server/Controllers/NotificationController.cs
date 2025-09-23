@@ -33,7 +33,7 @@ namespace MediaCritica.Server.Controllers
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(offset)
                 .Take(limit)
-                .Select(notification => _mapper.NotificationMapper.MapNotificationModel(notification, preference, _dateTimeProviderHelper))
+                .Select(notification => _mapper.NotificationMapper.MapNotificationModel(notification, _dateTimeProviderHelper))
                 .ToListAsync();
 
             return Ok(notifications);
