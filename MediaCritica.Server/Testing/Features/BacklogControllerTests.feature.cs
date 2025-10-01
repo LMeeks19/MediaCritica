@@ -168,7 +168,6 @@ namespace MediaCritica.Server.Testing.Features
                         "Languages",
                         "Metascore",
                         "Plot",
-                        "Poster",
                         "Rated",
                         "Released",
                         "Runtime",
@@ -192,7 +191,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 1",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -216,7 +214,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 6",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -243,7 +240,6 @@ namespace MediaCritica.Server.Testing.Features
                         "Languages",
                         "Metascore",
                         "Plot",
-                        "Poster",
                         "Rated",
                         "Released",
                         "Runtime",
@@ -264,7 +260,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 2",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -285,7 +280,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 5",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -309,7 +303,6 @@ namespace MediaCritica.Server.Testing.Features
                         "Languages",
                         "Metascore",
                         "Plot",
-                        "Poster",
                         "Rated",
                         "Released",
                         "Runtime",
@@ -333,7 +326,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 3",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -357,7 +349,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 7",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -384,7 +375,6 @@ namespace MediaCritica.Server.Testing.Features
                         "Languages",
                         "Metascore",
                         "Plot",
-                        "Poster",
                         "Rated",
                         "Released",
                         "Runtime",
@@ -407,7 +397,6 @@ namespace MediaCritica.Server.Testing.Features
                         "English",
                         "85",
                         "A great plot",
-                        "Media Poster 4",
                         "PG-13",
                         "2020-02-03",
                         "120 min",
@@ -630,7 +619,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -638,7 +626,6 @@ this.FeatureBackground();
                             "9",
                             "2",
                             "series",
-                            "Media Poster 2",
                             "Media Title 2",
                             "0",
                             "Friday, February 7, 2025"});
@@ -646,7 +633,6 @@ this.FeatureBackground();
                             "1",
                             "1",
                             "movie",
-                            "Media Poster 1",
                             "Media Title 1",
                             "0",
                             "Saturday, February 1, 2025"});
@@ -657,7 +643,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -665,7 +650,6 @@ this.FeatureBackground();
                             "5",
                             "5",
                             "series",
-                            "Media Poster 5",
                             "Media Title 5",
                             "1",
                             "Tuesday, February 4, 2025"});
@@ -676,7 +660,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -684,7 +667,6 @@ this.FeatureBackground();
                             "13",
                             "6",
                             "movie",
-                            "Media Poster 6",
                             "Media Title 6",
                             "2",
                             "Monday, February 12, 2024"});
@@ -753,7 +735,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -764,7 +745,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -775,7 +755,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -827,7 +806,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -835,7 +813,6 @@ this.FeatureBackground();
                             "9",
                             "2",
                             "series",
-                            "Media Poster 2",
                             "Media Title 2",
                             "0",
                             "Friday, February 7, 2025"});
@@ -843,7 +820,6 @@ this.FeatureBackground();
                             "1",
                             "1",
                             "movie",
-                            "Media Poster 1",
                             "Media Title 1",
                             "0",
                             "Saturday, February 1, 2025"});
@@ -895,7 +871,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -903,7 +878,6 @@ this.FeatureBackground();
                             "5",
                             "5",
                             "series",
-                            "Media Poster 5",
                             "Media Title 5",
                             "1",
                             "Tuesday, February 4, 2025"});
@@ -955,7 +929,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -963,7 +936,6 @@ this.FeatureBackground();
                             "13",
                             "6",
                             "movie",
-                            "Media Poster 6",
                             "Media Title 6",
                             "2",
                             "Monday, February 12, 2024"});
@@ -1009,7 +981,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -1017,7 +988,6 @@ this.FeatureBackground();
                             "16",
                             "7",
                             "game",
-                            "Media Poster 7",
                             "Media Title 7",
                             "0",
                             "2025-02-13"});
@@ -1058,7 +1028,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -1066,7 +1035,6 @@ this.FeatureBackground();
                             "16",
                             "7",
                             "game",
-                            "Media Poster 7",
                             "Media Title 7",
                             "0",
                             "2025-02-13"});
@@ -1118,7 +1086,6 @@ this.FeatureBackground();
                             "Id",
                             "MediaId",
                             "MediaType",
-                            "MediaPoster",
                             "MediaTitle",
                             "Category",
                             "AddedDate"});
@@ -1126,7 +1093,6 @@ this.FeatureBackground();
                             "16",
                             "8",
                             "game",
-                            "Media Poster 8",
                             "Media Title 8",
                             "0",
                             "2025-02-13"});

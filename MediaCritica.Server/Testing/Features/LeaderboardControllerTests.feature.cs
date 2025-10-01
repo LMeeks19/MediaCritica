@@ -77,7 +77,7 @@ namespace MediaCritica.Server.Testing.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Username",
                         "Forename",
@@ -85,7 +85,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Email",
                         "Password",
                         "Joined"});
-            table80.AddRow(new string[] {
+            table81.AddRow(new string[] {
                         "1",
                         "Username1",
                         "Test",
@@ -93,7 +93,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test1@email.com",
                         "Password123!",
                         "2025-01-01"});
-            table80.AddRow(new string[] {
+            table81.AddRow(new string[] {
                         "2",
                         "Username2",
                         "Test",
@@ -101,7 +101,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test2@email.com",
                         "Password456!",
                         "2025-01-02"});
-            table80.AddRow(new string[] {
+            table81.AddRow(new string[] {
                         "3",
                         "Username3",
                         "Test",
@@ -109,7 +109,7 @@ namespace MediaCritica.Server.Testing.Features
                         "test3@email.com",
                         "Password789!",
                         "2025-01-03"});
-            table80.AddRow(new string[] {
+            table81.AddRow(new string[] {
                         "4",
                         "Username4",
                         "Test",
@@ -118,9 +118,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Password012!",
                         "2025-01-04"});
 #line 4
- testRunner.Given("I have the following users", ((string)(null)), table80, "Given ");
+ testRunner.Given("I have the following users", ((string)(null)), table81, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -144,7 +144,7 @@ namespace MediaCritica.Server.Testing.Features
                         "DVD",
                         "Website",
                         "Production"});
-            table81.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "1",
                         "Actor 1, Actor 2",
                         "Award 1",
@@ -168,7 +168,7 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         "",
                         ""});
-            table81.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "6",
                         "Actor 1, Actor 9",
                         "Award 1",
@@ -193,9 +193,9 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         ""});
 #line 10
- testRunner.And("I have the following movies", ((string)(null)), table81, "And ");
+ testRunner.And("I have the following movies", ((string)(null)), table82, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -216,7 +216,7 @@ namespace MediaCritica.Server.Testing.Features
                         "ImdbRating",
                         "ImdbVotes",
                         "TotalSeasons"});
-            table82.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "2",
                         "Actor 1, Actor 4",
                         "Award 1",
@@ -237,7 +237,7 @@ namespace MediaCritica.Server.Testing.Features
                         "8.5",
                         "1500",
                         "1"});
-            table82.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "5",
                         "Actor 1, Actor 8",
                         "Award 1",
@@ -259,9 +259,9 @@ namespace MediaCritica.Server.Testing.Features
                         "1500",
                         "1"});
 #line 14
- testRunner.And("I have the following series", ((string)(null)), table82, "And ");
+ testRunner.And("I have the following series", ((string)(null)), table83, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -285,7 +285,7 @@ namespace MediaCritica.Server.Testing.Features
                         "DVD",
                         "Website",
                         "Production"});
-            table83.AddRow(new string[] {
+            table84.AddRow(new string[] {
                         "3",
                         "Actor 1, Actor 5",
                         "Award 1",
@@ -309,7 +309,7 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         "",
                         ""});
-            table83.AddRow(new string[] {
+            table84.AddRow(new string[] {
                         "7",
                         "Actor 1, Actor 3",
                         "Award 1",
@@ -334,9 +334,9 @@ namespace MediaCritica.Server.Testing.Features
                         "",
                         ""});
 #line 18
- testRunner.And("I have the following games", ((string)(null)), table83, "And ");
+ testRunner.And("I have the following games", ((string)(null)), table84, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "Actors",
                         "Awards",
@@ -359,7 +359,7 @@ namespace MediaCritica.Server.Testing.Features
                         "EpisodeNo",
                         "SeasonNo",
                         "SeasonId"});
-            table84.AddRow(new string[] {
+            table85.AddRow(new string[] {
                         "4",
                         "Actor 1, Actor 6",
                         "Award 1",
@@ -383,9 +383,9 @@ namespace MediaCritica.Server.Testing.Features
                         "1",
                         "1"});
 #line 22
- testRunner.And("I have the following episodes", ((string)(null)), table84, "And ");
+ testRunner.And("I have the following episodes", ((string)(null)), table85, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "MediaId",
                         "MediaPoster",
@@ -397,7 +397,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title",
                         "Description",
                         "Date"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "1",
                         "1",
                         "Media Poster 1",
@@ -409,7 +409,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 1",
                         "Description 1",
                         "2025-02-03"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "2",
                         "2",
                         "Media Poster 2",
@@ -421,7 +421,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 2",
                         "Description 2",
                         "2025-02-27"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "3",
                         "3",
                         "Media Poster 3",
@@ -433,7 +433,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 3",
                         "Description 3",
                         "2025-01-01"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "4",
                         "4",
                         "Media Poster 4",
@@ -445,7 +445,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 4",
                         "Description 4",
                         "2025-01-04"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "5",
                         "5",
                         "Media Poster 5",
@@ -457,7 +457,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 5",
                         "Description 5",
                         "2025-01-04"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "6",
                         "6",
                         "Media Poster 6",
@@ -469,7 +469,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 6",
                         "Description 6",
                         "2024-01-04"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "7",
                         "7",
                         "Media Poster 7",
@@ -481,7 +481,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 7",
                         "Description 7",
                         "2025-01-05"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "8",
                         "1",
                         "Media Poster 1",
@@ -493,7 +493,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 8",
                         "Description 8",
                         "2025-01-15"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "9",
                         "2",
                         "Media Poster 2",
@@ -505,7 +505,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 9",
                         "Description 9",
                         "2025-02-10"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "10",
                         "3",
                         "Media Poster 3",
@@ -517,7 +517,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 10",
                         "Description 10",
                         "2025-01-25"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "11",
                         "4",
                         "Media Poster 4",
@@ -529,7 +529,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 11",
                         "Description 11",
                         "2025-02-20"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "12",
                         "5",
                         "Media Poster 5",
@@ -541,7 +541,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 12",
                         "Description 12",
                         "2024-12-15"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "13",
                         "6",
                         "Media Poster 6",
@@ -553,7 +553,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 13",
                         "Description 13",
                         "2025-02-03"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "14",
                         "7",
                         "Media Poster 7",
@@ -565,7 +565,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 14",
                         "Description 14",
                         "2025-01-28"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "15",
                         "1",
                         "Media Poster 1",
@@ -577,7 +577,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 15",
                         "Description 15",
                         "2025-02-15"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "16",
                         "2",
                         "Media Poster 2",
@@ -589,7 +589,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 16",
                         "Description 16",
                         "2025-01-18"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "17",
                         "3",
                         "Media Poster 3",
@@ -601,7 +601,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 17",
                         "Description 17",
                         "2025-01-07"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "18",
                         "4",
                         "Media Poster 4",
@@ -613,7 +613,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 18",
                         "Description 18",
                         "2025-02-22"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "19",
                         "5",
                         "Media Poster 5",
@@ -625,7 +625,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 19",
                         "Description 19",
                         "2025-02-08"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "20",
                         "6",
                         "Media Poster 6",
@@ -637,7 +637,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 20",
                         "Description 20",
                         "2025-01-10"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "21",
                         "7",
                         "Media Poster 7",
@@ -649,7 +649,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 21",
                         "Description 21",
                         "2025-01-02"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "22",
                         "1",
                         "Media Poster 1",
@@ -661,7 +661,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 22",
                         "Description 22",
                         "2025-02-14"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "23",
                         "2",
                         "Media Poster 2",
@@ -673,7 +673,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 23",
                         "Description 23",
                         "2025-01-20"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "24",
                         "3",
                         "Media Poster 3",
@@ -685,7 +685,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 24",
                         "Description 24",
                         "2025-02-05"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "25",
                         "4",
                         "Media Poster 4",
@@ -697,7 +697,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 25",
                         "Description 25",
                         "2025-02-18"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "26",
                         "5",
                         "Media Poster 5",
@@ -709,7 +709,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 26",
                         "Description 26",
                         "2024-11-12"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "27",
                         "6",
                         "Media Poster 6",
@@ -721,7 +721,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 27",
                         "Description 27",
                         "2025-02-06"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "28",
                         "7",
                         "Media Poster 7",
@@ -733,7 +733,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Title 28",
                         "Description 28",
                         "2025-01-19"});
-            table85.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "29",
                         "4",
                         "Media Poster 4",
@@ -746,9 +746,9 @@ namespace MediaCritica.Server.Testing.Features
                         "Description 25",
                         "2025-02-19"});
 #line 25
- testRunner.And("I have the following reviews", ((string)(null)), table85, "And ");
+ testRunner.And("I have the following reviews", ((string)(null)), table86, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "UserId",
                         "MediaId",
@@ -757,7 +757,7 @@ namespace MediaCritica.Server.Testing.Features
                         "MediaPoster",
                         "MediaTitle",
                         "AddedDate"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "1",
                         "1",
                         "1",
@@ -766,7 +766,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 1",
                         "Media Title 1",
                         "2025-02-01"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "2",
                         "2",
                         "2",
@@ -775,7 +775,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 2",
                         "Media Title 2",
                         "2025-02-02"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "3",
                         "3",
                         "3",
@@ -784,7 +784,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 3",
                         "Media Title 3",
                         "2025-02-03"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "4",
                         "4",
                         "4",
@@ -793,7 +793,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 4",
                         "Media Title 4",
                         "2022-02-03"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "5",
                         "1",
                         "5",
@@ -802,7 +802,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 5",
                         "Media Title 5",
                         "2025-02-04"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "6",
                         "2",
                         "6",
@@ -811,7 +811,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 6",
                         "Media Title 6",
                         "2025-02-05"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "7",
                         "3",
                         "7",
@@ -820,7 +820,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 7",
                         "Media Title 7",
                         "2023-02-06"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "8",
                         "4",
                         "1",
@@ -829,7 +829,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 1",
                         "Media Title 1",
                         "2025-02-07"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "9",
                         "1",
                         "2",
@@ -838,7 +838,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 2",
                         "Media Title 2",
                         "2025-02-08"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "10",
                         "2",
                         "3",
@@ -847,7 +847,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 3",
                         "Media Title 3",
                         "2024-02-09"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "11",
                         "3",
                         "4",
@@ -856,7 +856,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 4",
                         "Media Title 4",
                         "2025-02-10"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "12",
                         "4",
                         "5",
@@ -865,7 +865,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 5",
                         "Media Title 5",
                         "2025-02-11"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "13",
                         "1",
                         "6",
@@ -874,7 +874,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 6",
                         "Media Title 6",
                         "2024-02-12"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "14",
                         "2",
                         "7",
@@ -883,7 +883,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Poster 7",
                         "Media Title 7",
                         "2025-02-13"});
-            table86.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "15",
                         "3",
                         "1",
@@ -893,7 +893,7 @@ namespace MediaCritica.Server.Testing.Features
                         "Media Title 1",
                         "2025-02-14"});
 #line 56
- testRunner.And("I have the following backlogs", ((string)(null)), table86, "And ");
+ testRunner.And("I have the following backlogs", ((string)(null)), table87, "And ");
 #line hidden
         }
         
@@ -923,18 +923,18 @@ this.FeatureBackground();
 #line 76
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Username",
                             "Reviews",
                             "Timeframe"});
-                table87.AddRow(new string[] {
+                table88.AddRow(new string[] {
                             "1",
                             "Username1",
                             "1",
                             "week"});
 #line 77
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table87, "And ");
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table88, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -966,33 +966,33 @@ this.FeatureBackground();
 #line 83
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Username",
                             "Reviews",
                             "Timeframe"});
-                table88.AddRow(new string[] {
+                table89.AddRow(new string[] {
                             "1",
                             "Username1",
                             "5",
                             "month"});
-                table88.AddRow(new string[] {
+                table89.AddRow(new string[] {
                             "2",
                             "Username3",
                             "4",
                             "month"});
-                table88.AddRow(new string[] {
+                table89.AddRow(new string[] {
                             "3",
                             "Username4",
                             "3",
                             "month"});
-                table88.AddRow(new string[] {
+                table89.AddRow(new string[] {
                             "4",
                             "Username2",
                             "1",
                             "month"});
 #line 84
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table88, "And ");
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table89, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1024,33 +1024,33 @@ this.FeatureBackground();
 #line 93
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Username",
                             "Reviews",
                             "Timeframe"});
-                table89.AddRow(new string[] {
+                table90.AddRow(new string[] {
                             "1",
                             "Username1",
                             "9",
                             "year"});
-                table89.AddRow(new string[] {
+                table90.AddRow(new string[] {
                             "2",
                             "Username2",
                             "6",
                             "year"});
-                table89.AddRow(new string[] {
+                table90.AddRow(new string[] {
                             "3",
                             "Username4",
                             "6",
                             "year"});
-                table89.AddRow(new string[] {
+                table90.AddRow(new string[] {
                             "4",
                             "Username3",
                             "5",
                             "year"});
 #line 94
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table89, "And ");
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table90, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1082,33 +1082,33 @@ this.FeatureBackground();
 #line 103
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
                             "Rank",
                             "Username",
                             "Reviews",
                             "Timeframe"});
-                table90.AddRow(new string[] {
+                table91.AddRow(new string[] {
                             "1",
                             "Username1",
                             "9",
                             "all-time"});
-                table90.AddRow(new string[] {
+                table91.AddRow(new string[] {
                             "2",
                             "Username2",
                             "8",
                             "all-time"});
-                table90.AddRow(new string[] {
+                table91.AddRow(new string[] {
                             "3",
                             "Username3",
                             "6",
                             "all-time"});
-                table90.AddRow(new string[] {
+                table91.AddRow(new string[] {
                             "4",
                             "Username4",
                             "6",
                             "all-time"});
 #line 104
- testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table90, "And ");
+ testRunner.And("The UserRankingModels reposne should be", ((string)(null)), table91, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1140,38 +1140,38 @@ this.FeatureBackground();
 #line 113
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table91.AddRow(new string[] {
+                table92.AddRow(new string[] {
                             "Falling Star",
                             "Media Title 4",
                             "4 fewer reviews than the previous week.",
                             "week"});
-                table91.AddRow(new string[] {
+                table92.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 2",
                             "An outstanding average rating of 2.0 this week!",
                             "week"});
-                table91.AddRow(new string[] {
+                table92.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this week!",
                             "week"});
-                table91.AddRow(new string[] {
+                table92.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 2",
                             "1 reviews this week!",
                             "week"});
-                table91.AddRow(new string[] {
+                table92.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 2",
                             "1 more reviews than the previous week!",
                             "week"});
 #line 114
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table91, "And ");
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table92, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1203,84 +1203,84 @@ this.FeatureBackground();
 #line 124
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Actor Spotlight",
                             "Actor 9",
                             "2 reviews on their media with an average rating of 4.0!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
                             "A comeback with 4 reviews this month after a period of inactivity!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Director Spotlight",
                             "Director 7",
                             "3 reviews on their media with an average rating of 4.5!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Falling Star",
                             "Media Title 7",
                             "3 fewer reviews than the previous month.",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Hidden Gem",
                             "Media Title 3",
                             "1 reviews with an average rating of 5.0!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 3",
                             "An outstanding average rating of 5.0 this month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Most Abandoned",
                             "Media Title 5",
                             "2 users either abandoned it early or never started it this month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Most Backlogged",
                             "Media Title 1",
                             "Added to backlogs 3 times this month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Most Polarizing",
                             "Media Title 2",
                             "Media Title 2 sparked a lot of debate this month, with a variability score of 1.0" +
                                 "0!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
                             "4 reviews this month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Most Unfinished",
                             "Media Title 1",
                             "1 user didn\'t complete it this month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
                             "3 more reviews than the previous month!",
                             "month"});
-                table92.AddRow(new string[] {
+                table93.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
                             "4 reviews this month! More than its average of 1 per month",
                             "month"});
 #line 125
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table92, "And ");
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table93, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1312,64 +1312,64 @@ this.FeatureBackground();
 #line 144
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
                             "A comeback with 5 reviews this year after a period of inactivity!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 1",
                             "An outstanding average rating of 3.8 this year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Most Abandoned",
                             "Media Title 5",
                             "2 users either abandoned it early or never started it this year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Most Backlogged",
                             "Media Title 1",
                             "Added to backlogs 3 times this year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Most Polarizing",
                             "Media Title 3",
                             "Media Title 3 sparked a lot of debate this year, with a variability score of 1.58" +
                                 "!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
                             "5 reviews this year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Most Unfinished",
                             "Media Title 1",
                             "1 user didn\'t complete it this year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
                             "5 more reviews than the previous year!",
                             "year"});
-                table93.AddRow(new string[] {
+                table94.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
                             "5 reviews this year! More than its average of 0 per year",
                             "year"});
 #line 145
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table93, "And ");
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table94, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1401,70 +1401,70 @@ this.FeatureBackground();
 #line 160
  testRunner.Then("The status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
                             "AwardType",
                             "Title",
                             "Description",
                             "TimeFrame"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Comeback",
                             "Media Title 4",
                             "A comeback with 5 reviews this all-time after a period of inactivity!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Highest Rated",
                             "Media Title 1",
                             "An outstanding average rating of 3.8 this all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Abandoned",
                             "Media Title 5",
                             "2 users either abandoned it early or never started it this all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Active Genre",
                             "Action",
                             "Action is the most active genre this all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Anticipated",
                             "Media Title 1",
                             "Added to user backlogs 3 times ahead of its release on Monday, February 3rd this " +
                                 "all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Backlogged",
                             "Media Title 1",
                             "Added to backlogs 3 times this all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Polarizing",
                             "Media Title 3",
                             "Media Title 3 sparked a lot of debate this all-time, with a variability score of " +
                                 "1.58!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Reviewed",
                             "Media Title 4",
                             "5 reviews this all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Most Unfinished",
                             "Media Title 1",
                             "1 user didn\'t complete it this all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Rising Star",
                             "Media Title 4",
                             "5 more reviews than the previous all-time!",
                             "all-time"});
-                table94.AddRow(new string[] {
+                table95.AddRow(new string[] {
                             "Sleeper Hit",
                             "Media Title 4",
                             "5 reviews this all-time! More than its average of 0 per all-time",
                             "all-time"});
 #line 161
- testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table94, "And ");
+ testRunner.And("The MediaTrendModels reposne should be", ((string)(null)), table95, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

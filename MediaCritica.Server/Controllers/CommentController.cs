@@ -81,7 +81,7 @@ namespace MediaCritica.Server.Controllers
                 return NotFound(new { Message = "User Not Found" });
             if (comment.ParentId != null && !_databaseContext.Comments.Any(c => c.Id == comment.ParentId))
                 return NotFound(new { Message = "Parent Comment Not Found" });
-            if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.Status == ContentStatus.Removed))
+            if (_databaseContext.Comments.Any(c => c.Id == comment.ParentId && c.Status != ContentStatus.Active))
                 return Conflict(new { Message = "Cannot reply to a deleted comment" });
 
             await _databaseContext.Comments.AddAsync(comment);

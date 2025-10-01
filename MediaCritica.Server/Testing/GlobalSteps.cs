@@ -1,4 +1,5 @@
 ﻿using MediaCritica.Server.Controllers;
+using MediaCritica.Server.Enums;
 using MediaCritica.Server.Models;
 using MediaCritica.Server.Objects;
 using Microsoft.AspNetCore.Mvc;
@@ -176,7 +177,7 @@ namespace MediaCritica.Server.Testing
                 Content = row["Content"],
                 CommenterId = int.Parse(row["CommenterId"]),
                 CommentedAt = DateTime.Parse(row["CommentedAt"]),
-                // TODO Add status handling
+                Status = Enum.Parse<ContentStatus>(row["Status"], true),
             }).ToList();
             await _dbContext.Comments.AddRangeAsync(comments);
             await _dbContext.SaveChangesAsync();

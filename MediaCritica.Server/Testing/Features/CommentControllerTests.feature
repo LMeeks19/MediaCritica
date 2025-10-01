@@ -20,15 +20,15 @@ Background:
 		| Id | MediaId | MediaPoster    | MediaTitle    | MediaType | UserId | ReviewerUsername | Rating | Title      | Description      | Date       |
 		| 1  | 1       | Media Poster 1 | Media Title 1 | movie     | 3      | Username3        | 4      | Test Title | Test Description | 2025-01-01 |
 	And I have the following comments
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt         | IsDeleted |
-		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27 14:05:45 | false     |
-		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28 15:02:02 | false     |
-		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29 14:12:39 | false     |
-		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29 17:36:05 | false     |
-		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30 01:54:56 | false     |
-		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30 03:40:37 | false     |
-		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31 03:37:54 | false     |
-		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-02-01 12:48:36 | true      |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt         | Status  |
+		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27 14:05:45 | Active  |
+		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28 15:02:02 | Active  |
+		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29 14:12:39 | Active  |
+		| 4  | 1        | 3        | Comment 4 | 4           | Test 4        | 2025-01-29 17:36:05 | Active  |
+		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30 01:54:56 | Active  |
+		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30 03:40:37 | Active  |
+		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31 03:37:54 | Active  |
+		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-02-01 12:48:36 | Removed |
 	And I have the following reports
 		| Id | CommentId | ReporterId | Reason | Details      | ReportedAt |
 		| 1  | 1         | 2          | Spam   | Spam Comment | 2025-02-20 |
@@ -37,14 +37,13 @@ Scenario: Get review comments
     When I call GetReviewComments with the review id 1
     Then The status code should be 200
     And The returned comments structure should match the expected hierarchy:
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | IsDeleted | TotalReplies |
-		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29  | false     | 3            |
-		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | false     | 0            |
-		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30  | false     | 2            |
-		| 8  | 1        | 5        | Comment 8 | 4           | Test 4        | 2025-01-30  | false     | 0            |
-		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | false     | 0            |
-		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27  | false     | 1            |
-		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28  | false     | 0            |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterName | CommentedAt | TotalReplies |
+		| 3  | 1        | <null>   | Comment 3 | 1           | Test 1        | 2025-01-29  | 3            |
+		| 6  | 1        | 3        | Comment 6 | 1           | Test 1        | 2025-01-30  | 0            |
+		| 5  | 1        | 3        | Comment 5 | 1           | Test 1        | 2025-01-30  | 1            |
+		| 7  | 1        | 5        | Comment 7 | 2           | Test 2        | 2025-01-31  | 0            |
+		| 1  | 1        | <null>   | Comment 1 | 1           | Test 1        | 2025-01-27  | 1            |
+		| 2  | 1        | 1        | Comment 2 | 2           | Test 2        | 2025-01-28  | 0            |
 
 Scenario: Get review comments for a review that doesn't exist
 	When I call GetReviewComments with the review id 99
@@ -55,8 +54,8 @@ Scenario: Get comments remaining children
 	When I call GetCommentsRemainingChildren with the comment id 3 and offset 2
 	Then The status code should be 200
 	And The CommentModels should be
-		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterUsername | CommentedAt | IsDeleted | TotalReplies |
-		| 4  | 1        | 3        | Comment 4 | 4           | Username4         | 28 days ago | false     | 0            |
+		| Id | ReviewId | ParentId | Content   | CommenterId | CommenterUsername | CommentedAt | TotalReplies |
+		| 4  | 1        | 3        | Comment 4 | 4           | Username4         | 28 days ago | 0            |
 	And The children should be empty
 
 Scenario: Post a comment
@@ -65,8 +64,8 @@ Scenario: Post a comment
 		| 1        | 1        | New Comment | 1           | Test 1        |
 	Then The status code should be 200
 	And The CommentModel should be
-		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterUsername | CommentedAt | IsDeleted | TotalReplies |
-		| 9  | 1        | 1        | New Comment | 1           | Username1         | just now    | false     | 0            |
+		| Id | ReviewId | ParentId | Content     | CommenterId | CommenterUsername | CommentedAt | TotalReplies |
+		| 9  | 1        | 1        | New Comment | 1           | Username1         | just now    | 0            |
 	And The children should be empty
 
 Scenario: Post a comment but the user doesn't exist
@@ -83,7 +82,7 @@ Scenario: Post a comment but the parent doesn't exist
 	Then The status code should be 404
 	And The response should be "Parent Comment Not Found"
 
-Scenario: Post a comment but the parent is deleted
+Scenario: Post a comment but the parent is not active
 	When I call PostComment with the following data
 		| ReviewId | ParentId | Content     | CommenterId | CommenterName |
 		| 1        | 8        | New Comment | 1           | Test 1        |
@@ -97,7 +96,7 @@ Scenario: Update a comment
 	Then The status code should be 200
 	And The response should be "Comment Updated"
 
-Scenario: Update a comment tah doesn't exist
+Scenario: Update a comment that doesn't exist
 	When I call UpdateComment with the following data
 		| Id | Content         |
 		| 99 | Updated Comment |

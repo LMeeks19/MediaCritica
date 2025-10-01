@@ -14,20 +14,20 @@ Background:
 		| 3  | 3      | System | #000000 | en-GB  | Europe/Paris     |
 		| 4  | 4      | Dark   | #FFFFFF | en-US  | Asia/Tokyo       |
 	And I have the following movies
-		| Id | Actors           | Awards  | Countries | Directors              | Genres          | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type  | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
-		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama   | English   | 85        | A great plot | Media Poster 1 | PG-13 | 2020-02-03 | 120 min | Media Title 1 | movie | Writer 1 | 2020 | 8.5        | 1500      | $300,000,000 |     |         |            |
-		| 6  | Actor 1, Actor 9 | Award 1 | USA, UK   | Director 1, Director 7 | Fantasy, Action | English   | 85        | A great plot | Media Poster 6 | PG-13 | 2020-02-03 | 120 min | Media Title 6 | movie | Writer 1 | 2020 | 8.5        | 1500      | $800,000,000 |     |         |            |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres          | Languages | Metascore | Plot         | Rated | Released   | Runtime | Title         | Type  | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice    | DVD | Website | Production |
+		| 1  | Actor 1, Actor 2 | Award 1 | USA, UK   | Director 1, Director 2 | Action, Drama   | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 1 | movie | Writer 1 | 2020 | 8.5        | 1500      | $300,000,000 |     |         |            |
+		| 6  | Actor 1, Actor 9 | Award 1 | USA, UK   | Director 1, Director 7 | Fantasy, Action | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 6 | movie | Writer 1 | 2020 | 8.5        | 1500      | $800,000,000 |     |         |            |
 	And I have the following series
-		| Id | Actors           | Awards  | Countries | Directors              | Genres            | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type   | Writers  | Year | ImdbRating | ImdbVotes | TotalSeasons |
-		| 2  | Actor 1, Actor 4 | Award 1 | USA, UK   | Director 5, Director 1 | Action, Adventure | English   | 85        | A great plot | Media Poster 2 | PG-13 | 2020-02-03 | 120 min | Media Title 2 | series | Writer 1 | 2020 | 8.5        | 1500      | 1            |
-		| 5  | Actor 1, Actor 8 | Award 1 | USA, UK   | Director 8, Director 4 | Drama, Romance    | English   | 85        | A great plot | Media Poster 5 | PG-13 | 2020-02-03 | 120 min | Media Title 5 | series | Writer 1 | 2020 | 8.5        | 1500      | 1            |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres            | Languages | Metascore | Plot         | Rated | Released   | Runtime | Title         | Type   | Writers  | Year | ImdbRating | ImdbVotes | TotalSeasons |
+		| 2  | Actor 1, Actor 4 | Award 1 | USA, UK   | Director 5, Director 1 | Action, Adventure | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 2 | series | Writer 1 | 2020 | 8.5        | 1500      | 1            |
+		| 5  | Actor 1, Actor 8 | Award 1 | USA, UK   | Director 8, Director 4 | Drama, Romance    | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 5 | series | Writer 1 | 2020 | 8.5        | 1500      | 1            |
 	And I have the following games
-		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice | DVD | Website | Production |
-		| 3  | Actor 1, Actor 5 | Award 1 | USA, UK   | Director 2, Director 7 | Comedy, Drama    | English   | 85        | A great plot | Media Poster 3 | PG-13 | 2020-02-03 | 120 min | Media Title 3 | game | Writer 1 | 2020 | 8.5        | 1500      |           |     |         |            |
-		| 7  | Actor 1, Actor 3 | Award 1 | USA, UK   | Director 4, Director 8 | Horror, Thriller | English   | 85        | A great plot | Media Poster 7 | PG-13 | 2020-02-03 | 120 min | Media Title 7 | game | Writer 1 | 2020 | 8.5        | 1500      |           |     |         |            |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Rated | Released   | Runtime | Title         | Type | Writers  | Year | ImdbRating | ImdbVotes | BoxOffice | DVD | Website | Production |
+		| 3  | Actor 1, Actor 5 | Award 1 | USA, UK   | Director 2, Director 7 | Comedy, Drama    | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 3 | game | Writer 1 | 2020 | 8.5        | 1500      |           |     |         |            |
+		| 7  | Actor 1, Actor 3 | Award 1 | USA, UK   | Director 4, Director 8 | Horror, Thriller | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 7 | game | Writer 1 | 2020 | 8.5        | 1500      |           |     |         |            |
 	And I have the following episodes
-		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Poster         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | EpisodeNo | SeasonNo | SeasonId |
-		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | Media Poster 4 | PG-13 | 2020-02-03 | 120 min | Media Title 4 | episode | Writer 1 | 2020 | 8.5        | 1500      | 1         | 1        | 1        |
+		| Id | Actors           | Awards  | Countries | Directors              | Genres           | Languages | Metascore | Plot         | Rated | Released   | Runtime | Title         | Type    | Writers  | Year | ImdbRating | ImdbVotes | EpisodeNo | SeasonNo | SeasonId |
+		| 4  | Actor 1, Actor 6 | Award 1 | USA, UK   | Director 6, Director 2 | Thriller, Action | English   | 85        | A great plot | PG-13 | 2020-02-03 | 120 min | Media Title 4 | episode | Writer 1 | 2020 | 8.5        | 1500      | 1         | 1        | 1        |
 	And I have the following backlogs
 		| Id | UserId | MediaId | MediaType | Category | MediaPoster    | MediaTitle    | AddedDate           |
 		| 1  | 1      | 1       | movie     | 0        | Media Poster 1 | Media Title 1 | 2025-02-01 23:13:41 |
@@ -56,15 +56,15 @@ Scenario: Get a users backlog
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 2       | 2                 | 1          | 1                    | 1        | 1                  |
 	And The Backlogged backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                  |
-		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | Friday, February 7, 2025   |
-		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | Saturday, February 1, 2025 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate                  |
+		| 9  | 2       | series    | Media Title 2 | 0        | Friday, February 7, 2025   |
+		| 1  | 1       | movie     | Media Title 1 | 0        | Saturday, February 1, 2025 |
 	And The InProgress backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
-		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | Tuesday, February 4, 2025 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate                 |
+		| 5  | 5       | series    | Media Title 5 | 1        | Tuesday, February 4, 2025 |
 	And The Finished backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
-		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | Monday, February 12, 2024 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate                 |
+		| 13 | 6       | movie     | Media Title 6 | 2        | Monday, February 12, 2024 |
 
 Scenario: Get a users backlog that doesn't exist
 	Given I am the following user
@@ -76,11 +76,11 @@ Scenario: Get a users backlog that doesn't exist
 		| Backlog | TotalBacklogCount | InProgress | TotalInProgressCount | Finished | TotalFinishedCount |
 		| 0       | 0                 | 0          | 0                    | 0        | 0                  |
 	And The Backlogged backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate  |
 	And The InProgress backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate  |
 	And The Finished backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate  |
 
 Scenario: Get a users backlog by Backlogged type
 	Given I am the following user
@@ -89,9 +89,9 @@ Scenario: Get a users backlog by Backlogged type
 	When I call GetBackloggedBacklog
 	Then The status code should be 200
 	And The Backlogged backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                  |
-		| 9  | 2       | series    | Media Poster 2 | Media Title 2 | 0        | Friday, February 7, 2025   |
-		| 1  | 1       | movie     | Media Poster 1 | Media Title 1 | 0        | Saturday, February 1, 2025 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate                  |
+		| 9  | 2       | series    | Media Title 2 | 0        | Friday, February 7, 2025   |
+		| 1  | 1       | movie     | Media Title 1 | 0        | Saturday, February 1, 2025 |
 
 Scenario: Get a users backlog by InProgress type
 	Given I am the following user
@@ -100,8 +100,8 @@ Scenario: Get a users backlog by InProgress type
 	When I call GetInProgressBacklog
 	Then The status code should be 200
 	And The InProgress backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
-		| 5  | 5       | series    | Media Poster 5 | Media Title 5 | 1        | Tuesday, February 4, 2025 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate                 |
+		| 5  | 5       | series    | Media Title 5 | 1        | Tuesday, February 4, 2025 |
 
 Scenario: Get a users backlog by Finished type
 	Given I am the following user
@@ -110,23 +110,23 @@ Scenario: Get a users backlog by Finished type
 	When I call GetFinishedBacklog
 	Then The status code should be 200
 	And The Finished backlogs should be
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate                 |
-		| 13 | 6       | movie     | Media Poster 6 | Media Title 6 | 2        | Monday, February 12, 2024 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate                 |
+		| 13 | 6       | movie     | Media Title 6 | 2        | Monday, February 12, 2024 |
 
 Scenario: Post a backlog
 	Given I am the following user
 		| Username  | Password     | RememberMe |
 		| Username1 | Password123! | false      |
 	When I call PostBacklog with the backlog model
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate  |
+		| 16 | 7       | game      | Media Title 7 | 0        | 2025-02-13 |
 	Then The status code should be 200
 	And The response should be "Media Title 7 added to backlog"
 
 Scenario: Post a backlog but the user doesn't exist
 	When I call PostBacklog with the backlog model
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 7       | game      | Media Poster 7 | Media Title 7 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate  |
+		| 16 | 7       | game      | Media Title 7 | 0        | 2025-02-13 |
 	Then The status code should be 404
 	And The response should be "User not found"
 
@@ -135,8 +135,8 @@ Scenario: Post a backlog but the media doesn't exist
 		| Username  | Password     | RememberMe |
 		| Username1 | Password123! | false      |
 	When I call PostBacklog with the backlog model
-		| Id | MediaId | MediaType | MediaPoster    | MediaTitle    | Category | AddedDate  |
-		| 16 | 8       | game      | Media Poster 8 | Media Title 8 | 0        | 2025-02-13 |
+		| Id | MediaId | MediaType | MediaTitle    | Category | AddedDate  |
+		| 16 | 8       | game      | Media Title 8 | 0        | 2025-02-13 |
 	Then The status code should be 404
 	And The response should be "Media not found"
 	
