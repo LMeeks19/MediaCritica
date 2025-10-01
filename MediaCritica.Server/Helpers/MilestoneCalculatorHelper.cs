@@ -376,10 +376,10 @@ namespace MediaCritica.Server.Helpers
             return type switch
             {
                 MilestoneType.ReviewsWritten => "Reviews Written",
-                MilestoneType.MoviesReviewed => "Movies Reviews",
-                MilestoneType.GamesReviewed => "Games Reviews",
-                MilestoneType.SeriesReviewed => "Series Reviews",
-                MilestoneType.EpisodesReviewed => "Episodes Reviews",
+                MilestoneType.MoviesReviewed => "Movies Reviewed",
+                MilestoneType.GamesReviewed => "Games Reviewed",
+                MilestoneType.SeriesReviewed => "Series Reviewed",
+                MilestoneType.EpisodesReviewed => "Episodes Reviewed",
                 MilestoneType.BacklogAdded => "Backlogged Media",
                 MilestoneType.FinishedMedia => "Finished Media",
                 MilestoneType.Engagements50PerReview => "Engagements Received Per Review",
@@ -404,9 +404,9 @@ namespace MediaCritica.Server.Helpers
         {
             return type switch
             {
-                MilestoneType.ReviewsWritten => "Reviews written for media",
+                MilestoneType.ReviewsWritten => "Reviews written for all media",
                 MilestoneType.MoviesReviewed => "Review movies to share your thoughts",
-                MilestoneType.GamesReviewed => "Critique games to provie feedback",
+                MilestoneType.GamesReviewed => "Critique games to provide feedback",
                 MilestoneType.SeriesReviewed => "Share your thoughts on series",
                 MilestoneType.EpisodesReviewed => "Provide opinions on episodes",
                 MilestoneType.BacklogAdded => "Keep track of media you'd like to watch or play",
